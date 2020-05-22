@@ -1,32 +1,29 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+
+    <BaseLayout v-if="login"/>
+
+    <Login v-else/>
   </div>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
 
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+<script>
+  import BaseLayout from "@/views/layout/BaseLayout";
+  import Login from "@/views/login/Login";
+  export default {
+    name: "App",
+    components: {Login, BaseLayout},
+    data() {
+      return{
+        login: true
+      }
+    },
   }
-}
+</script>
+
+<style lang="scss">
+  #app{
+    height: 100%;
+  }
 </style>

@@ -1,0 +1,116 @@
+/*左侧菜单栏相关样式*/
+/*.is-active {
+  background-color: #0f4155 !important;
+}*/
+
+.el-submenu__title {
+  height: 35px;
+  line-height: 35px;
+  font-size: 14px;
+}
+
+.el-menu-item {
+  height: 35px !important;
+  line-height: 35px !important;
+  font-size: 14px;
+}
+
+.el-menu-item-group__title {
+  display: none !important;
+}
+
+
+/*信息弹出栏样式*/
+.popInfo .info {
+  text-align: center;
+}
+
+.popInfo .info .name {
+  font-weight: 600;
+}
+
+.popInfo .info .title {
+  font-size: 12px;
+  color: #909399;;
+}
+
+ul.menu li {
+  cursor: pointer;
+  margin: 3px 0;
+  padding: 0 10px;
+  text-align: center;
+}
+
+ul.menu li:hover {
+  background-color: #409EFF;
+  color: white;
+}
+
+.mainTable .cell {
+  font-size: 12px;
+}
+
+
+
+/*模态框  myDialog*/
+.myDialog .el-date-editor,
+.myDialog .el-input {
+  width: 180px;
+}
+
+
+/*表格padding减少 myTable*/
+.myTable td,
+.myTable th {
+  padding: 4px 0;
+}
+.el-table__header{
+  width: 100% !important;
+}
+.el-table__body{
+  width: 100% !important;
+}
+
+
+/*表单的margin-bottom减少 表格垂直距离减少*/
+.myForm-mb5 .el-form-item{
+  margin-bottom: 5px!important;
+}
+
+
+/*button样式  .el-button + .el-button 改掉*/
+.el-button{
+  margin: 2px 3px!important;
+}
+
+
+/*myCheckBox 的checkbox样式穿透*/
+.myCheckBox .el-checkbox{
+  margin-right: 0;
+  width: 20%;
+}
+
+/*dialog的padding-top不需要*/
+.el-dialog__body{
+  padding-top: 0!important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
