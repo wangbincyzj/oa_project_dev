@@ -1,11 +1,12 @@
 <template>
-  <div class="myDialog">
+  <div class="myDialog myForm-mb5">
     <el-form
       v-loading="loading"
       label-position="right"
       label-width="150px"
       size="mini"
       inline
+      :disabled="mode===2"
       :model="form">
       <el-form-item label="楼栋名称">
         <el-input v-model="form.ldxxMc"></el-input>
@@ -203,11 +204,11 @@
       reset() {
         this.form = {...this.formBlank}
       },
-      fetchData(){
+      fetchData(ldxxId){
         this.loading = true;
         tjldxmApi.getBuildingInfo(this.projectId).then(ret=>{
           this.loading = false;
-          this.form = ret.data[0]
+          this.form = ret.data.filter(item=>item.ldxxId===ldxxId)[0]
         })
       },
       btnClick(){

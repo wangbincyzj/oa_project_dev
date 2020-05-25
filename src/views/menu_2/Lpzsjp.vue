@@ -13,13 +13,13 @@
             <el-table-column
               align="center"
               label="总建筑面积"
-              width="200"
+              width="100"
               prop="ldxxJzmj">
             </el-table-column>
             <el-table-column
               align="center"
               label="总套数"
-              width="300"
+              width="100"
               prop="ldxxZts">
             </el-table-column>
 
@@ -172,12 +172,10 @@
             r.sort((a, b) => a.k - b.k)
             this.rooms = r.reverse();
           })
-
         }
       },
       roomClick(room) {
         this.dialogVisible = true;
-        console.log(room)
         this.$nextTick(() => {
           this.$refs.dialog.fetchRoomDetail(room.ldId, room.roomId)
         })
@@ -208,7 +206,24 @@
           center: true
         }).then(() => {
           tjldxmApi.selfInspection(this.selectedBuilding.id).then(ret=>{
-            console.log(ret)
+            if(ret.code===200){
+              this.$message.success("自审入库成功");
+              if (this.selectedBuilding) {
+                this.loading = true;
+                this.fetchBuildingDetail()
+                lpInfoApi.getBuildingRoomDetail(this.selectedBuilding.id).then(ret => {
+                  this.loading = false;
+                  let r = []   // r是排序后的结果
+                  Object.entries(ret.data).forEach(([k, v]) => {
+                    r.push({k, v})
+                  })
+                  r.sort((a, b) => a.k - b.k)
+                  this.rooms = r.reverse();
+                })
+              }
+            }else{
+              this.$message.error(ret.message)
+            }
           })
         })
       }

@@ -7,7 +7,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     navList,
-    rwbh:60029001
+    rwbh:60039001
   },
   mutations: {
   },

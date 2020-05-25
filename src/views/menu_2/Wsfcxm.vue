@@ -108,7 +108,6 @@
       return {
         search: "",
         tableData: [
-          {xmbh: 1001, xmmc:"不知道", jzmj:"10", lxdh: "bzd", xmdz: "bzd", shzt: "bzd"}
         ],
         dialogTitle: "",
         editMode: 1,
@@ -132,7 +131,7 @@
       fetchProjectData() {
         // todo 入网编号通过登录信息获取 现在是写死的
         this.loading = true;
-        wsfcxmApi.getOwnProjectByRwId(60029001).then(ret=>{
+        wsfcxmApi.getOwnProjectByRwId(this.$store.state.rwbh).then(ret=>{
           this.loading = false;
           this.tableData = ret.data.records;
           this.tableData = ret.data.records.map(item=>({...item,

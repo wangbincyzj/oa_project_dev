@@ -170,16 +170,22 @@
         this.dialogTitle = `添加项目楼栋`
       },
       handleEdit(index, item) {
+        console.log(item)
         this.mode = 1;
         this.dialogVisible = true;
         this.dialogTitle = `编辑楼栋(没有值填写0)`;
         this.$nextTick(()=>{
-          this.$refs.dialog.fetchData()
+          this.$refs.dialog.fetchData(item.ldxxId)
         })
       },
       handleDetail(index, item){
         // 主键id item.ldxxId
+        this.mode = 2;
         this.dialogVisible = true;
+        this.dialogTitle = `查看楼栋详情`;
+        this.$nextTick(()=>{
+          this.$refs.dialog.fetchData(item.ldxxId)
+        })
       },
       handleUpdate(index, item) {
 

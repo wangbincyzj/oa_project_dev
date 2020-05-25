@@ -41,11 +41,19 @@ let delRoom = function (id) {
   return requests.get("room/del", {id})
 }
 
+/**
+ * 提交楼栋审批
+ */
+let submitForReview = function (ldxxId) {
+  return requests.get("building/submit", {ldxxId})
+}
+
 
 
 export const lpInfoApi = {
   getBuildingRoomDetail,
   getRoomDetail,
   updateRoom,
-  delRoom
+  delRoom,
+  submitForReview
 }

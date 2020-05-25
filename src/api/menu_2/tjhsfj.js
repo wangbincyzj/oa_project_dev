@@ -21,5 +21,5 @@ let addRoom2 = function (_form) {
 
 
 export const tjhsfjApi = {
-  addRoom,addRoom2
+  addRoom,addRoom2,
 }

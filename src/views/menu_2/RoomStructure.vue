@@ -1,6 +1,6 @@
 
 <template>
-  <div v-if="rooms" class="roomStructure">
+  <div v-if="rooms" class="roomStructure" v-loading="loading">
     <div class="floor" :class="{noRoom:!floor.v.length}" v-for="floor in rooms">
       <div class="head">{{floor.k}}层</div>
       <div class="room" @click="roomClick(room)" v-for="room in floor.v">
@@ -23,10 +23,12 @@
     data() {
       return{
         rooms: null,
+        loading: false
       }
     },
     methods:{
       fetchData(id) {
+        this.loading = true;
         lpInfoApi.getBuildingRoomDetail(/*楼栋ID*/id).then(ret => {
           this.loading = false;
           let r = []   // r是排序后的结果
@@ -36,10 +38,13 @@
           r.sort((a, b) => a.k - b.k)
           this.rooms = r.reverse();
         })
-      }
-    },
-    reset() {
-      this.rooms = null
+      },
+      reset() {
+        this.rooms = null
+      },
+      roomClick(room) {
+        this.$emit("roomClick", room)
+      },
     }
   }
 </script>
