@@ -19,6 +19,13 @@
         login: true
       }
     },
+    created() {
+      this.$store.dispatch("fetchBaseData", this.$store.state.rwbh).then(ret=>{
+        if(ret.code===200){
+          this.$message.success("请求数据成功")
+        }
+      })
+    }
   }
 </script>
 

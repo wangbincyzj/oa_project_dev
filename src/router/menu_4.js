@@ -1,27 +1,25 @@
 import MainContent from "@/views/layout/MainContent";
 
 export default {
-  title: "存量房监管",
+  title: "预售资金",
   path: "/menu_4",
   class: "icon-house",
+  redirect: "/menu_4/sqjgzh",
   routes:[
     {
-      title: "系统综合设置",
-      path: "/ztzhsz",
+      title: "监管账户管理",
+      path: "/jgzhgl",
       group:[
-        {title: "用户管理", path: "yhgl"},
-        {title: "业务大类", path: "ywdl"},
+        {title: "申请监管账户", path: "sqjgzh"},
+        {title: "打印开户通知单", path: "dykhtzd"},
       ]
     },
     {
-      title: "从业业主管理",
-      path: "/cyyzgl",
+      title: "三方协议管理",
+      path: "/sfxygl",
       group:[
-        {title: "添加入网企业", path: "tjrwqy"},
-        {title: "添加入网人员", path: "tjrwry"},
-        {title: "资质到期限制", path: "zzdqxz"},
-        {title: "添加入网银行", path: "tjrwyh"},
-        {title: "添加银行人员", path: "tjyhry"},
+        {title: "申请三方协议", path: "sqsfxy"},
+        {title: "打印三方协议", path: "dysfxy"},
       ]
     }
   ]

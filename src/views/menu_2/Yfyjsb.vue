@@ -1,5 +1,5 @@
 <template>
-  <TitleTable title="设置一房一价">
+  <TitleTable title="一房一价上报">
     <div slot="controls">
       <el-alert center type="warning">
         <span style="font-size: 16px; color: #1248b3">{{xmmc? `当前项目:【${xmmc}】`: "项目载入中..."}}</span>
@@ -53,15 +53,26 @@
         width="100"
         label="房屋类型">
       </el-table-column>
-
+      <el-table-column
+        width="100"
+        label="审核状态"
+        prop="yfyjzt">
+      </el-table-column>
       <el-table-column
         label="操作"
         align="center">
         <template slot-scope="scope">
-          <el-button
-            size="mini"
-            @click="handleDetail(1, scope.row)">设置单价
-          </el-button>
+          <template v-if="scope.row.ldxxYfyjzt===2">
+            <el-link disabled>已通过审核</el-link>
+          </template>
+          <template v-else>
+            <el-button
+              :disabled="scope.row.ldxxYfyjzt===1"
+              size="mini"
+              @click="submit(scope.row)"
+            >上报审核
+            </el-button>
+          </template>
           <el-button
             size="mini"
             @click="handleDetail(2, scope.row)">查看单价
@@ -92,11 +103,11 @@
   import {wsfcxmApi} from "@/api/menu_2/wsfcxm";
   import {tjldxmApi} from "@/api/menu_2/tjldxm";
   import {mixins} from "@/utils/mixins";
-  import SzyfyjDialog from "@/views/menu_2/SzyfyjDialog";
-  import {lpInfoApi} from "@/api/menu_2/lpInfo";
+  import YfyjsbDialog from "@/views/menu_2/YfyjsbDialog";
+  import {yfyjApi} from "@/api/menu_2/yfyj";
 
   export default {
-    name: "Szyfyj",
+    name: "Yfyjsb",
     mixins: [mixins.dialogMixin],
     data() {
       return {
@@ -114,7 +125,7 @@
         return this.projectData ? this.projectData.xmxxXmmc : ""
       }
     },
-    components: {LpsbshDialog:SzyfyjDialog, TitleTable},
+    components: {LpsbshDialog:YfyjsbDialog, TitleTable},
     created() {
       this.fetchData()
     },
@@ -157,6 +168,7 @@
               ...item,
               zszt: this._mapStatusNumToString2(item.ldxxLdjpzt),
               lpzt: this._mapStatusNumToString(item.ldxxShzt),
+              yfyjzt: this._mapStatusNumToString(item.ldxxYfyjzt),
               yfyj: this._mapStatusNumToString(item.ldxxYfyjzt),
               fwlx: item.ldxxFwlx ? "现售" : "预售"
             }));
@@ -165,12 +177,22 @@
       },
       handleDetail(mode, item) {
         this.dialogVisible = true;
-        this.dialogTitle = "设置单价";
+        this.dialogTitle = "查看一房一价";
         this.mode = mode;
         this.$nextTick(()=>{
           this.$refs.dialog.initRoomStructure(item.ldxxId);
         })
       },
+      submit(item) {
+        yfyjApi.housePriceSubmit(item.ldxxId).then(ret=>{
+          if(ret.code===200){
+            this.$message.success(ret.message)
+            this.fetchData()
+          }else{
+            this.$message.error(ret.message)
+          }
+        })
+      }
     }
   }
 </script>

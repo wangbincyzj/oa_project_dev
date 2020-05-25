@@ -3,13 +3,20 @@
   <div v-if="rooms" class="roomStructure" v-loading="loading">
     <div class="floor" :class="{noRoom:!floor.v.length}" v-for="floor in rooms">
       <div class="head">{{floor.k}}层</div>
-      <div class="room" @click="roomClick(room)" v-for="room in floor.v">
+      <div class="room" :class="{active: room.active}" @click="roomClick(room)" v-for="room in floor.v">
         <span class="fh">{{room.roomFh}}</span>
-        <div class="infos">
+
+        <div class="yfyj" v-if="yfyj">
+          <div class="unit">单价</div>
+          <div class="price">{{room.roomGpdj}}</div>
+        </div>
+
+        <div v-else class="infos">
           <span class="jz">建筑面积:{{room.roomJzmj}}</span>
           <span class="tn">套内面积:{{room.roomTnjzmj}}</span>
           <span class="ft">分摊面积:{{room.roomFtmj}}</span>
         </div>
+
       </div>
     </div>
   </div>
@@ -20,6 +27,12 @@
 
   export default {
     name: "RoomStructure",
+    props:{
+      yfyj:{
+        type: Boolean,
+        default: false,
+      }
+    },
     data() {
       return{
         rooms: null,
@@ -58,6 +71,9 @@
       height: 100px;
       margin: 5px;
       display: flex;
+      .active{
+        background: cornflowerblue;
+      }
 
       .room {
         flex-shrink: 0;
@@ -89,10 +105,8 @@
           cursor: pointer;
           top: -3px;
           box-shadow: $box-shadow;
-
           .infos {
             display: flex;
-
             line-height: 1.2;
           }
         }
@@ -109,7 +123,16 @@
         color: #1248b3;
       }
     }
-
+    .yfyj{
+      display: flex;
+      flex-direction: column;
+      .unit{
+        margin-bottom: 5px;
+      }
+      .price{
+        color: $text-weight;
+      }
+    }
     .noRoom {
       height: 20px;
       line-height: 20px;
