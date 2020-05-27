@@ -14,7 +14,8 @@ const routerMixin = {
 const dialogMixin = {
   data() {
     return {
-      dialogVisible: false
+      dialogVisible: false,
+      dialogTitle: ""
     }
   },
   methods: {

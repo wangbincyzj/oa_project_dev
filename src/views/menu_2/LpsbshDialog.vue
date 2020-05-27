@@ -129,7 +129,6 @@
       <el-form-item label="重点监管资金比例">
         <el-input v-model="form.ldxxZdjgzjbl"></el-input>
       </el-form-item>
-
     </el-form>
   </div>
 </template>

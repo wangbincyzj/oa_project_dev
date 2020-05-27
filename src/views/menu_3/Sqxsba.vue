@@ -1,8 +1,8 @@
 <template>
-  <TitleTable :title="projectData? `项目【${projectData.xmxxXmmc}】预售许可证列表`:'预售许可证列表'">
+  <TitleTable :title="projectData? '':'预售许可证列表'">
     <el-alert center type="warning">
-      <span style="color: red">添加完成后需要点扫描将相关材料上传，之后点“上报”后等待住建局审核！</span>
-      <el-button size="mini" type="primary" @click="add">添加预售</el-button>
+      <span style="color: red">添加完成后需要点扫描将相关材料上传，之后点“上报”后等待房产局审核！</span>
+      <el-button size="mini" type="primary" @click="add">添加现售</el-button>
     </el-alert>
     <el-table
       :data="tableData"
@@ -53,6 +53,7 @@
   import {mixins} from "@/utils/mixins";
   import SqysxkDialog from "@/views/menu_3/SqysxkDialog";
   import {mapState} from "vuex"
+
   export default {
     name: "Sqysxk",
     mixins: [mixins.dialogMixin],
@@ -60,7 +61,7 @@
     data() {
       return {
         tableData:[{test:"123456"}],
-        loading: false
+        loading: false,
       }
     },
     computed:{
@@ -69,7 +70,7 @@
     methods:{
       add() {
         this.dialogVisible = true;
-        this.dialogTitle = "预售申报"
+        this.dialogTitle = "现售申报"
         this.$nextTick(()=>{
           this.$refs.dialog.setMode(1)
         })
