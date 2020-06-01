@@ -7,7 +7,7 @@ import {requests} from "@/api";
  * xmxxXmbh 项目编号
  */
 let getBuildingInfo = function(xmxxId,ldxxShzt){
-  return requests.get("building/selectList", {xmxxId,ldxxShzt})
+  return requests.get("data_center/building/selectList", {xmxxId,ldxxShzt})
 }
 
 
@@ -15,7 +15,7 @@ let getBuildingInfo = function(xmxxId,ldxxShzt){
  * 根据项目ID新增楼栋
  */
 let addBuilding = function (_form) {
-  return requests.post("building/save", _form)
+  return requests.post("data_center/building/save", _form)
 }
 
 
@@ -23,7 +23,7 @@ let addBuilding = function (_form) {
  * 根据楼栋ID删除楼栋
  */
 let delBuilding = function (id) {
-  return requests.get("building/del", {id})
+  return requests.get("data_center/building/del", {id})
 }
 
 
@@ -31,7 +31,7 @@ let delBuilding = function (id) {
  * 根据楼栋ID更新楼栋信息
  */
 let updateBuilding = function (_form) {
-  return requests.post("building/update", _form)
+  return requests.post("data_center/building/update", _form)
 }
 
 
@@ -39,7 +39,7 @@ let updateBuilding = function (_form) {
  * 根据楼栋ID获取楼顶详情
  */
 let getBuildingDetail = function (id) {
-  return requests.get("building/selectById", {id})
+  return requests.get("data_center/building/selectById", {id})
 }
 
 
@@ -47,7 +47,7 @@ let getBuildingDetail = function (id) {
  * 根据楼栋ID自审入库
  */
 let selfInspection = function (ldxxId) {
-  return requests.get("building/selfInspection", {ldxxId})
+  return requests.get("data_center/building/selfInspection", {ldxxId})
 }
 
 

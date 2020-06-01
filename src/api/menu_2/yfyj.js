@@ -9,7 +9,7 @@ import {requests} from "@/api";
  * @returns {Promise<AxiosResponse<any>>}
  */
 let setHousePrice = function (roomIds, yfyjGpdj) {
-  return requests.post("housePrice/batchSave", {roomIds, yfyjGpdj})
+  return requests.post("data_center/housePrice/batchSave", {roomIds, yfyjGpdj})
 }
 
 
@@ -19,7 +19,7 @@ let setHousePrice = function (roomIds, yfyjGpdj) {
  * @returns {Promise<AxiosResponse<any>>}
  */
 let housePriceSubmit = function (id) {
-  return requests.get("housePrice/submit", {id})
+  return requests.get("data_center/housePrice/submit", {id})
 }
 
 

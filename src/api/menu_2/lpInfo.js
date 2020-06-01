@@ -8,7 +8,7 @@ import {requests} from "@/api";
  * @returns {Promise<AxiosResponse<any>>}
  */
 let getBuildingRoomDetail = function (ldId) {
-  return requests.get("room/selectList", {ldId})
+  return requests.get("data_center/room/selectList", {ldId})
 }
 
 
@@ -18,7 +18,7 @@ let getBuildingRoomDetail = function (ldId) {
  * @returns {Promise<AxiosResponse<any>>}
  */
 let getRoomDetail = function (roomId) {
-  return requests.get("room/selectById", {id: roomId})
+  return requests.get("data_center/room/selectById", {id: roomId})
 }
 
 
@@ -28,7 +28,7 @@ let getRoomDetail = function (roomId) {
  * @returns {Promise<AxiosResponse<any>>}
  */
 let updateRoom = function (_form) {
-  return requests.post("room/update", _form)
+  return requests.post("data_center/room/update", _form)
 }
 
 
@@ -38,14 +38,14 @@ let updateRoom = function (_form) {
  * @returns {Promise<AxiosResponse<any>>}
  */
 let delRoom = function (id) {
-  return requests.get("room/del", {id})
+  return requests.get("data_center/room/del", {id})
 }
 
 /**
  * 提交楼栋审批
  */
 let submitForReview = function (ldxxId) {
-  return requests.get("building/submit", {ldxxId})
+  return requests.get("data_center/building/submit", {ldxxId})
 }
 
 

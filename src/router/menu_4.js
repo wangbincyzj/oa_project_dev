@@ -21,6 +21,42 @@ export default {
         {title: "申请三方协议", path: "sqsfxy"},
         {title: "打印三方协议", path: "dysfxy"},
       ]
+    },
+    {
+      title: "预售资金缴存",
+      path: "/yszjjc",
+      group:[
+        {title: "添加监管资金", path: "tjjgzj"},
+        {title: "管理监管资金", path: "gljgzj"},
+        {title: "打印预备缴款名单", path: "dyybjkmd"},
+      ]
+    },
+    {
+      title: "预售资金使用",
+      path: "/yszjsy",
+      group:[
+        {title: "合同退款申请", path: "httksq"},
+        {title: "添加使用申报", path: "tjsysb"},
+        {title: "管理使用申报", path: "glsysb"},
+      ]
+    },
+    {
+      title: "资金监管解除",
+      path: "/zjjgjc",
+      group:[
+        {title: "申请解除监管", path: "sqjcjg"},
+        {title: "管理解除申请", path: "gljcsq"},
+       
+      ]
+    },
+    {
+      title: "预售资金核对",
+      path: "/yszjhd",
+      group:[
+        {title: "楼栋资金信息", path: "ldzjxx"},
+        {title: "账户资金信息", path: "zhzjxx"},
+       
+      ]
     }
   ]
 }
