@@ -4,7 +4,7 @@ import axios from "axios"
 
 
 // 基础设置
-const BASE_URL = "http://192.168.1.153:8080/";
+const BASE_URL = "http://192.168.1.161:8080/";
 const TIME_OUT = 12000;
 axios.defaults.baseURL = BASE_URL;
 axios.defaults.timeout = TIME_OUT;

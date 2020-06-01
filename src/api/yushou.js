@@ -4,7 +4,7 @@ import axios from "axios"
 
 
 // 基础设置
-const BASE_URL = "http://192.168.1.153:8084/";
+const BASE_URL = "http://192.168.1.161:8084/";
 const TIME_OUT = 5000;
 let _ = axios.create({
   baseURL: BASE_URL,
