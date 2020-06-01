@@ -1,6 +1,9 @@
+<!--
+  列表展示
+-->
 <template>
   <div class="_infoList">
-    <div class="title">{{title}}</div>
+    <div class="title" :style="{backgroundColor:this.bgc}">{{title}}</div>
     <ul class="list">
       <li :style="{width: width}" v-for="item in info">
         <span class="key">
@@ -22,7 +25,10 @@
       info: Array,
       rowCount: {
         default: 2,
-      }
+      },
+      bgc:{
+        default: "rgba(102,102,102,0.45)"
+      },
     },
     computed:{
       width() {
@@ -37,9 +43,9 @@
   ._infoList{
     width: 100%;
     div.title{
-      padding: 10px 20px;
+      padding: 10px;
       color: white;
-      margin: 10px;
+      margin: 0;
       font-weight: 600;
       font-size: 14px;
       background: $brand;

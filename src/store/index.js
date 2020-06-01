@@ -11,6 +11,7 @@ export default new Vuex.Store({
     /*入网编号写死*/rwbh: 60039001,  //   todo 从login获取
     /*项目信息 */projectData: {},   // 在App created中创建
     /*项目楼栋信息*/buildingInfo: [],  //  在App created中创建
+    xmxxId: 3,  // todo 后期由登录获得状态,测试时候
   },
   mutations: {
     setProjectData(state, projectData) {

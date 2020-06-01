@@ -6,7 +6,7 @@ import {requests} from "@/api";
  * 通过入网编号获取项目的信息
  */
 let getOwnProjectByRwId = function (kfsRwbh) {
-  return requests.get("realEstateProject/selectPage", {kfsRwbh})
+  return requests.get("data_center/realEstateProject/selectPage", {kfsRwbh})
 }
 
 
@@ -14,7 +14,7 @@ let getOwnProjectByRwId = function (kfsRwbh) {
  * 根据主键id查询房产项目具体信息
  */
 let getProjectDetailById = function (id) {
-  return requests.get("realEstateProject/selectById", {id})
+  return requests.get("data_center/realEstateProject/selectById", {id})
 }
 
 
@@ -23,7 +23,7 @@ let getProjectDetailById = function (id) {
  * xmxxXmbh 项目编号
  */
 let getBuildingInfo = function(xmxxId,ldxxShzt){
-  return requests.get("building/selectList", {xmxxId,ldxxShzt})
+  return requests.get("data_center/building/selectList", {xmxxId,ldxxShzt})
 }
 
 
