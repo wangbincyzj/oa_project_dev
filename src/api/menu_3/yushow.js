@@ -1,5 +1,7 @@
 import {requests} from "@/api/yushou";
+
 import {requests as r} from "@/api"
+
 /**
  * 上报
  */
@@ -55,6 +57,7 @@ let queryReceiving = function (id) {
  */
 let shanZheng = function (id, status, xkzXkzbh, xkzSzsj) {
   return requests.get("data-presale-license/preSaleLicense/Audit", {id, status, xkzXkzbh, xkzSzsj})
+
 }
 
 
