@@ -1,10 +1,6 @@
 <template>
   <div class="sqjgzh">
-    <ContainerTwoType
-     
-      :nav-info="navInfo"
-      @liClick="liClick">
-    <!-- > :loading="navInfo.loading" -->
+   
       <TitleTable
         title="项目对应监管账户列表">
         
@@ -40,19 +36,13 @@
           <el-table-column
             align="center"
             label="流程"
-            prop="zjjgzhLiucheng">           
+            prop="zjjgzhLczt">           
           </el-table-column>
          
           <el-table-column
             align="center"
             label="操作"
           >
-            <!-- <template slot="header" slot-scope="scope">
-              <el-input
-                v-model="search"
-                size="mini"
-                placeholder="输入关键字搜索"/>
-            </template> -->
             <template slot-scope="scope">
               <el-button
                 size="mini"
@@ -91,7 +81,6 @@
           />
         </el-dialog>
       </TitleTable>
-    </ContainerTwoType>
   </div> 
 </template>
 
@@ -170,7 +159,9 @@
         })
      },
       fetchData(){
-       sqjgzhApi.getAllAccount(this.currentPage, this.pageSize).then(ret => {
+        console.log(this.$store.state.projectData.xmxxXmbh);
+        
+       sqjgzhApi.getYkhAccount(this.currentPage, this.pageSize,this.$store.state.projectData.xmxxXmbh,5).then(ret => {
          //console.log(ret);
          
           this.pages=ret.data.pages;
@@ -196,17 +187,7 @@
           
         })
      },
-      liClick(index) {
-       this.selectedIndex = this.navInfo.list[index];
-         this.xmxxXmbh=this.navInfo.list[index].id;
-         console.log(this.xmxxXmbh);
-         if(index===0)         
-         {  this.selectedIndex=0;
-           this.fetchData();}
-         else{
-           this.fetchDataByxmId(this.xmxxXmbh);
-         }
-      },
+    
       
       handleDetail(index, row){
         console.log(this.currentRow.zjjgzhId);
