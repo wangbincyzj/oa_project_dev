@@ -1,5 +1,4 @@
 import {requests} from "@/api/yushou";
-
 import {requests as r} from "@/api"
 
 /**
@@ -40,8 +39,16 @@ let del = function (id) {
  * status 审核状态码 2通过 3驳回
  * option 审批意见
  */
-let audit = function (id, status, opinion) {
-  return requests.get("data-presale-license/preSaleLicense/Audit", {id, status, opinion})
+let audit = function ({businessId, processName, approvePerson, approveOpinion, status, xkzLczt, xkzXkzbh}) {
+  return requests.post("data-presale-license/preSaleLicense/audit", {
+    businessId,
+    processName,
+    approvePerson,
+    approveOpinion,
+    status,
+    xkzLczt,
+    xkzXkzbh
+  })
 }
 
 /**
@@ -57,7 +64,6 @@ let queryReceiving = function (id) {
  */
 let shanZheng = function (id, status, xkzXkzbh, xkzSzsj) {
   return requests.get("data-presale-license/preSaleLicense/Audit", {id, status, xkzXkzbh, xkzSzsj})
-
 }
 
 
@@ -131,6 +137,14 @@ let getByDxbhAndUser = function (dxhb, userId) {
   return r.get("data_center/liucheng/getByDxbhAndUser", {dxhb, userId})
 }
 
+/**
+ * 根据业务宗号(业务Id)获取审核流程链
+ * @param businessId
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+let getShlcDetail = function (businessId) {
+  return requests.get("data-presale-license/preSaleLicense/getApproveList", {businessId})
+}
 
 export const yushowApi = {
   submit,
@@ -148,7 +162,8 @@ export const yushowApi = {
   shanZheng,
   selectByYwzh,
   submitShouJian,
-  getByDxbhAndUser
+  getByDxbhAndUser,
+  getShlcDetail
 }
 
 

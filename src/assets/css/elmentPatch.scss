@@ -51,7 +51,6 @@ ul.menu li:hover {
 }
 
 
-
 /*模态框  myDialog*/
 .myDialog .el-date-editor,
 .myDialog .el-input {
@@ -64,45 +63,54 @@ ul.menu li:hover {
 .myTable th {
   padding: 4px 0;
 }
-.el-table__header{
+
+.el-table__header {
   width: 100% !important;
 }
-.el-table__body{
+
+.el-table__body {
   width: 100% !important;
 }
 
 
 /*表单的margin-bottom减少 表格垂直距离减少*/
-.myForm-mb5 .el-form-item{
-  margin-bottom: 5px!important;
+.myForm-mb5 .el-form-item {
+  margin-bottom: 5px !important;
 }
 
 
 /*button样式  .el-button + .el-button 改掉*/
-.el-button{
-  margin: 2px 3px!important;
+.el-button {
+  margin: 2px 3px !important;
 }
 
 
 /*myCheckBox 的checkbox样式穿透*/
-.myCheckBox .el-checkbox{
+.myCheckBox .el-checkbox {
   margin-right: 0;
   width: 20%;
 }
 
 /*dialog的padding-top不需要*/
-.el-dialog__body{
-  padding-top: 0!important;
+.el-dialog__body {
+  padding-top: 0 !important;
 }
-
 
 
 /*详情页的颜色加深*/
-.el-input.is-disabled .el-input__inner{
-  color: #0270c1!important;
+.el-input.is-disabled .el-input__inner {
+  color: #0270c1 !important;
 }
 
+/*添加预售模板里面的form穿透*/
+.myForm-tjysmb .el-form-item {
+  width: 50% !important;
+  margin-right: 0;
+}
 
+.myForm-tjysmb .el-form-item__content{
+  width: 60%;
+}
 
 
 

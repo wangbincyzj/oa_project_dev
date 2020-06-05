@@ -16,6 +16,7 @@
       <el-table-column align="center" label="住宅套数" prop="xkzZzts" width="100"/>
       <el-table-column align="center" label="非住宅面积" prop="xkzFzzmj" width="100"/>
       <el-table-column align="center" label="非住宅套数" prop="xkzFzzts"  width="100"/>
+      <el-table-column align="center" label="上报时间" prop="xkzSbsj"  width="200"/>
       <el-table-column align="center" label="审核状态" prop="shzt"  width="100"/>
       <el-table-column align="center" label="收件操作" >
         <template #default="scope">

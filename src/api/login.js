@@ -1,10 +1,10 @@
-// 针对预售的8084端口
+// 针对预售的8082端口
 import axios from "axios"
 import store from "@/store";
 
 
 // 基础设置
-const BASE_URL = "http://192.168.1.155:8084/";
+const BASE_URL = "http://192.168.1.155:8082/";
 // 155, 161
 const TIME_OUT = 5000;
 let _ = axios.create({
@@ -13,18 +13,12 @@ let _ = axios.create({
 })
 
 
-// 请求注入token
-_.interceptors.request.use(opts => {
-  opts.headers.token = store.state.loginInfo.token
-  return opts
-})
-
-// 相应拦截
+// 响应拦截
 _.interceptors.response.use(resp => {
-  if (resp.data.code === 999 || resp.data.code === 1000) {
+  if(resp.data.code===999||resp.data.code===1000){
     store.dispatch("logout")
-    return {code: -1, data: {}}
-  } else {
+    return {code: -1, data:{}}
+  }else{
     return resp.data
   }
 }, reason => {
@@ -44,7 +38,11 @@ let post = function (url, data) {
   return _.post(url, data)
 }
 
+let login = function (userName, passWord) {
+  return post("login/login/doLogin", {userName, passWord})
+}
 
-export const requests = {
-  get, post
+
+export const loginApi = {
+  login
 }

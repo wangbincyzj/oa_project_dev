@@ -1,6 +1,7 @@
 // 针对预售8083端口
 // 封装网络请求
 import axios from "axios"
+import store from "@/store";
 
 
 // 基础设置
@@ -12,10 +13,22 @@ let _ = axios.create({
   timeout: TIME_OUT
 })
 
+// 请求注入token
+_.interceptors.request.use(opts=>{
+  opts.headers.token = store.state.loginInfo.token
+  return opts
+})
 
 
 // 相应拦截
-_.interceptors.response.use(resp => resp.data, reason=> {
+_.interceptors.response.use(resp => {
+  if(resp.data.code===999||resp.data.code===1000){
+    store.dispatch("logout")
+    return {code: -1, data:{}}
+  }else{
+    return resp.data
+  }
+}, reason=> {
   return {code: 999, message: "网络错误,请检查网络连接"}
 });
 

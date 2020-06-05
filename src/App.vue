@@ -1,9 +1,11 @@
 <template>
   <div id="app">
+    <Login v-if="!login"/>
 
-    <BaseLayout v-if="login"/>
+    <PrintView v-else-if="printView"/>
 
-    <Login v-else/>
+    <BaseLayout v-else/>
+
   </div>
 </template>
 
@@ -11,26 +13,32 @@
 <script>
   import BaseLayout from "@/views/layout/BaseLayout";
   import Login from "@/views/login/Login";
+  import PrintView from "@/views/printView/PrintView";
+  import storage from "good-storage"
+
   export default {
     name: "App",
-    components: {Login, BaseLayout},
-    data() {
-      return{
-        login: true
+    components: {PrintView, Login, BaseLayout},
+    computed: {
+      printView() {
+        return this.$route.path.indexOf("printView") > 0
+      },
+      login() {
+        let info = storage.session.storage.getItem("__info__")
+        if (info) {
+          info = JSON.parse(info)
+          this.$store.dispatch("login", info)
+        }
+        return this.$store.state.loginInfo.loginStatus
       }
     },
     created() {
-      this.$store.dispatch("fetchBaseData", this.$store.state.rwbh).then(ret=>{
-        if(ret.code===200){
-          this.$message.success("请求数据成功")
-        }
-      })
     }
   }
 </script>
 
 <style lang="scss">
-  #app{
+  #app {
     height: 100%;
   }
 </style>

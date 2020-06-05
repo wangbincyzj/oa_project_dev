@@ -18,11 +18,16 @@ export default {
       title: "预售合同备案",
       path: "/yshtba",
       group:[
-        {title: "添加入网企业", path: "tjrwqy"},
-        {title: "添加入网人员", path: "tjrwry"},
-        {title: "资质到期限制", path: "zzdqxz"},
-        {title: "添加入网银行", path: "tjrwyh"},
-        {title: "添加银行人员", path: "tjyhry"},
+        {title: "合法销售确认", path: "hfxsqr"},
+        {title: "打印销售承诺书", path: "dyxscns"},
+        {title: "添加预售模板", path: "tjysmb"},
+        {title: "管理预售模板", path: "glysmb"},
+        {title: "签订预售合同", path: "qdysht"},
+        {title: "完善预售合同", path: "wsysht"},
+        {title: "查看备案合同", path: "ckbaht"},
+        {title: "撤销备案申请", path: "cxbasq"},
+        {title: "退变合同列表", path: "tbhtlb"},
+        {title: "房屋销售数据统计", path: "fwxssjtj"},
       ]
     }
   ]

@@ -24,7 +24,7 @@
       <ul v-loading="loading">
         <li
           v-for="(item,index) in navInfo.list"
-          :key="item.id"
+          :key="index"
           :class="{active: index===currentIndex}"
           @click="liClick(index)"
         >{{item.name}}

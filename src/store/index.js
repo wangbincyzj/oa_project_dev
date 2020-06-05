@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import {navList} from "@/router/navList";
 import {loginApi} from "@/api/login/login";
+import storage from "good-storage"
 
 Vue.use(Vuex)
 
@@ -11,7 +12,13 @@ export default new Vuex.Store({
     /*入网编号写死*/rwbh: 60039001,  //   todo 从login获取
     /*项目信息 */projectData: {},   // 在App created中创建
     /*项目楼栋信息*/buildingInfo: [],  //  在App created中创建
-    xmxxId: 3,  // todo 后期由登录获得状态,测试时候
+    xmxxId: 3,  // todo 后期由登录获得状态,测试时候,
+    loginInfo:{
+      username: "",
+      loginStatus: false,
+      userAuths: [],
+      token: "",
+    }
   },
   mutations: {
     setProjectData(state, projectData) {
@@ -19,6 +26,12 @@ export default new Vuex.Store({
     },
     setBuildingInfo(state, buildingInfo) {
       state.buildingInfo = buildingInfo;
+    },
+    setLoginInfo(state, {username, loginStatus, userAuths, token}){
+      state.loginInfo.username = username||"";
+      state.loginInfo.loginStatus = loginStatus||false;
+      state.loginInfo.userAuths = userAuths||[];
+      state.loginInfo.token = token||"";
     }
   },
   getters: {
@@ -37,6 +50,17 @@ export default new Vuex.Store({
           })
         });
       })
+    },
+    login({commit}, payload) {
+      return new Promise((resolve, reject) => {
+        commit("setLoginInfo", payload);
+        storage.session.storage.setItem("__info__", JSON.stringify(payload));
+        resolve("loginSuccess");
+      })
+    },
+    logout({commit}){
+      commit("setLoginInfo",{});
+      storage.session.storage.clear();
     }
   },
   modules: {}

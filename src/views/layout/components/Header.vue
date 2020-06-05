@@ -1,6 +1,6 @@
 <template>
   <div id="header">
-    <div class="logo">房产业务员申报系统</div>
+    <div class="logo">房产综合管理信息系统</div>
     <div class="topBar">
       <div class="home"><i class="iconfont icon-home"/> 首页</div>
       <el-popover
@@ -22,7 +22,7 @@
             <hr>
             <ul class="menu">
               <li>修改密码</li>
-              <li>退出登录</li>
+              <li @click="logout">退出登录</li>
             </ul>
           </div>
           <div class="avatar" slot="reference">
@@ -43,15 +43,25 @@
     components: {HeaderMenu},
     data() {
       return {
-        name: "杨文远",
-        title: "信息部门"
       }
     },
     computed:{
       navList() {
         return this.$store.state.navList
+      },
+      name() {
+        return this.$store.state.loginInfo.username || "获取中..."
+      },
+      title() {
+        return this.$store.state.loginInfo.title || "职称获取中..."
       }
     },
+    methods:{
+      logout() {
+        this.$store.dispatch("logout");
+        this.$message.info("退出登录成功")
+      }
+    }
   }
 </script>
 
