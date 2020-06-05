@@ -1,10 +1,6 @@
 <template>
   <div class="sqjgzh">
-    <ContainerTwoType
-     
-      :nav-info="navInfo"
-      @liClick="liClick">
-    <!-- > :loading="navInfo.loading" -->
+   
       <TitleTable
         title="项目对应监管资金列表">
         <div slot="controls">
@@ -13,9 +9,9 @@
             center
             :closable="false">
             <div class="controls">
-              <span class="warning" v-if="selectedIndex">当前选择 【{{selectedIndex.name}}】</span>
-              <span class="warning" v-else>首先点击左边对应的小区名称，然后再点“添加账户”	</span>
-              <el-button :disabled="selectedIndex===0" @click="addClick" icon="el-icon-plus" size="mini" type="primary">添加账户</el-button>
+              <span class="warning">【{{this.$store.state.projectData.xmxxXmmc}}】</span>
+             
+              <el-button  @click="addClick" icon="el-icon-plus" size="mini" type="primary">添加账户</el-button>
             </div>
           </el-alert>
           <el-alert
@@ -31,34 +27,41 @@
           @cell-mouse-enter="cellMouseEnter">
           <el-table-column
             label="序号"
+            width=50
             prop="zjjgzhId">
           </el-table-column>
           <el-table-column
             label="公司名称"
+            width=150
             prop="zjjgzhGsmc">
           </el-table-column>
           <el-table-column
             label="项目名称"
+            width=100
             prop="zjjgzhXmmc">
           </el-table-column>
           <el-table-column
             label="楼栋名称"
+            width=100
             prop="zjjgzhLdmc">
           </el-table-column>
           <el-table-column
             label="联系电话"
+            width=100
             prop="zjjgzhLxdh">
           </el-table-column>
           <el-table-column
             align="center"
             label="状态"
+            width=100
             prop="zjjgzhLczt">           
           </el-table-column>
           <el-table-column
             align="center"
             label="收件操作"
+             width=280
             prop="operation">       
-            <template slot-scope="scope">
+            <template slot-scope="scope" >
               <el-button
                 size="mini"
                 type="primary"
@@ -81,20 +84,37 @@
             align="center"
             label="操作"
           >
-            <!-- <template slot="header" slot-scope="scope">
-              <el-input
-                v-model="search"
-                size="mini"
-                placeholder="输入关键字搜索"/>
-            </template> -->
             <template slot-scope="scope">
-             
               <el-button
                 size="mini"
                 type="primary"
                 @click="handleDetail(scope.$index, scope.row)">详情
               </el-button>
-              
+               <el-button
+                size="mini"
+                type="primary"
+                @click="handleUpdate(scope.$index, scope.row)">修改
+              </el-button>
+               <el-button
+                size="mini"
+                type="primary"
+                @click="loadPic(scope.$index, scope.row)">传图
+              </el-button>
+               <el-button
+                size="mini"
+                type="primary"
+                @click="managePic(scope.$index, scope.row)">管图
+              </el-button>
+               <el-button
+                size="mini"
+                type="primary"
+                @click="handleInform(scope.$index, scope.row)">上报
+              </el-button>
+               <el-button
+                size="mini"
+                type="primary"
+                @click="handleDelete(scope.$index, scope.row)">删除
+              </el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -118,12 +138,48 @@
           <TjjgzhDialog
             ref="dialog"
             :dialog-type="dialogType"
+            :zjjgzhYwzh="zjjgzhYwzh"
+            :zjjgzhId="zjjgzhId"
             @submitSuccess="submitSuccess"
           />
         </el-dialog>
       </TitleTable>
-    </ContainerTwoType>
+    <div id="printData" style="display:none">
+      <h1 style="text-align:center;font-weight:bold">预售监管账户申请收件清单</h1>
+       <el-table style="border:black solid 2px;width:1000px;margin:0 auto;text-align:center" id="printTable"
+       :data="printTable">
+         <el-table-column
+          label="序号"
+          width="200px"
+          align="center"
+          prop="shoujianId"
+        >
+        </el-table-column>
+        <el-table-column
+          label="收件名称"
+           width="300px"
+           align="center"
+          prop="shoujianTitle"
+        >
+        </el-table-column>
+        <el-table-column
+          label="收件性质"
+           width="300px"
+           align="center"
+          prop="shoujianSjxz"
+        >
+        </el-table-column>
+        <el-table-column
+          label="份数"
+          align="center"
+          prop="shoujianFenshu"
+        >
+        </el-table-column>
+        
+      </el-table>
   </div>
+  </div>
+  
 </template>
 
 <script>
@@ -147,6 +203,7 @@
              { id:2,name:"问就是不知道"},
           ]
         },
+        printTable:[],
         tableData: [
           {id:1,companyName:"公司",itemName:"项目",ldName:"楼栋1",phone:"110",status:"开户",operation:"收件操作"},
         ],
@@ -162,28 +219,28 @@
         xmxxid:"",
         selectedIndex: -1,
         fileType:1,
+        zjjgzhYwzh:"",
+        zjjgzhId:"",
       }
     },
     
     created() {
-      this.fetchNavInfo();
+    
       this.fetchData();
+      this.fetchPrintData();
     },
     methods:{
-      fetchNavInfo() {
-        this.navInfo.loading = true;
-        this.navInfo.list=this.$store.state.projectData;
-        sqjgzhApi.getProject(this.$store.state.rwbh).then(ret=>{
-           this.navInfo.list = ret.data.records.map(item=>({
-            ...item, id: item.xmxxXmbh, name: item.xmxxXmmc
-          }));
-          this.navInfo.list.unshift({id:-1, name: "请选择项目名称"});
-        })
-         
-      
+      fetchPrintData(){
+         sqjgzhApi.getAllYwsj().then(ret=>{
+        this.printTable=ret.data;
+      });
       },
      fetchData(){
-       sqjgzhApi.getAllAccount(this.currentPage, this.pageSize).then(ret => {
+       console.log("where is my winter bear");
+       console.log(this.$store.state.projectData.xmxxXmbh);
+       this.xmxxXmbh=this.$store.state.projectData.xmxxXmbh;
+       console.log(this.xmxxXmbh);
+       sqjgzhApi.getAccountById(this.currentPage, this.pageSize,this.xmxxXmbh).then(ret => {
          //console.log(ret);
          
           this.pages=ret.data.pages;
@@ -195,11 +252,11 @@
               } else if (val.zjjgzhLczt == 1) {
                 val.zjjgzhLczt = '上报'
               } else if (val.zjjgzhLczt == 2) {
-                val.zjjgzhLczt = '初审'
+                val.zjjgzhLczt = '已初审'
               } else if (val.zjjgzhLczt == 3) {
-                val.zjjgzhLczt = '复审'
+                val.zjjgzhLczt = '已复审'
               } else if (val.zjjgzhLczt == 4) {
-                val.zjjgzhLczt = '终审'
+                val.zjjgzhLczt = '已终审'
               } else if (val.zjjgzhLczt == 5) {
                 val.zjjgzhLczt = '已开户'
               }  else if (val.zjjgzhLczt == 6) {
@@ -209,51 +266,7 @@
           
         })
      },
-     fetchDataByxmId(id){
-       
-       sqjgzhApi.getAccountById(this.currentPage, this.pageSize,id).then(ret => {
-         console.log(ret);
-          this.pages=ret.data.pages;
-          this.tableData = ret.data.records;
-          this.total = ret.data.total;
-           this.tableData.map(function (val) {
-              if (val.zjjgzhLczt == 0) {
-                val.zjjgzhLczt = '收件'
-              } else if (val.zjjgzhLczt == 1) {
-                val.zjjgzhLczt = '上报'
-              } else if (val.zjjgzhLczt == 2) {
-                val.zjjgzhLczt = '初审'
-              } else if (val.zjjgzhLczt == 3) {
-                val.zjjgzhLczt = '复审'
-              } else if (val.zjjgzhLczt == 4) {
-                val.zjjgzhLczt = '终审'
-              } else if (val.zjjgzhLczt == 5) {
-                val.zjjgzhLczt = '已开户'
-              }  else if (val.zjjgzhLczt == 6) {
-                val.zjjgzhLczt = '退件'
-              }     
-            })
-        })
-     },
-      liClick(index) {
-        this.selectedIndex = index;
-        console.log("index:"+index);
-        
-       
-         this.selectedIndex = this.navInfo.list[index];
-         this.xmxxXmbh=this.navInfo.list[index].id;
-         this.xmxxid=this.navInfo.list[index].xmxxId;
-         console.log(this.xmxxXmbh);
-         if(index===-1)         
-         {  this.selectedIndex=-1;
-           this.fetchData();}
-         else{
-           this.fetchDataByxmId(this.xmxxXmbh);
-         }
-         
-        // this.getAccessEnterprisesInfo(this.navInfo.list[index].id)
-      },
-      
+  
       addClick() {
         this.dialogVisible = true;
         this.dialogTitle = "添加监管账户";
@@ -262,33 +275,107 @@
           this.$refs.dialog.setMode(1,this.xmxxid)
         })
       },
+       handleUpdate(index, row){
+        this.dialogVisible = true;
+        this.dialogTitle = "修改监管账户";
+        this.dialogType = 3;
+        this.$nextTick(()=>{
+          this.$refs.dialog.setMode(3, this.currentRow.zjjgzhId);
+
+          //this.$refs.dialog.reset();
+        })
+      },
       handleDetail(index, row){
         this.dialogVisible = true;
         this.dialogTitle = "监管账户详情";
         this.dialogType = 2;
+        this.zjjgzhYwzh=this.currentRow.zjjgzhYwzh;
         this.$nextTick(()=>{
           this.$refs.dialog.setMode(2, this.currentRow.zjjgzhId);
 
           //this.$refs.dialog.reset();
         })
       },
+       handleDelete(index, row){
+         console.log(this.currentRow);
+         if(window.confirm("确定要删除该监管账户吗?")){
+            sqjgzhApi.deleteAccount(this.currentRow.zjjgzhId).then(ret => {
+              console.log(this.currentRow.zjjgzhId);
+              if (ret.code === 200) {
+                this.$message.success("删除成功");
+                this.fetchData();
+              } else {
+                
+                this.$message.error(ret.message)
+              }
+            })
+          }
+      },
+      handleDelFile(index,row){
+         console.log(this.currentRow);
+         if(window.confirm("确定要清除收件吗?")){
+            sqjgzhApi.deleteSj(this.currentRow.zjjgzhYwzh).then(ret => {
+              console.log(this.currentRow.zjjgzhYwzh);
+              if (ret.code === 200) {
+                this.$message.success("删除成功");
+                this.fetchData();
+              } else {
+                
+                this.$message.error(ret.message)
+              }
+            })
+          }
+      },
+      loadPic(){},
+      managePic(){},
+      handleInform(index,row){
+         console.log(this.currentRow);
+         if(window.confirm("确定要上报该监管账户吗?")){
+            sqjgzhApi.informAccount(this.currentRow.zjjgzhId).then(ret => {
+              console.log(this.currentRow.zjjgzhId);
+              if (ret.code === 200) {
+                this.$message.success("上报成功");
+                this.fetchData();
+              } else {
+                
+                this.$message.error(ret.message)
+              }
+            })
+          }
+      },
+      handleGetFile(){
+        this.dialogVisible = true;
+        this.dialogTitle = "业务收件操作";
+        this.zjjgzhYwzh=this.currentRow.zjjgzhYwzh;
+        this.dialogType = 4;
+        this.$nextTick(()=>{
+          this.$refs.dialog.setMode(4, this.currentRow.zjjgzhId);
+        })
+      },
+      handlePrintFile(){
+        document.getElementById('printTable').classList.add('printTable');
+        let obj=document.getElementById('printData');
+        let newWindow=window.open("打印窗口","_blank");
+        let docStr = obj.innerHTML;
+        newWindow.document.write(docStr);
+        newWindow.document.close();
+        newWindow.print();
+        //window.print();
+        //window.open("https://www.baidu.com/");
+      },
       submitSuccess() {
          this.$nextTick(()=>{
                 this.$refs.dialog.reset();
             });
         this.dialogVisible = false;
-        this.fetchDataByxmId(this.xmxxXmbh);
+        this.fetchData();
       },
       cellMouseEnter(row) {
         this.currentRow = row;
       },
       currentChange(num) {
          this.currentPage = num;
-         if(this.selectedIndex===0)
-         {this.fetchData();}
-         else{
-           this.fetchDataById(this.xmxxXmbh)
-         }
+         this.fetchData();         
        },
     }
   }
@@ -298,6 +385,9 @@
   @import "~@/assets/css/var.scss";
   .tjrwry{
     padding: $pm;
+  }
+  .printTable{
+    border:black solid 2px;width:1000px;margin:0 auto;text-align:center
   }
 
 </style>

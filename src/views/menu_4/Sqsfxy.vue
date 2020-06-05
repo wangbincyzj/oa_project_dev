@@ -1,10 +1,6 @@
 <template>
   <div class="sqjgzh">
-    <ContainerTwoType
-     
-      :nav-info="navInfo"
-      @liClick="liClick">
-    <!-- > :loading="navInfo.loading" -->
+   
       <TitleTable
         title="账户对应监管协议列表">
         <div slot="controls">
@@ -109,7 +105,6 @@
           />
         </el-dialog>
       </TitleTable>
-    </ContainerTwoType>
   </div>
 </template>
 
@@ -156,7 +151,7 @@
       }
     },
     created() {
-      this.fetchNavInfo();
+      //this.fetchNavInfo();
       this.fetchData();
     },
     methods:{

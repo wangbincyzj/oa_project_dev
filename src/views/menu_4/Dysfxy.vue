@@ -1,10 +1,6 @@
 <template>
   <div class="sqjgzh">
-    <ContainerTwoType
-     
-      :nav-info="navInfo"
-      @liClick="liClick">
-    <!-- > :loading="navInfo.loading" -->
+    
       <TitleTable
         title="账户对应监管协议列表">
         
@@ -61,7 +57,6 @@
         </el-table>
        
       </TitleTable>
-    </ContainerTwoType>
   </div>
 </template>
 
