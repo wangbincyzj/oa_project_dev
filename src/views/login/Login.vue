@@ -56,11 +56,12 @@
               username: this.username,
               loginStatus: true,
               userAuths: ret.data.userAuths,
-              token:ret.data.token
+              token:ret.data.token,
+              rwbh: ret.data.user.rybh
             })
           } else {
             this.$message.error(ret.message || "登录失败");
-            this.password = "";
+            // this.password = "";
           }
         })
       },
@@ -89,7 +90,7 @@
     flex-flow: column nowrap;
     box-shadow: $box-shadow;
     border-radius: $border-radius-weight;
-    transition: all 1.2s;
+    transition: all 0.8s;
 
     .title {
       color: $brand;

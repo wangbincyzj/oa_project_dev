@@ -1,4 +1,6 @@
-
+<!--
+  房间结构组件
+-->
 <template>
   <div v-if="rooms" class="roomStructure" v-loading="loading">
     <div class="floor" :class="{noRoom:!floor.v.length}" v-for="floor in rooms">
@@ -16,7 +18,6 @@
           <span class="tn">套内面积:{{room.roomTnjzmj}}</span>
           <span class="ft">分摊面积:{{room.roomFtmj}}</span>
         </div>
-
       </div>
     </div>
   </div>
@@ -76,7 +77,6 @@
       }
 
       .room {
-        flex-shrink: 0;
         width: 100px;
         height: 100px;
         text-align: center;

@@ -46,6 +46,7 @@ function objectToRoutes(menu_obj) {
 
 const routes = [
   {path: "/", redirect: "/menu_1"},
+  {path: "/printView/:args", component: () => import("@/views/printView/PrintView")},
   objectToRoutes(menu_1),
   objectToRoutes(menu_2),
   objectToRoutes(menu_3),

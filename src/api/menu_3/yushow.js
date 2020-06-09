@@ -146,6 +146,9 @@ let getShlcDetail = function (businessId) {
   return requests.get("data-presale-license/preSaleLicense/getApproveList", {businessId})
 }
 
+
+
+
 export const yushowApi = {
   submit,
   update,

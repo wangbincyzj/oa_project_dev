@@ -5,8 +5,8 @@ import store from "@/store";
 
 
 // 基础设置
-const BASE_URL = "http://192.168.1.161:8083/";
-// 155, 161
+const BASE_URL = "http://192.168.1.153:8093/";
+// 155, 161, 153
 const TIME_OUT = 5000;
 let _ = axios.create({
   baseURL: BASE_URL,

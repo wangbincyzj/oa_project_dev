@@ -8,33 +8,37 @@
         <li>1.出卖人对该商品房享有合法权利；</li>
         <li>2.该商品房没有出售给除本合同买受人以外的其他人；</li>
         <li>3.该商品房没有司法查封或其他限制转让的情况；</li>
-        <li>4.<input class="w500" type="text">；</li>
-        <li>5.<input class="w500" type="text">。</li>
+        <li>4.<input v-model="ht05.ht_05001" class="w500" type="text">；</li>
+        <li>5.<input v-model="ht05.ht_05002" class="w500" type="text">。</li>
       </ul>
       <p>如该商品房权利状况与上述情况不符，导致不能完成本合同登记备案或房屋所有 权转移登记的，买受人有权解除合同。买受人解除合同的，
         应当书面通知出卖人。出卖人应当自解除合同通知送达之日起15日内退还买受人已付全部房款（含已付贷款部分），并自买受人付款之日起，按照
-        <input class="w50" type="text">%（不低于中国人民银行公布的同期贷款基准利率）计算给付利息。给买受人造成损失的，由出卖人支付已付房价款一倍
+        <input v-model="ht05.ht_05003" class="w50" type="text">%（不低于中国人民银行公布的同期贷款基准利率）计算给付利息。给买受人造成损失的，由出卖人支付已付房价款一倍
         的赔偿金。</p>
     </div>
 
     <!--第八条-->
     <div class="item">
       <h4 class="title">第八条 逾期付款责任</h4>
-      <p>除不可抗力外，买受人未按照约定时间付款的，双方同意按照下列第<input class="w50" type="text">种方式处理：</p>
+      <p>除不可抗力外，买受人未按照约定时间付款的，双方同意按照下列第<input v-model="ht08.ht_08001" class="w50" type="text">种方式处理：</p>
       <ul>
         <li>
           1.按逾期时间，分别处理（（1）和（2）不作累加）
           <ul>
-            <li>（1）逾期在 <input class="w50" type="text">日之内，买受人按日计算向出卖人支付逾期应付款万分之<input class="w50" type="text">的违约金。</li>
-            <li>（2）逾期超过<input class="w50" type="text">日（该期限应当与本条第（1）
-              项中的期限相同）后，出卖人有权解除合同。出卖人解除合同的，应当书面通知买受人。买受人应当自解除合同通知送达之日起<input class="w50" type="text">日内按照累计应付款的<input
-                class="w50" type="text">%向出卖人支付违约金，同时，出卖 人退还买受人已付全部房款（含已付贷款部分）。
+            <li>（1）逾期在 <input v-model="ht08.ht_08002" class="w50" type="text">日之内，买受人按日计算向出卖人支付逾期应付款万分之<input
+              v-model="ht08.ht_08003" class="w50" type="text">的违约金。
             </li>
-            <li>出卖人不解除合同的，买受人按日计算向出卖人支付逾期应付款万分之<input class="w50" type="text">（该比率应不小于第(1)项中的比率）的违约金。</li>
+            <li>（2）逾期超过<input v-model="ht08.ht_08004" class="w50" type="text">日（该期限应当与本条第（1）
+              项中的期限相同）后，出卖人有权解除合同。出卖人解除合同的，应当书面通知买受人。买受人应当自解除合同通知送达之日起
+              <input v-model="ht08.ht_08005" class="w50" type="text">日内按照累计应付款的
+              <input v-model="ht08.ht_08006" class="w50" type="text">%向出卖人支付违约金，同时，出卖 人退还买受人已付全部房款（含已付贷款部分）。
+            </li>
+            <li>出卖人不解除合同的，买受人按日计算向出卖人支付逾期应付款万分之<input v-model="ht08.ht_08007" class="w50" type="text">（该比率应不小于第(1)项中的比率）的违约金。
+            </li>
             <li> 本条所称逾期应付款是指依照第七条及附件四约定的到期应付款与该期实际已付款的差额；采取分期付款的，按照相应的分期应付款与该期的实际已付款的差额确定。</li>
           </ul>
         </li>
-        <li>2.<input type="text" class="w500">。</li>
+        <li>2.<input v-model="ht08.ht_08008" type="text" class="w500">。</li>
       </ul>
     </div>
 
@@ -42,13 +46,15 @@
     <div class="item">
       <h4 class="title">第九条 商品房交付条件</h4>
       <p>
-        该商品房交付时应当符合下列第1、<input class="w50" type="text"> 、<input class="w50" type="text"> 、 <input class="w50"
-                                                                                                  type="text">项所列条件：</p>
+        该商品房交付时应当符合下列第1、<input v-model="ht09.ht_09005" class="w50" type="text"> 、<input v-model="ht09.ht_09001"
+                                                                                        class="w50" type="text"> 、
+        <input v-model="ht09.ht_09002" class="w50"
+               type="text">项所列条件：</p>
       <ul>
         <li>1、该商品房已取得建设工程竣工验收备案证明文件；</li>
         <li>2、该商品房已取得房屋测绘报告；</li>
-        <li>3、<input type="text" class="w400">；</li>
-        <li>4、<input type="text" class="w400">。</li>
+        <li>3、<input v-model="ht09.ht_09003" type="text" class="w400">；</li>
+        <li>4、<input v-model="ht09.ht_09004" type="text" class="w400">。</li>
         <li>该商品房为住宅的，出卖人还需提供《住宅使用说明书》和《住宅质量保证书》。</li>
       </ul>
     </div>
@@ -59,48 +65,76 @@
       <ul>
         <li>（一）基础设施设备
           <ul class="ul2">
-            <li>1.供水、排水：交付时供水、排水配套设施齐全，并与城市公共供水、排水管网连接。使用自建设施供水的，供水的水质符合国家规定的饮用水卫生标准，<input type="text" class="w500">
+            <li>1.供水、排水：交付时供水、排水配套设施齐全，并与城市公共供水、排水管网连接。使用自建设施供水的，供水的水质符合国家规定的饮用水卫生标准，<br>
+              <input type="text" v-model="ht10.ht_10001" class="w500">；
             </li>
+            <li>2.供电：交付时纳入城市供电网络并正式供电，<br>
+              <input type="text" v-model="ht10.ht_10002" class="w500">；
+            </li>
+            <li>3.供暖：交付时供热系统符合供热配建标准，使用城市集中供热的，纳入城市集中供热管网，<br>
+              <input type="text" v-model="ht10.ht_10003" class="w500">；
+            </li>
+            <li>4.燃气：交付时完成室内燃气管道的敷设，并与城市燃气管网连接，保证燃气供应，<br>
+              <input type="text" v-model="ht10.ht_10004" class="w500">；
+            </li>
+            <li>5.电话通信：交付时线路敷设到户；</li>
+            <li>6.有线电视：交付时线路敷设到户；</li>
+            <li>7.宽带网络：交付时线路敷设到户。</li>
+            <li>以上第1、2、3项由出卖人负责办理开通手续并承担相关费用；第4、5、6、7项需要买受人自行办理开通手续。</li>
+            <li>如果在约定期限内基础设施设备未达到交付使用条件，双方同意按照下列第
+              <input v-model="ht10.ht_10005" type="text" class="w50">种方式处理：</li>
+            <li>（1）以上设施中第1、2、3、4项在约定交付日未达到交付条件的，出卖人按照本合同第十二条的约定承担逾期交付责任。</li>
+            <ul class="ul2">
+              <li>第5项未按时达到交付使用条件的，出卖人按日向买受人支付
+                <input v-model="ht10.ht_10006" type="text" class="w100">元的违约金；</li>
+              <li>第6项未按时达到交付使用条件的，出卖人按日向买受人支付
+                <input v-model="ht10.ht_10007" type="text" class="w100">元的违约金；</li>
+              <li>第7项未按时达到交付使用条件的，出卖人按日向买受人支付
+                <input v-model="ht10.ht_10008" type="text" class="w100">元的违约金。出卖人采取措施保证相关设施于约定交付日后
+                <input v-model="ht10.ht_10009" type="text" class="w100">日之内达到交付使用条件。</li>
+            </ul>
+            <li>（2）<input v-model="ht10.ht_10010" type="text" class="w500">。</li>
           </ul>
         </li>
         <li>（二）公共服务及其他配套设施（以建设工程规划许可为准）
           <ul class="ul2">
-            <li> 1. 小区内绿地率：<input type="text" class="w50">年<input type="text" class="w50">月<input type="text"
-                                                                                                  class="w50">日达到<input
-              type="text" class="w200">；
+            <li> 1. 小区内绿地率：<input v-model="ht10.ht_10011" type="text" class="w50">年
+              <input v-model="ht10.ht_10012" type="text" class="w50">月
+              <input v-model="ht10.ht_10013" type="text" class="w50">日达到
+              <input v-model="ht10.ht_10014" type="text" class="w200">；
             </li>
-            <li> 2. 小区内非市政道路：<input type="text" class="w50">年<input type="text" class="w50">月<input type="text"
+            <li> 2. 小区内非市政道路：<input v-model="ht10.ht_10015" type="text" class="w50">年<input v-model="ht10.ht_10016" type="text" class="w50">月<input  v-model="ht10.ht_10017" type="text"
                                                                                                     class="w50">日达到<input
-              type="text" class="w200">；
+              v-model="ht10.ht_10018" type="text" class="w200">；
             </li>
-            <li> 3.规划的车位、车库：<input type="text" class="w50">年<input type="text" class="w50">月<input type="text"
+            <li> 3.规划的车位、车库：<input v-model="ht10.ht_10019" type="text" class="w50">年<input v-model="ht10.ht_10020" type="text" class="w50">月<input v-model="ht10.ht_10021" type="text"
                                                                                                    class="w50">日达到<input
-              type="text" class="w200">；
+              v-model="ht10.ht_10022"type="text" class="w200">；
             </li>
-            <li> 4.物业服务用房：<input type="text" class="w50">年<input type="text" class="w50">月<input type="text"
+            <li> 4.物业服务用房：<input v-model="ht10.ht_10023" type="text" class="w50">年<input v-model="ht10.ht_10024" type="text" class="w50">月<input v-model="ht10.ht_10025" type="text"
                                                                                                  class="w50">日达到<input
+              v-model="ht10.ht_10026"type="text" class="w200">；
+            </li>
+            <li> 5.医疗卫生机构：<input v-model="ht10.ht_10027" type="text" class="w50">年<input v-model="ht10.ht_10028"  type="text" class="w50">月<input  v-model="ht10.ht_10029" type="text"
+                                                                                                 class="w50">日达到<input  v-model="ht10.ht_10030"
               type="text" class="w200">；
             </li>
-            <li> 5.医疗卫生机构：<input type="text" class="w50">年<input type="text" class="w50">月<input type="text"
-                                                                                                 class="w50">日达到<input
-              type="text" class="w200">；
+            <li> 6.幼儿园：<input v-model="ht10.ht_10031" type="text" class="w50">年<input v-model="ht10.ht_10032" type="text" class="w50">月<input v-model="ht10.ht_10033" type="text" class="w50">日达到<input
+              v-model="ht10.ht_10034" type="text" class="w200">；
             </li>
-            <li> 6.幼儿园：<input type="text" class="w50">年<input type="text" class="w50">月<input type="text" class="w50">日达到<input
-              type="text" class="w200">；
+            <li> 7.学校：<input v-model="ht10.ht_10035" type="text" class="w50">年<input v-model="ht10.ht_10036" type="text" class="w50">月<input v-model="ht10.ht_10037" type="text" class="w50">日达到<input
+              v-model="ht10.ht_10038"type="text" class="w200">；
             </li>
-            <li> 7.学校：<input type="text" class="w50">年<input type="text" class="w50">月<input type="text" class="w50">日达到<input
-              type="text" class="w200">；
-            </li>
-            <li> 8.<input type="text" class="w800">；</li>
-            <li> 9.<input type="text" class="w800">；</li>
+            <li> 8.<input v-model="ht10.ht_10039" type="text" class="w800">；</li>
+            <li> 9.<input v-model="ht10.ht_10040" type="text" class="w800">；</li>
           </ul>
           <p>以上设施未达到上述条件的，双方同意按照以下方式处理：</p>
           <ul class="ul2">
-            <li>1.小区内绿地率未达到上述约定条件的，<input type="text" class="w500">。</li>
-            <li>2.小区内非市政道路未达到上述约定条件的，<input type="text" class="w500">。</li>
-            <li>3.规划的车位、车库未达到上述约定条件的，<input type="text" class="w500">。</li>
-            <li>4.物业服务用房未达到上述约定条件的，<input type="text" class="w500">。</li>
-            <li>5.其他设施未达到上述约定条件的，<input type="text" class="w500">。</li>
+            <li>1.小区内绿地率未达到上述约定条件的，<input v-model="ht10.ht_10041" type="text" class="w500">。</li>
+            <li>2.小区内非市政道路未达到上述约定条件的，<input v-model="ht10.ht_10042" type="text" class="w500">。</li>
+            <li>3.规划的车位、车库未达到上述约定条件的，<input v-model="ht10.ht_10043" type="text" class="w500">。</li>
+            <li>4.物业服务用房未达到上述约定条件的，<input v-model="ht10.ht_10044" type="text" class="w500">。</li>
+            <li>5.其他设施未达到上述约定条件的，<input v-model="ht10.ht_10045" type="text" class="w500">。</li>
             <li>关于本项目内相关设施设备的具体约定见附件五。</li>
           </ul>
         </li>
@@ -111,16 +145,16 @@
     <div class="item">
       <h4 class="title">第十一条 交付时间和手续</h4>
       <ul>
-        <li>（一）出卖人应当在 <input type="text" class="w50">年 <input type="text" class="w50">月 <input type="text" class="w50">日前向买受人交付该商品房。
+        <li>（一）出卖人应当在 <input v-model="ht11.ht_11001" type="text" class="w50">年 <input v-model="ht11.ht_11002" type="text" class="w50">月 <input v-model="ht11.ht_11003" type="text" class="w50">日前向买受人交付该商品房。
         </li>
-        <li>（二）该商品房达到第九条、第十条约定的交付条件后，出卖人应当在交付日期届满前
+        <li>（二）该商品房达到第九条、第十条约定的交付条件后，出卖人应当在交付日期届满前 <input v-model="ht11.ht_11004" type="text" class="w50">
           日（不少于10日） 将查验房屋的时间、办理交付手续的时间地点以及应当携带的证件材料的通知书面送达买受人。买受人未收到交付通知书的，以本合同约定的交付日期届满之日为办理交付手续的时间，以该商品房所在地为办理交付手续的地点。
           <p>交付该商品房时，出卖人应当出示满足第九条约定的证明文件。出卖人不出示证明文件或者出示的证明文件不齐全，不能满足第九条约定条件的，买受人有权拒绝接收，由此产生的逾期交付责任由出卖人承担，并按照第十二条处理。</p>
         </li>
         <li>（三）查验房屋
           <ul class="ul2">
             <li>1.办理交付手续前，买受人有权对该商品房进行查验，出卖人不得以缴纳相关税费或者签署物业管理文件作为买受人查验和办理交付手续的前提条件。</li>
-            <li>2.买受人查验的该商品房存在下列除地基基础和主体结构外的其他质量问题的，由出卖人按照有关工程和产品质量规范、标准自查验次日起 <input type="text" class="w50">日内负责修复，并承担修复费用，修复后再行交付。
+            <li>2.买受人查验的该商品房存在下列除地基基础和主体结构外的其他质量问题的，由出卖人按照有关工程和产品质量规范、标准自查验次日起 <input v-model="ht11.ht_11005" type="text" class="w50">日内负责修复，并承担修复费用，修复后再行交付。
             </li>
             <li>
               <ul>
@@ -128,14 +162,14 @@
                 <li>（2）管道堵塞；</li>
                 <li>（3）门窗翘裂、五金件损坏；</li>
                 <li>（4）灯具、电器等电气设备不能正常使用；</li>
-                <li>（5）<input type="text" class="w500">；</li>
-                <li>（6）<input type="text" class="w500">。</li>
+                <li>（5）<input v-model="ht11.ht_11006" type="text" class="w500">；</li>
+                <li>（6）<input v-model="ht11.ht_11007" type="text" class="w500">。</li>
               </ul>
             </li>
             <li> 3.查验该商品房后，双方应当签署商品房交接单。由于买受人原因导致该商品房未能按期交付的，双方同意按照以下方式处理：
               <ul>
-                <li>（1）<input type="text" class="w500">。</li>
-                <li>（2）<input type="text" class="w500">。</li>
+                <li>（1）<input v-model="ht11.ht_11008" type="text" class="w500">。</li>
+                <li>（2）<input v-model="ht11.ht_11009" type="text" class="w500">。</li>
               </ul>
             </li>
           </ul>
@@ -146,26 +180,26 @@
     <!--第十二条-->
     <div class="item">
       <h4 class="title">第十二条 逾期交付责任</h4>
-      <p>除不可抗力外，出卖人未按照第十一条约定的时间将该商品房交付买受人的，双方同意按照下列第 <input type="text" class="w50">种方式处理：</p>
+      <p>除不可抗力外，出卖人未按照第十一条约定的时间将该商品房交付买受人的，双方同意按照下列第 <input v-model="ht12.ht_12001" type="text" class="w50">种方式处理：</p>
       <ul>
         <li>1.按照逾期时间，分别处理（（1） 和（2） 不作累加） 。
           <ul class="ul2">
-            <li>（1）逾期在 <input type="text" class="w50">日之内（该期限应当不多于第八条第1（1）项中的期限），自第十一条约定的交付期限届满之次日起至实际交付之日止，出卖人按日计算向买受人支付全部房价款万分之
-              <input type="text" class="w50">的违约金（该违约金比率应当不低于第八条第1（1）项中的比率）。
+            <li>（1）逾期在 <input v-model="ht12.ht_12002" type="text" class="w50">日之内（该期限应当不多于第八条第1（1）项中的期限），自第十一条约定的交付期限届满之次日起至实际交付之日止，出卖人按日计算向买受人支付全部房价款万分之
+              <input v-model="ht12.ht_12003" type="text" class="w50">的违约金（该违约金比率应当不低于第八条第1（1）项中的比率）。
             </li>
-            <li>（2）逾期超过 <input type="text" class="w50">
+            <li>（2）逾期超过 <input v-model="ht12.ht_12004" type="text" class="w50">
               日（该期限应当与本条第（1）项中的期限相同）
-              后，买受人有权解除合同。买受人解除合同的，应当书面通知出卖人。出卖人应当自解除合同通知送达之日起15日内退还买受人已付全部房款（含已付贷款部分），并自买受人付款之日起，按照<input type="text"
+              后，买受人有权解除合同。买受人解除合同的，应当书面通知出卖人。出卖人应当自解除合同通知送达之日起15日内退还买受人已付全部房款（含已付贷款部分），并自买受人付款之日起，按照<input v-model="ht12.ht_12005" type="text"
                                                                                                            class="w50">
-              %（不低于中国人民银行公布的同期贷款基准利率）计算给付利息；同时，出卖人按照全部房价款的<input type="text" class="w50">
+              %（不低于中国人民银行公布的同期贷款基准利率）计算给付利息；同时，出卖人按照全部房价款的<input v-model="ht12.ht_12006" type="text" class="w50">
               %向买受人支付违约金。
               <br>
-              买受人要求继续履行合同的，合同继续履行，出卖人按日计算向买受人支付全部房价款万分之<input type="text" class="w50">
+              买受人要求继续履行合同的，合同继续履行，出卖人按日计算向买受人支付全部房价款万分之<input v-model="ht12.ht_12007" type="text" class="w50">
               （该比率应当不低于本条第1（1）项中的比率）的违约金。
             </li>
           </ul>
         </li>
-        <li>2. <input type="text" class="w500">。</li>
+        <li>2. <input v-model="ht12.ht_12008" type="text" class="w500">。</li>
       </ul>
     </div>
 
@@ -407,7 +441,8 @@
       <ul>
         <li>（一）出卖人依法选聘的前期物业服务企业为 <input type="text" class="w300">。</li>
         <li>（二）物业服务时间从 <input type="text" class="w50">年<input type="text" class="w50">月<input type="text" class="w50">日到<input
-          type="text" class="w50">年<input type="text" class="w50">月<input type="text" class="w50">日，<input type="text" class="w400">。
+          type="text" class="w50">年<input type="text" class="w50">月<input type="text" class="w50">日，<input type="text"
+                                                                                                           class="w400">。
         </li>
         <li>（三）物业服务期间，物业收费计费方式为【
           <select name="">
@@ -505,7 +540,8 @@
           【<input type="text" class="w100">】<input type="text" class="w50">份，
           【<input type="text" class="w100">】<input type="text" class="w50">份，
           【<input type="text" class="w100">】<input type="text" class="w50">份，
-          【<input type="text" class="w100">】<input type="text" class="w50">份。合同附件与本合同具有同等法律效力。</li>
+          【<input type="text" class="w100">】<input type="text" class="w50">份。合同附件与本合同具有同等法律效力。
+        </li>
       </ul>
     </div>
 
@@ -555,7 +591,8 @@
             <option value="玻璃幕墙">玻璃幕墙</option>
             <option value="其他">其他</option>
           </select>
-          【<input type="text" class="w300">】 <input type="text" class="w500">。</li>
+          【<input type="text" class="w300">】 <input type="text" class="w500">。
+        </li>
         <li>2. 起居室：
           <ul class="ul2">
             <li>（1） 内墙：
@@ -564,14 +601,16 @@
                 <option value="壁纸">壁纸</option>
                 <option value="其他">其他</option>
               </select>
-              【<input type="text" class="w300">】 <input type="text" class="w500">。</li>
+              【<input type="text" class="w300">】 <input type="text" class="w500">。
+            </li>
             <li>（2） 顶棚：
               <select name="">
                 <option value="涂料">涂料</option>
                 <option value="石膏板吊顶">石膏板吊顶</option>
                 <option value="其他">其他</option>
               </select>
-              【<input type="text" class="w300">】 <input type="text" class="w500">。</li>
+              【<input type="text" class="w300">】 <input type="text" class="w500">。
+            </li>
             <li>（3） 室内地面：
               <select name="">
                 <option value="大理石">大理石</option>
@@ -580,7 +619,8 @@
                 <option value="实木地板">实木地板</option>
                 <option value="其他">其他</option>
               </select>
-              【<input type="text" class="w300">】 <input type="text" class="w500">。</li>
+              【<input type="text" class="w300">】 <input type="text" class="w500">。
+            </li>
           </ul>
         </li>
         <li>3. 厨房：
@@ -591,21 +631,24 @@
                 <option value="瓷砖">瓷砖</option>
                 <option value="其他">其他</option>
               </select>
-              【<input type="text" class="w300">】 <input type="text" class="w500">。</li>
+              【<input type="text" class="w300">】 <input type="text" class="w500">。
+            </li>
             <li>（2） 墙面：
               <select name="">
                 <option value="耐水腻子">耐水腻子</option>
                 <option value="瓷砖">瓷砖</option>
                 <option value="其他">其他</option>
               </select>
-              【<input type="text" class="w300">】 <input type="text" class="w500">。</li>
+              【<input type="text" class="w300">】 <input type="text" class="w500">。
+            </li>
             <li>（3） 顶棚：
               <select name="">
                 <option value="水泥抹面">水泥抹面</option>
                 <option value="石膏吊顶">石膏吊顶</option>
                 <option value="其他">其他</option>
               </select>
-              【<input type="text" class="w300">】 <input type="text" class="w500">。</li>
+              【<input type="text" class="w300">】 <input type="text" class="w500">。
+            </li>
             <li>（4） 厨具：<input type="text" class="w800">。</li>
           </ul>
         </li>
@@ -617,21 +660,24 @@
                 <option value="瓷砖">瓷砖</option>
                 <option value="其他">其他</option>
               </select>
-              【<input type="text" class="w300">】 <input type="text" class="w500">。</li>
+              【<input type="text" class="w300">】 <input type="text" class="w500">。
+            </li>
             <li>（2） 墙面：
               <select name="">
                 <option value="耐水腻子">耐水腻子</option>
                 <option value="瓷砖">瓷砖</option>
                 <option value="其他">其他</option>
               </select>
-              【<input type="text" class="w300">】 <input type="text" class="w500">。</li>
+              【<input type="text" class="w300">】 <input type="text" class="w500">。
+            </li>
             <li>（3） 顶棚：
               <select name="">
                 <option value="水泥抹面">水泥抹面</option>
                 <option value="石膏吊顶">石膏吊顶</option>
                 <option value="其他">其他</option>
               </select>
-              【<input type="text" class="w300">】 <input type="text" class="w500">。</li>
+              【<input type="text" class="w300">】 <input type="text" class="w500">。
+            </li>
             <li>（4） 卫生器具：<input type="text" class="w800">。</li>
           </ul>
         </li>
@@ -739,9 +785,280 @@
 </template>
 
 <script>
-
   export default {
     name: "TjysmbItem",
+    data() {
+      return {
+        ht05: {
+          ht_05001: "",
+          ht_05002: "",
+          ht_05003: ""
+        },
+        ht08: {
+          ht_08001: "",
+          ht_08002: "",
+          ht_08003: "",
+          ht_08004: "",
+          ht_08005: "",
+          ht_08006: "",
+          ht_08007: "",
+          ht_08008: "",
+        },
+        ht09: {
+          ht_09005: "",
+          ht_09001: "",
+          ht_09002: "",
+          ht_09003: "",
+          ht_09004: "",
+        },  //顺序不对
+        ht10: {
+          ht_10001: "",
+          ht_10002: "",
+          ht_10003: "",
+          ht_10004: "",
+          ht_10005: "",
+          ht_10006: "",
+          ht_10007: "",
+          ht_10008: "",
+          ht_10009: "",
+          ht_10010: "",
+          ht_10011: "",
+          ht_10012: "",
+          ht_10013: "",
+          ht_10014: "",
+          ht_10015: "",
+          ht_10016: "",
+          ht_10017: "",
+          ht_10018: "",
+          ht_10019: "",
+          ht_10020: "",
+          ht_10021: "",
+          ht_10022: "",
+          ht_10023: "",
+          ht_10024: "",
+          ht_10025: "",
+          ht_10026: "",
+          ht_10027: "",
+          ht_10028: "",
+          ht_10029: "",
+          ht_10030: "",
+          ht_10031: "",
+          ht_10032: "",
+          ht_10033: "",
+          ht_10034: "",
+          ht_10035: "",
+          ht_10036: "",
+          ht_10037: "",
+          ht_10038: "",
+          ht_10039: "",
+          ht_10040: "",
+          ht_10041: "",
+          ht_10042: "",
+          ht_10043: "",
+          ht_10044: "",
+          ht_10045: "",
+        },
+        ht11: {
+          ht_11001: "",
+          ht_11002: "",
+          ht_11003: "",
+          ht_11004: "",
+          ht_11005: "",
+          ht_11006: "",
+          ht_11007: "",
+          ht_11008: "",
+          ht_11009: "",
+        },
+        ht12: {
+          ht_12001: "",
+          ht_12002: "",
+          ht_12003: "",
+          ht_12004: "",
+          ht_12005: "",
+          ht_12006: "",
+          ht_12007: "",
+          ht_12008: "",
+        },
+        ht13: {
+          ht_13001: "",
+          ht_13002: "",
+          ht_13003: "",
+          ht_13004: "",
+          ht_13005: "",
+        },
+        ht14: {
+          ht_14001: "",
+          ht_14002: "",
+          ht_14003: "",
+        },
+        ht15: {
+          ht_15001: "",
+          ht_15002: "",
+          ht_15003: "",
+          ht_15004: "",
+          ht_15005: "",
+          ht_15006: "",
+        },
+        ht16: {
+          ht_16001: "",
+          ht_16002: "",
+          ht_16003: "",
+          ht_16004: "",
+          ht_16005: "",
+          ht_16006: "",
+          ht_16007: "",
+          ht_16008: "",
+          ht_16009: "",
+          ht_16010: "",
+          ht_16011: "",
+          ht_16012: "",
+          ht_16013: "",
+          ht_16014: "",
+          ht_16015: "",
+          ht_16016: "",
+          ht_16017: "",
+          ht_16018: "",
+        },
+        ht17: {
+          ht_17001: "",
+          ht_17002: "",
+        },
+        ht18: {
+          ht_18001: ""
+        },
+        ht19: {
+          ht_19001: "",
+          ht_19002: "",
+          ht_19003: "",
+        },
+        ht20: {
+          ht_20001: "",
+          ht_20002: "",
+          ht_20003: "",
+          ht_20004: "",
+          ht_20005: "",
+        },
+        ht21: {
+          ht_21001: "",
+          ht_21002: "",
+          ht_21003: "",
+          ht_21004: "",
+          ht_21005: "",
+          ht_21006: "",
+          ht_21007: "",
+          ht_21010: "",
+          ht_21011: "",
+          ht_21008: "",
+          ht_21009: "",
+        },  // 顺序不对
+        ht22: {
+          ht_22001: "",
+          ht_22002: "",
+          ht_22003: "",
+          ht_22004: "",
+        },
+        ht23: {
+          ht_23001: ""
+        },
+        ht24: {
+          ht_24001: "",
+          ht_24002: "",
+        },
+        ht25: {
+          ht_25001: "",
+          ht_25002: "",
+        },
+        ht27: {
+          ht_27001: "",
+          ht_27002: "",
+        },
+        ht29: {
+          ht_29001: "",
+          ht_29002: "",
+          ht_29003: "",
+          ht_29004: "",
+          ht_29005: "",
+          ht_29006: "",
+          ht_29007: "",
+          ht_29008: "",
+          ht_29009: "",
+          ht_29010: "",
+          ht_29011: "",
+          ht_29012: "",
+          ht_29013: "",
+          ht_29014: "",
+        },
+        //////////////////////////////////附件
+        ht_fj02001: "",  // 附件二
+        ht_fj03001: "",  // 附件三
+        ht_fj04001: "",  // 附件四
+        ht_fj05001: "",  // 附件五
+        ht_fj06: {
+          ht_fj06001: "",
+          ht_fj06002: "",
+          ht_fj06003: "",
+          ht_fj06004: "",
+          ht_fj06005: "",
+          ht_fj06006: "",
+          ht_fj06007: "",
+          ht_fj06008: "",
+          ht_fj06009: "",
+          ht_fj06010: "",
+          ht_fj06011: "",
+          ht_fj06012: "",
+          ht_fj06013: "",
+          ht_fj06014: "",
+          ht_fj06015: "",
+          ht_fj06016: "",
+          ht_fj06017: "",
+          ht_fj06018: "",
+          ht_fj06019: "",
+          ht_fj06020: "",
+          ht_fj06021: "",
+          ht_fj06022: "",
+          ht_fj06023: "",
+          ht_fj06024: "",
+          ht_fj06025: "",
+          ht_fj06026: "",
+          ht_fj06027: "",
+          ht_fj06028: "",
+          ht_fj06029: "",
+          ht_fj06030: "",
+          ht_fj06031: "",
+          ht_fj06031A: "",
+          ht_fj06032: "",
+          ht_fj06033: "",
+          ht_fj06034: "",
+          ht_fj06035: "",
+          ht_fj06036: "",
+          ht_fj06037: "",
+          ht_fj06038: "",
+          ht_fj06039: "",
+          ht_fj06040: "",
+        },  // 附件六 顺序不对
+        ht_fj07: {
+          ht_fj07001: "",
+          ht_fj07002: "",
+          ht_fj07003: "",
+          ht_fj07004: "",
+          ht_fj07005: "",
+          ht_fj07006: "",
+          ht_fj07007: "",
+          ht_fj07008: "",
+          ht_fj07009: "",
+          ht_fj07010: "",
+          ht_fj07011: "",
+          ht_fj07012: "",
+          ht_fj07013: "",
+          ht_fj07014: "",
+        },
+        ht_fj08001: "",
+        ht_fj09001: "",
+        ht_fj10001: "",
+        ht_fj11001: "",
+        ht_scfj04001: "" //以下为实测合同模板中需要填写的内容（预测无需填写）
+      }
+    }
   }
 </script>
 
@@ -797,7 +1114,7 @@
         line-height: 3em;
       }
 
-      .textarea{
+      .textarea {
         width: 80%;
         display: block;
         height: 200px;

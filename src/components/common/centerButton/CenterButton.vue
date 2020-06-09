@@ -1,7 +1,7 @@
 <template>
   <div class="centerButton">
     <el-button
-      style="display: block; width: 150px; transform: translateX(-50px)"
+      style="display: block; width: 100px; transform: translateX(-50px)"
       :loading="loading"
       size="mini"
       :disabled="disabled"

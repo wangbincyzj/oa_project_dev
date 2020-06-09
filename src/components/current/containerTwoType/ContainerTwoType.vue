@@ -12,7 +12,7 @@
 -->
 <template>
   <div class="root" :style="{height: this.height}">
-    <div class="left">
+    <div class="left" v-if="!leftSlot">
       <el-input
         size="mini"
         style="margin-bottom: 10px"
@@ -31,6 +31,9 @@
         </li>
       </ul>
     </div>
+    <div class="left" v-else>
+      <slot name="leftSlot"></slot>
+    </div>
     <div class="right">
       <slot/>
     </div>
@@ -41,17 +44,20 @@
   export default {
     name: "ContainerTwoType",
     props: {
-      navInfo: {
-        required: true
+      leftSlot:{
+        type: Boolean,
+        default: false
       },
+      navInfo: {},  //
       height: {
         type: String,
         default: "100%"
       },
-      loading: {
+      loading:{
         type: Boolean,
-        default: false,
+        default: false
       }
+
     },
     data() {
       return {
@@ -64,6 +70,9 @@
         this.$emit("liClick", index);
         this.currentIndex = index;
       },
+      // loading(){
+
+      // },
       searchChange(){
         this.$emit("searchChange", this.searchValue)
       }

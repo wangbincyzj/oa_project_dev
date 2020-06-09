@@ -15,7 +15,7 @@
             <el-button size="mini">修改</el-button>
             <el-button type="primary" size="mini">上报</el-button>
             <el-button type="danger" size="mini">删除</el-button>
-            <el-button type="info" size="mini">打印合同模板</el-button>
+            <el-button @click="print" type="info" size="mini">打印合同模板</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -30,7 +30,12 @@
     components: {TitleTable},
     data() {
       return {
-        tableData: []
+        tableData: [{}]
+      }
+    },
+    methods:{
+      print() {
+        window.open("/#/printView/yshtmb",)
       }
     }
   }
