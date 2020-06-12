@@ -1,3 +1,9 @@
+<!--
+  显示颜色:
+   0 保留 1成品房 2可售 3预定 4备案 5预告 6按揭
+   7 限制 8转移 9抵押 10查封 12签订销售承诺
+-->
+
 <template>
   <ul class="roomColor">
     <li>
@@ -44,6 +50,10 @@
       <div class="c10"></div>
       <div class="text">已查封</div>
     </li>
+    <li>
+      <div class="c12"></div>
+      <div class="text">销售承诺</div>
+    </li>
   </ul>
 </template>
 
@@ -88,4 +98,6 @@
   .c8{background-color: #9999cc;}
   .c9{background-color: #0099ff;}
   .c10{background-color: #FF7300;}
+  .c12{
+    background-color: #3496af;}
 </style>

@@ -108,13 +108,14 @@ ul.menu li:hover {
   margin-right: 0;
 }
 
-.myForm-tjysmb .el-form-item__content{
+.myForm-tjysmb .el-form-item__content {
   width: 60%;
 }
 
-
-
-
+/*时间线的hover样式修改*/
+.el-timeline-item__wrapper:hover .el-timeline-item__content {
+  font-weight: 600;
+}
 
 
 

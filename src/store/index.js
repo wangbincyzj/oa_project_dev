@@ -68,5 +68,4 @@ export default new Vuex.Store({
       storage.session.storage.clear();
     }
   },
-  modules: {}
 })

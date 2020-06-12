@@ -44,7 +44,6 @@
       :title="dialogTitle"
       center
       :width="dialogWidth"
-      :before-close="closeConfirm"
       slot="dialog"
       :visible.sync="dialogVisible"
       @close="dialogVisible = false"

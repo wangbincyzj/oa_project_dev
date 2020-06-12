@@ -1,7 +1,7 @@
 <template>
   <div class="hfxsqr">
     <ContainerTwoType :nav-info="navInfo" @liClick="liClick">
-      <TitleTable title="合法销售确认-选择房间">
+      <TitleTable title="签订预售合同-选择房间">
         <div>
           <RoomColor/>
           <!--          <RoomStructure ref="roomStructure" @roomClick="roomClick"/>-->
@@ -14,14 +14,14 @@
       </TitleTable>
     </ContainerTwoType>
     <el-dialog
-      title="签订承诺书-确认房间"
+      title="签订预售合同-确认房间信息"
       center
       width="800px"
       slot="dialog"
       :visible.sync="dialogVisible"
       @close="dialogVisible = false"
     >
-      <HfxsqrDialog
+      <QdyshtDialog
         :ldxx="ldxx"
         ref="dialog"
         @submitSuccess="submitSuccess"
@@ -39,10 +39,14 @@
   import HfxsqrDialog from "@/views/menu_3/HfxsqrDialog";
   import RoomColor from "@/components/common/roomColor/RoomColor";
   import BuildingStructure from "@/components/common/buildingStructure/BuildingStructure";
+  import {yushouContractApi} from "@/api/menu_3/yushowContract";
+  import QdyshtDialog from "@/views/menu_3/QdyshtDialog";
 
   export default {
-    name: "Hfxsqr",
-    components: {BuildingStructure, RoomColor, HfxsqrDialog, RoomStructure, TitleTable, MyNav, ContainerTwoType},
+    name: "Qdysht",
+    components: {
+      QdyshtDialog,
+      BuildingStructure, RoomColor, HfxsqrDialog, RoomStructure, TitleTable, MyNav, ContainerTwoType},
     mixins: [mixins.dialogMixin],
     data() {
       return {
@@ -67,20 +71,20 @@
         this.$refs.roomStructure.fetchHfxsqrData(this.navInfo.list[index].id)
       },
       roomClick(room) {
-        if (room.roomFwzt === 2) {
+        if (room.roomFwzt === 12) {
           this.dialogVisible = true
           this.$nextTick(() => {
             this.$refs.dialog.fetchRoomDetail(this.ldxxId, room.roomId)
+            this.$refs.dialog.fetchTemplateList()
           })
         }else{
-          this.$message.info("请选择可售的房间")
+          this.$message.info("只允许选择签订过消除承诺书的房间")
         }
       },
       submitSuccess(){
         this.dialogVisible = false;
         this.$refs.roomStructure.fetchHfxsqrData(this.ldxxId)
-      }
-
+      },
     }
   }
 </script>

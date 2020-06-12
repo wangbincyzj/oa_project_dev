@@ -8,6 +8,14 @@
       disabled
       inline
       :model="form">
+      <el-form-item label="所在项目">
+        <el-input v-model="form.xmxxMc"></el-input>
+      </el-form-item>
+
+      <el-form-item label="所在楼栋">
+        <el-input v-model="form.ldLdmc"></el-input>
+      </el-form-item>
+
       <el-form-item label="房号">
         <el-input v-model="form.roomFh"></el-input>
       </el-form-item>
@@ -83,22 +91,6 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label="限制状态">
-        <el-input v-model="form.roomBaxzzt"></el-input>
-      </el-form-item>
-
-      <el-form-item label="查封状态">
-        <el-input v-model="form.roomCfzt"></el-input>
-      </el-form-item>
-
-      <el-form-item label="交易状态">
-        <el-input v-model="form.roomJyzt"></el-input>
-      </el-form-item>
-
-      <el-form-item label="抵押状态">
-        <el-input v-model="form.roomDybazt"></el-input>
-      </el-form-item>
-
     </el-form>
     <el-form
       v-loading="loading"
@@ -114,7 +106,7 @@
       </el-form-item>
     </el-form>
     <div style="display: flex; justify-content: center; margin-top: 10px">
-      <el-button @click="handleSave" size="mini">签订承诺书</el-button>
+      <el-button @click="handleSave" size="mini" type="primary">签订合同</el-button>
     </div>
   </div>
 </template>
@@ -126,7 +118,7 @@
   import {yushouContractApi} from "@/api/menu_3/yushowContract";
 
   export default {
-    name: "HfxsqrDialog",
+    name: "QdyshtDialog",
     components: {CenterButton},
     props: ["ldxx"],
     data() {
@@ -179,31 +171,30 @@
         this.ldId = ldId;
         this.roomId = roomId;
         lpInfoApi.getRoomDetail(roomId).then(ret => {
+          console.log(ret)
           this.form = ret.data
         })
       },
       handleSave() {
-        yushouContractApi.saveSalesConfirmation({
-          xsqrdXmmc: this.$store.state.projectData.xmxxXmmc,
-          xsqrdLdmc: this.ldxx.ldxxMc,
-          xsqrdFh: this.form.roomFh,
-          xsqrdFwbh: this.form.roomFwbh,
-          kfsRwbh: this.$store.state.rwbh
-        }).then(ret => {
-          if (ret.code === 200) {
-            this.$message.success("操作成功")
+        // 签订合同
+        if(!this.selectedTemplate){
+          this.$message.error("请先选择合同模板"); return;
+        }
+        yushouContractApi.addContract({htId:this.selectedTemplate, roomId:this.roomId}).then(ret=>{
+          if(ret.code===200){
+            this.$message.success("签订成功");
             this.$emit("submitSuccess")
-          } else {
-            this.$message.error(ret.message || "操作失败")
+          }else{
+            this.$message.error(ret.message||"未知错误")
           }
         })
       },
       fetchTemplateList() {
+        this.selectedTemplate = null
         this.loading = true
         yushouContractApi.getContractTemplate({htXslx:0,kfsRwbh:this.$store.state.rwbh, htShzt:2}).then(ret=>{
           this.loading = false
           this.templateList = ret.data.records;
-          console.log(this.templateList)
         })
       }
     }

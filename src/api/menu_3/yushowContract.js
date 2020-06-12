@@ -16,12 +16,32 @@ let getContractBuildingTree = function ({ldxxFwlx, rwbh}) {
   return requests.get("data-presale-license/contract/buildingTree", {ldxxFwlx, rwbh})
 }
 
+/**
+ * 合同管理分页查询
+ * @param htXslx 类型 0预售 1现售
+ */
+let getContractList = function({kfsRwbh, current=1,size=20, htXslx=0}){
+  return requests.get("data-presale-license/contract/selectPage", {
+      kfsRwbh, current, size, htXslx
+  })
+}
+
+/**
+ * 完善合同
+ */
+let contractComplete = function(type, _form){
+  return requests.post("data-presale-license/contract/complete",{
+    [_form.name]: _form,
+    type
+  })
+}
+
 
 /**
  * 新建合同
  */
 let addContract = function ({roomId, htId}) {
-  return requests.get("data-presale-license/contract/save", {roomId, htId})
+  return requests.post("data-presale-license/contract/save", {roomId, htId})
 }
 
 
@@ -90,19 +110,23 @@ let addContractTemplate = function (_form) {
   return requests.post("data-presale-license/contractTemplate/save", _form)
 }
 
+let updateContractTemplate = function(_form) {
+  return requests.post("data-presale-license/contractTemplate/update", _form)
+}
+
 /**
  * 根据主键删除合同模板
  */
 let delContractTemplate = function (htId) {
-  return requests.get("data-presale-license/contractTemplate/delete", {htId})
+  return requests.get("data-presale-license/contractTemplate/del", {htId})
 }
 
 
 /**
  * 通过主键id查询合同模板
  */
-let getContractTemplateById = function ({htId, htXslx}) {
-  return requests.get("data-presale-license/contractTemplate/selectById", {htId, htXslx})
+let getContractTemplateById = function ({htId}) {
+  return requests.get("data-presale-license/contractTemplate/selectById", {htId})
 }
 
 
@@ -185,6 +209,7 @@ export const yushouContractApi = {
   getContractTemplate,
   auditContractTemplate,
   addContractTemplate,
+  updateContractTemplate,
   delContractTemplate,
   getContractTemplateById,
   ///////
@@ -195,7 +220,9 @@ export const yushouContractApi = {
   salesConfirmationSelectById,
   cancelSalesConfirmation,
   signatureSalesConfirmation,
-  setPassword
+  setPassword,
+  getContractList,
+  contractComplete
 }
 
 

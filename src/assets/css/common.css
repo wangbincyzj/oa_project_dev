@@ -1,2 +1,20 @@
 /*包含全局通用样式*/
 
+
+/*完善预售合同*/
+.wsysht-item{
+  overflow-y: auto;
+}
+.wsysht-item .hd {
+  font-weight: 600;
+  font-size: 24px;
+  font-family: 黑体;
+  background-color: rgb(52, 62, 118);
+  color: white;
+  text-align: center;
+  line-height: 37px;
+}
+
+
+
+

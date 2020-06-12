@@ -62,7 +62,7 @@
           this.rooms = r.reverse();
         })
       },
-      fetchHfxsqrData(id){
+      fetchHfxsqrData(id){  // 合法销售确认用到的api
         this.loading = true;
         yushouContractApi.getContractRooms(id).then(ret=>{
           this.loading = false;
@@ -138,4 +138,6 @@
   .c8{background-color: #9999cc;}
   .c9{background-color: #0099ff;}
   .c10{background-color: #FF7300;}
+  .c12{
+    background-color: #3496af;}
 </style>
