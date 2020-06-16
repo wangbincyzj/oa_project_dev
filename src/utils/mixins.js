@@ -9,6 +9,15 @@ const routerMixin = {
   }
 }
 
+// 全局注入一个loading
+const loadingMixin = {
+  data() {
+    return {
+      loading: false
+    }
+  }
+}
+
 
 // dialog 父组件的mixin
 const dialogMixin = {
@@ -74,5 +83,6 @@ const myPagerMixin = {
 export const mixins = {
   routerMixin,
   dialogMixin,
-  myPagerMixin
+  myPagerMixin,
+  loadingMixin
 }

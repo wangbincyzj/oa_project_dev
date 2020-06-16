@@ -1,12 +1,6 @@
 import {requests} from "@/api/yushou";
 
 /*---------------------------------合同模板--------------------------------*/
-/**
- * 上报合同
- */
-let submitContract = function (htId) {
-  return requests.get("data-presale-license/contract/submit", {htId})
-}
 
 
 /**
@@ -22,7 +16,7 @@ let getContractBuildingTree = function ({ldxxFwlx, rwbh}) {
  */
 let getContractList = function({kfsRwbh, current=1,size=20, htXslx=0}){
   return requests.get("data-presale-license/contract/selectPage", {
-      kfsRwbh, current, size, htXslx
+    kfsRwbh, current, size, htXslx
   })
 }
 
@@ -198,8 +192,51 @@ let setPassword = function ({xsqrdId, xsqrdCrnxm, xsqrdPass, password}) {
 }
 
 
+/*---------------------------------合同--------------------------------*/
+/**
+ * 添加购买人
+ */
+let saveHouseOwner = function (_form) {
+  return requests.post("data-presale-license/houseOwner/save", _form)
+}
+
+/**
+ * 根据id查询产权人 用于修改信息
+ */
+let selectByIdHouseOwner = function (id) {
+  return requests.get("data-presale-license/houseOwner/selectById", {id})
+}
+
+/**
+ * 根据id查询产权人 用于修改信息
+ */
+let delByIdHouseOwner = function (id) {
+  return requests.get("data-presale-license/houseOwner/del", {id})
+}
+
+/**
+ * 根据合同编号查询产权人列表
+ */
+let selectHouseOwnerList = function (fwsyqrHtbh) {
+  return requests.get("data-presale-license/houseOwner/selectListByContractNr", {htbh:fwsyqrHtbh})
+}
+
+/**
+ * 完善合同后上报合同
+ */
+let submitContract = function (htId) {
+  return requests.get("data-presale-license/contract/submit", {htId})
+}
+
+/**
+ * 合同列表查询
+ */
+let getAllContract = function ({htMsrxm, htShzt},current=1,size=20,htXslx=0) {
+  return requests.get("data-presale-license/contract/selectPage", {htMsrxm, htShzt, current, size, htXslx})
+}
+
+
 export const yushouContractApi = {
-  submitContract,
   getContractBuildingTree,
   addContract,
   getContractDetail,
@@ -222,7 +259,14 @@ export const yushouContractApi = {
   signatureSalesConfirmation,
   setPassword,
   getContractList,
-  contractComplete
+  contractComplete,
+  /////
+  saveHouseOwner,
+  selectByIdHouseOwner,
+  delByIdHouseOwner,
+  selectHouseOwnerList,
+  submitContract,
+  getAllContract
 }
 
 

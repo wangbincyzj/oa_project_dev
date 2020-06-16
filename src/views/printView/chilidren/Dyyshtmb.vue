@@ -2,15 +2,38 @@
 <template>
   <div class="dyyshtmb" v-if="d">
     <!--封面 商品房买卖合同-->
-    <section class="s1">
+    <section class="s1" v-if="args==='yshtmb'">
       <h1>商品房买卖合同</h1>
       <h3>预售合同模板</h3>
       <ul>
         <li><span>出 卖 人:</span>{{d.kfsTitle}}</li>
-        <li><span>买 受 人:</span></li>
+        <li><span>买 受 人:</span>{{d.htBuyuser}}</li>
         <li><span>模板名称:</span>{{d.htMc}}</li>
         <li><span>项目名称:</span>{{d.htXmmc}}</li>
         <li><span>楼栋名称:</span>{{d.htLdmc}} <span>房号:</span></li>
+      </ul>
+      <div class="d1">
+        <div class="d2">
+          <span>中华人民共和国住房和城乡建设部</span>
+          <span>中华人民共和国国家工商行政管理总局</span>
+        </div>
+        <div class="d3">制定</div>
+      </div>
+    </section>
+
+    <section class="s1" v-if="args==='ysht'">
+      <h1>商品房买卖合同(预 售)</h1>
+      <p style="text-align: center; font-size: 18px; margin: 10px 0">合同编号: {{d.htBh}}</p>
+      <p style="text-align: center; font-size: 18px">本合同为预订合同，请您在签订本合同之日起的30日内向潼关县房地产交易所申请备案</p>
+      <ul>
+        <li class="tempLi"><span style="flex: 1">出 卖 人:</span><span
+          style="text-align: left; flex: 3">{{baseData.rwqyxxTitle}}</span></li>
+        <li class="tempLi"><span style="flex: 1">买 受 人:</span><span
+          style="text-align: left; flex: 3">{{d.htBuyuser}}</span></li>
+        <li class="tempLi"><span style="flex: 1">项目名称:</span><span
+          style="text-align: left; flex: 3">{{d.ht01008}}</span></li>
+        <li class="tempLi"><span>楼栋名称:</span><span style="text-align: left">{{d.ht03004}} </span><span>房号:</span><span
+          style="text-align: left">123</span></li>
       </ul>
       <div class="d1">
         <div class="d2">
@@ -89,18 +112,20 @@
       <h3 class="title">第一章 合同当事人</h3>
       <div class="content">
         <ul>
-          <li>出卖人:<span class="line"></span></li>
-          <li>通讯地址:<span class="line"></span></li>
-          <li>邮政编码:<span class="line"></span></li>
-          <li>营业执照注册号:<span class="line"></span></li>
-          <li>企业资质证书号:<span class="line"></span></li>
-          <li>法定代表人:<span class="line"></span>联系电话:<span class="line"></span></li>
-          <li>委托代理人:<span class="line"></span>联系电话:<span class="line"></span></li>
-          <li>委托销售经纪机构:<span class="line"></span></li>
-          <li>通讯地址:<span class="line"></span></li>
-          <li>邮政编码:<span class="line"></span></li>
-          <li>营业执照注册号:<span class="line"></span></li>
+          <li>出卖人:<span class="line">{{baseData.rwqyxxTitle}}</span></li>
+          <li>通讯地址:<span class="line">{{baseData.rwqyxxZcdz}}</span></li>
+          <li>邮政编码:<span class="line">{{baseData.rwqyxxYzbm}}</span></li>
+          <li>营业执照注册号:<span class="line">{{baseData.rwqyxxYyzh}}</span></li>
+          <li>企业资质证书号:<span class="line">{{baseData.rwqyxxZzbh}}</span></li>
+          <li>法定代表人:<span class="line">{{baseData.rwqyxxFaren}}</span>联系电话:<span class="line">{{d.kfsLxdh}}</span></li>
+          <li>委托代理人:<span class="line">{{d.htMfwtdlr}}</span>联系电话:<span class="line">{{d.htMfdllxdh}}</span></li>
+          <li>委托销售经纪机构:<span class="line">{{d.htMfwtdljg}}</span></li>
+          <li>通讯地址:<span class="line">{{d.htMfwtdldz}}</span></li>
+          <li>邮政编码:<span class="line">{{d.htMfdlyzbm}}</span></li>
+          <li>营业执照注册号:<span class="line">{{d.htMfwtdljgzch}}</span></li>
+          <!--todo-->
           <li>经纪机构备案证明号:<span class="line"></span></li>
+          <li>法定代表人:<span class="line">{{baseData.rwqyxxFaren}}</span>联系电话:<span class="line">{{d.kfsLxdh}}</span></li>
           <li>
             <table border="1" cellpadding="1" cellspacing="0" bordercolor="#000000" bgcolor="#F0F0F0">
               <tbody>
@@ -110,23 +135,35 @@
                 <td align="center" bgcolor="#FFFFFF" class="td2">家庭地址</td>
                 <td align="center" bgcolor="#FFFFFF" class="td2">联系电话</td>
               </tr>
+              <template v-if="args==='yshtmb'">
+                <tr>
+                  <td height="30" align="left" bgcolor="#FFFFFF" class="td0">&nbsp;</td>
+                  <td align="left" bgcolor="#FFFFFF" class="td0">&nbsp;</td>
+                  <td bgcolor="#FFFFFF">&nbsp;</td>
+                  <td align="center" bgcolor="#FFFFFF" class="td0">&nbsp;</td>
+                </tr>
+              </template>
+              <template v-if="args==='ysht'">
+                <tr v-for="item in d.houseOwners">
+                  <td height="30" align="left" bgcolor="#FFFFFF" class="td0">{{item.fwsyqrSyqr}}</td>
+                  <td align="left" bgcolor="#FFFFFF" class="td0">{{item.fwsyqrZjhm}}</td>
+                  <td bgcolor="#FFFFFF">{{item.fwsyqrJtdz}}</td>
+                  <td align="center" bgcolor="#FFFFFF" class="td0">{{item.fwsyqrLxdh}}</td>
+                </tr>
+              </template>
 
-              <tr>
-                <td height="30" align="left" bgcolor="#FFFFFF" class="td0">&nbsp;</td>
-                <td align="left" bgcolor="#FFFFFF" class="td0">&nbsp;</td>
-                <td bgcolor="#FFFFFF">&nbsp;</td>
-                <td align="center" bgcolor="#FFFFFF" class="td0">&nbsp;</td>
-              </tr>
               </tbody>
             </table>
           </li>
-          <li>【委托代理人】【法定代理人 】: <span class="line"></span></li>
-          <li>【国籍:】【户籍所在地】: <span class="line"></span></li>
-          <li>证件类型：【居民身份证】【护照】【营业执照】【<span class="line"></span>】,证号: <span class="line"></span></li>
-          <li>出生日期:<span class="line"></span>年<span class="line"></span>月<span class="line"></span>日,性别:<span
-            class="line2"></span></li>
-          <li>通讯地址: <span class="line"></span></li>
-          <li>邮政编码:<span class="line"></span> 联系电话:<span class="line"></span></li>
+          <li>【委托代理人】【法定代理人】: <span class="line">{{d.htMfdlrxm}}</span></li>
+          <li>【国籍:】【户籍所在地】: <span class="line">{{d.htMfdldz}}</span></li>
+          <li>证件类型：【居民身份证】【护照】【营业执照】【<span class="line">{{d.htMfdlrzjlx}}</span>】,证号: <span class="line">{{d.htMfdlrzjhm}}</span>
+          </li>
+          <li>出生日期:<span class="line">{{d.htMfdlrxcsn}}</span>年<span class="line">{{d.htMfdlrxcsy}}</span>月<span
+            class="line">{{d.htMfdlrxcsr}}</span>日,性别:<span
+            class="line">{{d.htMsfdlrxb}}</span></li>
+          <li>通讯地址: <span class="line">{{d.htMfdlrtxdz}}</span></li>
+          <li>邮政编码:<span class="line">{{d.htMsfdlyzbm}}</span> 联系电话:<span class="line">{{d.htMfdldh}}</span></li>
           <li>（买受人为多人时，可相应增加）</li>
         </ul>
       </div>
@@ -138,16 +175,21 @@
       <div class="content">
         <h4 class="title">第一条 项目建设依据</h4>
         <ul>
-          <li>1.出卖人以<span class="w50"></span>方式取得坐落于<span class="w50"></span>地块的建设用地使用权。该地块【国有土地使用权证号】【不动产权证号】为<span
-            class="w100"></span>。
+          <li>1.出卖人以<span :class="{inline:d.ht01001}" class="w50">{{d.ht01001}}</span>方式取得坐落于<span
+            :class="{inline:d.ht01002}" class="w50">{{d.ht01002}}</span>地块的建设用地使用权。该地块<span :class="{inline:d.ht01003}"
+                                                                                            class="w50">{{d.ht01003}}</span>为<span
+            :class="{inline:d.ht01004}"
+            class="w100">{{d.ht01004}}</span>。
           </li>
-          <li>土地使用权面积为<span class="w100"></span>平方米,买受人购买的商品房（以下简称该商品房）所占用的土地用途为<span
-            class="w100"></span>,土地使用权终止日期为<span class="w200"></span>。
+          <li>土地使用权面积为<span :class="{inline:d.ht01005}" class="w100">{{d.ht01005}}</span>平方米,买受人购买的商品房（以下简称该商品房）所占用的土地用途为<span
+            :class="{inline:d.ht01006}"
+            class="w100">{{d.ht01006}}</span>,土地使用权终止日期为<span :class="{inline:d.ht01007}"
+                                                              class="w200">{{d.ht01007}}</span>。
           </li>
           <li> 2.出卖人经批准，在上述地块上建设的商品房项目核准名称为
-            <span class="w100"></span>。建设工程规划许可证号为
-            <span class="w100"></span>，建筑工程施工许可证号为
-            <span class="w200"></span>。
+            <span :class="{inline:d.ht01008}" class="w100">{{d.ht01008}}</span>。建设工程规划许可证号为
+            <span :class="{inline:d.ht01009}" class="w100">{{d.ht01009}}</span>，建筑工程施工许可证号为
+            <span :class="{inline:d.ht01010}" class="w200">{{d.ht01010}}</span>。
           </li>
         </ul>
         <h4 class="title">第二条 预售依据</h4>
@@ -899,19 +941,30 @@
 
 <script>
   import {yushouContractApi} from "@/api/menu_3/yushowContract";
+  import {contractAbout} from "@/api/menu_3/contractAbout";
 
   export default {
     name: "Dyyshtmb",
+    props: {
+      args: {}
+    },
     data() {
       return {
-        id: "",
-        d: null
+        id: "",  // 模板id!
+        d: {}, // data
+        baseData: {},  // 第一章合同当事人的相关信息
       }
     },
     mounted() {
-      this.id = this.$route.query.id;
-      document.title = "打印预售合同模板"
-      this.fetchData()
+      if (this.args === 'yshtmb') {  // 打印预售合同模板
+        this.id = this.$route.query.id;
+        document.title = "打印预售合同模板"
+        this.fetchData()
+      } else if (this.args === 'ysht') {  // 打印预售合同
+        this.id = this.$route.query.id;
+        document.title = "打印预售合同"
+        this.fetchContactDetail()
+      }
     },
     methods: {
       fetchData() {
@@ -929,7 +982,24 @@
             this.d = ret.data
           }
         })
-      }
+      },
+      fetchContactDetail() {
+        yushouContractApi.getContractDetail(this.id).then(ret => {
+          console.log(ret)
+          this.$set(this.d, "houseOwners", ret.data.houseOwners)
+          Object.keys(ret.data).forEach(item1 => {
+            Object.keys(ret.data[item1]).forEach(item2 => {
+              this.$set(this.d, item2, ret.data[item1][item2])
+            })
+          })
+        })
+        this.fetchBaseData()
+      },
+      fetchBaseData() {
+        contractAbout.getRwqyBaseInfo((this.$store.state.rwbh + "").slice(0, 4)).then(ret => {
+          this.baseData = ret.data;
+        })
+      },
     }
   }
 </script>
@@ -1222,8 +1292,8 @@
           }
 
           table {
-            width: 120%;
-            margin: 20px -20px;
+            width: 100%;
+            margin: 20px 0;
 
             td {
               border: 1px solid black;
@@ -1250,4 +1320,7 @@
     }
   }
 
+  .tempLi {
+    display: flex;
+  }
 </style>

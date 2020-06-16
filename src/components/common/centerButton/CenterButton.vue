@@ -6,7 +6,7 @@
       size="mini"
       :disabled="disabled"
       @click="$emit('btnClick')"
-      type="primary">{{title}}
+      :type="type">{{title}}
     </el-button>
   </div>
 </template>

@@ -1,13 +1,326 @@
-<!doctype html>
-<html lang="en">
+<!--#include file="../cq_data_int/init.jsp"-->
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-</head>
-<body>
-<input type="text" disabled="">
-</body>
+  <meta http-equiv="Content-Type" content="text/html; charset=gb2312"/>
+  <link href="../cq_data_int/global.css" rel="stylesheet"/>
+  <LINK href="../css/css.css" type="text/css" rel="stylesheet">
+    <SCRIPT src="../js/validdata.js" type=text/javascript></SCRIPT>
+    <script type="text/javascript" src="../js/all.js"></script>
+
+    <style type="text/css">
+      <!--
+      .STYLE1 {
+        font-size: 14px;
+        font-weight: bold;
+        color: #135294;
+      }
+
+      -->
+    </style>
+    <%
+    // 楼栋监管总金额
+    //
+    ldzje=0
+    sqlstrxk="select sum(jktzd_jkje) as jkje from htba_jktzd where jktzd_ldbh='"&request("ldbh")&"' and jktzd_jkzt=2 and
+    jktzd_sqtkzt<>2"
+    set rss=server.CreateObject("adodb.recordset")
+    rss.open sqlstrxk,conn,1,3
+    if not rss.eof then
+    ldzje=rss("jkje")
+    if isnull(ldzje) then
+    ldzje=0
+    end if
+    end if
+    rss.close
+    set rss=nothing
+    // 楼栋成交金额
+    ldcjze=0
+    sqlstrxk="select sum(ht_06004) as cjje from htba_ht2014 where left(room_fwbh,7)='"&request("ldbh")&"' and ht_bazt>=1
+    and ht_ysjkzt=1 "
+    //只要缴了但是钱还没退的合同都算
+    set rss=server.CreateObject("adodb.recordset")
+    rss.open sqlstrxk,conn,1,3
+    if not rss.eof then
+    ldcjze=rss("cjje")
+    if isnull(ldcjze) then
+    ldcjze=0
+    end if
+    end if
+    rss.close
+    set rss=nothing
+
+
+    ldysze=0
+    // 挂牌总价
+    sqlstrxk="select sum(room_gpzj) as ysze from htba_room where left(room_fwbh,7)='"&request("ldbh")&"' and
+    room_xkzzt=1 " // 0是未办理许可 1是办理许可
+    //楼栋预售总额
+    set rss=server.CreateObject("adodb.recordset")
+    rss.open sqlstrxk,conn,1,3
+    if not rss.eof then
+    ldysze=rss("ysze")
+    if isnull(ldysze) then
+    ldysze=0
+    end if
+    end if
+    rss.close
+    set rss=nothing
+
+
+    ldfzzysze=0
+    sqlstrxk="select sum(room_gpzj) as fzzysze from htba_room where left(room_fwbh,7)='"&request("ldbh")&"' and
+    room_xkzzt=1 and room_sjyt<>'住宅' "
+    //楼栋非住宅预售总额
+    set rss=server.CreateObject("adodb.recordset")
+    rss.open sqlstrxk,conn,1,3
+    if not rss.eof then
+    ldfzzysze=rss("fzzysze")
+    if isnull(ldfzzysze) then
+    ldfzzysze=0
+    end if
+    end if
+    rss.close
+    set rss=nothing
+
+
+    ldzzysze=0
+    sqlstrxk="select sum(room_gpzj) as zzysze from htba_room where left(room_fwbh,7)='"&request("ldbh")&"' and
+    room_xkzzt=1 and room_sjyt='住宅' "
+    //楼栋住宅预售总额
+    set rss=server.CreateObject("adodb.recordset")
+    rss.open sqlstrxk,conn,1,3
+    if not rss.eof then
+    ldzzysze=rss("zzysze")
+    if isnull(ldzzysze) then
+    ldzzysze=0
+    end if
+    end if
+    rss.close
+    set rss=nothing
+
+    // 楼栋使用金额
+    ldsyje=0
+    sqlstrxk="select sum(zjsb_sbje) as syje from zj_shenbao where ld_ldbh='"&request("ldbh")&"' and zjsb_ffzt=1 and
+    zjsb_sqsyfs=0"
+    set rss=server.CreateObject("adodb.recordset")
+    rss.open sqlstrxk,conn,1,3
+    if not rss.eof then
+    ldsyje=rss("syje")
+    if isnull(ldsyje) then
+    ldsyje=0
+    end if
+    end if
+    rss.close
+    set rss=nothing
+
+    sqlstrxk="select * from htba_ld where ld_ldbh='"&request("ldbh")&"' "
+    set rss=server.CreateObject("adodb.recordset")
+    rss.open sqlstrxk,conn,1,3
+    if not rss.eof then
+    zjjgfs=rss("ld_zjjgfs")
+    zjjgze=rss("ld_zdjgzjze")
+    zjjgbl=rss("ld_zdjgzjbl")
+    ld_yhmc=rss("ld_zjjgyhmc")
+    ld_zjjgyhid=rss("ld_zjjgyhid")
+    ld_zjjgzh=rss("ld_zjjgzh")
+    zzmj=rss("ld_zzmj")
+    fzzmj=rss("ld_fzzmj")
+    zzjj=rss("ld_zzjj")
+    fzzjj=rss("ld_fzzjj")
+    end if
+    rss.close
+    set rss=nothing
+
+    if request("zjjgzt")=1 then
+    jgfs=zjjgfs
+    select case jgfs
+    case 1
+    fsmc="按固定金额监管"
+    jgze=zjjgze
+    case 2
+    fsmc="按预售总额比例监管"
+    jgze=zjjgbl*(zzmj*zzjj+fzzmj*fzzjj)
+    case 3
+    fsmc="按实时缴存房款比列监管"
+    jgze=zjjgbl*ldzje
+    case 4
+    fsmc="按合同成交总额比列监管"
+    jgze=zjjgbl*ldzje
+
+    end select
+    else
+    jgze=0
+    end if
+
+    ksyzj=CCur(ldzje-jgze-ldsyje)
+    ldjyje=CCur(ldzje-ldsyje)
+
+
+    %>
+
+    <title>资金申报使用</title>
+    <form action="sbtkadd.jsp?tkfs=<%=request(" tkfs
+    ")%>&jgyhid=<%=ld_zjjgyhid%>&fwbh=<%=request("fwbh")%>&ldbh=<%=request("ldbh")%>&htbh=<%=request("htbh")%>&zjjgzt=<%=zjjgzt%>&ksyzj=<%=ksyzj%>"
+    method="post" name="frm1" onSubmit="return Validator.Validate(this,3)">
+    <table width="100%" border="0" align="center" cellpadding="1" cellspacing="1">
+      <tr>
+        <td bgcolor="#ffffFF" height="30" align="center" colspan=4><span class="STYLE1">添&nbsp;加&nbsp;申 报 使 用</span>
+        </td>
+      </tr>
+
+
+      <tr>
+        <td height="30" bgcolor="#FFFFFF" class="td2">公司名称：</td>
+        <td height="26" bgcolor="#FFFFFF" class="td0"><input name="zjsb_kfs" type="text" class="input" id="zjsb_kfs"
+                                                             value="<%=session(" kfs_title")%>" >
+        </td>
+        <td height="26" bgcolor="#FFFFFF" class="td2">项目名称：</td>
+        <td height="26" bgcolor="#FFFFFF" class="td0"><input name="zjsb_xmmc" type="text" class="input" id="zjsb_xmmc"
+                                                             value="<%=request(" xmmc")%><%=request("ldmc")%>"
+          datatype="Limit" min="1" msg="不能为空!" />
+        </td>
+      </tr>
+      <SCRIPT language="javascript">
+        function szqy() {
+          var url;
+          window.open('szqy.jsp', '_blank', 'status=no,scrollbars=yes,top=20,left=110,width=720,height=220');
+        }
+
+      </SCRIPT>
+
+      <tr>
+        <td height="30" align="right" valign="middle" bgcolor="#FFFFFF" class="td2">合同编号：</td>
+        <td bgcolor="#FFFFFF" class="td0">&nbsp;<%=request("htbh")%></td>
+        <td align="right" bgcolor="#FFFFFF" class="td2">合同备案号：</td>
+        <td bgcolor="#FFFFFF" class="td0">&nbsp;<%=request("htbah")%></TD>
+      </tr>
+      <tr>
+        <td height="30" align="right" valign="middle" bgcolor="#FFFFFF" class="td2">楼栋预售总额：</td>
+        <td bgcolor="#FFFFFF" class="td0">&nbsp;<%=ldysze%>元</td>
+        <td align="right" bgcolor="#FFFFFF" class="td2">住宅预售总额：</td>
+        <td bgcolor="#FFFFFF" class="td0">&nbsp;<%=ldzzysze%>元</TD>
+      </tr>
+      <tr>
+        <td height="30" align="right" valign="middle" bgcolor="#FFFFFF" class="td2">楼栋非住宅预售总额：</td>
+        <td bgcolor="#FFFFFF" class="td0">&nbsp;<%=ldfzzysze%>元</td>
+        <td align="right" bgcolor="#FFFFFF" class="td2"></td>
+        <td bgcolor="#FFFFFF" class="td0"></TD>
+      </tr>
+      <tr>
+        <td align="right" bgcolor="#FFFFFF" class="td2">本合同监管金额：</td>
+        <td bgcolor="#FFFFFF" class="td0">&nbsp;<%=request("jkje")%>元</TD>
+        <td height="30" align="right" valign="middle" bgcolor="#FFFFFF" class="td2">本栋监管总额：</td>
+        <td bgcolor="#FFFFFF" class="td0">&nbsp;<%=ldzje%>元</td>
+      </tr>
+      <tr>
+        <td height="30" align="right" bgcolor="#FFFFFF" class="td2">楼栋账面金额：</td>
+        <td bgcolor="#FFFFFF" class="td0">&nbsp;<%=ldjyje%>元</TD>
+        <td height="30" align="right" valign="middle" bgcolor="#FFFFFF" class="td2">使用金额：</td>
+        <td bgcolor="#FFFFFF" class="td0">&nbsp;<%=ldsyje%>元</td>
+      </tr>
+
+      <tr>
+        <td height="30" align="right" valign="middle" bgcolor="#FFFFFF" class="td2">监管方式：</td>
+        <td bgcolor="#FFFFFF" class="td0">&nbsp;<%=fsmc%></td>
+        <td height="30" align="right" valign="middle" bgcolor="#FFFFFF" class="td2">本栋成交总额：</td>
+        <td bgcolor="#FFFFFF" class="td0">&nbsp;<%=ldcjze%></td>
+      </tr>
+      <tr>
+        <td height="30" align="right" valign="middle" bgcolor="#FFFFFF" class="td2">重点监管比例：</td>
+        <td bgcolor="#FFFFFF" class="td0">&nbsp;0<%=zjjgbl%></td>
+        <td height="30" align="right" bgcolor="#FFFFFF" class="td2">重点监管金额：</td>
+        <td bgcolor="#FFFFFF" class="td0">&nbsp;<%=jgze%></TD>
+      </tr>
+      <tr>
+        <td height="30" align="right" valign="middle" bgcolor="#FFFFFF" class="td2">可使用资金：</td>
+        <td bgcolor="#FFFFFF" class="td0">&nbsp;<%=ksyzj%>元</td>
+        <td height="30" align="right" valign="middle" bgcolor="#FFFFFF" class="td2">楼栋名称：</td>
+        <td bgcolor="#FFFFFF" class="td0"><input name="zjsb_ldmc" type="text" class="input" id="zjsb_ldmc"
+                                                 value="<%=request(" ldmc")%>" datatype="Limit" min="1" msg="不能为空!" />
+        </td>
+      </tr>
+      <tr>
+        <td height="30" align="right" valign="middle" bgcolor="#FFFFFF" class="td2">监管银行：</td>
+        <td bgcolor="#FFFFFF" class="td0"><input name="ld_yhmc" type="text" class="input" id="ld_yhmc"
+                                                 value="<%=ld_yhmc%>" readonly="readonly" datatype="Limit" min="1"
+                                                 msg="不能为空!"/></td>
+        <td align="right" bgcolor="#FFFFFF" class="td2">监管账号：</td>
+        <td bgcolor="#FFFFFF" class="td0"><input name="zjsb_jgzh" type="text" class="input" id="zjsb_jgzh"
+                                                 value="<%=ld_zjjgzh%>" readonly="readonly" datatype="Limit" min="1"
+                                                 msg="不能为空!"/></TD>
+      </tr>
+
+      <tr>
+        <td height="30" colspan="4" align="center" valign="middle" bgcolor="#FFFFFF" class="td0"><font color="#FF0000">注意：可使用资金为<%=ksyzj%>，申请使用的资金不能超过可使用资金！</font>
+        </td>
+      </tr>
+      <tr>
+        <td height="30" align="right" valign="middle" bgcolor="#FFFFFF" class="td2">划入账户名称：</td>
+        <td bgcolor="#FFFFFF" class="td0"><input name="zjsb_hrzhmc" type="text" class="input" id="zjsb_hrzhmc"
+                                                 datatype="Limit" min="1" msg="不能为空!"/>
+          <a href="#" onClick="szqy()">
+            <input name="Submit2" type="button" class="buttons" value="选择"/>
+          </a></td>
+        <td align="right" bgcolor="#FFFFFF" class="td2">划入账户账号：</td>
+        <td bgcolor="#FFFFFF" class="td0"><input name="zjsb_hrzhzh" type="text" class="input" id="zjsb_hrzhzh"
+                                                 datatype="Limit" min="1" msg="不能为空!"/></TD>
+      </tr>
+      <tr>
+        <td height="30" align="right" valign="middle" bgcolor="#FFFFFF" class="td2">划入账户银行：</td>
+        <td bgcolor="#FFFFFF" class="td0"><input name="zjsb_hrzhyh" type="text" class="input" id="zjsb_hrzhyh"
+                                                 datatype="Limit" min="1" msg="不能为空!"/></td>
+        <td align="right" bgcolor="#FFFFFF" class="td2">申请使用金额：</td>
+        <%
+        if request("tkfs")=1 then
+        syje=request("jkje")
+        else
+        syje=0
+        end if
+        %>
+        <td bgcolor="#FFFFFF" class="td0"><input name="zjsb_sbje" type="text" class="input" id="zjsb_sbje"
+                                                 value="<%=syje%>" datatype="Limit" min="1" msg="不能为空!"/>
+          元
+        </TD>
+      </tr>
+
+      <tr>
+        <td height="30" align="right" valign="middle" bgcolor="#FFFFFF" class="td2">法定代表人：</td>
+        <td bgcolor="#FFFFFF" class="td0"><input name="zjsb_sqrxm" type="text" class="input" id="zjsb_sqrxm"
+                                                 datatype="Limit" min="1" msg="不能为空!"/></td>
+        <td align="right" bgcolor="#FFFFFF" class="td2">联系电话：</td>
+        <%
+        if request("tkfs")=1 then
+        syje=request("jkje")
+        else
+        syje=0
+        end if
+        %>
+        <td width="280" bgcolor="#FFFFFF" class="td0"><input name="zjsb_sqrlxdh" type="text" class="input"
+                                                             id="zjsb_sqrlxdh" datatype="Limit" min="1" msg="不能为空!"/>
+        </TD>
+      </tr>
+
+
+      <tr>
+        <td height="30" align="right" vAlign="middle" bgcolor="#FFFFFF" class="td2">用款事由说明：</td>
+        <td bgcolor="#FFFFFF" class="td0"><textarea name="zjsb_yksy" rows="4" cols="20" id="zjsb_yksy"
+                                                    style="height:90px;width:400px;"></textarea></td>
+        <td bgcolor="#FFFFFF" class="td2">本栋剩余金额：</td>
+        <td bgcolor="#FFFFFF" class="td0"><input name="zjsb_syje" type="text" class="input" id="zjsb_syje"
+                                                 datatype="Limit" min="1" msg="不能为空!"/>
+          元
+        </td>
+      </tr>
+
+      <tr>
+        <td height="40" colspan="4" align="center" class="td0"><input type="submit" name="Submit" value="保 存"
+                                                                      class="buttons"/>&nbsp;<input type="button"
+                                                                                                    name="Submit"
+                                                                                                    value="关 闭"
+                                                                                                    class="buttons"
+                                                                                                    onClick="javascript:window.close();"/>
+        </td>
+      </tr>
+    </table>
+    </form>
 </html>

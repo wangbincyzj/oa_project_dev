@@ -6,29 +6,37 @@
     <div class="bd">
       <!--第一条-->
       <div class="item">
-        <h4 class="title">第一条  项目建设依据</h4>
+        <h4 class="title">第一条 项目建设依据</h4>
         <ul>
           <li>
             1.出卖人以
-            <input :value="sectionData.ht01001"  type="text" class="w50">
+            <input v-model="ht01.ht01001"  type="text" class="w50">
             方式取得坐落于
-            <input :value="sectionData.ht01002" type="text" class="w500">
+            <input v-model="ht01.ht01002" type="text" class="w500">
             地块的土地使用权。该地块
-            <input :value="sectionData.ht01003" type="text" class="w300">
+            <select v-model="ht01.ht01003">
+              <option value="国有土地使用权证号">国有土地使用权证号</option>
+              <option value="不动产权证">不动产权证</option>
+            </select>
             为
-            <input :value="sectionData.ht01004" type="text" class="w100">
-            。</li>
+            <input v-model="ht01.ht01004" type="text" class="w100">
+            。
+          </li>
           <li>土地使用权面积为
-            <input :value="sectionData.ht01005" type="text" class="w100">M<sup style="vertical-align: super; font-size: smaller">2</sup>,买受人购买的商品房（以下简称该商品房）所占用的土地用途为
-            <input :value="sectionData.ht01006" type="text" class="w200">。土地使用权终止日期为<input :value="sectionData.ht01007" type="text" class="w200"> <span style="font-size: 12px; font-weight: 600; color: red">可以手工修改，如果本栋房屋有住宅和非住宅，那么非住宅的终止日期就是减去30年。</span>
+            <input v-model="ht01.ht01005" type="text" class="w100">M<sup
+              style="vertical-align: super; font-size: smaller">2</sup>,买受人购买的商品房（以下简称该商品房）所占用的土地用途为
+            <input v-model="ht01.ht01006" type="text" class="w200">。土地使用权终止日期为<input v-model="ht01.ht01007"
+                                                                                           type="text" class="w200">
+            <span style="font-size: 12px; font-weight: 600; color: red">可以手工修改，如果本栋房屋有住宅和非住宅，那么非住宅的终止日期就是减去30年。</span>
           </li>
           <li>2.出卖人经批准，在上述地块上建设的商品房项目核准名称为
-            <input :value="sectionData.ht01008" type="text" class="w300">
+            <input v-model="ht01.ht01008" type="text" class="w300">
             。 建设工程规划许可证号为
-            <input :value="sectionData.ht01009" class="w100"/>
+            <input v-model="ht01.ht01009" class="w100"/>
             ， 建筑工程施工许可证号为
-            <input :value="sectionData.ht01010" type="text" class="w100">
-            。</li>
+            <input v-model="ht01.ht01010" type="text" class="w100">
+            。
+          </li>
         </ul>
       </div>
 
@@ -37,8 +45,9 @@
         <h4 class="title">第二条 预售依据</h4>
         <ul>
           <li>该商品房已由[todo]潼关县房地产交易所批准预售,预售许可证号为
-            <input :value="sectionData.ht02001" type="text" class="w100">
-            。</li>
+            <input v-model="ht02.ht02001" type="text" class="w100">
+            。
+          </li>
         </ul>
       </div>
 
@@ -48,51 +57,52 @@
           第三条 商品房基本情况</h4>
         <ul>
           <li>
-            1.该商品房的规划用途为<input :value="sectionData.ht03001" type="text" class="w200">。
+            1.该商品房的规划用途为<input v-model="ht03.ht03001" type="text" class="w200">。
           </li>
           <li>
             2.该商品房所在建筑物的主体结构为
-            <input :value="sectionData.ht03002" type="text" class="w100">
+            <input v-model="ht03.ht03002" type="text" class="w100">
             结构，建筑物总层数为
-            <input :value="sectionData.ht03003" type="text" class="w50">
+            <input v-model="ht03.ht03003" type="text" class="w50">
             层，其中地上
-            <input :value="sectionData.ht03016" type="text" class="w50">
+            <input v-model="ht03.ht03016" type="text" class="w50">
             层，地下
-            <input :value="sectionData.ht03017" type="text" class="w50">
+            <input v-model="ht03.ht03017" type="text" class="w50">
             层。
           </li>
           <li>
             3. 该商品房为第一条规定项目中的
-            <input :value="sectionData.ht03004" type="text" class="w50">
+            <input v-model="ht03.ht03004" type="text" class="w50">
             幢
-            <input :value="sectionData.ht03005" type="text" class="w50">
+            <input v-model="ht03.ht03005" type="text" class="w50">
             单元
-            <input :value="sectionData.ht03006" type="text" class="w50">
+            <input v-model="ht03.ht03006" type="text" class="w50">
             层
-            <input :value="sectionData.ht03007" type="text" class="w50">
+            <input v-model="ht03.ht03007" type="text" class="w50">
             号房 ，房屋竣工后，如房号发生改变，不影响该商
             品房的特定位置。 该商品房的平面图见附件一。
           </li>
           <li>
             4.该商品房的房产测绘机构为
-            <input :value="sectionData.ht03008" type="text" class="w300">
+            <input v-model="ht03.ht03008" type="text" class="w300">
             ，其预测建筑面积共
-            <input :value="sectionData.ht03009" type="text" class="w50">
+            <input v-model="ht03.ht03009" type="text" class="w50">
             平方米，其中套内建筑面积
-            <input :value="sectionData.ht03010" type="text" class="w50">
+            <input v-model="ht03.ht03010" type="text" class="w50">
             平方米，分摊共有建筑面积
-            <input :value="sectionData.ht03011" type="text" class="w50">
+            <input v-model="ht03.ht03011" type="text" class="w50">
             平方米。
             该商品房共用部位见附件二。
           </li>
           <li>该商房品层高为
-            <input :value="sectionData.ht03012" type="text" class="w50">
+            <input v-model="ht03.ht03012" type="text" class="w50">
             米，有
-            <input :value="sectionData.ht03013" type="text" class="w50">
+            <input v-model="ht03.ht03013" type="text" class="w50">
             个阳台，其中
-            <input :value="sectionData.ht03014" type="text" class="w50">
+            <input v-model="ht03.ht03014" type="text" class="w50">
             个阳台为封闭式，
-            <input :value="sectionData.ht03015" type="text" class="w50">个阳台为非封闭式，阳台是否封闭以规划设计文件为准。</li>
+            <input v-model="ht03.ht03015" type="text" class="w50">个阳台为非封闭式，阳台是否封闭以规划设计文件为准。
+          </li>
         </ul>
       </div>
 
@@ -101,14 +111,14 @@
         <h4 class="title">第四条 抵押情况</h4>
         <ul>
           <li>与该商品房有关的抵押情况为
-            【<input type="text" class="w100">】
+            【<input v-model="ht04.ht04001" type="text" class="w100">】
           </li>
-          <li>抵押类型:<input type="text" class="w300">，抵 押 人：<input type="text" class="w300">,</li>
-          <li>抵押权人:<input type="text" class="w300">，抵押登记机构：<input type="text" class="w300">,</li>
-          <li>抵押登记日期:<input type="text" class="w300">，债务履行期限：<input type="text" class="w300">,</li>
-          <li>抵押类型:<input type="text" class="w300">，抵 押 人：<input type="text" class="w300">,</li>
-          <li>抵押权人:<input type="text" class="w300">，抵押登记机构：<input type="text" class="w300">,</li>
-          <li>抵押登记日期:<input type="text" class="w300">，债务履行期限：<input type="text" class="w300">,</li>
+          <li>抵押类型:<input v-model="ht04.ht04002" type="text" class="w300">，抵 押 人：<input v-model="ht04.ht04003" type="text" class="w300">,</li>
+          <li>抵押权人:<input v-model="ht04.ht04004" type="text" class="w300">，抵押登记机构：<input v-model="ht04.ht04005" type="text" class="w300">,</li>
+          <li>抵押登记日期:<input v-model="ht04.ht04006" type="text" class="w300">，债务履行期限：<input v-model="ht04.ht04007" type="text" class="w300">,</li>
+          <li>抵押类型:<input v-model="ht04.ht04008" type="text" class="w300">，抵 押 人：<input v-model="ht04.ht04009" type="text" class="w300">,</li>
+          <li>抵押权人:<input v-model="ht04.ht04010" type="text" class="w300">，抵押登记机构：<input v-model="ht04.ht04011" type="text" class="w300">,</li>
+          <li>抵押登记日期:<input v-model="ht04.ht04012" type="text" class="w300">，债务履行期限：<input v-model="ht04.ht04013" type="text" class="w300">,</li>
         </ul>
       </div>
 
@@ -129,18 +139,74 @@
             <option value="已付房价款一倍">已付房价款一倍</option>
             <option value="买受人全部损失">买受人全部损失</option>
           </select>
-          的赔偿金。</p>
+          的赔偿金。
+        </p>
       </div>
+
+      <CenterButton @btnClick="handleSave" style="margin: 15px 0" title="保存条款"/>
     </div>
   </div>
 </template>
 
 <script>
+  import CenterButton from "@/components/common/centerButton/CenterButton";
+  import {yushouContractApi} from "@/api/menu_3/yushowContract";
   export default {
     name: "No1",
+    components: {CenterButton},
     props: ["htId", "oriData"],
     data() {
       return {
+        ht01:{
+          ht01001: "",
+          ht01002: "",
+          ht01003: "",
+          ht01004: "",
+          ht01005: "",
+          ht01006: "",
+          ht01007: "",
+          ht01008: "",
+          ht01009: "",
+          ht01010: "",
+          ht01011: "",
+        },
+        ht02:{
+          ht02001: "",
+        },
+        ht03:{
+          ht03001: "",
+          ht03002: "",
+          ht03003: "",
+          ht03016: "",
+          ht03017: "",
+          ht03004: "",
+          ht03005: "",
+          ht03006: "",
+          ht03007: "",
+          ht03008: "",
+          ht03009: "",
+          ht03010: "",
+          ht03011: "",
+          ht03012: "",
+          ht03013: "",
+          ht03014: "",
+          ht03015: "",
+        },
+        ht04: {
+          ht04001: "未抵押",
+          ht04002: "X",
+          ht04003: "X",
+          ht04004: "X",
+          ht04005: "X",
+          ht04006: "X",
+          ht04007: "X",
+          ht04008: "X",
+          ht04009: "X",
+          ht04010: "X",
+          ht04011: "X",
+          ht04012: "X",
+          ht04013: "X",
+        },
         ht05: {
           ht05001: "",
           ht05002: "",
@@ -150,11 +216,53 @@
         sectionName: "contractRoomCondition",
       }
     },
-    computed:{
+    computed: {
       sectionData() {
         return this.oriData[this.sectionName]
       }
     },
+    created() {
+      this.mapData()
+    },
+    methods:{
+      handleSave() {
+        let form =  this._formUtil(this._data)
+        form.htId = this.htId;
+        form.name = this.sectionName;
+        yushouContractApi.contractComplete(2, form).then(ret=>{
+          if(ret.code===200){
+            this.$message.success("保存成功")
+          }else{
+            this.$message.success(ret.message||"未知错误")
+          }
+        })
+      },
+      mapData() {
+        this._mapData(this._data, this.sectionData)
+      },
+      // 数据递归映射
+      _mapData(obj, obj2){
+        Object.keys(obj).forEach(item=>{
+          if(obj[item] instanceof Object){
+            this._mapData(obj[item], obj2)
+          }else{
+            obj[item] = obj2[item]||obj[item]
+          }
+        })
+      },
+      // 数据递归映射的反过程
+      _formUtil(obj) {
+        let result = {};
+        Object.keys(obj).forEach(item => {
+          if (obj[item] instanceof Object) {
+            result = Object.assign({}, result, this._formUtil(obj[item]))
+          } else {
+            result[item] = obj[item]
+          }
+        })
+        return result
+      },
+    }
   }
 </script>
 

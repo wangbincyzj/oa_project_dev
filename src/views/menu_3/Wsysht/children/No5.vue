@@ -1,6 +1,6 @@
 <template>
   <div class="wsysht-item tjysmbItems">
-    <div class="hd">第六章 规划设计变更</div>
+    <div class="hd">第六章 规划设计变更<span style="color: skyblue">(只读)</span></div>
     <div class="bd">
       <!--第十四条-->
       <div class="item">
@@ -42,12 +42,17 @@
         </ul>
       </div>
     </div>
+
   </div>
 </template>
 
 <script>
+  import {yushouContractApi} from "@/api/menu_3/yushowContract";
+  import CenterButton from "@/components/common/centerButton/CenterButton";
+
   export default {
     name: "No5",
+    components: {CenterButton},
     data() {
       return{
         ht14: {
@@ -63,11 +68,98 @@
           ht15005: "",
           ht15006: "",
         },
+        sectionName: "contractPlanningChanges"
       }
     },
-    props:{
-      d:{
-        default: ()=>({})
+    props: ["htId", "oriData"],
+    computed: {
+      sectionData() {
+        return this.oriData[this.sectionName]
+      }
+    },
+    created() {
+      this.mapData()
+    },
+    mounted() {
+      document.querySelectorAll("input").forEach(item=>item.disabled=true)
+    },
+    methods:{
+      handleSave() {
+        let form =  this._formUtil(this._data)
+        form.htId = this.htId;
+        form.name = this.sectionName;
+        yushouContractApi.contractComplete(6, form).then(ret=>{
+          if(ret.code===200){
+            this.$message.success("保存成功")
+          }else{
+            this.$message.success(ret.message||"未知错误")
+          }
+        })
+      },
+      mapData() {
+        this._mapData(this._data, this.sectionData)
+      },
+      // 数据递归映射
+      _mapData(obj, obj2){
+        Object.keys(obj).forEach(item=>{
+          if(obj[item] instanceof Object){
+            this._mapData(obj[item], obj2)
+          }else{
+            obj[item] = obj2[item]||obj[item]
+          }
+        })
+      },
+      // 数据递归映射的反过程
+      _formUtil(obj) {
+        let result = {};
+        Object.keys(obj).forEach(item => {
+          if (obj[item] instanceof Object) {
+            result = Object.assign({}, result, this._formUtil(obj[item]))
+          } else {
+            result[item] = obj[item]
+          }
+        })
+        return result
+      },
+      digitUppercase(n) {
+        if(Number.isNaN(n * 1)){
+          this.$message.info("请输入正确的数字");
+          return ""
+        }
+        var fraction = ['角', '分'];
+        var digit = [
+          '零', '壹', '贰', '叁', '肆',
+          '伍', '陆', '柒', '捌', '玖'
+        ];
+        var unit = [
+          ['元', '万', '亿'],
+          ['', '拾', '佰', '仟']
+        ];
+        var head = n < 0 ? '欠' : '';
+        n = Math.abs(n);
+        var s = '';
+        for (var i = 0; i < fraction.length; i++) {
+          s += (digit[Math.floor(n * 10 * Math.pow(10, i)) % 10] + fraction[i]).replace(/零./, '');
+        }
+        s = s || '整';
+        n = Math.floor(n);
+        for (var i = 0; i < unit[0].length && n > 0; i++) {
+          var p = '';
+          for (var j = 0; j < unit[1].length && n > 0; j++) {
+            p = digit[n % 10] + unit[1][j] + p;
+            n = Math.floor(n / 10);
+          }
+          s = p.replace(/(零.)*零$/, '').replace(/^$/, '零') + unit[0][i] + s;
+        }
+        let ret = head + s.replace(/(零.)*零元/, '元')
+          .replace(/(零.)+/g, '零')
+          .replace(/^整$/, '零元整');
+        return ret.replace("元整", "")
+      },
+      handleBlur(e, ref){
+        let value = e.target.value;
+        let ret = this.digitUppercase(value)
+        this.$refs[ref].value = ret
       }
     }
   }

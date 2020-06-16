@@ -59,6 +59,9 @@
     >
       <No0Dialog
         ref="dialog"
+        :htBh="sectionData.htBh"
+        :htId="htId"
+        @submitSuccess="submitSuccess"
       />
     </el-dialog>
   </div>
@@ -159,6 +162,9 @@
         this.$nextTick(()=>{
           this.$refs.dialog.setMode(1)
         })
+      },
+      submitSuccess() {
+        this.dialogVisible = false
       }
     }
   }
