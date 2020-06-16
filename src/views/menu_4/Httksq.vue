@@ -5,10 +5,10 @@
         title="已撤备案未解除监管的合同列表">
         <div slot="controls">
          <div class="controls" style="background-color:#fdf6ec">
-        <span style="margin-left:100px">买受人:</span><el-input size="mini" placeholder="按买受人搜索" style="width:200px;margin-right:100px;" />
-        <span>证件号码:</span><el-input size="mini" placeholder="按证件号码搜索" style="width:200px;margin-right:100px"/>
-        <span>备案号:</span><el-input size="mini" placeholder="按备案号搜索" style="width:200px;margin-right:100px"/>
-        <el-button size="mini" type="success">搜索</el-button>
+        <span style="margin-left:100px">买受人:</span><el-input size="mini" v-model="person" placeholder="按买受人搜索" style="width:200px;margin-right:100px;" />
+        <span>证件号码:</span><el-input size="mini" v-model="certificate" placeholder="按证件号码搜索" style="width:200px;margin-right:100px"/>
+        <span>备案号:</span><el-input size="mini" v-model="code" placeholder="按备案号搜索" style="width:200px;margin-right:100px"/>
+        <el-button size="mini" type="success" @click="search">搜索</el-button>
         <div class="controls">
             <el-alert
             type="warning"
@@ -20,48 +20,47 @@
       </div>
         <el-table
           :data="tableData"
-          style="width: 100%">
-           <el-table-column
-            label="序号"
-            prop="id">
-          </el-table-column>
+          style="width: 100%"
+          @cell-mouse-enter="cellMouseEnter">
+           
           <el-table-column
             label="备案号"
-            prop="id">
+            prop="jiaocunHtbah">
           </el-table-column>
           <el-table-column
             label="买受人"
-            prop="htId">
+            prop="jiaocunMsrxm">
           </el-table-column>
           <el-table-column
             label="证件号码"
-            prop="companyName">
+            prop="jiaocunMsrzjhm">
           </el-table-column>
           <el-table-column
             label="项目名称"
-            prop="companyName">
+            prop="xmmc">
           </el-table-column>
           <el-table-column
-            label="栋号"
-            prop="itemName">
+            label="楼栋名称"
+            prop="jiaocunLdmc">
+            <!-- 栋号 -->
           </el-table-column>
           <el-table-column
             label="房号"
-            prop="ldName">
+            prop="jiaocunFh">
           </el-table-column>
           <el-table-column
             label="变更时间"
-            prop="phone">
+            prop="htBgsj">
           </el-table-column>
           <el-table-column
             align="center"
             label="变更原因"
-            prop="status">           
+            prop="htBgyy">           
           </el-table-column>
          <el-table-column
             align="center"
             label="纳入监管资金"
-            prop="status">           
+            prop="jkje">           
           </el-table-column>
          
           <el-table-column
@@ -72,13 +71,35 @@
             <template slot-scope="scope">
               <el-button
                 size="mini"
-                @click="handlePrint(scope.$index, scope.row)">打印合同
+                @click="handleWithdraw(scope.$index, scope.row)">申请退款
               </el-button>
               
             </template>
           </el-table-column>
         </el-table>
-       
+        <el-pagination
+          background
+          layout="prev, pager, next, total"
+          @current-change="currentChange"
+          :current-page="currentPage"
+          :page-size="pageSize"
+          :total="total">
+        </el-pagination>
+       <el-dialog
+          :title="dialogTitle"
+          center
+          width="800px"
+          :before-close="closeConfirm"
+          slot="dialog"
+          :visible.sync="dialogVisible"
+          @close="dialogVisible = false"
+        >
+          <HttksqDialog
+            ref="dialog"
+            :dialog-type="dialogType"
+            @submitSuccess="submitSuccess"
+          />
+        </el-dialog>
       </TitleTable>
   
   </div>
@@ -87,55 +108,74 @@
 <script>
   import ContainerTwoType from "@/components/current/containerTwoType/ContainerTwoType";
   import TitleTable from "@/components/current/titleTable/TitleTable";
-  //import SqsfxyDialog from "@/views/menu_4/SqsfxyDialog";
- 
-  //import {tjrwyhApi} from "@/api/menu_4/tjrwyh";
+  import HttksqDialog from "@/views/menu_4/HttksqDialog";
+  import {httksqApi} from "@/api/menu_4/httksq";
   import {mixins} from "@/utils/mixins";
 
   export default {
     name: "httksq",
     mixins: [mixins.dialogMixin],
-    components: { TitleTable, ContainerTwoType},
+    components: { TitleTable, ContainerTwoType,HttksqDialog},
     data() {
       return{
        
         tableData: [
+          {id:1}
         ],
-        search: "",
+        currentPage:1,
+        pageSize:10,
+        total:0,
+        pages:1,
         dialogVisible: false,
         dialogTitle: "",
         dialogType: 0,
-        authList: [],
-        selectedIndex: 0,
-        selectedIndex: null,
+        person:"",
+        certificate:"",
+        code:"",
       }
     },
     created() {
-      this.fetchNavInfo();
+      this.fetchData();
     },
     methods:{
-      fetchNavInfo() {
-        this.navInfo.loading = true;
-        // tjrwqyApi.getAccessEnterprisesByPage(1, 50).then(ret=>{
-        //   this.navInfo.loading = false;
-        //   this.navInfo.list = ret.data.records.map(item=>({
-        //     ...item, id: item.rwqyxxId, name: item.rwqyxxTitle
-        //   }));
-         this.navInfo.list.unshift({id:0, name: "请选择对应的监管账户"})
-        // })
+       fetchData(){
+         httksqApi.getAllContract(this.currentPage,this.pageSize,this.$store.state.rwbh).then(ret=>{
+           
+           this.tableData = ret.data;
+           this.total=ret.total;
+           this.pages=ret.data.pages;
+          });
       },
-      // fetchTableData
-     
-      liClick(index) {
-        this.selectedIndex = index;
-        if(index===0)return;
-        // this.selectedIndex = this.navInfo.list[index];
-        // this.getAccessEnterprisesInfo(this.navInfo.list[index].id)
+      searchData(arg1,arg2,arg3){
+        //  httksqApi.getContractBySearch(this.currentPage,this.pageSize,this.$store.state.projectData.xmxxXmbh,arg1,arg2,arg3).then(ret=>{
+        //   this.tableData = ret.data.records
+        //   });
+      },
+     search(){
+       searchData(this.person,this.certificate,this.code);
+     },
+      handleWithdraw(){
+        this.dialogVisible=true;
+        this.dialogTitle="添加退款申请";
+        this.dialogType=1;
+        this.$nextTick(()=>{
+          this.$refs.dialog.setMode(1,this.currentRow.hetongId);
+        })
       },
      
-    
-      handlePrint(index, row){
-       
+      currentChange(num) {
+        this.currentPage = num;
+        this.fetchData()
+      },
+       cellMouseEnter(row) {
+        this.currentRow = row;
+      },
+       submitSuccess() {
+         this.$nextTick(()=>{
+                this.$refs.dialog.reset();
+            });
+        this.dialogVisible = false;
+        this.fetchData;
       },
       
     }

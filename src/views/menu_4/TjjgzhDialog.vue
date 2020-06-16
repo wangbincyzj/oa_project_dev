@@ -391,8 +391,7 @@ export default {
           return
         };
       ywxlId = this.ywlx[1];
-      sqjgzhApi
-        .addAccount({
+      sqjgzhApi.addAccount({
           ...this.form,
           zjjgzhLdmc: this.ldName,
           zjjgzhYhmc: this.bankName,
@@ -409,11 +408,18 @@ export default {
         });
     },
     updateData() {
+      let ywxlId = 0;
+        if (this.ywlx.length < 2) {
+          this.$message.error("请选择业务类型")
+          return
+        };
+      ywxlId = this.ywlx[1];
       sqjgzhApi.updateAccount({
           ...this.form,
           zjjgzhLdmc: this.ldName,
           zjjgzhYhmc: this.bankName,
-          kfsId: this.$store.state.projectData.kfsId
+          kfsId: this.$store.state.projectData.kfsId,
+          ywxlBh:ywxlId
         })
         .then(ret => {
           if (ret.code !== 200) {
@@ -465,7 +471,7 @@ export default {
           }
         })
       },
-      fetchShouJianByYwzh(id){
+     fetchShouJianByYwzh(id){
          sqjgzhApi.selectByYwzh(id).then(ret => {
           this.businessReceives = ret.data.map(item => ({
             shoujianTitle: item.ywsjTitle,
@@ -473,7 +479,7 @@ export default {
             shoujianFenshu: item.ywsjFenshu
           }))
         })
-      },
+      }, 
     onSubmit() {
       if (this.dialogType === 1) {
         this.addData();

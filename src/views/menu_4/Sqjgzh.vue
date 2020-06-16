@@ -65,17 +65,21 @@
               <el-button
                 size="mini"
                 type="primary"
-                @click="handleGetFile(scope.$index, scope.row)">收件
+                @click="handleGetFile(scope.$index, scope.row)"
+               
+                :disabled="scope.row.zjjgzhLczt !== '收件'">收件
               </el-button>
                <el-button
                 size="mini"
                 type="primary"
-                @click="handleDelFile(scope.$index, scope.row)">清除
+                @click="handleDelFile(scope.$index, scope.row)"
+                :disabled="scope.row.zjjgzhLczt !== '收件'">清除
               </el-button>
                <el-button
                 size="mini"
                 type="primary"
-                @click="handlePrintFile(scope.$index, scope.row)">打印收件
+                @click="handlePrintFile(scope.$index, scope.row)"
+                 @mouseover.native = "fetchPrintData">打印收件
               </el-button>
             </template>    
           </el-table-column>
@@ -93,27 +97,32 @@
                <el-button
                 size="mini"
                 type="primary"
-                @click="handleUpdate(scope.$index, scope.row)">修改
+                @click="handleUpdate(scope.$index, scope.row)"
+                :disabled="scope.row.zjjgzhLczt !== '收件'">修改
               </el-button>
                <el-button
                 size="mini"
                 type="primary"
-                @click="loadPic(scope.$index, scope.row)">传图
+                @click="loadPic(scope.$index, scope.row)"
+                :disabled="scope.row.zjjgzhLczt !== '收件'">传图
               </el-button>
                <el-button
                 size="mini"
                 type="primary"
-                @click="managePic(scope.$index, scope.row)">管图
+                @click="managePic(scope.$index, scope.row)"
+                :disabled="scope.row.zjjgzhLczt !== '收件'">管图
               </el-button>
                <el-button
                 size="mini"
                 type="primary"
-                @click="handleInform(scope.$index, scope.row)">上报
+                @click="handleInform(scope.$index, scope.row)"
+                :disabled="scope.row.zjjgzhLczt !== '收件'">上报
               </el-button>
                <el-button
                 size="mini"
                 type="primary"
-                @click="handleDelete(scope.$index, scope.row)">删除
+                @click="handleDelete(scope.$index, scope.row)"
+                :disabled="scope.row.zjjgzhLczt !== '收件'">删除
               </el-button>
             </template>
           </el-table-column>
@@ -144,39 +153,28 @@
           />
         </el-dialog>
       </TitleTable>
-    <div id="printData" style="display:none">
+    <div id="printData" style="width:700px;margin:0 auto;display:none">
       <h1 style="text-align:center;font-weight:bold">预售监管账户申请收件清单</h1>
-       <el-table style="border:black solid 2px;width:1000px;margin:0 auto;text-align:center" id="printTable"
-       :data="printTable">
-         <el-table-column
-          label="序号"
-          width="200px"
-          align="center"
-          prop="shoujianId"
-        >
-        </el-table-column>
-        <el-table-column
-          label="收件名称"
-           width="300px"
-           align="center"
-          prop="shoujianTitle"
-        >
-        </el-table-column>
-        <el-table-column
-          label="收件性质"
-           width="300px"
-           align="center"
-          prop="shoujianSjxz"
-        >
-        </el-table-column>
-        <el-table-column
-          label="份数"
-          align="center"
-          prop="shoujianFenshu"
-        >
-        </el-table-column>
+       <table style="width:700px;margin:0 auto;text-align:center;font-size:16px;text-height:25px" id="printTable" border="1" cellspacing="0"> 
+            <thead>
+                <tr>
+                    <td>序号</td>
+                    <td>收件名称</td>
+                    <td>收件性质</td>
+                    <td>收件份数</td>
+                   
+                </tr>
+            </thead>
+            <tbody>
+               <tr v-for="(item, index) in printTable" :key="index" >
+                    <th>{{index+1}}</th>
+                    <th>{{item.shoujianTitle}}</th>
+                    <th>{{item.shoujianSjxz}}</th>
+                    <th>{{item.shoujianFenshu}}</th>
+                </tr>
+            </tbody>
         
-      </el-table>
+      </table>
   </div>
   </div>
   
@@ -227,13 +225,18 @@
     created() {
     
       this.fetchData();
-      this.fetchPrintData();
+      
     },
     methods:{
-      fetchPrintData(){
-         sqjgzhApi.getAllYwsj().then(ret=>{
-        this.printTable=ret.data;
-      });
+      fetchPrintData(id){
+        
+        sqjgzhApi.selectByYwzh(id).then(ret => {
+          this.printTable = ret.data.map(item => ({
+            shoujianTitle: item.ywsjTitle,
+            shoujianSjxz: item.ywsjSjxz === 0 ? "原件" : "复印件",
+            shoujianFenshu: item.ywsjFenshu
+          }))
+        })
       },
      fetchData(){
        console.log("where is my winter bear");
@@ -353,6 +356,7 @@
         })
       },
       handlePrintFile(){
+        
         document.getElementById('printTable').classList.add('printTable');
         let obj=document.getElementById('printData');
         let newWindow=window.open("打印窗口","_blank");
@@ -370,11 +374,18 @@
         this.dialogVisible = false;
         this.fetchData();
       },
+      fetchPrint(){
+        this.zjjgzhYwzh=this.currentRow.zjjgzhYwzh;
+        this.fetchPrintData(this.zjjgzhYwzh);
+      },
       cellMouseEnter(row) {
         this.currentRow = row;
+        // this.zjjgzhYwzh=this.currentRow.zjjgzhYwzh;
+        // this.fetchPrintData(this.zjjgzhYwzh);
       },
       currentChange(num) {
          this.currentPage = num;
+         this.zjjgzhYwzh=this.currentRow.zjjgzhYwzh;
          this.fetchData();         
        },
     }

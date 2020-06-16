@@ -1,15 +1,15 @@
 <template>
-  <div class="sqjgzh">
+  <div class="sqsfxy">
     
       <TitleTable
-        title="账户对应监管协议列表">
+        title="账户对应三方协议列表">
         
         <el-table
           :data="tableData"
           style="width: 100%">
           <el-table-column
             label="序号"
-            prop="id">
+            prop="hetongId">
           </el-table-column>
           <el-table-column
             label="合同备案号"
@@ -17,24 +17,24 @@
           </el-table-column>
           <el-table-column
             label="银行名称"
-            prop="companyName">
+            prop="hetongYhmc">
           </el-table-column>
           <el-table-column
             label="企业名称"
-            prop="itemName">
+            prop="hetongKfsmc">
           </el-table-column>
           <el-table-column
             label="监管账户"
-            prop="ldName">
+            prop="hetongZhmc">
           </el-table-column>
           <el-table-column
             label="项目名称"
-            prop="phone">
+            prop="hetongXmmc">
           </el-table-column>
           <el-table-column
             align="center"
             label="审核状态"
-            prop="status">           
+            prop="hetongLczt">           
           </el-table-column>
          <el-table-column
             align="center"
@@ -63,9 +63,10 @@
 <script>
   import ContainerTwoType from "@/components/current/containerTwoType/ContainerTwoType";
   import TitleTable from "@/components/current/titleTable/TitleTable";
-  //import SqsfxyDialog from "@/views/menu_4/SqsfxyDialog";
+  import DysfxyDialog from "@/views/menu_4/DysfxyDialog";
  
-  //import {tjrwyhApi} from "@/api/menu_4/tjrwyh";
+  import {sqjgzhApi} from "@/api/menu_4/sqjgzh";
+ import {sqsfxyApi} from "@/api/menu_4/sqsfxy";
   import {mixins} from "@/utils/mixins";
 
   export default {

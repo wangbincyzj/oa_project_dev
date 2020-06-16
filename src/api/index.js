@@ -5,7 +5,7 @@ import store from "@/store"
 
 
 // 基础设置
-const BASE_URL = "http://192.168.1.155:8080/";
+const BASE_URL = "http://192.168.1.155:8090/";
 // 155, 153,131
 const TIME_OUT = 5000;
 axios.defaults.baseURL = BASE_URL;
