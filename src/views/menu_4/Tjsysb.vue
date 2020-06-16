@@ -1,70 +1,117 @@
 <template>
-  <div class="sqjgzh">
-    <ContainerTwoType
+  <div class="tjsysb">
+    <!-- <ContainerTwoType
      
       :nav-info="navInfo"
-      @liClick="liClick">
+      @liClick="liClick"> -->
     <!-- > :loading="navInfo.loading" -->
       <TitleTable
-        title="项目对应楼栋列表">
-        
+        :title="`【${this.$store.state.projectData.xmxxXmmc}】项目应楼栋列表`"> 
         <el-table
           :data="tableData"
-          style="width: 100%">
+          style="width: 100%"
+          @cell-mouse-enter="cellMouseEnter"
+          @expand-change="showAccount"
+          >
+          <!-- @cell-row-click="showAccount" -->
+           <el-table-column type="expand">
+        <template slot-scope="props">
+         <div>
+              <table>
+            <tr>
+              <td style="width:150px;text-align:center;font-size:20px;background-color:#EEF7FD">监管信息</td>
+              <td >
+              <el-table
+              :data="props.row.AccountTable"
+              style="width:100%"
+             >
+              <!-- :header-cell-style="{background:'#EEF7FD'}" -->
+                <el-table-column
+                label="银行名称"
+                prop="zjjgzhYhmc">                  
+                </el-table-column>
+                 <el-table-column
+                label="开户账号"
+                prop="zjjgzhYhzh">                  
+                </el-table-column>
+                 <el-table-column
+                label="监管金额"
+                prop="money1">                  
+                </el-table-column>
+                 <el-table-column
+                label="使用金额"
+                prop="money2">                  
+                </el-table-column>
+                 <el-table-column
+                  align="center"
+                  label="操作"
+                >
+            <template slot-scope="scope">
+              <el-button
+                size="mini"
+                 type="primary"
+                @click="handleAdd(scope.$index, scope.row)">新增使用
+              </el-button>
+            </template>
+          </el-table-column>
+              </el-table>
+              </td>
+              </tr>
+              </table>
+          </div>
+          
+      </template>
+    </el-table-column>
           <el-table-column
             label="楼栋名称"
-            prop="id">
+            prop="ldxxMc">
           </el-table-column>
           <el-table-column
             label="建筑面积"
-            prop="companyName">
+            prop="ldxxJzmj">
           </el-table-column>
           <el-table-column
             label="监管总额"
-            prop="itemName">
+            prop="jianguanJe">
           </el-table-column>
           <el-table-column
             label="使用总额"
-            prop="ldName">
+            prop="shiyongJe">
           </el-table-column>
           <el-table-column
             label="退款总额"
-            prop="phone">
+            prop="tuikuanJe">
           </el-table-column>
           <el-table-column
             align="center"
             label="剩余总额"
-            prop="status">           
+            prop="shengyuJe">           
           </el-table-column>
           
           <el-table-column
             align="center"
             label="操作"
           >
-            <!-- <template slot="header" slot-scope="scope">
-              <el-input
-                v-model="search"
-                size="mini"
-                placeholder="输入关键字搜索"/>
-            </template> -->
             <template slot-scope="scope">
+             
               <el-button
                 size="mini"
-                @click="handleEdit(scope.$index, scope.row)">更正
-              </el-button>
-              <el-button
-                size="mini"
-                type="primary"
+               
                 @click="handleDetail(scope.$index, scope.row)">详情
               </el-button>
-              <el-button
-                size="mini"
-                type="warning"
-                @click="handleDelete(scope.$index, scope.row)">删除
-              </el-button>
+              
             </template>
           </el-table-column>
+         
         </el-table>
+         <el-pagination
+          background
+          layout="prev, pager, next, total"
+          @current-change="currentChange"
+          :current-page="currentPage"
+          :page-size="pageSize"
+          :total="total">
+        </el-pagination>
         <el-dialog
           :title="dialogTitle"
           center
@@ -74,29 +121,28 @@
           :visible.sync="dialogVisible"
           @close="dialogVisible = false"
         >
-          <TjjgzhDialog
+          <TjsysbDialog
             ref="dialog"
             :dialog-type="dialogType"
             @submitSuccess="submitSuccess"
           />
         </el-dialog>
       </TitleTable>
-    </ContainerTwoType>
+    <!-- </ContainerTwoType> -->
   </div>
 </template>
 
 <script>
   import ContainerTwoType from "@/components/current/containerTwoType/ContainerTwoType";
   import TitleTable from "@/components/current/titleTable/TitleTable";
-  import TjjgzhDialog from "@/views/menu_4/TjjgzhDialog";
- 
-  //import {tjrwyhApi} from "@/api/menu_4/tjrwyh";
+  import TjsysbDialog from "@/views/menu_4/TjsysbDialog";
+  import {tjsysbApi} from "@/api/menu_4/tjsysb";
   import {mixins} from "@/utils/mixins";
 
   export default {
-    name: "sqjgzh",
+    name: "tjsysb",
     mixins: [mixins.dialogMixin],
-    components: {TjjgzhDialog, TitleTable, ContainerTwoType},
+    components: {TjsysbDialog, TitleTable, ContainerTwoType},
     data() {
       return{
         navInfo:{
@@ -107,61 +153,87 @@
           ]
         },
         tableData: [
+          {id:1},
+          {id:2}
+        ],
+        AccountTable:[
+          {name:"中国工商银行",account:"1234567",money1:7890,money2:2344},
+          {name:"中国工商银行",account:"1234567",money1:7890,money2:2344},
+          {name:"中国工商银行",account:"1234567",money1:7890,money2:2344},
         ],
         search: "",
+        currentRow:[],
         dialogVisible: false,
         dialogTitle: "",
         dialogType: 0,
-        authList: [],
+        currentPage:1,
+        pageSize:10,
+        total:0,
+        pages:1,
         selectedIndex: 0,
         selectedIndex: null,
       }
     },
     created() {
-      this.fetchNavInfo();
+      this.fetchData();
     },
     methods:{
-      fetchNavInfo() {
-        this.navInfo.loading = true;
-        // tjrwqyApi.getAccessEnterprisesByPage(1, 50).then(ret=>{
-        //   this.navInfo.loading = false;
-        //   this.navInfo.list = ret.data.records.map(item=>({
-        //     ...item, id: item.rwqyxxId, name: item.rwqyxxTitle
-        //   }));
-         this.navInfo.list.unshift({id:0, name: "请选择项目名称"})
-        // })
-      },
-      // fetchTableData
-     
-      liClick(index) {
-        this.selectedIndex = index;
-        if(index===0)return;
-        // this.selectedIndex = this.navInfo.list[index];
-        // this.getAccessEnterprisesInfo(this.navInfo.list[index].id)
-      },
       
-      addClick() {
-        this.dialogVisible = true;
-        this.dialogTitle = "添加监管账户";
-        this.dialogType = 0;
-        this.$nextTick(()=>{
-          this.$refs.dialog.setMode(1)
-        })
+     fetchData(){
+         tjsysbApi.getBuildingByXmbh(this.currentPage,this.pageSize,this.$store.state.projectData.xmxxXmbh).then(ret=>{
+          this.total=ret.total;
+          this.pages=ret.data.pages;
+          this.tableData = ret.data.map(item => ({
+            ...item,
+            AccountTable:{},
+          }))
+          });
       },
-      handleEdit(index, row){
+     
+      
+      
+      handleAdd() {
         this.dialogVisible = true;
-        this.dialogTitle = "修改";
+        this.dialogTitle = "添加申报使用";
         this.dialogType = 1;
         this.$nextTick(()=>{
-          this.$refs.dialog.setMode(2, row.Id);
-          //this.$refs.dialog.reset();
+          this.$refs.dialog.setMode(1,this.currentRow.id)
         })
+      },
+      handleDetail(index, row){
+        this.dialogVisible = true;
+        this.dialogTitle = "详情";
+        this.dialogType = 2;
+        this.$nextTick(()=>{
+          this.$refs.dialog.setMode(2, this.currentRow.Id);
+        })
+      },
+      showAccount(row,expandRow){
+          console.log(row.ldxxLdbh);
+          console.log("taetae");
+           tjsysbApi.getAccountByLd(this.$store.state.projectData.kfsId,row.ldxxLdbh).then(ret=>{
+          // row.AccountTable = ret.data
+          this.$set(row, "AccountTable", ret.data)
+          console.log(row);
+          
+          });
+          
+          
       },
       submitSuccess() {
          this.$nextTick(()=>{
-                //this.$refs.dialog.reset();
+                this.$refs.dialog.reset();
             });
         this.dialogVisible = false;
+        this.fetchData();
+      },
+      currentChange(num) {
+        this.currentPage = num;
+        this.fetchData()
+      },
+       cellMouseEnter(row) {
+        this.currentRow = row;
+        
       },
       handleDelete(flag, row){
         console.log(flag, row)

@@ -12,6 +12,67 @@ let addContract = function (_form) {
   return requests8083.post("data-presale-funds/ripartiteAgreement/save", _form)
 }
 
+/**
+ * 修改合同
+ */
+let updateContract = function (_form) {
+  return requests8083.post("data-presale-funds/ripartiteAgreement/update", _form)
+}
+/**
+ * 删除合同
+ * @param id
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+let deleteContract = function (id) {
+  return requests8083.get("data-presale-funds/ripartiteAgreement/del", {id})
+}
+
+
+/**
+ * 上报账户
+ * @param id
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+let informContract = function (id) {
+  return requests8083.get("data-presale-funds/ripartiteAgreement/submit", {id})
+}
+/**
+ * 清除收件
+ * @param id
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+let deleteSj = function (id) {
+  return requests.get("data_center/businessAttachment/delByYwzh", {id})
+}
+/**
+ * 根据业务宗号(业务Id)获取审核流程链
+ * @param businessId
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+let getShlcDetail = function (businessId) {
+  return requests8083.get("data-presale-funds/ripartiteAgreement/getApproveList", {businessId})
+}
+/**
+ * 根据业务宗号查询收件信息
+ */
+let selectByYwzh = function (ywsjYwzh) {
+  return requests.get("data_center/businessAttachment/selectByYwzh", {ywsjYwzh})
+}
+
+/**
+ * 确认收件
+ */
+let submitShouJian = function (list) {
+  return requests.post("data_center/businessAttachment/receiving", list)
+}
+/**
+ * 查询收件情况
+ * @param id
+ */
+let queryReceiving = function (id) {
+  return requests8083.get("data-presale-funds/ripartiteAgreement/queryReceiving", {id})
+};
+
  /**
  * 根据页数查询所有合同
  * @param page
@@ -58,6 +119,26 @@ let getProjectByName = function (xmxxXmmc,xmxxShzt=null,xmxxXmbh=null,kfsRwbh=nu
         xmxxXmmc,xmxxShzt,xmxxXmbh,kfsRwbh,
     })
   }
+  /**
+ * 根据项目编号查询项目
+ * 
+ */
+let getProjectById = function(id){
+  return requests.get("data_center/realEstateProject/selectById", {id})
+}
+/**
+ * 根据项目编号查询账户列表
+ * @param page
+ * @param size
+ * 
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+
+let getYshAccount = function (page, size = 20,xmxxXmbh) {   //,zjjgzhShzt=3
+  return requests8083.get("data-presale-funds/supervisedAccount/selectPage", {
+    current: page, size, xmxxXmbh,
+  })
+}
 
 export const sqsfxyApi = {
     addContract,
@@ -65,4 +146,15 @@ export const sqsfxyApi = {
     getContractByAccount,
     getContractInfoById,
     getProjectByName,
+    updateContract,
+    deleteContract,
+    deleteSj,
+    getShlcDetail,
+    selectByYwzh,
+    submitShouJian,
+    queryReceiving,
+    getProjectById,
+    informContract,
+    getYshAccount
+
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="sqsfxy">
+  <div class="ldzjxx">
      <ContainerTwoType
       class="container"
       :nav-info="navInfo"
@@ -7,129 +7,60 @@
     >
    
       <TitleTable
-        title="账户对应监管协议列表">
-        <div slot="controls">
-          <el-alert
-            type="warning"
-            center
-            :closable="false">
-            <div class="controls">
-              <span class="warning" v-if="selectedIndex">当前选择 【{{selectedIndex.name}}】</span>
-              <span class="warning" v-else>首先点击左边对应的监管账号，然后再点“添加合同”	</span>
-              <el-button :disabled="selectedIndex===0" @click="addClick" icon="el-icon-plus" size="mini" type="primary">添加合同</el-button>
-            </div>
-          </el-alert>
-          <el-alert
-            type="warning"
-            center
-            :closable="false">
-            <span class="warning" style="color: red">注意：资金监管账户审核通过才能申请“资金监管三方协议”</span>
-          </el-alert>
-        </div>
+        title="对应的缴款列表"
+        style="height:50%;overflow-y:scroll;">
+       <div class="controls" style="background-color:#fdf6ec;width:100%;margin:0 auto">
+        <span>买受人:</span><el-input  v-model="person" size="mini" placeholder="按买受人搜索" style="width:200px;" />
+        <span>开始时间:</span> <el-date-picker v-model="startTime1" type="date" placeholder="选择开始时间" size="mini"></el-date-picker>
+        <span>结束时间:</span><el-date-picker v-model="endTime1" type="date" placeholder="选择结束时间" size="mini"></el-date-picker>
+        <el-button size="mini" type="success" @click="search">查找</el-button>
+        <el-button size="mini" type="success" @click="handlePrint">打印明细</el-button>
+       </div>
         <el-table
           :data="tableData"
           style="width: 100%"
           @cell-mouse-enter="cellMouseEnter">
           <el-table-column
-            label="序号"
-            width=50
+            label="买受人"
             prop="hetongId">
           </el-table-column>
           <el-table-column
-            label="银行名称"
-            width=100
+            label="证件号码"
             prop="hetongYhmc">
           </el-table-column>
           <el-table-column
-            label="企业名称"
-            width=100
+            label="项目名称"
             prop="hetongKfsmc">
           </el-table-column>
           <el-table-column
-            label="监管账户"
-            width=100
+            label="楼栋名称"
             prop="hetongZhmc">
           </el-table-column>
           <el-table-column
-            label="项目名称"
-            width=100
+            label="房号"
             prop="hetongXmmc">
           </el-table-column>
           <el-table-column
             align="center"
-            label="状态"
-            width=80
+            label="建筑面积"
             prop="hetongLczt">           
           </el-table-column>
           <el-table-column
             align="center"
-            label="收件操作"
-             width=280
-            prop="operation">       
-            <template slot-scope="scope" >
-              <el-button
-                size="mini"
-                type="primary"
-                @click="handleGetFile(scope.$index, scope.row)">收件
-              </el-button>
-               <el-button
-                size="mini"
-                type="primary"
-                @click="handleDelFile(scope.$index, scope.row)">清除
-              </el-button>
-               <el-button
-                size="mini"
-                type="primary"
-                @click="handlePrintFile(scope.$index, scope.row)">打印收件
-              </el-button>
-            </template>    
-          </el-table-column>
-          <el-table-column
+            label="缴款金额"
+            prop="hetongLczt">           
+          </el-table-column><el-table-column
             align="center"
-            label="操作"
-          >
-           
-            <template slot-scope="scope">
-              <el-button
-                size="mini"
-                type="primary"
-                @click="handleUpdate(scope.$index, scope.row)">修改
-              </el-button>
-               <el-button
-                size="mini"
-                type="primary"
-                @click="loadPic(scope.$index, scope.row)">传图
-              </el-button>
-               <el-button
-                size="mini"
-                type="primary"
-                @click="managePic(scope.$index, scope.row)">管图
-              </el-button>
-               <el-button
-                size="mini"
-                type="primary"
-                @click="handleInform(scope.$index, scope.row)">上报
-              </el-button>
-              <el-button
-                size="mini"
-                type="primary"
-                @click="handleDelete(scope.$index, scope.row)">删除
-              </el-button>
-              <el-button
-                size="mini"
-                type="primary"
-                @click="handlePrint(scope.$index, scope.row)">查看合同
-              </el-button>
-              <el-button
-                size="mini"
-                type="primary"
-                @click="handleDetail(scope.$index, scope.row)">详情
-              </el-button>
-             
-            </template>
+            label="缴款说明"
+            prop="hetongLczt">           
+          </el-table-column><el-table-column
+            align="center"
+            label="缴款日期"
+            prop="hetongLczt">           
           </el-table-column>
+          
         </el-table>
-        <el-pagination
+        <!-- <el-pagination
           background
           layout="prev, pager, next, total"
           @current-change="currentChange"
@@ -159,8 +90,62 @@
             :hetongYwzh="hetongYwzh"
             @submitSuccess="submitSuccess"
           />
-        </el-dialog>
+        </el-dialog> -->
       </TitleTable>
+
+       <TitleTable
+        title="对应的使用信息"
+        style="height:50%;overflow-y:scroll;">
+       <div class="controls" style="background-color:#fdf6ec;width:100%">
+        <span style="margin-left:100px">开始时间:</span> <el-date-picker v-model="startTime2" type="date" placeholder="选择开始时间" size="mini"></el-date-picker>
+        <span>结束时间:</span><el-date-picker v-model="endTime2" type="date" placeholder="选择结束时间" size="mini"></el-date-picker>
+        <el-button size="mini" type="success" @click="search">查找</el-button>
+        <el-button size="mini" type="success" @click="handlePrint">打印明细</el-button>
+       </div>
+        <el-table
+          :data="tableData1"
+          style="width: 100%"
+          @cell-mouse-enter="cellMouseEnter">
+          <el-table-column
+            label="申报金额"
+            align="center"
+            prop="hetongId">
+          </el-table-column>
+          <el-table-column
+            label="划出帐号"
+            align="center"
+            prop="hetongYhmc">
+          </el-table-column>
+          <el-table-column
+            label="发放日期"
+            align="center"
+            prop="hetongKfsmc">
+          </el-table-column>
+         
+        </el-table>
+      </TitleTable>
+
+       <el-table
+          :data="tableData2"
+          style="width:100%"
+          @cell-mouse-enter="cellMouseEnter">
+          <el-table-column
+            label="缴款总金额"
+            align="center"
+            prop="hetongId">
+          </el-table-column>
+          <el-table-column
+            label="使用总金额"
+            align="center"
+            prop="hetongYhmc">
+          </el-table-column>
+          <el-table-column
+            label="账户总金额"
+            align="center"
+            prop="hetongKfsmc">
+          </el-table-column>
+         
+        </el-table>
       </ContainerTwoType>
   </div>
 </template>
@@ -168,15 +153,13 @@
 <script>
   import ContainerTwoType from "@/components/current/containerTwoType/ContainerTwoType";
   import TitleTable from "@/components/current/titleTable/TitleTable";
-  import SqsfxyDialog from "@/views/menu_4/SqsfxyDialog";
- import {sqsfxyApi} from "@/api/menu_4/sqsfxy";
-  import {sqjgzhApi} from "@/api/menu_4/sqjgzh";
+ import {ldzjxxApi} from "@/api/menu_4/ldzjxx";
   import {mixins} from "@/utils/mixins";
 
   export default {
-    name: "sqsfxy",
+    name: "ldzjxx",
     mixins: [mixins.dialogMixin],
-    components: {SqsfxyDialog, TitleTable, ContainerTwoType},
+    components: {TitleTable, ContainerTwoType},
     data() {
       return{
         navInfo:{
@@ -188,6 +171,15 @@
         },
         tableData: [
         ],
+        tableData1: [
+        ],
+        tableData2: [
+        ],
+        person:"",
+        startTime1:"",
+        endTime1:"",
+        startTime2:"",
+        endTime2:"",
         search: "",
         dialogVisible: false,
         dialogTitle: "",
@@ -197,15 +189,10 @@
         total:0,
         pages:1,
         selectedIndex: 0,
-        zjjgzhId:"",
-        zjjgzhZhmc:"",
-        zjjgzhGsmc:"",
-        zjjgzhYhmc:"",
-        zjjgzhXmmc:"",
-        kfsId:"",
-        hetongYwzh:"",
-        zjjgzhYhzh:"",
         xmxxXmbh:"",
+        ldxxLdbh:"",
+        ldxxMc:"",
+
 
 
       }
@@ -218,21 +205,18 @@
     methods:{
       fetchNavInfo() {
       this.xmxxXmbh=this.$store.state.projectData.xmxxXmbh;
-        console.log("taetae");
-       console.log(this.$store.state.projectData);
-       
-       console.log(this.$store.state.projectData.xmxxXmbh);
-        sqsfxyApi.getYshAccount(1, 100,this.xmxxXmbh,).then(ret => {
-           this.navInfo.list = ret.data.records.map(item=>({
-            ...item, id: item.zjjgzhId, name: item.zjjgzhYhzh
+      
+        ldzjxxApi.getBuildingByXmbh(this.xmxxXmbh).then(ret => {
+           this.navInfo.list = ret.data.map(item=>({
+            ...item, id: item.ldxxLdbh, name: item.ldxxMc
           }));
-          this.navInfo.list.unshift({id:-1, name: "请选择监管账号"});
+          this.navInfo.list.unshift({id:-1, name: "请选择楼栋"});
         })
       },
      
      fetchDataByAccountId(id){
        
-       sqsfxyApi.getContractByAccount(this.currentPage, this.pageSize,this.kfsId,id).then(ret => {
+       ldzjxxApi.getContractByAccount(this.currentPage, this.pageSize,this.kfsId,id).then(ret => {
          console.log(ret);
          console.log("where is my ...");
          
@@ -240,21 +224,7 @@
           this.tableData = ret.data.records;
           this.total = ret.data.total;
           this.tableData.map(function (val) {
-              if (val.hetongLczt == 0) {
-                val.hetongLczt = '受理'
-              } else if (val.hetongLczt == 1) {
-                val.hetongLczt = '上报'
-              } else if (val.hetongLczt == 2) {
-                val.hetongLczt = '初审'
-              } else if (val.hetongLczt == 3) {
-                val.hetongLczt = '复审'
-              } else if (val.hetongLczt == 4) {
-                val.hetongLczt = '终审'
-              } else if (val.hetongLczt == 5) {
-                val.hetongLczt = '已终审'
-              }  else if (val.hetongLczt == 6) {
-                val.hetongLczt = '退件'
-              }     
+             
             })
         })
      },
@@ -264,18 +234,10 @@
         console.log(this.$store.state.projectData.xmxxXmbh);
         
          this.selectedIndex = this.navInfo.list[index];
-         this.zjjgzhId=this.navInfo.list[index].id;
-         this.zjjgzhZhmc=this.navInfo.list[index].zjjgzhZhmc;
-         this.zjjgzhGsmc=this.navInfo.list[index].zjjgzhGsmc;
-         this.zjjgzhYhmc=this.navInfo.list[index].zjjgzhYhmc;
-         this.zjjgzhXmmc=this.navInfo.list[index].zjjgzhXmmc;
-         this.zjjgzhYhzh=this.navInfo.list[index].zjjgzhYhzh;
-         this.kfsId=this.navInfo.list[index].kfsId;
-         console.log(this.zjjgzhId);
-         console.log(this.zjjgzhZhmc);
-         console.log(this.zjjgzhGsmc);
-         console.log(this.zjjgzhYhmc);
-         this.fetchDataByAccountId(this.zjjgzhYhzh);        
+         this.ldxxLdbh=this.navInfo.list[index].id;
+         this.ldxxMc=this.navInfo.list[index].name;
+         //this.kfsId=this.navInfo.list[index].kfsId;
+         //this.fetchDataByAccountId(this.ldxxLdbh);        
       },
       
       addClick() {
