@@ -16,12 +16,12 @@
               <option value="【其它】">【其它】</option>
             </select>
             计算该商品房价款,其中面积：
-            <input v-model="ht06.ht06002" type="text" class="w50">
+            <input disabled v-model="ht06.ht06002" type="text" class="w100">
             , 单价每平方米
-            <input v-model="ht06.ht06003" type="text" class="w50">元 。</li>
+            <input @input="handleHt06003" v-model="ht06.ht06003" type="text" class="w100">元 。</li>
           <li>
             该商品房总价款或总金额为（小写
-            <input @blur="handleBlur($event, 'this.ht06.ht06005')" v-model="ht06.ht06004" type="text" class="w100">
+            <input @input="handleBlur($event, 'this.ht06.ht06005')" v-model="ht06.ht06004" type="text" class="w100">
             元），（大写）
             <input  v-model="ht06.ht06005" type="text" class="w300">
             元整，币种为
@@ -42,7 +42,7 @@
           <li>（一）签订本合同前，买受人已向出卖人支付定金
             <input v-model="ht07.ht07001" type="text" class="w50">
             （币种）
-            <input @blur="handleBlur($event, 'this.ht07.ht07002b')" v-model="ht07.ht07002" type="text" class="w100">
+            <input @input="handleBlur($event, 'this.ht07.ht07002b')" v-model="ht07.ht07002" type="text" class="w100">
             元（大写：
             <input v-model="ht07.ht07002b" type="text" class="w300">元整），该定金于
             <select v-model="ht07.ht07003">
@@ -82,7 +82,7 @@
             期支付该商品房全部价款，首期房价款
             <input v-model="ht07.ht07014" type="text" class="w50">
             （币种）
-            <input @blur="handleBlur($event, 'this.ht07.ht07016')" v-model="ht07.ht07015" type="text" class="w100">
+            <input @input="handleBlur($event, 'this.ht07.ht07016')" v-model="ht07.ht07015" type="text" class="w100">
             元（大写：
             <input  v-model="ht07.ht07016" type="text" class="w300">
             元整），应当于
@@ -110,13 +110,13 @@
             日前支付首期房价款
             <input v-model="ht07.ht07025" type="text" class="w50">
             （币种）
-            <input @blur="handleBlur($event, 'this.ht07.ht07027')" v-model="ht07.ht07026" type="text" class="w100">
+            <input @input="handleBlur($event, 'this.ht07.ht07027')" v-model="ht07.ht07026" type="text" class="w100">
             元（大写
             <input  v-model="ht07.ht07027" type="text" class="w300">
             元整），占全部房价款的
             <input v-model="ht07.ht07028" type="text" class="w50">
             ％。余款（币种）
-            <input @blur="handleBlur($event, 'this.ht07.ht07030')" v-model="ht07.ht07029" type="text" class="w100">
+            <input @input="handleBlur($event, 'this.ht07.ht07030')" v-model="ht07.ht07029" type="text" class="w100">
             元（大写
             <input  v-model="ht07.ht07030" type="text" class="w300">
             元整）申请贷款支付，其中公积金贷款
@@ -166,7 +166,7 @@
         </ul>
       </div>
     </div>
-    <CenterButton @btnClick="handleSave" style="margin: 15px 0" title="保存条款"/>
+    <CenterButton v-if="!$parent.readOnly" @btnClick="handleSave" style="margin: 15px 0" title="保存条款"/>
   </div>
 </template>
 
@@ -328,6 +328,15 @@
       handleBlur(e, model){
         let value = e.target.value;
         eval(model + " = this.digitUppercase(value)")
+      },
+      handleHt06003(e) {
+        let val = e.target.value;
+        if(Number.isNaN(val*1)){
+          this.$message.error("请输入正确的数字");
+          this.ht06.ht06003 = ""
+        }
+        this.ht06.ht06004 = this.ht06.ht06002 * this.ht06.ht06003 + ""
+        this.ht06.ht06005 = this.digitUppercase(this.ht06.ht06004)
       }
     }
   }

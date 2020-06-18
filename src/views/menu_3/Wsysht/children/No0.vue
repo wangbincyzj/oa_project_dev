@@ -46,7 +46,7 @@
           <InfoListPlusItem name="电    话"><input v-model="form.htMfdldh"  type="text"></InfoListPlusItem>
         </template>
       </InfoListPlus>
-      <CenterButton @btnClick="handleSave" :loading="loading" style="margin-top: 15px" title="保存条款"/>
+      <CenterButton v-if="!$parent.readOnly" @btnClick="handleSave" :loading="loading" style="margin-top: 15px" title="保存条款"/>
     </div>
     <el-dialog
       :title="dialogTitle"
@@ -118,7 +118,7 @@
     },
     created() {
       this.fetchBaseData();
-      this.mapOriDataToSectionData()
+      this.mapOriDataToSectionData();
     },
     methods:{
       handleSave() {

@@ -23,8 +23,13 @@
 
     <section class="s1" v-if="args==='ysht'">
       <h1>商品房买卖合同(预 售)</h1>
-      <p style="text-align: center; font-size: 18px; margin: 10px 0">合同编号: {{d.htBh}}</p>
-      <p style="text-align: center; font-size: 18px">本合同为预订合同，请您在签订本合同之日起的30日内向潼关县房地产交易所申请备案</p>
+      <template v-if="!ba">
+        <p style="text-align: center; font-size: 18px; margin: 10px 0">合同编号: {{d.htBh}}</p>
+        <p style="text-align: center; font-size: 18px">本合同为预订合同，请您在签订本合同之日起的30日内向潼关县房地产交易所申请备案</p>
+      </template>
+      <template v-if="ba">
+        <p style="text-align: center; font-size: 30px; margin: 10px 0">合同备案号: {{d.htBah}}</p>
+      </template>
       <ul>
         <li class="tempLi"><span style="flex: 1">出 卖 人:</span><span
           style="text-align: left; flex: 3">{{baseData.rwqyxxTitle}}</span></li>
@@ -244,8 +249,8 @@
       <h3 class="title">第三章 商品房价款</h3>
       <div class="content">
         <h4 class="title">第六条 计价方式与价款</h4>
-        <ul>
-          <li>出卖人与买受人按照下列第<span :class="{inline:false}" class="w50"></span>种方式计算该商品房价款:</li>
+        <ul v-if="args==='yshtmb'">
+          <li>出卖人与买受人按照下列第<span :class="{inline:true}" class="w50"></span>种方式计算该商品房价款:</li>
           <li>1.按照建筑面积计算，该商品房单价每平方米<span :class="{inline:false}" class="w100"></span>元，该商品房总价款或总金额为（小写）<span
             :class="{inline:false}" class="w100"></span>元整，（大写）<span :class="{inline:false}"
                                                                      class="w100"></span>元整，币种为<span
@@ -265,38 +270,62 @@
             :class="{inline:false}" class="w100"></span>元 （大写<span :class="{inline:false}" class="w100"></span>元整）。
           </li>
         </ul>
+        <ul v-if="args==='ysht'">
+          <li>出卖人与买受人约定按 <span :class="{inline:d.ht06001}" class="w100">{{d.ht06001}}</span>计算该商品房价款:其中建筑面积
+            <span :class="{inline:d.ht06002}" class="w100">{{d.ht06002}}</span>
+            平方米，该商品房单价每平方米
+            <span :class="{inline:d.ht06003}" class="w100">{{d.ht06003}}</span>（币种）
+            元，该商品房总价款或总金额为
+            <span :class="{inline:d.ht06004}" class="w100">{{d.ht06004}}</span>（币种）（小写）
+            <span :class="{inline:d.ht06005}" class="w100">{{d.ht06005}}</span>
+            元，（大写<span :class="{inline:d.ht06006}" class="w100">{{d.ht06006}}</span>
+            元整）。
+          </li>
+        </ul>
         <h4 class="title">第七条 付款方式及期限</h4>
         <ul>
-          <li>（一）签订本合同前，买受人已向出卖人支付定金<span :class="{inline:false}" class="w100"></span>（币种）<span :class="{inline:false}"
-                                                                                                class="w100"></span>元（大写），该定金于【<span
-            :class="{inline:false}" class="w50"></span>】时【<span :class="{inline:false}" class="w50"></span>】【<span
-            :class="{inline:false}" class="w50"></span>】商品房价款。
+          <li>（一）签订本合同前，买受人已向出卖人支付定金<span :class="{inline:d.ht07001}" class="w100">{{d.ht07001}}</span>（币种）<span
+            :class="{inline:d.ht07002}"
+            class="w100">{{d.ht07002}}</span>元（大写<span :class="{inline:d.ht07002b}" class="w100">{{d.ht07002b}}</span>整），该定金于【<span
+            :class="{inline:d.ht07003}" class="w50">{{d.ht07003}}</span>】时【<span :class="{inline:d.ht07004}"
+                                                                                 class="w50">{{d.ht07004}}</span>】【<span
+            :class="{inline:true}" class="w50">{{d.ht_07036&&"抵作"}}</span>】【<span
+            :class="{inline:d.ht07005}" class="w50">{{d.ht07005}}</span>】商品房价款。
           </li>
-          <li>（二）买受人采取下列第<span :class="{inline:false}" class="w50"></span>种方式付款；</li>
-          <li>1.一次性付款。买受人应当在<span :class="{inline:false}" class="w100"></span>年<span :class="{inline:false}"
-                                                                                     class="w50"></span>月<span
-            :class="{inline:false}" class="w50"></span>日前支付该商品房全部价款。
+          <li>（二）买受人采取下列第<span :class="{inline:d.ht07006}" class="w50">{{d.ht07006}}</span>种方式付款；</li>
+          <li>1.一次性付款。买受人应当在<span :class="{inline:d.ht07007}" class="w100">{{d.ht07007}}</span>年<span
+            :class="{inline:d.ht07008}"
+            class="w50">{{d.ht07008}}</span>月<span
+            :class="{inline:d.ht07009}" class="w50">{{d.ht07009}}</span>日前支付该商品房全部价款。
           </li>
-          <li>2.分期付款。买受人应当在<span :class="{inline:false}" class="w100"></span>年<span :class="{inline:false}"
-                                                                                    class="w50"></span>月<span
-            :class="{inline:false}" class="w50"></span>日前分 期支付该商品房全部价款，首期房价款<span :class="{inline:false}"
-                                                                                  class="w50"></span>（币种）<span
-            :class="{inline:false}" class="w50"></span>元（大写：<span :class="{inline:false}"
-                                                                  class="w100"></span>元整），应当于<span
-            :class="{inline:false}" class="w100"></span>年<span :class="{inline:false}" class="w50"></span>月<span
-            :class="{inline:false}" class="w50"></span>日前支付。
+          <li>2.分期付款。买受人应当在<span :class="{inline:d.ht07010}" class="w100">{{d.ht07010}}</span>年<span
+            :class="{inline:d.ht07011}"
+            class="w50">{{d.ht07011}}</span>月<span
+            :class="{inline:d.ht07012}" class="w50">{{d.ht07012}}</span>日前分<span :class="{inline:d.ht07013}"
+                                                                                 class="w150">{{d.ht07013}}</span>期支付该商品房全部价款，首期房价款<span
+            :class="{inline:d.ht07014}"
+            class="w50">{{d.ht07014}}</span>（币种）<span
+            :class="{inline:d.ht07015}" class="w50">{{d.ht07015}}</span>元（大写：<span :class="{inline:d.ht07016}"
+                                                                                   class="w100">{{d.ht07016}}</span>元整），应当于<span
+            :class="{inline:d.ht07017}" class="w100">{{d.ht07017}}</span>年<span :class="{inline:d.ht07018}" class="w50">{{d.ht07018}}</span>月<span
+            :class="{inline:d.ht07019}" class="w50">{{d.ht07019}}</span>日前支付。
           </li>
-          <li>3.贷款方式付款：【<span :class="{inline:false}" class="w50"></span>】。买受人应当于<span :class="{inline:false}"
-                                                                                       class="w100"></span>年<span
-            :class="{inline:false}" class="w50"></span>月<span :class="{inline:false}" class="w50"></span>日前支付首期房价款<span
-            :class="{inline:false}" class="w50"></span>（币种）<span :class="{inline:false}" class="w50"></span>元（大写<span
-            :class="{inline:false}" class="w100"></span>元整），占全部房价款的<span :class="{inline:false}" class="w50"></span>％。余款<span
-            :class="{inline:false}" class="w50"></span>元（大写<span :class="{inline:false}" class="w50"></span>元整）向<span
-            :class="{inline:false}" class="w200"></span>申请贷款支付。
+          <li>3.贷款方式付款：<span :class="{inline:d.ht07020}" class="w50">{{d.ht07020}}</span>【<span
+            :class="{inline:d.ht07021}" class="w50">{{d.ht07021}}</span>】。买受人应当于<span :class="{inline:d.ht07022}"
+                                                                                      class="w100">{{d.ht07022}}</span>年<span
+            :class="{inline:d.ht07023}" class="w50">{{d.ht07023}}</span>月<span :class="{inline:d.ht07024}"
+                                                                               class="w50">{{d.ht07024}}</span>日前支付首期房价款<span
+            :class="{inline:d.ht07025}" class="w50">{{d.ht07025}}</span>（币种）<span :class="{inline:d.ht07026}"
+                                                                                  class="w50">{{d.ht07026}}</span>元（大写<span
+            :class="{inline:d.ht07027}" class="w100">{{d.ht07027}}</span>元整），占全部房价款的<span :class="{inline:d.ht07028}" class="w50">{{d.ht07028}}</span>％。余款<span
+            :class="{inline:d.ht07029}" class="w50">{{d.ht07029}}</span>元（大写<span :class="{inline:d.ht07030}" class="w50">{{d.ht07030}}</span>元整）向<span
+            :class="{inline:false}" class="w200"></span>申请贷款支付，其中公积金贷款
+            <span :class="{inline:d.ht07037}" class="w100">{{d.ht07037}}</span>元整，商业贷款
+            <span :class="{inline:d.ht07038}" class="w100">{{d.ht07038}}</span>元整。
           </li>
-          <li>4.其他方式：<span :class="{inline:false}" class="w500"></span>。</li>
-          <li>（三）出售该商品房的全部房价款应当存入预售资金监管账户，用于本工程建设。该商品房的预售资金监管机构为<span :class="{inline:false}" class="w200"></span>，预售资金监管账户名称为<span
-            :class="{inline:false}" class="w200"></span> ，账号为<span :class="{inline:false}" class="w300"></span></li>
+          <li>4.其他方式：<span :class="{inline:d.ht07032}" class="w500">{{d.ht07032}}</span>。</li>
+          <li>（三）出售该商品房的全部房价款应当存入预售资金监管账户，用于本工程建设。该商品房的预售资金监管机构为<span :class="{inline:d.ht07033}" class="w200">{{d.ht07033}}</span>，预售资金监管账户名称为<span
+            :class="{inline:d.ht07034}" class="w200">{{d.ht07034}}</span> ，账号为<span :class="{inline:d.ht07035}" class="w300">{{d.ht07034}}</span></li>
           <li>该商品房价款的计价方式、总价款、付款方式及期限的具体约定见附件四。</li>
         </ul>
         <h4 class="title">第八条 逾期付款责任</h4>
@@ -946,7 +975,11 @@
   export default {
     name: "Dyyshtmb",
     props: {
-      args: {}
+      args: {},
+      ba:{
+        type: Boolean,
+        default: false
+      }
     },
     data() {
       return {

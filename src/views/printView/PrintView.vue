@@ -1,7 +1,7 @@
 <template>
   <div class="printView">
     <Dyyshtmb v-if="args==='yshtmb'" args="yshtmb"/>
-    <Dyyshtmb v-if="args==='ysht'" args="ysht"/>
+    <Dyyshtmb v-if="args==='ysht'" args="ysht" :ba="true"/>
   </div>
 </template>
 

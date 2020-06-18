@@ -163,7 +163,7 @@
         </ul>
       </div>
     </div>
-    <CenterButton @btnClick="handleSave" style="margin: 15px 0" title="保存条款"/>
+    <CenterButton v-if="!$parent.readOnly" @btnClick="handleSave" style="margin: 15px 0" title="保存条款"/>
   </div>
 </template>
 

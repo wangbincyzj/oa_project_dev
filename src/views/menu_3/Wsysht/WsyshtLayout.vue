@@ -46,7 +46,13 @@
   export default {
     name: "WsyshtLayout",
     components:{No0,No1,No2,No3,No4,No5,No6,No7,No8,No9,No10,},
-    props:["htId"],
+    props:{
+      htId: {},
+      readOnly: {
+        default: false,
+        type: Boolean
+      }
+    },
     data() {
       return {
         reverse: true,

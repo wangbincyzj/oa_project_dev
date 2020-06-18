@@ -1,60 +1,62 @@
 <template>
-  <TitleTable title="销售承诺书管理">
-    <div slot="controls" class="controls">
-      <div @click="dialogVisible=true"><span>按楼栋名称搜索:</span>
-        <el-input size="mini"/>
+  <div>
+    <TitleTable title="销售承诺书管理">
+      <div slot="controls" class="controls">
+        <div @click="dialogVisible=true"><span>按楼栋名称搜索:</span>
+          <el-input size="mini"/>
+        </div>
+        <div><span>房间号搜索:</span>
+          <el-input size="mini"/>
+        </div>
       </div>
-      <div><span>房间号搜索:</span>
-        <el-input size="mini"/>
-      </div>
-    </div>
-    <el-table
-      :data="tableData"
-      border
-      style="width: 100%"
-    >
-      <el-table-column align="center" label="项目名称" prop="xsqrdXmmc" width="100"/>
-      <el-table-column align="center" label="楼栋名称" prop="xsqrdLdmc" width="200"/>
-      <el-table-column align="center" label="房号" prop="xsqrdFh" width="100"/>
-      <el-table-column align="center" label="签订时间" prop="createTime" width="100"/>
-      <el-table-column align="center" label="注销状态" prop="logoutStatus" width="100"/>
-      <el-table-column align="center" label="注销时间" prop="xsqrdZxtime" width="100"/>
-      <el-table-column align="center" label="注销原因" prop="xsqrdZxyy" width="300"/>
-      <el-table-column align="center" label="操作">
+      <el-table
+        :data="tableData"
+        border
+        style="width: 100%"
+      >
+        <el-table-column align="center" label="项目名称" prop="xsqrdXmmc" width="100"/>
+        <el-table-column align="center" label="楼栋名称" prop="xsqrdLdmc" width="200"/>
+        <el-table-column align="center" label="房号" prop="xsqrdFh" width="100"/>
+        <el-table-column align="center" label="签订时间" prop="createTime" width="100"/>
+        <el-table-column align="center" label="注销状态" prop="logoutStatus" width="100"/>
+        <el-table-column align="center" label="注销时间" prop="xsqrdZxtime" width="100"/>
+        <el-table-column align="center" label="注销原因" prop="xsqrdZxyy" width="300"/>
+        <el-table-column align="center" label="操作">
+          <template #default="scope">
+            <div v-if="scope.row.xsqrdZxzt===1">
+              <el-link>已注销</el-link>
+            </div>
+            <div v-else-if="scope.row.xsqrdMmqrzt===1">
+              <el-button size="mini" @click="handleSetSign(scope.row)">签名</el-button>
+              <el-button size="mini" @click="handleViewSign(scope.row)">查看签名</el-button>
+              <el-button size="mini" @click="handleLogoff(scope.row)">注销</el-button>
+              <el-button size="mini" @click="handlePrint(scope.row)">打印承诺书</el-button>
+            </div>
+            <div v-else>
+              <el-button size="mini" @click="handleDel(scope.row)">删除</el-button>
+              <el-button size="mini" @click="handleSetPwd(scope.row)">设置密码</el-button>
+            </div>
+          </template>
 
-        <template #default="scope">
-          <div v-if="scope.row.xsqrdZxzt===1">
-            <el-link>已注销</el-link>
-          </div>
-          <div v-else-if="scope.row.xsqrdMmqrzt===1">
-            <el-button size="mini" @click="handleSetSign(scope.row)">签名</el-button>
-            <el-button size="mini" @click="handleViewSign(scope.row)">查看签名</el-button>
-            <el-button size="mini" @click="handleLogoff(scope.row)">注销</el-button>
-            <el-button size="mini" @click="handlePrint(scope.row)">打印承诺书</el-button>
-          </div>
-          <div v-else>
-            <el-button size="mini" @click="handleDel(scope.row)">删除</el-button>
-            <el-button size="mini" @click="handleSetPwd(scope.row)">设置密码</el-button>
-          </div>
-        </template>
+        </el-table-column>
+      </el-table>
+      <el-dialog
+        :title="dialogTitle"
+        center
+        :width="dialogWidth"
+        slot="dialog"
+        :visible.sync="dialogVisible"
+        @close="dialogVisible = false"
+      >
+        <DyxscnsDialog
+          :id="id"
+          ref="dialog"
+          @submitSuccess="submitSuccess"
+        />
+      </el-dialog>
+    </TitleTable>
+  </div>
 
-      </el-table-column>
-    </el-table>
-    <el-dialog
-      :title="dialogTitle"
-      center
-      :width="dialogWidth"
-      slot="dialog"
-      :visible.sync="dialogVisible"
-      @close="dialogVisible = false"
-    >
-      <DyxscnsDialog
-        :id="id"
-        ref="dialog"
-        @submitSuccess="submitSuccess"
-      />
-    </el-dialog>
-  </TitleTable>
 </template>
 
 <script>

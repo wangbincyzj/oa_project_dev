@@ -122,6 +122,15 @@ ul.menu li:hover {
   font-weight: 600;
 }
 
+/*将ele的inputborder只留bootom*/
+.border__bottom .el-input__inner{
+  border: none;
+  border-radius: 0;
+  border-bottom: 1px #909399 solid;
+  padding: 0 ;
+}
+
+
 
 
 

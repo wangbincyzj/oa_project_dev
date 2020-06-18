@@ -38,7 +38,7 @@
             </template>
             <el-button @click="handlePrint(row)" size="mini">草拟合同</el-button>
             <el-button size="mini">打印备案表</el-button>
-            <el-button size="mini">详情</el-button>
+            <el-button size="mini" @click="handleDetail(row)">详情</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -85,6 +85,13 @@
     },
     methods: {
       handleContract(row) {
+        this.active = true;
+        this.htId = row.htId;
+        this.$nextTick(() => {
+          this.$refs.ref1.fetchData();
+        })
+      },
+      handleDetail(row) {
         this.active = true;
         this.htId = row.htId;
         this.$nextTick(() => {

@@ -230,9 +230,17 @@ let submitContract = function (htId) {
 
 /**
  * 合同列表查询
+ * htBazt 0新建 1上报 2通过 3撤回
  */
-let getAllContract = function ({htMsrxm, htShzt},current=1,size=20,htXslx=0) {
-  return requests.get("data-presale-license/contract/selectPage", {htMsrxm, htShzt, current, size, htXslx})
+let getAllContract = function ({htMsrxm, htBazt},current=1,size=20,htXslx=0) {
+  return requests.get("data-presale-license/contract/selectPage", {htMsrxm, htBazt, current, size, htXslx})
+}
+
+/**
+ * 撤销备案申请
+ */
+let revokeContract = function (htId, htCxyy) {
+  return requests.get("data-presale-license/contract/revoke", {htId, htCxyy})
 }
 
 
@@ -266,7 +274,8 @@ export const yushouContractApi = {
   delByIdHouseOwner,
   selectHouseOwnerList,
   submitContract,
-  getAllContract
+  getAllContract,
+  revokeContract
 }
 
 
