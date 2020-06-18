@@ -8,17 +8,17 @@
         inline
         :model="form">
         <el-form-item  label="公司名称">
-          <el-input v-model="form.ldxxMc" disabled></el-input>
+          <el-input v-model="form.kfsMc" disabled></el-input>
         </el-form-item>
         <el-form-item  label="项目名称">
-          <el-input v-model="form.ldxxJzmj" disabled></el-input>
+          <el-input v-model="form.shiyongXmmc" disabled></el-input>
         </el-form-item>
-        <el-form-item  label="合同编号">
+        <!-- <el-form-item  label="合同编号">
           <el-input v-model="form.ldxxZzmj" disabled></el-input>
         </el-form-item>
         <el-form-item  label="合同备案号" >
           <el-input v-model="form.ldxxFzzmj" disabled></el-input>
-        </el-form-item>
+        </el-form-item> -->
         <!-- <el-form-item label="乙方(银行名称)">
            <el-select style="width: 180px" v-model="form.hetongYhmc" placeholder="请选择监管银行">
                 <el-option
@@ -30,17 +30,17 @@
             </el-select>         
         </el-form-item> -->
         <el-form-item  label="楼栋预售总额">
-          <el-input v-model="form.ldxxZzjj" disabled></el-input>
+          <el-input v-model="form.ldYsJe" disabled></el-input>
         </el-form-item>
         <el-form-item  label="住宅预售总额">
-          <el-input v-model="form.ldxxFzzjj" disabled></el-input>
+          <el-input v-model="form.zjYsJe" disabled></el-input>
         </el-form-item>
         <el-form-item  label="楼栋非住宅预售总额" >
-          <el-input v-model="form.ldxxYsze" disabled></el-input>
+          <el-input v-model="form.fzjYsJe" disabled></el-input>
         </el-form-item>       
-        <el-form-item label="本合同监管金额" >
+        <!-- <el-form-item label="本合同监管金额" >
           <el-input v-model="form.zjjgszjlSdszdye"></el-input>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item  label="本栋监管总额">
           <el-input v-model="form.zjjgszjlSdszdye"></el-input>
         </el-form-item>
@@ -51,7 +51,7 @@
           <el-input v-model="form.ldxxFzzjj" disabled></el-input>
         </el-form-item>
         <el-form-item  label="本栋成交总额" >
-          <el-input v-model="form.ldxxYsze" disabled></el-input>
+          <el-input v-model="form.ldCjJe" disabled></el-input>
         </el-form-item>       
         <el-form-item label="监管方式" >
           <el-input v-model="form.zjjgszjlSdszdye"></el-input>
@@ -249,7 +249,7 @@
           <el-input v-model="form1.ldxxSfydt"></el-input>
         </el-form-item>
         <el-form-item label="启用资金监管状态" >
-          <el-input v-model="form1.ldxxZjjgzt"></el-input>
+          <el-input v-model="form1.zjjgszjlZjjgzt"></el-input>
         </el-form-item>
         <el-form-item label="重点资金监管方式" >
           <el-input v-model="form1.ldxxZjjgfs"></el-input>
@@ -304,7 +304,7 @@
 <script>
   import CenterButton from "@/components/common/centerButton/CenterButton";
   import InfoList from "@/components/common/infoList/InfoList";
-  //import {szldjgzjApi} from "@/api/menu_3/szldzjjg";
+  import {tjsysbApi} from "@/api/menu_4/tjsysb";
   import AccountDialog from "@/views/menu_4/TjsysbDialog2";
   import {businessApi} from "@/api/menu_3/__Business";
   export default {
@@ -334,7 +334,13 @@
       xmxxXmbh:"",
       ldxxId:0,
         form:{
-          
+          kfsMc:"",
+          shiyongXmmc:"",
+          ldYsJe:"",
+          zjYsJe:"",
+          fzjYsJe:"",
+          ldCjJe:"",
+
         },
          formBlank:{
           
@@ -419,67 +425,73 @@
       console.log("00000000000");
       
       if(mode===1){
-        // szldjgzjApi.getbuildingInfo(id).then(ret => {
-        //   this.form.ldxxMc=ret.data.buildingInfo.ldxxMc;
-        //   this.form.ldxxJzmj=ret.data.buildingInfo.ldxxJzmj;
-        //   this.form.ldxxZzmj=ret.data.buildingInfo.ldxxZzmj;
-        //   this.form.ldxxFzzmj=ret.data.buildingInfo.ldxxFzzmj;
-        //   this.form.ldxxZzjj=ret.data.buildingInfo.ldxxZzjj;
-        //   this.form.ldxxFzzjj=ret.data.buildingInfo.ldxxFzzjj;
-        //   this.ldxxId=id;
+
+        this.form.kfsMc=this.$store.state.projectData.xmxxKfs;
+        this.form.shiyongXmmc=this.$store.state.projectData.xmxxXmmc;
+        tjsysbApi.getSbInfo(id).then(ret => {
+          this.form.ldYsJe=ret.data.ldYsJe;
+          this.form.zjYsJe=ret.data.zjYsJe;
+          this.form.fzjYsJe=ret.data.fzjYsJe;
+          this.form.ldCjJe=ret.data.ldCjJe;
+          this.form.ldxxJzmj=ret.data.buildingInfo.ldxxJzmj;
+          this.form.ldxxZzmj=ret.data.buildingInfo.ldxxZzmj;
+          this.form.ldxxFzzmj=ret.data.buildingInfo.ldxxFzzmj;
+          this.form.ldxxZzjj=ret.data.buildingInfo.ldxxZzjj;
+          this.form.ldxxFzzjj=ret.data.buildingInfo.ldxxFzzjj;
+          this.ldxxId=id;
           
-        // });
+        });
        
       }else if(mode===2){
-        //  szldjgzjApi.getLdDetail(id).then(ret => {
-        //   this.form1=ret.data;
-        //   if(this.form1.ldxxFwlx=0){
-        //     this.form1.ldxxFwlx="预售商品房"
-        //   }else if(this.form1.ldxxFwlx=1){
-        //     this.form1.ldxxFwlx="现房"
-        //   };
-        //    if (this.form1.ldxxZjjgzt == 0) {
-        //         this.form1.ldxxZjjgzt = '不启动'
-        //       } else if (this.form1.ldxxZjjgzt == 1) {
-        //         this.form1.ldxxZjjgzt = '启动'
-        //       };
-        //    if(this.form1.ldxxZjjgfs=1){
-        //     this.form1.ldxxZjjgfs="按固定金额监管"
-        //     }else if(this.form1.ldxxZjjgfs=2){
-        //       this.form1.ldxxZjjgfs="按预售总价比例监管"
-        //     }else if(this.form1.ldxxZjjgfs=3){
-        //       this.form1.ldxxZjjgfs="按实时缴存房款比例监管"
-        //     }else if(this.form1.ldxxZjjgfs=4){
-        //       this.form1.ldxxZjjgfs="按合同成交比例监管"
-        //     };
-        //     if(this.form1.ldxxSfydt=0){
-        //       this.form1.ldxxSfydt="无"
-        //     }else if(this.form1.ldxxSfydt=1){
-        //       this.form1.ldxxSfydt="有"
-        //     }
-        //});
-        //  szldjgzjApi.getSupervisionByLdid(id).then(ret => {
-        //   this.tableData=ret.data.buildingFundsSupervisions;
-        //   console.log(ret.data.buildingFundsSupervisions);
+         tjsysbApi.getLdDetail(id).then(ret => {
+          this.form1=ret.data;
+          if(this.form1.ldxxFwlx=0){
+            this.form1.ldxxFwlx="预售商品房"
+          }else if(this.form1.ldxxFwlx=1){
+            this.form1.ldxxFwlx="现房"
+          };
+           if (this.form1.ldxxZjjgzt == 0) {
+                this.form1.ldxxZjjgzt = '不启动'
+              } else if (this.form1.ldxxZjjgzt == 1) {
+                this.form1.ldxxZjjgzt = '启动'
+              };
+           if(this.form1.ldxxZjjgfs=1){
+            this.form1.ldxxZjjgfs="按固定金额监管"
+            }else if(this.form1.ldxxZjjgfs=2){
+              this.form1.ldxxZjjgfs="按预售总价比例监管"
+            }else if(this.form1.ldxxZjjgfs=3){
+              this.form1.ldxxZjjgfs="按实时缴存房款比例监管"
+            }else if(this.form1.ldxxZjjgfs=4){
+              this.form1.ldxxZjjgfs="按合同成交比例监管"
+            };
+            if(this.form1.ldxxSfydt=0){
+              this.form1.ldxxSfydt="无"
+            }else if(this.form1.ldxxSfydt=1){
+              this.form1.ldxxSfydt="有"
+            }
+        });
+         szldjgzjApi.getSupervisionByLdid(id).then(ret => {
+          this.tableData=ret.data.buildingFundsSupervisions;
+          console.log(ret.data.buildingFundsSupervisions);
           
-        //    this.tableData.map(function (val) {
+           this.tableData.map(function (val) {
              
-        //        if (val.zjjgszjlZjjgzt == 0) {
-        //         val.zjjgszjlZjjgzt = '不启动'
-        //       } else if (val.zjjgszjlZjjgzt == 1) {
-        //         val.zjjgszjlZjjgzt = '启动'
-        //       } 
-        //        if (val.zjjgszjlZjjgfs == 1) {
-        //         val.zjjgszjlZjjgfs = '按固定金额监管'
-        //       } else if (val.zjjgszjlZjjgfs == 2) {
-        //         val.zjjgszjlZjjgfs = '按预售总价比例监管 '
-        //       } else if (val.zjjgszjlZjjgfs == 3) {
-        //         val.zjjgszjlZjjgfs = '按实时缴存房款比例监管'
-        //       } else if (val.zjjgszjlZjjgfs == 4) {
-        //         val.zjjgszjlZjjgfs = '按合同成交比例监管'
-        //       } 
-        //     });
-        // });
+               if (val.zjjgszjlZjjgzt == 0) {
+                val.zjjgszjlZjjgzt = '不启动'
+              } else if (val.zjjgszjlZjjgzt == 1) {
+                val.zjjgszjlZjjgzt = '启动'
+              } 
+               if (val.zjjgszjlZjjgfs == 1) {
+                val.zjjgszjlZjjgfs = '按固定金额监管'
+              } else if (val.zjjgszjlZjjgfs == 2) {
+                val.zjjgszjlZjjgfs = '按预售总价比例监管 '
+              } else if (val.zjjgszjlZjjgfs == 3) {
+                val.zjjgszjlZjjgfs = '按实时缴存房款比例监管'
+              } else if (val.zjjgszjlZjjgfs == 4) {
+                val.zjjgszjlZjjgfs = '按合同成交比例监管'
+              } 
+            });
+        });
       }
 
     },

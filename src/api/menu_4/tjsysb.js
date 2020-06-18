@@ -26,15 +26,34 @@ let getBuildingByXmbh = function(page, size = 20,xmbh){
  * 根据楼栋编号查询监管账户
  * 
  */
-let getAccountByLd = function(kfsId,zjjgzhLdbh){
-    return requests8083.get("data-presale-funds/supervisedAccount/list", {kfsId,zjjgzhLdbh})
-  }
+
+let getAccountByLd = function(ldbh){
+      return requests8083.get("data-presale-funds/jiaocun/statZhxxByLd", {ldbh})
+    }
+
+/**
+ * 获取申报信息
+ * 
+ */
+
+let getSbInfo = function(ldbh){
+  return requests8083.get("data-presale-funds/shiyong/getShenbaoForm", {ldbh})
+}
 
 /**
  * 新增申报
  */
 let addSysb = function (_form) {
-  return requests8083.post("data-presale-funds/", _form)
+  return requests8083.post("data-presale-funds/shiyong/save", _form)
+}
+
+
+/**
+ * 获取楼栋详情
+ */
+let getLdDetail = function (id) {
+  return requests.get("data_center/building/selectById", 
+  {id})
 }
 
 
@@ -52,4 +71,6 @@ export const tjsysbApi = {
     getBuildingByXmbh,
     getAccountByLd,
     addSysb,
+    getLdDetail,
+    getSbInfo,
 }

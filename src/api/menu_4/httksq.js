@@ -39,10 +39,10 @@ let getContractInfoById = function(id){
   }
 
 /**
- * 新增账户
+ * 新增退款申请
  */
 let addTksq = function (_form) {
-  return requests8083.post("data-presale-funds/", _form)
+  return requests8083.post("data-presale-funds/shiyong/save", _form)
 }
 
 

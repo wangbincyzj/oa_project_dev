@@ -4,12 +4,17 @@
       <TitleTable
         :title="`【${this.$store.state.projectData.xmxxKfs}】监管资金汇总`">
         <div slot="controls">
+          <el-alert
+            type="warning"
+            center
+            :closable="false">
          <div class="controls" style="background-color:#fdf6ec">
         <span style="margin-left:200px">开始时间:</span> <el-date-picker v-model="startTime" type="date" placeholder="选择开始时间" size="mini"></el-date-picker>
         <span>结束时间:</span><el-date-picker v-model="endTime" type="date" placeholder="选择结束时间" size="mini"></el-date-picker>
         <el-button size="mini" type="success" @click="search">查找</el-button>
         <el-button size="mini" type="success" @click="handlePrint">打印明细</el-button>
         </div>
+          </el-alert>
       </div>
         <el-table
           :data="tableData"

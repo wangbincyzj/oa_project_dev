@@ -8,7 +8,7 @@
         inline
         :model="form">
         <el-form-item  label="公司名称">
-          <el-input v-model="form.ldxxMc" disabled></el-input>
+          <el-input v-model="form.kfsMc" disabled></el-input>
         </el-form-item>
         <el-form-item  label="项目名称">
           <el-input v-model="form.shiyongXmmc" disabled></el-input>
@@ -28,14 +28,14 @@
         <el-form-item  label="购房总额" > <!--unknown-->
           <el-input v-model="form.ldxxYsze" disabled class="count"></el-input>
         </el-form-item>       
-        <el-form-item label="本合同监管金额" >
+        <!-- <el-form-item label="本合同监管金额" >
           <el-input v-model="form.shiyongJgze" disabled class="count"></el-input>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item  label="可使用资金">  <!--unknown-->
           <el-input v-model="form.zjjgszjlSdszdye" disabled class="count"></el-input>
         </el-form-item>
         <el-form-item  label="退房人联系电话"> 
-          <el-input v-model="form.shiyongSqrxm" disabled></el-input>
+          <el-input v-model="form.lxfs"></el-input>
         </el-form-item>
         <el-form-item  label="楼栋名称">
           <el-input v-model="form.shiyongLdmc" disabled></el-input>
@@ -44,13 +44,13 @@
           <el-input v-model="form.shiyongJgyhmc" disabled></el-input>
         </el-form-item>       
         <el-form-item label="监管账户名称" ><!--unknown-->
-          <el-input v-model="form.zjjgszjlSdszdye" disabled></el-input>
+          <el-input v-model="form.shiyongJgzhmc" disabled></el-input>
         </el-form-item>
         <el-form-item  label="监管账号">
           <el-input v-model="form.shiyongJgzh" disabled></el-input>
         </el-form-item>
 
-        <p style="color:red;width:500px;margin:0 auto;margin-top:20px;margin-bottom:20px">注意：可使用资金为{{2920000}}，申请使用的资金不能超过可使用资金！</p>
+        <p style="color:red;width:500px;margin:0 auto;margin-top:20px;margin-bottom:20px">注意：可使用资金为{{this.jkje}}，申请使用的资金不能超过可使用资金！</p>
 
         <el-form-item  label="划入账户名称">
           <el-input v-model="form.shiyongHrzhmc" style="width:130px"></el-input>
@@ -65,8 +65,8 @@
         <el-form-item label="申请使用金额" >
           <el-input v-model="form.shiyongSbje" class="count"></el-input>
         </el-form-item>
-        <el-form-item  label="法定代表人"> <!--unknown shiyongSqrxm-->
-          <el-input v-model="form.zjjgszjlSdszdye"></el-input>
+        <el-form-item  label="法定代表人"> <!--unknown -->
+          <el-input v-model="form.shiyongSqrxm"></el-input>
         </el-form-item>
         <el-form-item  label="联系电话">
           <el-input v-model="form.shiyongSqrlxdh"></el-input>
@@ -267,8 +267,18 @@
       dialogType: {
       default: 1, // 添加
       enum: [1, 2 /*详情*/]
-      
-    },
+    },  
+        jiaocunHtbh:{},
+        jiaocunHtbah:{},
+        jiaocunMsrxm:{},
+        jiaocunMsrzjhm:{},
+        jiaocunLdmc:{},
+        jiaocunFh:{},
+        jkje:{},
+        gfze:{},
+        jiaocunYhzh:{},
+        jiaocunKhyh:{},
+        ldbh:{},
     },
     data() {
       return {
@@ -284,7 +294,19 @@
       ywzh:"",
       ldxxId:0,
         form:{
-         
+        kfsMc:"",
+        shiyongXmmc:"",
+        shiyongHtbh:"",
+        shiyongHtbah:"",
+        shiyongTkr:"",
+        shiyongTkrzjhm:"",
+        ldxxYsze:"",
+        zjjgszjlSdszdye:"",
+        shiyongSqrxm:"",
+        shiyongLdmc:"",
+        shiyongJgyhmc:"",
+        shiyongJgzh:"",
+        shiyongJgzhmc:"",
         },
          formBlank:{
           
@@ -308,7 +330,7 @@
         this.dialogVisible1 = false;
         this.form.shiyongHrzhyh = arg.hbzhKhyh;  //银行名称
         this.form.shiyongHrzhmc= arg.hbzhZhmc;   //账户名称
-         this.form.shiyongHrzhzh = arg.hbzhZhhm;  //划拨账号
+        this.form.shiyongHrzhzh = arg.hbzhZhhm;  //划拨账号
        
       },
       showAccount() {
@@ -316,8 +338,10 @@
         this.dialogVisible1 = true;
       },
      addData() {
-     
-          httksqApi.addTksq({...this.form,ldxxId:this.ldxxId}).then(ret => {
+            //
+            console.log(this.ldbh);
+            
+          httksqApi.addTksq({...this.form,kfsRwbh:this.$store.state.projectData.kfsRwbh,shiyongSqsyfs:1,ldLdbh:this.ldbh}).then(ret => {
           if (ret.code !== 200) {
           this.$message.error(ret.message);
         } else {
@@ -338,16 +362,31 @@
     setMode(mode,id){
       console.log("00000000000");
       if(mode===1){
-        httksqApi.getContractInfoById(id).then(ret => {
-          this.form.ldxxMc=ret.data.buildingInfo.ldxxMc;
-          this.form.ldxxJzmj=ret.data.buildingInfo.ldxxJzmj;
-          this.form.ldxxZzmj=ret.data.buildingInfo.ldxxZzmj;
-          this.form.ldxxFzzmj=ret.data.buildingInfo.ldxxFzzmj;
-          this.form.ldxxZzjj=ret.data.buildingInfo.ldxxZzjj;
-          this.form.ldxxFzzjj=ret.data.buildingInfo.ldxxFzzjj;
-          this.ldxxId=id;
+        console.log("taetae");
+        
+        this.form.kfsMc=this.$store.state.projectData.xmxxKfs;
+        this.form.shiyongXmmc=this.$store.state.projectData.xmxxXmmc;
+        this.form.shiyongHtbh=this.jiaocunHtbh;
+        this.form.shiyongHtbah=this.jiaocunHtbah;
+        this.form.shiyongTkr=this.jiaocunMsrxm;
+        this.form.shiyongTkrzjhm=this.jiaocunMsrzjhm;
+        this.form.ldxxYsze=this.gfze;
+        this.form.zjjgszjlSdszdye=this.jkje;
+        this.form.shiyongLdmc=this.jiaocunLdmc;
+        this.form.shiyongJgyhmc=this.jiaocunKhyy;
+        this.form.shiyongJgzh="";
+        this.form.shiyongJgzhmc=this.jiaocunYhzh;
+
+        // httksqApi.getContractInfoById(id).then(ret => {
+        //   this.form.ldxxMc=ret.data.buildingInfo.ldxxMc;
+        //   this.form.ldxxJzmj=ret.data.buildingInfo.ldxxJzmj;
+        //   this.form.ldxxZzmj=ret.data.buildingInfo.ldxxZzmj;
+        //   this.form.ldxxFzzmj=ret.data.buildingInfo.ldxxFzzmj;
+        //   this.form.ldxxZzjj=ret.data.buildingInfo.ldxxZzjj;
+        //   this.form.ldxxFzzjj=ret.data.buildingInfo.ldxxFzzjj;
+        //   this.ldxxId=id;
           
-        });
+        // });
       }
     },
     }

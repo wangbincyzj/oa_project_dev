@@ -5,10 +5,15 @@
         title="已撤备案未解除监管的合同列表">
         <div slot="controls">
          <div class="controls" style="background-color:#fdf6ec">
+           <el-alert
+            type="warning"
+            center
+            :closable="false">
         <span style="margin-left:100px">买受人:</span><el-input size="mini" v-model="person" placeholder="按买受人搜索" style="width:200px;margin-right:100px;" />
         <span>证件号码:</span><el-input size="mini" v-model="certificate" placeholder="按证件号码搜索" style="width:200px;margin-right:100px"/>
         <span>备案号:</span><el-input size="mini" v-model="code" placeholder="按备案号搜索" style="width:200px;margin-right:100px"/>
         <el-button size="mini" type="success" @click="search">搜索</el-button>
+           </el-alert>
         <div class="controls">
             <el-alert
             type="warning"
@@ -16,7 +21,8 @@
             :closable="false">
             <span class="warning" style="color: red">注意：已经备案的房间必须是撤销完合同后才能退款！</span>
           </el-alert>
-        </div></div>
+        </div>
+        </div>
       </div>
         <el-table
           :data="tableData"
@@ -97,6 +103,17 @@
           <HttksqDialog
             ref="dialog"
             :dialog-type="dialogType"
+            :jiaocunHtbh="jiaocunHtbh"
+            :jiaocunHtbah="jiaocunHtbah"
+            :jiaocunMsrxm="jiaocunMsrxm"
+            :jiaocunMsrzjhm="jiaocunMsrzjhm"
+            :jiaocunLdmc="jiaocunLdmc"
+            :jiaocunFh="jiaocunFh"
+            :jkje="jkje"
+            :gfze="gfze"
+            :jiaocunYhzh="jiaocunYhzh"
+            :jiaocunKhyy="jiaocunKhyy"
+            :ldbh="ldbh"
             @submitSuccess="submitSuccess"
           />
         </el-dialog>
@@ -132,6 +149,17 @@
         person:"",
         certificate:"",
         code:"",
+        jiaocunHtbh:"",
+        jiaocunHtbah:"",
+        jiaocunMsrxm:"",
+        jiaocunMsrzjhm:"",
+        jiaocunLdmc:"",
+        jiaocunFh:"",
+        jkje:0,
+        gfze:0,
+        jiaocunYhzh:"",
+        jiaocunKhyy:"",
+        ldbh:"",
       }
     },
     created() {
@@ -158,8 +186,19 @@
         this.dialogVisible=true;
         this.dialogTitle="添加退款申请";
         this.dialogType=1;
+        this.jiaocunHtbh=this.currentRow.jiaocunHtbh;
+        this.jiaocunHtbah=this.currentRow.jiaocunHtbah;
+        this.jiaocunMsrxm=this.currentRow.jiaocunMsrxm;
+        this.jiaocunMsrzjhm=this.currentRow.jiaocunMsrzjhm;
+        this.jiaocunLdmc=this.currentRow.jiaocunLdmc;
+        this.jiaocunFh=this.currentRow.jiaocunFh;
+        this.jkje=this.currentRow.jkje;
+        this.gfze=this.currentRow.gfze;
+        this.jiaocunYhzh=this.currentRow.jiaocunYhzh;
+        this.jiaocunKhyy=this.currentRow.jiaocunKhyy;
+        this.ldbh=this.currentRow.ldbh;
         this.$nextTick(()=>{
-          this.$refs.dialog.setMode(1,this.currentRow.hetongId);
+          this.$refs.dialog.setMode(1);
         })
       },
      

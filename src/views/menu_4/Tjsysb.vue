@@ -28,19 +28,19 @@
               <!-- :header-cell-style="{background:'#EEF7FD'}" -->
                 <el-table-column
                 label="银行名称"
-                prop="zjjgzhYhmc">                  
+                prop="jiaocunKhyh">                  
                 </el-table-column>
                  <el-table-column
                 label="开户账号"
-                prop="zjjgzhYhzh">                  
+                prop="jiaocunJkzh">                  
                 </el-table-column>
                  <el-table-column
                 label="监管金额"
-                prop="money1">                  
+                prop="jiaocunJkje">                  
                 </el-table-column>
                  <el-table-column
                 label="使用金额"
-                prop="money2">                  
+                prop="shiyongSbje">                  
                 </el-table-column>
                  <el-table-column
                   align="center"
@@ -172,6 +172,7 @@
         pages:1,
         selectedIndex: 0,
         selectedIndex: null,
+        ldbh:"",
       }
     },
     created() {
@@ -192,12 +193,14 @@
      
       
       
-      handleAdd() {
+      handleAdd(index,row) {
+        console.log(row);
+        
         this.dialogVisible = true;
         this.dialogTitle = "添加申报使用";
         this.dialogType = 1;
         this.$nextTick(()=>{
-          this.$refs.dialog.setMode(1,this.currentRow.id)
+          this.$refs.dialog.setMode(1,this.ldbh)
         })
       },
       handleDetail(index, row){
@@ -205,13 +208,14 @@
         this.dialogTitle = "详情";
         this.dialogType = 2;
         this.$nextTick(()=>{
-          this.$refs.dialog.setMode(2, this.currentRow.Id);
+          this.$refs.dialog.setMode(2, this.currentRow.ldId);
         })
       },
       showAccount(row,expandRow){
           console.log(row.ldxxLdbh);
+          this.ldbh=row.ldxxLdbh;
           console.log("taetae");
-           tjsysbApi.getAccountByLd(this.$store.state.projectData.kfsId,row.ldxxLdbh).then(ret=>{
+           tjsysbApi.getAccountByLd(row.ldxxLdbh).then(ret=>{
           // row.AccountTable = ret.data
           this.$set(row, "AccountTable", ret.data)
           console.log(row);
