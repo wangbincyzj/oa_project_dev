@@ -9,6 +9,10 @@
       <TitleTable
         title="对应的缴款列表"
         style="height:50%;overflow-y:scroll;">
+         <el-alert
+            type="warning"
+            center
+            :closable="false">
        <div class="controls" style="background-color:#fdf6ec;width:100%;margin:0 auto">
         <span>买受人:</span><el-input  v-model="person" size="mini" placeholder="按买受人搜索" style="width:200px;" />
         <span>开始时间:</span> <el-date-picker v-model="startTime1" type="date" placeholder="选择开始时间" size="mini"></el-date-picker>
@@ -16,6 +20,7 @@
         <el-button size="mini" type="success" @click="search">查找</el-button>
         <el-button size="mini" type="success" @click="handlePrint">打印明细</el-button>
        </div>
+       </el-alert>
         <el-table
           :data="tableData"
           style="width: 100%"
@@ -96,12 +101,17 @@
        <TitleTable
         title="对应的使用信息"
         style="height:50%;overflow-y:scroll;">
+         <el-alert
+            type="warning"
+            center
+            :closable="false">
        <div class="controls" style="background-color:#fdf6ec;width:100%">
         <span style="margin-left:100px">开始时间:</span> <el-date-picker v-model="startTime2" type="date" placeholder="选择开始时间" size="mini"></el-date-picker>
         <span>结束时间:</span><el-date-picker v-model="endTime2" type="date" placeholder="选择结束时间" size="mini"></el-date-picker>
         <el-button size="mini" type="success" @click="search">查找</el-button>
         <el-button size="mini" type="success" @click="handlePrint">打印明细</el-button>
        </div>
+       </el-alert>
         <el-table
           :data="tableData1"
           style="width: 100%"
