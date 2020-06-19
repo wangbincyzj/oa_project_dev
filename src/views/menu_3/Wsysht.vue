@@ -27,12 +27,12 @@
         <el-table-column label="预售资金缴存情况" align="center" prop="htYsjkzt" width="60"/>
         <el-table-column label="维修资金缴存" align="center" prop="roomWxzjjczt" width="100"/>
         <el-table-column label="签订时间" align="center" prop="htQdsj" width="100"/>
-        <el-table-column label="审核状态" align="center" #default="{row}" width="100">
-          {{row.htShzt|shztFilter}}
+        <el-table-column label="状态" align="center" #default="{row}" width="100">
+          {{row.htBazt|shztFilter}}
         </el-table-column>
         <el-table-column label="操作" align="center">
           <template #default="{row}">
-            <template v-if="row.htShzt===0||row.htShzt===3">
+            <template v-if="row.htBazt===0||row.htBazt===3">
               <el-button size="mini" @click="handleContract(row)">完善合同</el-button>
               <el-button size="mini" @click="handleSubmit(row)">上报</el-button>
             </template>
@@ -56,7 +56,7 @@
     </TitleTable>
     <transition name="bd">
       <div class="main-bd" v-if="active">
-        <WsyshtLayout ref="ref1" :htId="htId" @close="close"/>
+        <WsyshtLayout ref="ref1" :htId="htId" @close="close" :read-only="readOnly"/>
       </div>
     </transition>
   </div>
@@ -77,7 +77,8 @@
         loading: false,
         tableData: [{}],
         active: false,
-        htId: null
+        htId: null,
+        readOnly: false
       }
     },
     created() {
@@ -87,6 +88,7 @@
       handleContract(row) {
         this.active = true;
         this.htId = row.htId;
+        this.readOnly = false;
         this.$nextTick(() => {
           this.$refs.ref1.fetchData();
         })
@@ -94,6 +96,7 @@
       handleDetail(row) {
         this.active = true;
         this.htId = row.htId;
+        this.readOnly = true;
         this.$nextTick(() => {
           this.$refs.ref1.fetchData();
         })
@@ -103,7 +106,7 @@
       },
       fetchTableData() {
         this.loading = true;
-        yushouContractApi.getContractList({kfsRwbh: this.$store.state.rwbh}).then(ret => {
+        yushouContractApi.getContractList({kfsRwbh: this.$store.state.rwbh, htBazt:1}).then(ret => {
           this.loading = false;
           this.tableData = ret.data.records;
         })

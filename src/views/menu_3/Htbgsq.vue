@@ -1,6 +1,6 @@
 <template>
   <div class="myTable-p0">
-    <TitleTable title="撤销备案合同" bgc="#848DF9" color="white">
+    <TitleTable title="合同变更申请" bgc="#848DF9" color="white">
       <div class="controls" slot="controls" style="background-color:white;">
         <InfoListPlus :count="3">
           <InfoListPlusItem name="买受人"><el-input size="mini" class="border__bottom"/></InfoListPlusItem>
@@ -14,7 +14,7 @@
         style="width: 100%"
         :data="tableData">
         <el-table-column label="合同备案号" align="center" prop="htBah" width="70"/>
-        <el-table-column label="买受人" #default="{row}" align="center" prop="htMc" width="180">
+        <el-table-column label="买受人" #default="{row}" align="center" prop="htMc" width="80">
           <ul>
             <li v-for="item in row.houseOwners">{{item.fwsyqrSyqr}}</li>
           </ul>
@@ -42,30 +42,21 @@
         </el-table-column>
         <el-table-column label="操作" align="center">
           <template #default="{row}">
-            <template v-if="(row.htCxzt===0||row.htCxzt)&&row.htCxzt!==1&&row.htCxzt!==2">
-              <el-button  size="mini">传图</el-button>
-              <el-button  size="mini">管图</el-button>
-              <el-button @click="handleSubmit(row)" size="mini">上报</el-button>
-            </template>
-            <el-button v-if="row.htCxzt!==null" @click="handleChangeDetail(row)" size="mini">变更详情</el-button>
-            <el-button @click="handleChange(row)" size="mini" v-if="row.htCxzt!==0&&!row.htCxzt">变更退房申请</el-button>
+            <el-button @click="handleChange(row)" size="mini" >变更买受人</el-button>
+            <el-button @click="handleChange(row)" size="mini" >变更合同条款</el-button>
             <el-button @click="handleDetail(row)" size="mini">合同详情</el-button>
           </template>
         </el-table-column>
       </el-table>
       <el-dialog
-        :title="dialogTitle"
+        title="合同变更申请"
         center
-        :width="dialogWidth"
+        width="600px"
         slot="dialog"
         :visible.sync="dialogVisible"
         @close="dialogVisible = false"
       >
-        <CxbasqDialog
-          ref="dialog"
-          :htId="htId"
-          :visible.sync="dialogVisible"
-          @submitSuccess="submitSuccess"/>
+        <CxbasqDialog :htId="htId" :visible.sync="dialogVisible" @submitSuccess="submitSuccess"/>
       </el-dialog>
     </TitleTable>
     <transition name="bd">
@@ -95,8 +86,6 @@
         loading: false,
         active: false,
         htId: null,
-        dialogWidth: "600px",
-        dialogTitle: ""
       }
     },
     created(){
@@ -111,11 +100,7 @@
       handleChange(item){
         this.dialogVisible = true;
         this.htId = item.htId;
-        this.dialogWidth = "600px"
-        this.dialogTitle = "变更退房申请"
-        this.$nextTick(()=>{
-          this.$refs.dialog.setMode(0)
-        })
+
       },
       handleDetail(row){
         this.active = true;
@@ -124,24 +109,8 @@
           this.$refs.ref1.fetchData();
         })
       },
-      handleSubmit(item){
-        yushouContractApi.submitContract(item.htId, 2).then(ret=>{
-          if(ret.code===200){
-            this.$message.success("上报成功");
-            this.fetchTableData()
-          }else{
-            this.$message.error(ret.message||"未知错误")
-          }
-        })
-      },
-      handleChangeDetail(item){
-        this.dialogVisible = true;
-        this.htId = item.htId;
-        this.dialogWidth = "1200px"
-        this.$nextTick(()=>{
-          this.$refs.dialog.setMode(1, item.htId)
-        })
-      },
+      handleSubmit(item){},
+      handleChangeDetail(item){},
       submitSuccess(){
         this.dialogVisible = false;
         this.fetchTableData()

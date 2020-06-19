@@ -12,7 +12,10 @@
     <div class="building">
       <div class="floor" :class="{noRoom:!floor.v.length}" v-for="floor in rooms">
         <div class="floorHd">{{floor.k}}层</div>
-        <div class="room" :class="[mapStatusToClass(room.roomFwzt), enableColor && 'enableColor']" v-for="room in floor.v" @click="$emit('roomClick', room)">
+        <div class="room"
+             :class="[mapStatusToClass(room.roomFwzt), enableColor && 'enableColor']"
+             v-for="room in floor.v"
+             @click="$emit('roomClick', room)">
           <div class="roomNo">{{room.roomFh}}</div>
         </div>
       </div>

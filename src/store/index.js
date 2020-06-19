@@ -18,6 +18,7 @@ export default new Vuex.Store({
       loginStatus: false,
       userAuths: [],
       token: "",
+      userId: "",
     }
   },
   mutations: {
@@ -33,11 +34,12 @@ export default new Vuex.Store({
     setBuildingInfo(state, buildingInfo) {
       state.buildingInfo = buildingInfo;
     },
-    setLoginInfo(state, {username, loginStatus, userAuths, token}) {
-      state.loginInfo.username = username || "";
-      state.loginInfo.loginStatus = loginStatus || false;
-      state.loginInfo.userAuths = userAuths || [];
-      state.loginInfo.token = token || "";
+    setLoginInfo(state, {username, loginStatus, userAuths, token, userId}){
+      state.loginInfo.username = username||"";
+      state.loginInfo.loginStatus = loginStatus||false;
+      state.loginInfo.userAuths = userAuths||[];
+      state.loginInfo.token = token||"";
+      state.loginInfo.userId = userId||"";
     }
   },
   getters: {

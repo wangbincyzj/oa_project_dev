@@ -14,9 +14,9 @@ let getContractBuildingTree = function ({ldxxFwlx, rwbh}) {
  * 合同管理分页查询
  * @param htXslx 类型 0预售 1现售
  */
-let getContractList = function({kfsRwbh, current=1,size=20, htXslx=0}){
+let getContractList = function({kfsRwbh,htBazt, HtCxzt,HtBgzt, current=1,size=20, htXslx=0}){
   return requests.get("data-presale-license/contract/selectPage", {
-    kfsRwbh, current, size, htXslx
+    kfsRwbh, current, size, htXslx,htBazt, HtCxzt,HtBgzt,
   })
 }
 
@@ -223,17 +223,18 @@ let selectHouseOwnerList = function (fwsyqrHtbh) {
 
 /**
  * 完善合同后上报合同
+ * type: 1备案上报   2撤销上报
  */
-let submitContract = function (htId) {
-  return requests.get("data-presale-license/contract/submit", {htId})
+let submitContract = function (htId, type=1) {
+  return requests.get("data-presale-license/contract/submit", {htId, type})
 }
 
 /**
  * 合同列表查询
  * htBazt 0新建 1上报 2通过 3撤回
  */
-let getAllContract = function ({htMsrxm, htBazt},current=1,size=20,htXslx=0) {
-  return requests.get("data-presale-license/contract/selectPage", {htMsrxm, htBazt, current, size, htXslx})
+let getAllContract = function ({htMsrxm, htBazt, htCxlc},current=1,size=20,htXslx=0) {
+  return requests.get("data-presale-license/contract/selectPage", {htMsrxm, htCxlc, htBazt, current, size, htXslx})
 }
 
 /**
@@ -241,6 +242,20 @@ let getAllContract = function ({htMsrxm, htBazt},current=1,size=20,htXslx=0) {
  */
 let revokeContract = function (htId, htCxyy) {
   return requests.get("data-presale-license/contract/revoke", {htId, htCxyy})
+}
+
+/**
+ * 获取撤销备案申请详细信息
+ */
+let revokeContractDetail = function (htId) {
+  return requests.get("data-presale-license/contract/revokeContractDetail", {htId})
+}
+
+/**
+ * 记录审核信息
+ */
+let auditContract = function ({businessId, processName, processId, approveOpinion, status, lczt}) {
+  return requests.post("data-presale-license/contract/audit", {businessId, processName, processId, approveOpinion, status, lczt})
 }
 
 
@@ -275,10 +290,7 @@ export const yushouContractApi = {
   selectHouseOwnerList,
   submitContract,
   getAllContract,
-  revokeContract
+  revokeContract,
+  revokeContractDetail,
+  auditContract
 }
-
-
-
-
-

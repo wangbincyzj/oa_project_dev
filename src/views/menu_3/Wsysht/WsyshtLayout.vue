@@ -109,6 +109,8 @@
         baseData: null
       };
     },
+    computed:{
+    },
     methods:{
       itemClick(index) {
         this.animateName = this.index > index ? "down" : "up"

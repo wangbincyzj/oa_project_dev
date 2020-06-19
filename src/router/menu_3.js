@@ -26,6 +26,7 @@ export default {
         {title: "完善预售合同", path: "wsysht"},
         {title: "查看备案合同", path: "ckbaht"},
         {title: "撤销备案申请", path: "cxbasq"},
+        {title: "合同变更申请", path: "htbgsq"},
         {title: "退变合同列表", path: "tbhtlb"},
         {title: "房屋销售数据统计", path: "fwxssjtj"},
       ]

@@ -4,7 +4,6 @@
 
     <PrintView v-else-if="printView"/>
 
-
     <BaseLayout v-else-if="$store.state.buildingInfo&&$store.state.projectData"/>
 
   </div>
@@ -32,8 +31,6 @@
             info = JSON.parse(info)
             this.$store.dispatch("login", info)   // 用 session storage登录
           }
-
-
         }
         return this.$store.state.loginInfo.loginStatus;
       }

@@ -57,7 +57,8 @@
               loginStatus: true,
               userAuths: ret.data.userAuths,
               token:ret.data.token,
-              rwbh: ret.data.user.rybh
+              rwbh: ret.data.user.rybh,
+              userId: ret.data.user.userId
             })
           } else {
             this.$message.error(ret.message || "登录失败");

@@ -31,6 +31,7 @@
   .infoList{
     display: flex;
     flex-flow: row wrap;
+    border: 5px solid rgb(228, 237, 249);
     .title{
       width: 100%;
       background-color: #E4EDF9;

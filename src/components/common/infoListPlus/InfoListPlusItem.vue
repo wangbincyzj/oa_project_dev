@@ -1,6 +1,6 @@
 <template>
   <div class="item" :style="itemStyle">
-    <div class="name">
+    <div class="name" :style="nameStyle">
       <template v-if="name">
         {{name}}
       </template>
@@ -21,7 +21,12 @@
     name: "InfoListPlusItem",
     props: {
       name: {type: String},
-      oneline: {type: Boolean, default: false}
+      oneline: {type: Boolean, default: false},
+      type: {
+        type: String,
+        default: "normal",
+        enum: ["normal","danger"]
+      }
     },
     computed: {
       itemStyle() {
@@ -37,7 +42,18 @@
         }
       },
       nameStyle() {
-
+        if(this.type==='normal'){
+          return{
+            // backgroundColor: "#E4EDF9",
+            // color: "#FF909399"
+          }
+        }
+        if(this.type==='danger'){
+          return{
+            backgroundColor: "red",
+            color: "#fff"
+          }
+        }
       },
       contentStyle() {
         let flex = this.oneline ? 3 : 1;
@@ -74,9 +90,11 @@
     }
 
     .content {
+      box-sizing: border-box;
       flex: 1;
       font-size: 13px;
       color: #135294;
+      background-color: #EEF7FD;
       .inner{
         padding: 0 20px;
       }
