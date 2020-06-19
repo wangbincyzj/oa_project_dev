@@ -1,287 +1,92 @@
 <template>
   <div class="TjjgzhDialog">
-    <div v-if="dialogType===1||dialogType===3">
+    <div v-if="dialogType===1">
       <el-form
         label-position="right"
         label-width="150px"
         size="mini"
         inline
-        :model="form"
+        :model="ruleForm"
+        :rules="rules"
+        ref="ruleForm"
       >
-        <el-form-item label="项目名称">
-          <el-input v-model="form.zjjgzhXmmc"></el-input>
+        <el-form-item label="项目名称：" prop="jiaocunXmmc">
+          <el-input v-model="ruleForm.jiaocunXmmc"></el-input>
         </el-form-item>
-
-        <el-form-item label="项目编号">
-          <el-input v-model="form.xmxxXmbh"></el-input>
+        <el-form-item label="楼栋名称：" prop="jiaocunLdmc">
+          <el-input v-model="ruleForm.jiaocunLdmc"></el-input>
         </el-form-item>
-        <el-form-item label="企业名称">
-          <el-input v-model="form.zjjgzhGsmc"></el-input>
+        <el-form-item label="合同编号：">
+          <span style="width:172px;display:block">{{ form.jiaocunXmbh }}</span>
         </el-form-item>
-        <el-form-item label="联系电话">
-          <el-input v-model="form.zjjgzhLxdh"></el-input>
+        <el-form-item label="付款方式：">
+          <span style="width:172px;display:block">{{ form.fkfs }}</span>
         </el-form-item>
-        <el-form-item
-          label="住宅面积"
-          class="area"
-        >
-          <el-input v-model="form.zjjgzhZzmj"></el-input>
+        <el-form-item label="购房总额：">
+          <span style="width:172px;display:block">{{ form.gfze }}</span>
         </el-form-item>
-        <el-form-item label="住宅套数">
-          <el-input v-model="form.zjjgzhZzts"></el-input>
+        <el-form-item label="首付金额：">
+          <span style="width:172px;display:block">{{ form.sfje }}</span>
         </el-form-item>
-        <el-form-item
-          label="非住宅面积"
-          class="area"
-        >
-          <el-input v-model="form.zjjgzhFzzmj"></el-input>
+        <el-form-item label="购房人：">
+          <span style="width:172px;display:block">{{ form.gfr }}</span>
         </el-form-item>
-        <el-form-item label="非住宅套数">
-          <el-input v-model="form.zjjgzhFzzts"></el-input>
+        <el-form-item label="身份证号：">
+          <span style="width:172px;display:block">{{ form.jiaocunMsrzjhm }}</span>
         </el-form-item>
-        <el-form-item label="楼栋名称">
-          <el-select
-            style="width: 180px"
-            v-model="form.zjjgzhLdbh"
-            placeholder="请选择楼栋"
-          >
-            <el-option
-              v-for="(item,index) in zjjgzhLdbh"
-              :key="index"
-              :label="item.ldxxMc"
-              :value="item.ldxxLdbh"
-              @click.native="getLdName(item.ldxxMc)"
-            >
-            </el-option>
+        <el-form-item label="监管银行：">
+          <span style="width:172px;display:block">{{ form.jiaocunKhyh }}</span>
+        </el-form-item>
+        <el-form-item label="监管账户：">
+          <span style="width:172px;display:block">{{ form.jiaocunJkzh }}</span>
+        </el-form-item>
+        <el-form-item label="缴款金额：" prop="jiaocunJkje">
+          <el-input v-model="ruleForm.jiaocunJkje"></el-input>
+        </el-form-item>
+        <el-form-item label="截至缴款日期：" prop="jiaocunJkrq">
+          <el-date-picker
+            type="date"
+            placeholder="选择日期"
+            v-model="ruleForm.jiaocunJkrq"
+            style="width: 100%;"
+          ></el-date-picker>
+        </el-form-item>
+        <el-form-item label="缴款事由：">
+          <el-input type="textarea" v-model="ruleForm.jiaocunJksy"></el-input>
+          <el-select style="width: 180px" v-model="ruleForm.jiaocunJksy" placeholder="首付款：">
+            <el-option label="首付款" value="首付款"></el-option>
+            <el-option label="预付款" value="预付款"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="银行名称">
-          <el-select
-            style="width: 180px"
-            v-model="form.zjjgzhYhid"
-            placeholder="请选择监管银行"
-          >
-            <el-option
-              v-for="(item,index) in zjjgzhYhid"
-              :key="index"
-              :label="item.yinhangTitle"
-              :value="item.yinhangId"
-              @click.native="getBankName(item.yinhangTitle)"
-            >
-            </el-option>
-          </el-select>
+        <el-form-item label="是否按揭款：">
+          <el-radio-group v-model="radio">
+            <el-radio :label="1">是</el-radio>
+            <el-radio :label="2">否</el-radio>
+          </el-radio-group>
         </el-form-item>
-        <el-form-item label="业务类别">
-          <el-cascader
-            clearable
-            v-model="ywlx"
-            :options="options"
-            :props="{ expandTrigger: 'hover' }"
-          ></el-cascader>
-        </el-form-item>
-        <!-- <el-form-item label="监管账户名称">
-          <el-input v-model="form.zjjgzhZhmc"></el-input>
-        </el-form-item> -->
       </el-form>
-
-      <div
-        class="buttonGroup"
-        style="margin:0 auto;width:100px;margin-top:20px"
-      >
+      <div class="buttonGroup" style="margin:0 auto;width:200px;margin-top:20px">
         <el-button-group class="buttons">
-          <el-button
-            type="primary"
-            @click="onSubmit"
-          >立即提交</el-button>
+          <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
+        </el-button-group>
+        <el-button-group class="buttons">
+          <!-- <el-button type="primary" @click="dialogVisible = false">关闭</el-button> -->
         </el-button-group>
       </div>
     </div>
-
-    <div
-      class="detail myForm-mb5 myDialog"
-      v-loading="loading"
-      v-if="dialogType===2"
-    >
-      <!--详情部分-->
-    <el-tabs
-      type="border-card"
-      value="first"
-    >
-      <el-tab-pane label="1.账户申请信息详情" name="first">
-       
-          <div class="dialogItem">
-            <div class="itemIndex">1</div>
-            <div class="itemTitle">账户申请信息详情</div>
-          </div>
-           <el-form
-        label-position="right"
-        label-width="150px"
-        size="mini"
-        inline
-        :model="form1"
-      >
-        <el-form-item label="项目名称">
-          <el-input v-model="form1.zjjgzhXmmc"></el-input>
-        </el-form-item>
-        <el-form-item label="项目编号">
-          <el-input v-model="form1.xmxxXmbh"></el-input>
-        </el-form-item>
-        <el-form-item label="企业名称">
-          <el-input v-model="form1.zjjgzhGsmc"></el-input>
-        </el-form-item>
-        <el-form-item label="联系电话">
-          <el-input v-model="form1.zjjgzhLxdh"></el-input>
-        </el-form-item>
-        <el-form-item
-          label="住宅面积"
-          class="area"
-        >
-          <el-input v-model="form1.zjjgzhZzmj"></el-input>
-        </el-form-item>
-        <el-form-item label="住宅套数">
-          <el-input v-model="form1.zjjgzhZzts"></el-input>
-        </el-form-item>
-        <el-form-item
-          label="非住宅面积"
-          class="area"
-        >
-          <el-input v-model="form1.zjjgzhFzzmj"></el-input>
-        </el-form-item>
-        <el-form-item label="非住宅套数">
-          <el-input v-model="form1.zjjgzhFzzts"></el-input>
-        </el-form-item>
-       
-         <el-form-item label="拟设监管银行">
-          <el-input v-model="form1.zjjgzhYhmc"></el-input>
-        </el-form-item>
-         <el-form-item label="楼栋名称">
-          <el-input v-model="form1.zjjgzhLdmc"></el-input>
-        </el-form-item>
-      </el-form>
-       </el-tab-pane>
-
-      <el-tab-pane label="2.收件情况" name="second"> 
-        <div class="receiveList">
-          <div class="dialogItem">
-            <div class="itemIndex">2</div>
-            <div class="itemTitle">收件列表</div>
-          </div>
-          <div class="item" v-for="(item,index) in businessReceives">
-            <div class="no">
-              <span>{{index+1}}</span>
-            </div>
-            <div class="info">
-              <div class="name">{{item.shoujianTitle}}</div>
-              <div class="attr">
-                <div>性质:<span>{{item.shoujianSjxz}}</span></div>
-                <div>份数:<span>{{item.shoujianFenshu}}</span></div>
-              </div>
-            </div>
-            <div class="pics">
-              <el-image
-                style="width: 60px; height: 60px"
-                src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
-                :preview-src-list="srcList">
-              </el-image>
-              <div class="selectImg">
-                <i class="el-icon-plus"/>
-                <div>选择图片上传</div>
-              </div>
-            </div>
-          </div>
-        </div>
-       
-      </el-tab-pane>
-      <el-tab-pane label="3.审核意见" name="third"> 
-        <div>
-          <div class="dialogItem">
-            <div class="itemIndex">3</div>
-            <div class="itemTitle">审核意见</div>
-          </div>
-          <InfoList
-            v-for="(item, index) in opinionList"
-            :info="[
-              {key:'审批人', value: item.approvePerson},
-              {key: '审核时间', value: item.approveTime},
-              {key: '审批意见', value: item.approveOpinion}]"
-          />
-        </div>
-      </el-tab-pane>
-    </el-tabs>
-    </div>
-    <div>
-      <div v-if="dialogType===4">
-        <!-- <info-list :title="业务宗号:" /> -->
-        
-          <h3 class="title">添加新收件</h3>
-          
-      <el-form
-        label-position="right"
-        label-width="150px"
-        size="mini"
-        inline
-        style="float:left"
-        :model="addForm"
-      >
-       <el-form-item label="收件名称">
-          <el-input v-model="addForm.name"></el-input>
-        </el-form-item>
-         <el-form-item label="收件性质">
-          <el-radio v-model="addForm.attr" label="原件">原件</el-radio>
-          <el-radio v-model="addForm.attr" label="复印件">复印件</el-radio>
-        </el-form-item>
-         <el-form-item label="收件份数">
-          <el-input v-model="addForm.count"></el-input>
-        </el-form-item>
-      </el-form>
-      <div  style="width:80px;margin:0 auto">
-          <el-button
-            type="primary"
-            size="mini"
-            icon="el-icon-plus"
-           
-          >添加</el-button></div>
-        <div class="receiveList">
-          <div
-            class="item"
-            v-for="(item,index) in businessReceives"
-          >
-            <div class="no">
-              <span>{{index+1}}</span>
-            </div>
-            <div class="info">
-              <div class="name">{{item.shoujianTitle}}</div>
-              <div class="attr">
-                <div>性质:<span>{{item.shoujianSjxz}}</span></div>
-                <div>份数:<span>{{item.shoujianFenshu}}</span></div>
-              </div>
-            </div>
-          </div>
-          </div>
-           <div  style="width:80px;margin:0 auto">
-        <el-button
-          @click="handleShouJian"
-          type="primary"
-          size="mini"
-        >确认收件
-        </el-button></div>
-        </div>
-        
-      </div>
-  </div>
   </div>
 </template>
 <script>
-import { sqjgzhApi } from "@/api/menu_4/sqjgzh";
-import InfoList from "@/components/common/infoList/InfoList";
-import {businessApi} from "@/api/menu_3/__Business";
-import CenterButton from "@/components/common/centerButton/CenterButton";
+
+import { tjjgzjApi } from "@/api/menu_4/tjjgzj";
+
+import axios from "axios";
+
 export default {
   name: "TjjgzhDialog",
-  components: {InfoList, CenterButton},
   props: {
     zjjgzhId: { type: String }, //type: [String, Number]
-    zjjgzhYwzh:{String},
+    zjjgzhYwzh: { String },
     xmxxXmbh: { type: String },
     dialogType: {
       default: 1, // 添加
@@ -290,224 +95,148 @@ export default {
   },
   data() {
     return {
-      opinionList:[],
-       ywlx: [],
-       options: [],
-      businessReceives: [],
-      businessAttachments:[],
-      name: "",
-      ywzh:"",
-      addForm: {
-        name: "",
-        attr: "原件",
-        count: 1
+      radio: 1,
+      form: {},
+      userinfo: {},
+      ruleForm: {
+        jiaocunXmmc: "",
+        jiaocunLdmc: "",
+        jiaocunJkje: "",
+        jiaocunJkrq: "",
+        jiaocunJksy: ""
       },
-      zjjgzhLdbh: [],
-      zjjgzhYhid: [],
-      ldName: "",
-      bankName: "",
-      form1: {},
-      tableData: [],
-      form: {
-        xmxxXmbh: "",
-        zjjgzhXmmc: "",
-        zjjgzhGsmc: "",
-        jgzhLxdh: "",
-        zjjgzhZzmj: "",
-        zjjgzhZzts: "",
-        zjjgzhFzzmj: "",
-        zjjgzhFzzts: "",
-        zjjgzhLdmc: ""
-      },
-      formBlank: {
-        xmxxXmbh: "",
-        zjjgzhXmmc: "",
-        zjjgzhGsmc: "",
-        jgzhLxdh: "",
-        zjjgzhZzmj: "",
-        zjjgzhZzts: "",
-        zjjgzhFzzmj: "",
-        zjjgzhFzzts: "",
-        zjjgzhLdmc: ""
+      rules: {
+        jiaocunXmmc: {
+          required: true,
+          message: "项目名称不能为空",
+          trigger: "blur"
+        },
+        jiaocunLdmc: {
+          required: true,
+          message: "楼栋名称不能为空",
+          trigger: "blur"
+        },
+        jiaocunJkje: {
+          required: true,
+          message: "缴存金额不能为空",
+          trigger: "blur"
+        },
+        jiaocunJkrq: {
+          required: true,
+          message: "缴款日期不能为空",
+          trigger: "blur"
+        }
       }
     };
   },
-  created() {
-    this.getLd();
-    this.getBank();
-  },
   methods: {
-    reset() {
-      this.form = { ...this.formBlank };
-       this.ywlx = [];
-    },
-    getYwsj() {
-      sqjgzhApi.getAllYwsj().then(ret=>{
-        this.businessReceives=ret.data;
-      });
-    },
-    getLd() {
-      sqjgzhApi.getLd().then(ret => {
-        this.zjjgzhLdbh = ret.data;
-      });
-    },
-    getBank() {
-      sqjgzhApi.getBank().then(ret => {
-        this.zjjgzhYhid = ret.data;
-      });
-    },
-    getLdName(name) {
-      this.ldName = name;
-      console.log(this.ldName);
-    },
-    getBankName(name) {
-      this.bankName = name;
-      console.log(this.bankName);
-    },
-    getBussinessType(){
-      businessApi.getBusinessType().then(ret => {
-          // value, label, children []
-          this.options = ret.data.map(dl => {
-            let obj = {};  // value同意用编号
-            obj.label = dl.xtywdxName;
-            obj.value = dl.xtywdxDxbh;
-            obj.xtywdxDxbh = dl.xtywdxDxbh;
-            obj.children = dl.children.map(zl => ({
-              label: zl.xtywxxName,
-              value: zl.xtywxxXxbh,
-              xtywxxId: zl.xtywxxId
-            }));
-            return obj
-          })
-        })
-      
-    },
     addData() {
-      console.log(this.ywlx);
-      
-      let ywxlId = 0;
-        if (this.ywlx.length < 2) {
-          this.$message.error("请选择业务类型")
-          return
-        };
-      ywxlId = this.ywlx[1];
-      sqjgzhApi
-        .addAccount({
-          ...this.form,
-          zjjgzhLdmc: this.ldName,
-          zjjgzhYhmc: this.bankName,
-          kfsId: this.$store.state.projectData.kfsId,
-          ywxlBh:ywxlId
+      tjjgzjApi
+        .addDeposit({
+          // jiaocunXmmc: "龙庭花园",
+          // jiaocunLdmc: "D1",
+          // jiaocunJkje: 100000,
+          // jiaocunJkrq: "2020-06-09",
+          // jiaocunJksy: "首付款",//结束
+          jiaocunXmmc: this.ruleForm.jiaocunXmmc,
+          jiaocunLdmc: this.ruleForm.jiaocunLdmc,
+          jiaocunJkje: this.ruleForm.jiaocunJkje,
+          jiaocunJkrq: this.ruleForm.jiaocunJkrq,
+          jiaocunJksy: this.ruleForm.jiaocunJksy, //结束
+          jiaocunMsrxm: this.userinfo, //用户信息
+          jiaocunMsrzjhm: "36040011111111111", //显示信息不可修改
+          jiaocunXmbh: "6028",
+          jiaocunLdbh: "6028001",
+          jiaocunFh: "602",
+          jiaocunFwbh: "6028001602",
+          jiaocunFwmj: 100.12,
+          jiaocunZhmc: "江西极地置业",
+          jiaocunJkzh: "620001010101",
+          jiaocunKhyh: "九江银行",
+          jiaocunYhid: 11111,
+          jiaocunHtbh: "2020060911111",
+          jiaocunHtbah: "202006096567576",
+          kfsRwbh: "6009",
+          jiaocunXxlyzt: 0
         })
-        .then(ret => {
-          if (ret.code !== 200) {
-            this.$message.error(ret.message);
-          } else {
+        .then(res => {
+          if (res.code == 200) {
             this.$message.success("添加成功");
             this.$emit("submitSuccess");
-          }
-        });
-    },
-    updateData() {
-      sqjgzhApi.updateAccount({
-          ...this.form,
-          zjjgzhLdmc: this.ldName,
-          zjjgzhYhmc: this.bankName,
-          kfsId: this.$store.state.projectData.kfsId
-        })
-        .then(ret => {
-          if (ret.code !== 200) {
-            this.$message.error(ret.message);
           } else {
-            this.$message.success("修改成功");
-            this.$emit("submitSuccess");
+            this.$message.error(res.message);
           }
         });
     },
-
-    DetailData(id) {
-      sqjgzhApi.getAccountInfoById(id).then(ret => {
-        //console.log(ret);
-        this.form1 = ret.data.supervisedAccount;
-      });
-    },
-     fetchOpinion(id){
-         sqjgzhApi.getShlcDetail(id).then(ret => {
-          this.opinionList = ret.data
-        })
-       },
-       fetchShouJian(id) {
-        sqjgzhApi.queryReceiving(id).then(ret => {
-          this.businessAttachments = ret.data.businessAttachments;
-          this.businessReceives = ret.data.businessReceives;
-        })
-      },
-   
-     handleShouJian() {
-        // 组装一个List
-        console.log("taetae");
-        
-        console.log(this.businessReceives)
-        let list = this.businessReceives.map(item => ({
-          zhengjianId: item.shoujianId,
-          ywsjTitle: item.shoujianTitle,
-          ywsjFenshu: item.shoujianFenshu,
-          ywsjSjxz: item.shoujianSjxz === "原件" ? 0 : 1,
-          ywsjYwzh: this.zjjgzhYwzh,
-          ywsjXh: item.shoujianXuhao
-        }))
-        sqjgzhApi.submitShouJian(list).then(ret=>{
-          if (ret.code===200){
-            this.$message.success("收件成功")
-            this.$emit("submitSuccess")
-          }else{
-            this.$message.error(ret.message)
-          }
-        })
-      },
-      fetchShouJianByYwzh(id){
-         sqjgzhApi.selectByYwzh(id).then(ret => {
-          this.businessReceives = ret.data.map(item => ({
-            shoujianTitle: item.ywsjTitle,
-            shoujianSjxz: item.ywsjSjxz === 0 ? "原件" : "复印件",
-            shoujianFenshu: item.ywsjFenshu
-          }))
-        })
-      },
-    onSubmit() {
+    submitForm(formName) {
+      //  debugger
       if (this.dialogType === 1) {
-        this.addData();
-      } else if (this.dialogType === 3) {
-        this.updateData();
+        this.$refs[formName].validate(valid => {
+          if (valid) {
+            this.addData();
+          } else {
+            console.log("error submit!!");
+            return false;
+          }
+        });
       }
     },
     setMode(mode, id) {
-      if (mode === 1) {
-        sqjgzhApi.getProjectById(id).then(ret => {
-          this.form.xmxxXmbh = this.$store.state.projectData.xmxxXmbh;
-          this.form.zjjgzhXmmc = this.$store.state.projectData.xmxxXmmc;
-          this.form.zjjgzhGsmc = this.$store.state.projectData.xmxxKfs;
-        });
-        this.getBussinessType();
-      } else if (mode === 2) {
-        this.DetailData(id);
-        this.fetchOpinion(this.zjjgzhYwzh);
-        this.fetchShouJianByYwzh(this.zjjgzhYwzh);
-      } else if (mode === 3) {
-          this.getBussinessType();
-        sqjgzhApi.getAccountInfoById(id).then(ret => {
-          //console.log(ret);
-          this.form = ret.data.supervisedAccount;
-          let dl = ret.data.supervisedAccount.ywxlBh.slice(0, 4);  // 8019001
-          let xl = ret.data.supervisedAccount.ywxlBh.slice(4);  // 8019001
-          this.ywlx = [dl, ret.data.ywxlBh]
-        });
-      }else if(mode===4){
-        this.fetchShouJian(id);
-      }
+      // debugger
     },
+    storeInfo() {
+      //储存新增缴存信息已有信息
+      let forminfo = {
+        jiaocunXmbh: "合同编号储存",
+        fkfs: "付款方式储存",
+        gfze: "购房总额",
+        sfje: "首付金额",
+        gfr: "购房人",
+        jiaocunMsrzjhm: "身份证号",
+        jiaocunKhyh: "监管银行",
+        jiaocunJkzh: "监管账户"
+      };
+      this.form.jiaocunXmbh = forminfo.jiaocunXmbh;
+      this.form.fkfs = forminfo.fkfs;
+      this.form.gfze = forminfo.gfze;
+      this.form.sfje = forminfo.sfje;
+      this.form.gfr = forminfo.gfr;
+      this.form.jiaocunMsrzjhm = forminfo.jiaocunMsrzjhm;
+      this.form.jiaocunKhyh = forminfo.jiaocunKhyh;
+      this.form.jiaocunJkzh = forminfo.jiaocunJkzh;
+    },
+    //储存新增缴存修改信息
+    listInfo() {
+      let listinfo = {
+        jiaocunXmmc: "龙庭花园",
+        jiaocunLdmc: "D1",
+        jiaocunJkje: 100000,
+        jiaocunJkrq: "2020-06-09",
+        jiaocunJksy: "首付款" //结束
+      };
+      this.ruleForm.jiaocunXmmc = listinfo.jiaocunXmmc;
+      this.ruleForm.jiaocunLdmc = listinfo.jiaocunLdmc;
+      this.ruleForm.jiaocunJkje = listinfo.jiaocunJkje;
+      this.ruleForm.jiaocunJkrq = listinfo.jiaocunJkrq;
+      this.ruleForm.jiaocunJksy = listinfo.jiaocunJksy;
+    },
+    //储存用户信息
+    userbtn() {
+      let userlist = {
+        jiaocunMsrxm: "张三丰"
+      };
+      this.userinfo = userlist.jiaocunMsrxm;
+    }
+  },
+  created() {
+    //储存新增缴存信息已有信息
+    this.storeInfo();
+    //储存新增缴存修改信息
+    this.listInfo();
+    //储存用户信息
+    this.userbtn();
   }
-}
+};
 </script>
 <style scoped lang="scss">
 .area {
@@ -532,7 +261,6 @@ export default {
   margin-top: 20px;
 }
 
-  
 .receiveList {
   .item {
     background-color: rgba(228, 231, 237, 0.54);
@@ -581,94 +309,92 @@ export default {
 }
 </style>
 <style scoped lang="scss">
-  @import "~@/assets/css/var.scss";
+@import "~@/assets/css/var.scss";
+.dialogItem {
+  height: 30px;
+  display: flex;
+  margin-bottom: 20px;
+  line-height: 30px;
+  padding-left: 10px;
 
-  .dialogItem {
+  .itemIndex {
+    text-align: center;
     height: 30px;
-    display: flex;
-    margin-bottom: 20px;
-    line-height: 30px;
-    padding-left: 10px;
-
-    .itemIndex {
-      text-align: center;
-      height: 30px;
-      width: 30px;
-      background: $brand;
-      border-radius: 50%;
-      color: white;
-      font-size: 20px;
-      font-weight: 600;
-      margin-right: 10px;
-    }
-
-    .itemTitle {
-      font-weight: 600;
-      font-size: 18px;
-    }
+    width: 30px;
+    background: $brand;
+    border-radius: 50%;
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+    margin-right: 10px;
   }
 
-  .title {
+  .itemTitle {
     font-weight: 600;
-    line-height: 2;
-    margin-top: 20px;
     font-size: 18px;
   }
+}
 
-  .receiveList {
-    .item {
-      background-color: rgba(228, 231, 237, 0.54);
-      display: flex;
+.title {
+  font-weight: 600;
+  line-height: 2;
+  margin-top: 20px;
+  font-size: 18px;
+}
+
+.receiveList {
+  .item {
+    background-color: rgba(228, 231, 237, 0.54);
+    display: flex;
+    height: 80px;
+    margin: 5px 0;
+
+    .no {
+      width: 40px;
       height: 80px;
-      margin: 5px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: $text-info;
+    }
 
-      .no {
-        width: 40px;
-        height: 80px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: $text-info;
+    .info {
+      width: 600px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+
+      .name {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        font-size: 14px;
+        font-weight: 600;
       }
 
-      .info {
-        width: 600px;
+      .attr {
         display: flex;
-        flex-direction: column;
-        justify-content: space-around;
 
-        .name {
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          font-size: 14px;
-          font-weight: 600;
-        }
+        div {
+          margin-right: 20px;
+          color: $text-info;
 
-        .attr {
-          display: flex;
-
-          div {
-            margin-right: 20px;
-            color: $text-info;
-
-            span {
-              color: $text-weight;
-              font-weight: 600;
-            }
+          span {
+            color: $text-weight;
+            font-weight: 600;
           }
         }
       }
-
-      .pics {
-        padding: 10px 0;
-        flex: 1;
-        display: flex;
-
-        div.selectImg {
-
-        }
+    }
+    .pics {
+      padding: 10px 0;
+      flex: 1;
+      display: flex;
+      div.selectImg {
       }
     }
   }
+}
 </style>
+
+

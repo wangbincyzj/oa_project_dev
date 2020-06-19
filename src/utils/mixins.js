@@ -9,7 +9,6 @@ const routerMixin = {
   }
 }
 
-
 // dialog 父组件的mixin
 const dialogMixin = {
   data() {
@@ -36,7 +35,6 @@ const dialogMixin = {
     }
   }
 }
-
 
 // 配合MyPager的mixin
 /*

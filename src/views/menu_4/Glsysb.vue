@@ -121,7 +121,9 @@
 </script>
 
 <style scoped lang="scss">
+  
   @import "~@/assets/css/var.scss";
+  
   .tjrwry{
     padding: $pm;
   }
