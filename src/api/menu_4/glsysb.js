@@ -4,12 +4,12 @@ import { requests8083 } from "../jianguan";
 
 
 /**
- * 查询划拨账户
+ * 查询所有使用申报
  * 
  */
-let gethbAccountByXmbh = function(page, size = 20,xmxxXmbh,hbzhRkzt=1,hbzhZhmc=null,hbzhBgzt=null,){
-  return requests8083.get("data-presale-funds/transfer/selectPage", { 
-      current: page, size,xmxxXmbh,hbzhRkzt,hbzhZhmc,hbzhBgzt})
+let getAllSysb = function(page, size = 20){
+  return requests8083.get("data-presale-funds/shiyong/selectPage", { 
+      current: page, size})
 }
 
 /**
@@ -47,18 +47,15 @@ let addTksq = function (_form) {
 
 
 /**
- * 删除账户
+ * 上报
  * @param id
  * @returns {Promise<AxiosResponse<any>>}
  */
-// let deleteAccount = function (id) {
-//   return requests8083.get("data-presale-funds/supervisedAccount/del", {id})
-// }
+let informSysb = function (id) {
+  return requests8083.get("data-presale-funds/shiyong/report", {id})
+}
 
-export const httksqApi = {
-    gethbAccountByXmbh,
-    getAllContract,
-    getContractBySearch,
-    getContractInfoById,
-    addTksq,
+export const glsysbApi = {
+    getAllSysb,
+    informSysb,
 }
