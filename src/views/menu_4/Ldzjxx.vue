@@ -17,8 +17,8 @@
         <span>买受人:</span><el-input  v-model="person" size="mini" placeholder="按买受人搜索" style="width:200px;" />
         <span>开始时间:</span> <el-date-picker v-model="startTime1" type="date" placeholder="选择开始时间" size="mini"></el-date-picker>
         <span>结束时间:</span><el-date-picker v-model="endTime1" type="date" placeholder="选择结束时间" size="mini"></el-date-picker>
-        <el-button size="mini" type="success" @click="search">查找</el-button>
-        <el-button size="mini" type="success" @click="handlePrint">打印明细</el-button>
+        <el-button size="mini" type="success" @click="search1">查找</el-button>
+        <el-button size="mini" type="success" @click="handlePrint1" @mouseover.native = "getDate">打印明细</el-button>
        </div>
        </el-alert>
         <el-table
@@ -27,41 +27,41 @@
           @cell-mouse-enter="cellMouseEnter">
           <el-table-column
             label="买受人"
-            prop="hetongId">
+            prop="jiaocunMsrxm">
           </el-table-column>
           <el-table-column
             label="证件号码"
-            prop="hetongYhmc">
+            prop="jiaocunMsrzjhm">
           </el-table-column>
           <el-table-column
             label="项目名称"
-            prop="hetongKfsmc">
+            prop="jiaocunXmmc">
           </el-table-column>
           <el-table-column
             label="楼栋名称"
-            prop="hetongZhmc">
+            prop="jiaocunLdmc">
           </el-table-column>
           <el-table-column
             label="房号"
-            prop="hetongXmmc">
+            prop="jiaocunFh">
           </el-table-column>
           <el-table-column
             align="center"
             label="建筑面积"
-            prop="hetongLczt">           
+            prop="jiaocunFwmj">           
           </el-table-column>
           <el-table-column
             align="center"
             label="缴款金额"
-            prop="hetongLczt">           
+            prop="jiaocunJkje">           
           </el-table-column><el-table-column
             align="center"
             label="缴款说明"
-            prop="hetongLczt">           
+            prop="jiaocunJksy">           
           </el-table-column><el-table-column
             align="center"
             label="缴款日期"
-            prop="hetongLczt">           
+            prop="jiaocunJkrq">           
           </el-table-column>
           
         </el-table>
@@ -108,8 +108,8 @@
        <div class="controls" style="background-color:#fdf6ec;width:100%">
         <span style="margin-left:100px">开始时间:</span> <el-date-picker v-model="startTime2" type="date" placeholder="选择开始时间" size="mini"></el-date-picker>
         <span>结束时间:</span><el-date-picker v-model="endTime2" type="date" placeholder="选择结束时间" size="mini"></el-date-picker>
-        <el-button size="mini" type="success" @click="search">查找</el-button>
-        <el-button size="mini" type="success" @click="handlePrint">打印明细</el-button>
+        <el-button size="mini" type="success" @click="search2">查找</el-button>
+        <el-button size="mini" type="success" @click="handlePrint2" @mouseover.native = "getDate">打印明细</el-button>
        </div>
        </el-alert>
         <el-table
@@ -119,17 +119,17 @@
           <el-table-column
             label="申报金额"
             align="center"
-            prop="hetongId">
+            prop="shiyongSbje">
           </el-table-column>
           <el-table-column
             label="划出帐号"
             align="center"
-            prop="hetongYhmc">
+            prop="shiyongJgzh">
           </el-table-column>
           <el-table-column
             label="发放日期"
             align="center"
-            prop="hetongKfsmc">
+            prop="shiyongFfrq">
           </el-table-column>
          
         </el-table>
@@ -142,21 +142,84 @@
           <el-table-column
             label="缴款总金额"
             align="center"
-            prop="hetongId">
+            prop="jiaocunCount">
           </el-table-column>
           <el-table-column
             label="使用总金额"
             align="center"
-            prop="hetongYhmc">
+            prop="shiyongCount">
           </el-table-column>
           <el-table-column
             label="账户总金额"
             align="center"
-            prop="hetongKfsmc">
+            prop="totalCount">
           </el-table-column>
          
         </el-table>
       </ContainerTwoType>
+       <div id="printData1" style="width:700px;margin:0 auto;display:none">
+      <h2 style="text-align:center;font-weight:bold">预售资金监管</h2>
+
+       <table style="width:700px;margin:0 auto;text-align:center;font-size:16px;text-height:25px" border="1" cellspacing="0"> 
+            <thead>
+                <th style="text-align:center" colspan="8">【{{this.ldxxMc}}】截止到{{this.date}}期间的缴存记录</th>
+                <tr>
+                    <td>买受人</td>
+                    <td>证件号码</td>
+                    <td>项目名称</td>
+                    <td>楼栋名称</td>
+                    <td>房号</td>
+                    <td>建筑面积</td>
+                    <td>缴款金额</td>
+                    <td>缴款日期</td>
+                </tr>
+                
+            </thead>
+            <tbody>
+               <tr v-for="(item, index) in tableData" :key="index" >
+                    <th>{{item.jiaocunMsrxm}}</th>
+                    <th>{{item.jiaocunMsrzjhm}}</th>
+                    <th>{{item.jiaocunXmmc}}</th>
+                    <th>{{item.jiaocunLdmc}}</th>
+                    <th>{{item.jiaocunFh}}</th>
+                    <th>{{item.jiaocunFwmj}}</th>
+                    <th>{{item.jiaocunJkje}}</th>
+                    <th>{{item.jiaocunJkrq}}</th>
+                </tr>
+            </tbody>
+            <th style="text-align:center" colspan="4">总金额</th><th style="text-align:center" colspan="4">{{this.tableData2[0].jiaocunCount}}</th>
+      </table>
+       </div>
+
+        <div id="printData2" style="width:700px;margin:0 auto;display:none">
+      <h2 style="text-align:center;font-weight:bold">预售资金监管</h2>
+       <table style="width:700px;margin:0 auto;text-align:center;font-size:16px;text-height:25px" border="1" cellspacing="0"> 
+            <thead>
+                <th style="text-align:center" colspan="8">【{{this.ldxxMc}}】截止到{{this.date}}期间的缴存记录</th>
+                <tr>
+                    
+                    <td>项目名称</td>
+                    <td>楼栋名称</td>
+                    <td>申报金额</td>
+                    <td>划出账号</td>
+                    <td>发放日期</td>
+                </tr>
+                
+            </thead>
+            <tbody>
+               
+               <tr v-for="(item, index) in tableData1" :key="index" >
+                   
+                    <th>{{item.shiyongXmmc}}</th>
+                    <th>{{item.shiyongLdmc}}</th>
+                    <th>{{item.shiyongSbje}}</th>
+                    <th>{{item.shiyongJgzh}}</th>
+                    <th>{{item.shiyongFfrq}}</th>
+                </tr>
+            </tbody>
+            <th style="text-align:center" colspan="2">缴存总额</th><th style="text-align:center" colspan="3">{{this.tableData2[0].shiyongCount}}</th>
+      </table>
+       </div>
   </div>
 </template>
 
@@ -184,7 +247,10 @@
         tableData1: [
         ],
         tableData2: [
+          {jiaocunCount:0,shiyongCount:0,totalCount:0}
         ],
+       
+        date:"",
         person:"",
         startTime1:"",
         endTime1:"",
@@ -202,6 +268,7 @@
         xmxxXmbh:"",
         ldxxLdbh:"",
         ldxxMc:"",
+        xmxxXmmc:"",
 
 
 
@@ -215,7 +282,7 @@
     methods:{
       fetchNavInfo() {
       this.xmxxXmbh=this.$store.state.projectData.xmxxXmbh;
-      
+      this.xmxxXmmc=this.$store.state.projectData.xmxxXmmc;
         ldzjxxApi.getBuildingByXmbh(this.xmxxXmbh).then(ret => {
            this.navInfo.list = ret.data.map(item=>({
             ...item, id: item.ldxxLdbh, name: item.ldxxMc
@@ -224,120 +291,77 @@
         })
       },
      
-     fetchDataByAccountId(id){
+     fetchData(id){
        
-       ldzjxxApi.getContractByAccount(this.currentPage, this.pageSize,this.kfsId,id).then(ret => {
+       ldzjxxApi.getInfoByLd(id).then(ret => {
          console.log(ret);
          console.log("where is my ...");
-         
-          this.pages=ret.data.pages;
-          this.tableData = ret.data.records;
-          this.total = ret.data.total;
-          this.tableData.map(function (val) {
-             
-            })
+          this.tableData = ret.data.jiaocuns;
+          this.tableData1=ret.data.shiyongs;
+          console.log("taetae");
+          
+          this.tableData2[0].jiaocunCount=ret.data.jiaocunCount;
+          this.tableData2[0].shiyongCount=ret.data.shiyongCount;
+          this.tableData2[0].totalCount=ret.data.totalCount;
+          console.log(this.tableData2.shiyongCount);
+          console.log(ret.data.shiyongCount);
+          
+          
         })
      },
+     reset(){
+        this.endTime1="";
+        this.endTime2="";
+        this.startTime1="";
+        this.startTime2="";
+        this.person="";
+     },
+     getDate(){
+       let myDate = new Date();
+      this.date=myDate.toLocaleDateString();
+     },
       liClick(index) {
+        this.reset();
         this.selectedIndex = index;
         console.log("index:"+index);
         console.log(this.$store.state.projectData.xmxxXmbh);
-        
          this.selectedIndex = this.navInfo.list[index];
          this.ldxxLdbh=this.navInfo.list[index].id;
          this.ldxxMc=this.navInfo.list[index].name;
-         //this.kfsId=this.navInfo.list[index].kfsId;
-         //this.fetchDataByAccountId(this.ldxxLdbh);        
+         this.fetchData(this.ldxxLdbh);        
       },
-      
-      addClick() {
-        this.dialogVisible = true;
-        this.dialogTitle = "添加合同";
-        this.dialogType = 1;
-        //this.zjjgzhId=this.currentRow.zjjgzhId;
-        this.$nextTick(()=>{
-          this.$refs.dialog.setMode(1,this.$store.state.projectData.xmxxId);
+      search1(){
+        ldzjxxApi.getJcInfo(this.ldxxLdbh,this.person,this.startTime1,this.endTime1).then(ret => {
+         console.log(ret);
+         console.log("where is my ...");
+          this.tableData = ret.data.jiaocuns;
         })
       },
-      handleUpdate(index,row){
-        this.dialogVisible = true;
-        this.dialogTitle = "修改合同";
-        this.dialogType = 2;
-        this.$nextTick(()=>{
-          this.$refs.dialog.setMode(2,this.currentRow.hetongId);
+
+      search2(){
+        ldzjxxApi.getSyInfo(this.ldxxLdbh,this.startTime2,this.endTime2).then(ret => {
+         console.log(ret);
+         console.log("where is my ...");
+          this.tableData = ret.data.shiyongs;
         })
       },
-      handleDetail(index, row){
-        this.dialogVisible = true;
-        this.dialogTitle = "三方协议申请信息";
-        this.dialogType = 3;
-        this.hetongYwzh=this.currentRow.hetongYwzh;
-        this.$nextTick(()=>{
-          this.$refs.dialog.setMode(3, this.currentRow.hetongId);
-          this.$refs.dialog.reset();
-        })
-      },
-      handleInform(index, row){
-          if(window.confirm("确定要上报该三方协议吗?")){
-            sqsfxyApi.informContract(this.currentRow.hetongId).then(ret => {
-              if (ret.code === 200) {
-                this.$message.success("上报成功");
-               this.fetchDataByAccountId(this.zjjgzhYhzh);
-              } else {
-                
-                this.$message.error(ret.message)
-              }
-            })
-          }
-      },
-      handleDelete(index, row){
-          if(window.confirm("确定要删除该三方协议吗?")){
-            sqsfxyApi.deleteContract(this.currentRow.hetongId).then(ret => {
-              if (ret.code === 200) {
-                this.$message.success("删除成功");
-                this.fetchDataByAccountId(this.zjjgzhYhzh);
-              } else {
-                
-                this.$message.error(ret.message)
-              }
-            })
-          }
-      },
-      loadPic(){},
-      managePic(){},
-      handlePrint(index, row){
-        
-      },
-      handleGetFile(index, row){
-         this.dialogVisible = true;
-        this.dialogTitle = "业务收件操作";
-        this.hetongYwzh=this.currentRow.hetongYwzh;
-        this.dialogType = 4;
-        this.$nextTick(()=>{
-          this.$refs.dialog.setMode(4, this.currentRow.hetongId);
-        })
-      },
-      handleDelFile(){
-        if(window.confirm("确定要清除收件吗?")){
-            sqsfxyApi.deleteSj(this.currentRow.hetongYwzh).then(ret => {
-              if (ret.code === 200) {
-                this.$message.success("删除成功");
-                this.fetchDataByAccountId(this.zjjgzhYhzh);
-              } else {
-                
-                this.$message.error(ret.message)
-              }
-            })
-          }
-      },
-      handlePrintFile(){},
-      submitSuccess() {
-         this.$nextTick(()=>{
-                this.$refs.dialog.reset();
-            });
-            this.fetchDataByAccountId(this.zjjgzhYhzh);
-        this.dialogVisible = false;
-      },
+     
+     handlePrint1(){
+        let obj=document.getElementById('printData1');
+        let newWindow=window.open("打印窗口","_blank");
+        let docStr = obj.innerHTML;
+        newWindow.document.write(docStr);
+        newWindow.document.close();
+        newWindow.print();
+     },
+     handlePrint2(){
+        let obj=document.getElementById('printData2');
+        let newWindow=window.open("打印窗口","_blank");
+        let docStr = obj.innerHTML;
+        newWindow.document.write(docStr);
+        newWindow.document.close();
+        newWindow.print();
+     },
        cellMouseEnter(row) {
         this.currentRow = row;
       },

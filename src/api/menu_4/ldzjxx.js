@@ -4,7 +4,7 @@ import { requests8083 } from "../jianguan";
 
 
 /**
- * 查询账户
+ * 查询楼栋
  * 
  */
 let getBuildingByXmbh = function(xmxxXmbh,ldxxShzt=null,ldxxSjlylx=null,){
@@ -12,20 +12,28 @@ let getBuildingByXmbh = function(xmxxXmbh,ldxxShzt=null,ldxxSjlylx=null,){
       xmxxXmbh,ldxxShzt,ldxxSjlylx})
 }
 /**
- * 根据项目编号查询项目
+ * 根据楼栋查询信息
  * 
  */
-// let getProjectById = function(id){
-//     return requests.get("data_center/realEstateProject/selectById", {id})
-//   }
+let getInfoByLd = function(ldbh){
+    return requests8083.get("data-presale-funds/jiaocun/buildingFundCount", {ldbh})
+  }
 
-// /**
-//  * 新增账户
-//  */
-// let addAccount = function (_form) {
-//   return requests8083.post("data-presale-funds/supervisedAccount/save", _form)
-// }
+/**
+ * 根据条件查询缴存信息
+ * 
+ */
+let getJcInfo = function(ldbh,jiaocunMsrxm,JKstartTime,JKendTime){
+    return requests8083.get("data-presale-funds/jiaocun/buildingFundCount", {ldbh,jiaocunMsrxm,JKstartTime,JKendTime})
+  }
 
+/**
+ * 根据条件查询使用信息
+ * 
+ */
+let getSyInfo = function(ldbh){
+    return requests8083.get("data-presale-funds/jiaocun/buildingFundCount", {ldbh,FFstartTime,FFendTime})
+  }
 
 /**
  * 删除账户
@@ -37,5 +45,9 @@ let getBuildingByXmbh = function(xmxxXmbh,ldxxShzt=null,ldxxSjlylx=null,){
 // }
 
 export const ldzjxxApi = {
+    getInfoByLd,
     getBuildingByXmbh,
+    getJcInfo,
+    getSyInfo,
+
 }

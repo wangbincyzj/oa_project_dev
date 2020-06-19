@@ -10,37 +10,37 @@
           @cell-mouse-enter="cellMouseEnter">
           <el-table-column
             label="项目名称"
-            prop="id">
+            prop="shiyongXmmc">
           </el-table-column>
           <el-table-column
             label="楼栋名称"
-            prop="htId">
+            prop="shiyongLdmc">
           </el-table-column>
           <el-table-column
             label="申请金额"
-            prop="companyName">
+            prop="shiyongSbje">
           </el-table-column>
           <el-table-column
             label="申请类型"
-            prop="itemName">
+            prop="shiyongSqsyfs">
           </el-table-column>
           <el-table-column
             label="申报日期"
-            prop="ldName">
+            prop="shiyongAddtime">
           </el-table-column>
           <el-table-column
             label="划拨用户"
-            prop="phone">
+            prop="shiyongJgzhmc">
           </el-table-column>
           <el-table-column
             align="center"
             label="划拨账号"
-            prop="status">           
+            prop="shiyongJgzh">           
           </el-table-column>
          <el-table-column
             align="center"
             label="审核状态"
-            prop="status">           
+            prop="shiyongShzt">           
           </el-table-column>
           <el-table-column
             align="center"
@@ -133,8 +133,7 @@
   import ContainerTwoType from "@/components/current/containerTwoType/ContainerTwoType";
   import TitleTable from "@/components/current/titleTable/TitleTable";
   import GlsysbDialog from "@/views/menu_4/GlsysbDialog";
- 
-  //import {tjrwyhApi} from "@/api/menu_4/tjrwyh";
+  import {glsysbApi} from "@/api/menu_4/glsysb";
   import {mixins} from "@/utils/mixins";
 
   export default {
@@ -161,9 +160,25 @@
       }
     },
     created() {
+      this.fetchData();
     },
     methods:{
-     
+     fetchData(){
+         glsysbApi.getAllSysb(this.currentPage,this.pageSize).then(ret=>{
+           
+           this.tableData = ret.data.records;
+           this.total=ret.total;
+           this.pages=ret.data.pages;
+           this.tableData.map(function (val) {
+              if (val.shiyongSqsyfs == 0) {
+                val.shiyongSqsyfs = '正常使用'
+              } else if (val.shiyongSqsyfs == 1) {
+                val.shiyongSqsyfs = '撤销合同退款'
+              }     
+            })
+
+          });
+      },
       GetFile(index,row){
         this.dialogVisible = true;
         this.dialogTitle = "业务收件操作";
@@ -185,8 +200,22 @@
         })
       },
       handleDelete(index,row){},
-      handleInform(index,row){},
-      handleDetail(index,row){},
+      handleInform(index,row){
+        if(window.confirm("确定要上报该使用申报吗?")){
+            glsysbApi.informSysb(this.currentRow.shiyongId).then(ret => {
+              console.log(this.currentRow.shiyongId);
+              if (ret.code === 200) {
+                this.$message.success("上报成功");
+                this.fetchData();
+              } else {
+                
+                this.$message.error(ret.message)
+              }
+            })
+          }
+      },
+      handleDetail(index,row){
+      },
 
       printPaper(index,row){},
       managePic(index,row){},
