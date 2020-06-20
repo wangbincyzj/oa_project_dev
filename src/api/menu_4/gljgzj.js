@@ -1,3 +1,5 @@
+
+//1231
 /*添加三方协议*/
 // import {requests} from "@/api";
 import { requests8093 } from "../jianguan";
@@ -15,7 +17,6 @@ let getProjectById = function(current,size,jiaocunXmbh){
     })
   }
 
-
 /**
 *  确认上报 post    状态上报 
 */
@@ -23,8 +24,6 @@ let addDeposit = function (_form) {
     // console.log(requests8093)
     return requests8093.post("data-presale-funds/jiaocun/report", _form)
 }
-
-
 
 
 let apaymentlist = function (current,size,jiaocunXmbh,jiaocunJkzt) {

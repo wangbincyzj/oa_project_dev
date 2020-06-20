@@ -17,7 +17,6 @@
             </template>
           </el-table-column>
         </el-table>
-
         <el-pagination
           background
           layout="prev, pager, next, total"
@@ -26,7 +25,6 @@
           :page-size="pageSize"
           :total="total"
         ></el-pagination>
-
         <el-dialog
           :title="dialogTitle"
           center
@@ -42,7 +40,6 @@
     </ContainerTwoType>
   </div>
 </template>
-
 
 <script>
 import ContainerTwoType from "@/components/current/containerTwoType/ContainerTwoType";

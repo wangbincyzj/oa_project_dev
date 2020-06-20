@@ -1,3 +1,5 @@
+//1231
+
 /*房屋定金管理*/
 import { requests } from "@/api";
 import { requests8093 } from "../jianguan";
@@ -65,7 +67,6 @@ let delDeposit = function (id) {
 }
 
 
-
 /**
  * 定金关联
  * ######################################################
@@ -99,7 +100,7 @@ let getdata = function (kfsRwbh, htShzt) {
   return requests8093.get("data-presale-funds/jiaocun/selectPage", { kfsRwbh, htShzt })
 }
 
-
+//关联
 
 let relationData = function (
   djId, jiaocunMsrxm, jiaocunMsrzjhm, jiaocunXmmc, jiaocunXmbh, 

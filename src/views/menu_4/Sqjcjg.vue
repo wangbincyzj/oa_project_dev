@@ -52,7 +52,7 @@
           :visible.sync="dialogVisible"
           @close="dialogVisible = false"
         >
-          <TjjgzhDialog ref="dialog" :dialog-type="dialogType" @submitSuccess="submitSuccess" />
+          <TjjgzjDialog ref="dialog" :dialog-type="dialogType" @submitSuccess="submitSuccess" />
         </el-dialog>
       </TitleTable>
     </ContainerTwoType>
@@ -62,7 +62,7 @@
 <script>
 import ContainerTwoType from "@/components/current/containerTwoType/ContainerTwoType";
 import TitleTable from "@/components/current/titleTable/TitleTable";
-import TjjgzhDialog from "@/views/menu_4/TjjgzhDialog";
+import TjjgzjDialog from "@/views/menu_4/TjjgzjDialog";
 
 //import {tjrwyhApi} from "@/api/menu_4/tjrwyh";
 import { mixins } from "@/utils/mixins";
@@ -70,7 +70,7 @@ import { mixins } from "@/utils/mixins";
 export default {
   name: "sqjcjg",
   mixins: [mixins.dialogMixin],
-  components: { TjjgzhDialog, TitleTable, ContainerTwoType },
+  components: { TjjgzjDialog, TitleTable, ContainerTwoType },
   data() {
     return {
       navInfo: {
