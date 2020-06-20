@@ -43,14 +43,12 @@
     },
     methods: {
       login() {
-        debugger
         if (!this.username.trim() || !this.password.trim()) {
           this.$message.info("请输入正确的信息");
           return
         }
         this.loading = true
         loginApi.login(this.username, this.password).then(ret => {
-          debugger
           this.loading = false;
           if (ret.code === 200) {
             this.$message.success("登录成功");

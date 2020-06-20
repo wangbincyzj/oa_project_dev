@@ -74,5 +74,4 @@ export const mixins = {
   routerMixin,
   dialogMixin,
   myPagerMixin,
-  loadingMixin
 }
