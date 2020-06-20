@@ -1,4 +1,4 @@
-// 针对预售的8084端口
+// 针对预售的8084端口  预售资金
 import axios from "axios"
 import store from "@/store";
 

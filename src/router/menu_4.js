@@ -29,6 +29,7 @@ export default {
         {title: "添加监管资金", path: "tjjgzj"},
         {title: "管理监管资金", path: "gljgzj"},
         {title: "打印预备缴款名单", path: "dyybjkmd"},
+        {title: "测试页面", path: "demopage"},
       ]
     },
     {
@@ -55,7 +56,15 @@ export default {
       group:[
         {title: "楼栋资金信息", path: "ldzjxx"},
         {title: "账户资金信息", path: "zhzjxx"},
-       
+      ]
+    },
+    {
+      title: "房屋定金管理",
+      path: "/fwdjgl",
+      group:[
+        {title: "定金缴存", path: "fwdDjjc"},
+        {title: "定金关联", path: "fwdDjgl"},
+        {title: "定金退款", path: "fwdDjtk"},
       ]
     }
   ]

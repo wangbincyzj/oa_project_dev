@@ -1,4 +1,4 @@
-// 针对预售的8082端口
+// 针对预售的8082端口 登录中心
 import axios from "axios"
 import store from "@/store";
 
