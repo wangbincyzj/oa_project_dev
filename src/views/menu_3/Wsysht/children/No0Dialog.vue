@@ -15,19 +15,30 @@
             </div>
           </InfoListPlusItem>
           <InfoListPlusItem name="共有份额"><input v-model="form.fwsyqrGybl" type="text"></InfoListPlusItem>
-          <InfoListPlusItem name="证件号码" oneline>
-            <div>
-              <el-button size="mini" type="primary">读取身份证</el-button>
-              <input v-model="form.fwsyqrZjhm" style="outline: none; border-bottom: 1px #909399 solid" type="text">
-            </div>
+          <InfoListPlusItem name="证件号码" >
+            <input v-model="form.fwsyqrZjhm" type="text">
+<!--            <div>-->
+<!--              <el-button size="mini" type="primary">读取身份证</el-button>-->
+<!--              <input v-model="form.fwsyqrZjhm" style="outline: none; border-bottom: 1px #909399 solid" type="text">-->
+<!--            </div>-->
           </InfoListPlusItem>
-
-          <InfoListPlusItem name="人员相片" oneline>
-            <div>
-              <el-button  size="mini" type="primary">点击拍照</el-button>
-              <el-button  size="mini" type="primary">上传</el-button>
-            </div>
-          </InfoListPlusItem>
+          <InfoListPlusItem2 name="人员相片">
+            <el-upload
+              action="http://192.168.1.153:8094/data-presale-license/contract/upload"
+              name="files"
+              :headers="{token:$store.state.loginInfo.token}"
+              :file-list="fileList"
+              list-type="picture-card"
+              :on-preview="handlePictureCardPreview"
+              :on-progress="handleUpload"
+              :on-success="handleSuccess"
+              :on-remove="handleRemove">
+              <i class="el-icon-plus"></i>
+            </el-upload>
+            <el-dialog :visible.sync="dialogVisible" append-to-body>
+              <img width="100%" :src="dialogImageUrl" alt="">
+            </el-dialog>
+          </InfoListPlusItem2>
 
         </template>
       </InfoListPlus>
@@ -48,7 +59,16 @@
         <el-table-column align="center" label="共有比例" prop="fwsyqrGybl" width="100"/>
         <el-table-column align="center" label="联系电话" prop="fwsyqrLxdh" width="150"/>
         <el-table-column align="center" label="家庭地址" prop="fwsyqrJtdz" width="100"/>
-        <el-table-column align="center" label="买受人照片" prop="xsqrdZxyy" />
+        <el-table-column #default="{row}" align="center" label="买受人照片" prop="xsqrdZxyy" width="120">
+          <div class="demo-image__preview" v-if="row.pics&&row.pics.length">
+            <el-image
+              style="width: 100px; height: 80px"
+              :src="row.pics[0]"
+              :preview-src-list="row.pics">
+            </el-image>
+          </div>
+          <div v-else>未上传</div>
+        </el-table-column>
         <el-table-column align="center" label="操作">
 
           <template #default="scope">
@@ -67,17 +87,17 @@
   import InfoListPlusItem from "@/components/common/infoListPlus/InfoListPlusItem";
   import CenterButton from "@/components/common/centerButton/CenterButton";
   import {yushouContractApi} from "@/api/menu_3/yushowContract";
-  import {yushowApi} from "@/api/menu_3/yushow";
+  import InfoListPlusItem2 from "@/components/common/infoListPlus/InfoListPlusItem2";
 
   export default {
     name: "No0Dialog",
-    components: {CenterButton, InfoListPlusItem, InfoListPlus},
+    components: {InfoListPlusItem2, CenterButton, InfoListPlusItem, InfoListPlus},
     props:["htBh", "htId"],
     data() {
       return {
         loading: false,
         mode: 0,
-        tableData: [{}],
+        tableData: [],
         form: {
           fwsyqrSyqr: "",
           fwsyqrZjhm: "",
@@ -87,10 +107,20 @@
           fwsyqrSqrpic: "",
           fwsyqrGyfs: "",
           fwsyqrGybl: "",
-        }
+        },
+        fileList:[],
+        dialogImageUrl: '',
+        dialogVisible: false,
       }
     },
     methods: {
+      reset() {
+        Object.keys(this.form).forEach(key=>{
+          this.form[key] = ""
+        });
+        this.fileList = [];
+        this.dialogImageUrl = ""
+      },
       setMode(mode) {
         this.mode = mode; // 0添加 1管理
         this.form.fwsyqrHtbh = this.htBh;
@@ -102,10 +132,18 @@
         this.loading = true;
         yushouContractApi.selectHouseOwnerList(this.htBh).then(ret=>{
           this.loading = false
-          this.tableData = ret.data
+          this.tableData = ret.data;
+          this.tableData.forEach(item=>{
+            if(item.fwsyqrSqrpic){
+              item.pics = item.fwsyqrSqrpic.split(",").map(id=>yushouContractApi.previewPic+id)
+            }else{
+              item.pics = []
+            }
+          })
         })
       },
       handleAdd() {
+        this.form.fwsyqrSqrpic = this.fileList.map(item=>item.response.data[0].fujianId).join(",")
         yushouContractApi.saveHouseOwner(this.form).then(ret=>{
           if(ret.code===200){
             this.$message.success("添加成功");
@@ -139,6 +177,24 @@
           })
         })
 
+      },
+      handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePictureCardPreview(file) {
+        this.dialogImageUrl = file.url;
+        this.dialogVisible = true;
+      },
+      handleUpload(event, file, fileList){
+
+      },
+      handleSuccess(response, file, fileList) {
+        console.log(response)
+        console.log(file)
+        this.fileList = fileList
+      },
+      handleFileList(){
+        console.log(this.fileList)
       }
     }
   }

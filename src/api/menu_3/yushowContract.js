@@ -1,5 +1,5 @@
 import {requests} from "@/api/yushou";
-
+import {config} from "@/api/baseConfig";
 /*---------------------------------合同模板--------------------------------*/
 
 
@@ -14,17 +14,17 @@ let getContractBuildingTree = function ({ldxxFwlx, rwbh}) {
  * 合同管理分页查询
  * @param htXslx 类型 0预售 1现售
  */
-let getContractList = function({kfsRwbh,htBazt, HtCxzt,HtBgzt, current=1,size=20, htXslx=0}){
+let getContractList = function ({kfsRwbh, htBazt, HtCxzt, HtBgzt, current = 1, size = 20, htXslx = 0}) {
   return requests.get("data-presale-license/contract/selectPage", {
-    kfsRwbh, current, size, htXslx,htBazt, HtCxzt,HtBgzt,
+    kfsRwbh, current, size, htXslx, htBazt, HtCxzt, HtBgzt,
   })
 }
 
 /**
  * 完善合同
  */
-let contractComplete = function(type, _form){
-  return requests.post("data-presale-license/contract/complete",{
+let contractComplete = function (type, _form) {
+  return requests.post("data-presale-license/contract/complete", {
     [_form.name]: _form,
     type
   })
@@ -94,17 +94,17 @@ let auditContractTemplate = function ({htId, shzt}) {
 /**
  * 新增合同模板
  * @param _form
- * @htXslx	Integer  合同模板类型：0 预售 1现售
- * @htMc	Integer  模板名称（必填）
- * @htLdmc	Integer  楼栋名称（必填）
- * @htXmmc	Integer  项目名称（必填）
- * @kfsRwbh	Integer  入网编号（必须携带过来）其他参数请F12 查看老项目页面元素 id或name
+ * @htXslx  Integer  合同模板类型：0 预售 1现售
+ * @htMc  Integer  模板名称（必填）
+ * @htLdmc  Integer  楼栋名称（必填）
+ * @htXmmc  Integer  项目名称（必填）
+ * @kfsRwbh  Integer  入网编号（必须携带过来）其他参数请F12 查看老项目页面元素 id或name
  */
 let addContractTemplate = function (_form) {
   return requests.post("data-presale-license/contractTemplate/save", _form)
 }
 
-let updateContractTemplate = function(_form) {
+let updateContractTemplate = function (_form) {
   return requests.post("data-presale-license/contractTemplate/update", _form)
 }
 
@@ -124,8 +124,6 @@ let getContractTemplateById = function ({htId}) {
 }
 
 
-
-
 /*---------------------------------承诺书--------------------------------*/
 /**
  * 保存承诺书
@@ -135,7 +133,13 @@ let getContractTemplateById = function ({htId}) {
  * @param xsqrdFwbh  房屋编号
  */
 let saveSalesConfirmation = function ({xsqrdXmmc, xsqrdLdmc, xsqrdFh, xsqrdFwbh, kfsRwbh}) {
-  return requests.post("data-presale-license/salesConfirmation/save", {xsqrdXmmc, xsqrdLdmc, xsqrdFh, xsqrdFwbh, kfsRwbh})
+  return requests.post("data-presale-license/salesConfirmation/save", {
+    xsqrdXmmc,
+    xsqrdLdmc,
+    xsqrdFh,
+    xsqrdFwbh,
+    kfsRwbh
+  })
 }
 
 /**
@@ -171,8 +175,8 @@ let salesConfirmationSelectById = function (id) {
 /**
  * 注销
  */
-let cancelSalesConfirmation = function (xsqrdId,xsqrdZxyy) {
-  return requests.get("data-presale-license/salesConfirmation/cancel", {xsqrdId,xsqrdZxyy})
+let cancelSalesConfirmation = function (xsqrdId, xsqrdZxyy) {
+  return requests.get("data-presale-license/salesConfirmation/cancel", {xsqrdId, xsqrdZxyy})
 }
 
 
@@ -218,14 +222,14 @@ let delByIdHouseOwner = function (id) {
  * 根据合同编号查询产权人列表
  */
 let selectHouseOwnerList = function (fwsyqrHtbh) {
-  return requests.get("data-presale-license/houseOwner/selectListByContractNr", {htbh:fwsyqrHtbh})
+  return requests.get("data-presale-license/houseOwner/selectListByContractNr", {htbh: fwsyqrHtbh})
 }
 
 /**
  * 完善合同后上报合同
  * type: 1备案上报   2撤销上报
  */
-let submitContract = function (htId, type=1) {
+let submitContract = function (htId, type = 1) {
   return requests.get("data-presale-license/contract/submit", {htId, type})
 }
 
@@ -233,7 +237,7 @@ let submitContract = function (htId, type=1) {
  * 合同列表查询
  * htBazt 0新建 1上报 2通过 3撤回
  */
-let getAllContract = function ({htMsrxm, htBazt, htCxlc},current=1,size=20,htXslx=0) {
+let getAllContract = function ({htMsrxm, htBazt, htCxlc}, current = 1, size = 20, htXslx = 0) {
   return requests.get("data-presale-license/contract/selectPage", {htMsrxm, htCxlc, htBazt, current, size, htXslx})
 }
 
@@ -255,9 +259,20 @@ let revokeContractDetail = function (htId) {
  * 记录审核信息
  */
 let auditContract = function ({businessId, processName, processId, approveOpinion, status, lczt}) {
-  return requests.post("data-presale-license/contract/audit", {businessId, processName, processId, approveOpinion, status, lczt})
+  return requests.post("data-presale-license/contract/audit", {
+    businessId,
+    processName,
+    processId,
+    approveOpinion,
+    status,
+    lczt
+  })
 }
 
+/*---------------------------------图片上传与获取--------------------------------*/
+/*arg:files*/
+let uploadPic = config.productMode ? "/data-presale-license/houseOwner/update" : `http://192.168.1.${config.baseIP}:8094/data-presale-license/houseOwner/update`
+let previewPic = config.productMode ? "/data-presale-license/contract/getFile?id=" : `http://192.168.1.${config.baseIP}:8094/data-presale-license/contract/getFile?id=`
 
 export const yushouContractApi = {
   getContractBuildingTree,
@@ -292,5 +307,8 @@ export const yushouContractApi = {
   getAllContract,
   revokeContract,
   revokeContractDetail,
-  auditContract
+  auditContract,
+  //////////
+  uploadPic,
+  previewPic
 }

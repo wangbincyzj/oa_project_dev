@@ -49,14 +49,18 @@
         </el-table-column>
       </el-table>
       <el-dialog
-        title="合同变更申请"
+        :title="dialogTitle"
         center
-        width="600px"
+        width="1200px"
         slot="dialog"
         :visible.sync="dialogVisible"
         @close="dialogVisible = false"
       >
-        <CxbasqDialog :htId="htId" :visible.sync="dialogVisible" @submitSuccess="submitSuccess"/>
+        <HtbgsqDialog
+          ref="dialog"
+          :htId="htId"
+          :visible.sync="dialogVisible"
+          @submitSuccess="submitSuccess"/>
       </el-dialog>
     </TitleTable>
     <transition name="bd">
@@ -75,11 +79,12 @@
   import WsyshtLayout from "@/views/menu_3/Wsysht/WsyshtLayout";
   import {mixins} from "@/utils/mixins";
   import CxbasqDialog from "@/views/menu_3/CxbasqDialog";
+  import HtbgsqDialog from "@/views/menu_3/HtbgsqDialog";
 
   export default {
     name: "Cxbasq",
     mixins: [mixins.dialogMixin],
-    components: {CxbasqDialog, WsyshtLayout, InfoListPlusItem, InfoListPlus, TitleTable},
+    components: {HtbgsqDialog, CxbasqDialog, WsyshtLayout, InfoListPlusItem, InfoListPlus, TitleTable},
     data() {
       return{
         tableData: [],
@@ -100,7 +105,10 @@
       handleChange(item){
         this.dialogVisible = true;
         this.htId = item.htId;
-
+        this.dialogTitle = "变更买受人详情"
+        this.$nextTick(()=>{
+          this.$refs.dialog.setMode(0, item.htBh)
+        })
       },
       handleDetail(row){
         this.active = true;

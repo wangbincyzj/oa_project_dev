@@ -1,16 +1,16 @@
-// 针对预售8083端口
+// 针对预售8083端口  监管中心
 // 封装网络请求
 import axios from "axios"
 import store from "@/store";
+import {config} from "@/api/baseConfig";
 
 
 // 基础设置
-const BASE_URL = "http://192.168.1.161:8093/";
-// 155, 161, 153
-
+const BASE_URL = `http://192.168.1.${config.baseIP}:8093/`;
+// 155, 161
 const TIME_OUT = 5000;
 let _ = axios.create({
-  baseURL: BASE_URL,
+  baseURL: config.productMode ? "" : BASE_URL,
   timeout: TIME_OUT
 })
 
@@ -47,6 +47,6 @@ let post = function (url, data) {
 }
 
 
-export const requests8083 = {
+export const requests8093 = {
   get, post
 }
