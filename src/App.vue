@@ -1,11 +1,8 @@
 <template>
   <div id="app">
     <Login v-if="!login"/>
-
     <PrintView v-else-if="printView"/>
-
     <BaseLayout v-else-if="$store.state.buildingInfo&&$store.state.projectData"/>
-
   </div>
 </template>
 

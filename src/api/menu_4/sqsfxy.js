@@ -1,3 +1,5 @@
+//123
+
 /*添加三方协议*/
 import {requests} from "@/api";
 import { requests8083 } from "../jianguan";
@@ -102,7 +104,6 @@ let getContractByAccount = function (page, size = 20,kfsId,hetongJgzh,hetongLczt
  *
  * @returns {Promise<AxiosResponse<any>>}
  */
-
 let getContractInfoById = function (id) {
     return requests8083.get("data-presale-funds/ripartiteAgreement/selectById", {
     id
@@ -113,7 +114,6 @@ let getContractInfoById = function (id) {
  *
  * @returns {Promise<AxiosResponse<any>>}
  */
-
 let getProjectByName = function (xmxxXmmc,xmxxShzt=null,xmxxXmbh=null,kfsRwbh=null,) {
     return requests.get("data_center/realEstateProject/selectList", {
         xmxxXmmc,xmxxShzt,xmxxXmbh,kfsRwbh,

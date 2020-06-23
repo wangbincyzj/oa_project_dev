@@ -47,6 +47,6 @@ let post = function (url, data) {
 }
 
 
-export const requests8083 = {
+export const requests8093 = {
   get, post
 }

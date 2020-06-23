@@ -56,6 +56,7 @@
       }
     },
     created() {
+      console.log(this.navInfo.list)
       this.navInfo.list = this.$store.state.buildingInfo.map(item => ({...item, name: item.ldxxMc, id: item.ldxxId}))
       this.navInfo.list.unshift({id: -1, name: "请选择楼栋"})
     },

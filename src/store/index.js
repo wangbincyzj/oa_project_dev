@@ -50,9 +50,11 @@ export default new Vuex.Store({
   actions: {
     fetchBaseData({commit, state}, rwbh) {
       loginApi.getOwnProjectByRwId(rwbh).then(ret => {
+        // debugger
         commit("setProjectData", ret.data.records[0]);  // 项目信息获取
         commit("setXmxxId", ret.data.records[0].xmxxId)
         loginApi.getBuildingInfo(ret.data.records[0].xmxxId).then(ret => {
+          // debugger
           commit("setBuildingInfo", ret.data);  // 楼栋信息获取
         })
       });
@@ -66,6 +68,7 @@ export default new Vuex.Store({
       dispatch("fetchBaseData", 60039001)
     },
     logout({commit}) {
+      // debugger
       commit("setLoginInfo", {});
       storage.session.storage.clear();
     }
