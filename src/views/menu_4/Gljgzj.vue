@@ -98,7 +98,7 @@
       }
     },
     created() {
-      this.fetchNavInfo();
+      //this.fetchNavInfo();
     },
     methods:{
       fetchNavInfo() {

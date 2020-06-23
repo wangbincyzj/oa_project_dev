@@ -226,7 +226,7 @@
   //import {szldjgzjApi} from "@/api/menu_3/szldzjjg";
   import AccountDialog from "@/views/menu_4/TjsysbDialog2";
   export default {
-    name: "SqsfxyDialog",
+    name: "GlsysbDialog",
     components: {CenterButton,InfoList,AccountDialog},
     props:{
       dialogType: {
@@ -280,6 +280,7 @@
         },
         form1:{},
         form2:{},
+        addForm:{},
         title:"",
         flag:"",
         tableData:{},
@@ -311,14 +312,14 @@
      addData() {
          
      
-          tjsysbApi.add({...this.form,ldxxId:this.ldxxId}).then(ret => {
-          if (ret.code !== 200) {
-          this.$message.error(ret.message);
-        } else {
-          this.$message.success("添加成功");
-          this.$emit("submitSuccess");
-        }
-      });
+      //     tjsysbApi.add({...this.form,ldxxId:this.ldxxId}).then(ret => {
+      //     if (ret.code !== 200) {
+      //     this.$message.error(ret.message);
+      //   } else {
+      //     this.$message.success("添加成功");
+      //     this.$emit("submitSuccess");
+      //   }
+      // });
     },
      
     
@@ -335,16 +336,16 @@
       console.log("00000000000");
       
       if(mode===1){
-        szldjgzjApi.getbuildingInfo(id).then(ret => {
-          this.form.ldxxMc=ret.data.buildingInfo.ldxxMc;
-          this.form.ldxxJzmj=ret.data.buildingInfo.ldxxJzmj;
-          this.form.ldxxZzmj=ret.data.buildingInfo.ldxxZzmj;
-          this.form.ldxxFzzmj=ret.data.buildingInfo.ldxxFzzmj;
-          this.form.ldxxZzjj=ret.data.buildingInfo.ldxxZzjj;
-          this.form.ldxxFzzjj=ret.data.buildingInfo.ldxxFzzjj;
-          this.ldxxId=id;
+        // szldjgzjApi.getbuildingInfo(id).then(ret => {
+        //   this.form.ldxxMc=ret.data.buildingInfo.ldxxMc;
+        //   this.form.ldxxJzmj=ret.data.buildingInfo.ldxxJzmj;
+        //   this.form.ldxxZzmj=ret.data.buildingInfo.ldxxZzmj;
+        //   this.form.ldxxFzzmj=ret.data.buildingInfo.ldxxFzzmj;
+        //   this.form.ldxxZzjj=ret.data.buildingInfo.ldxxZzjj;
+        //   this.form.ldxxFzzjj=ret.data.buildingInfo.ldxxFzzjj;
+        //   this.ldxxId=id;
           
-        });
+        // });
        
       }else if(mode===2){
          szldjgzjApi.getLdDetail(id).then(ret => {
