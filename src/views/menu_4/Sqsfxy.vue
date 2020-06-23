@@ -1,11 +1,11 @@
 <template>
   <div class="sqsfxy">
-    <ContainerTwoType
+     <ContainerTwoType
       class="container"
       :nav-info="navInfo"
       @liClick="liClick"
     >
-
+   
       <TitleTable
         title="账户对应监管协议列表">
         <div slot="controls">
@@ -59,53 +59,53 @@
             align="center"
             label="状态"
             width=80
-            prop="hetongLczt">
+            prop="hetongLczt">           
           </el-table-column>
           <el-table-column
             align="center"
             label="收件操作"
-            width=280
-            prop="operation">
+             width=280
+            prop="operation">       
             <template slot-scope="scope" >
               <el-button
                 size="mini"
                 type="primary"
                 @click="handleGetFile(scope.$index, scope.row)">收件
               </el-button>
-              <el-button
+               <el-button
                 size="mini"
                 type="primary"
                 @click="handleDelFile(scope.$index, scope.row)">清除
               </el-button>
-              <el-button
+               <el-button
                 size="mini"
                 type="primary"
                 @click="handlePrintFile(scope.$index, scope.row)">打印收件
               </el-button>
-            </template>
+            </template>    
           </el-table-column>
           <el-table-column
             align="center"
             label="操作"
           >
-
+           
             <template slot-scope="scope">
               <el-button
                 size="mini"
                 type="primary"
                 @click="handleUpdate(scope.$index, scope.row)">修改
               </el-button>
-              <el-button
+               <el-button
                 size="mini"
                 type="primary"
                 @click="loadPic(scope.$index, scope.row)">传图
               </el-button>
-              <el-button
+               <el-button
                 size="mini"
                 type="primary"
                 @click="managePic(scope.$index, scope.row)">管图
               </el-button>
-              <el-button
+               <el-button
                 size="mini"
                 type="primary"
                 @click="handleInform(scope.$index, scope.row)">上报
@@ -125,7 +125,7 @@
                 type="primary"
                 @click="handleDetail(scope.$index, scope.row)">详情
               </el-button>
-
+             
             </template>
           </el-table-column>
         </el-table>
@@ -161,7 +161,7 @@
           />
         </el-dialog>
       </TitleTable>
-    </ContainerTwoType>
+      </ContainerTwoType>
   </div>
 </template>
 
@@ -169,7 +169,7 @@
   import ContainerTwoType from "@/components/current/containerTwoType/ContainerTwoType";
   import TitleTable from "@/components/current/titleTable/TitleTable";
   import SqsfxyDialog from "@/views/menu_4/SqsfxyDialog";
-  import {sqsfxyApi} from "@/api/menu_4/sqsfxy";
+ import {sqsfxyApi} from "@/api/menu_4/sqsfxy";
   import {sqjgzhApi} from "@/api/menu_4/sqjgzh";
   import {mixins} from "@/utils/mixins";
 
@@ -210,74 +210,74 @@
 
       }
     },
-
+    
     created() {
       this.fetchNavInfo();
       //this.fetchData();
     },
     methods:{
       fetchNavInfo() {
-        this.xmxxXmbh=this.$store.state.projectData.xmxxXmbh;
+      this.xmxxXmbh=this.$store.state.projectData.xmxxXmbh;
         console.log("taetae");
-        console.log(this.$store.state.projectData);
-
-        console.log(this.$store.state.projectData.xmxxXmbh);
+       console.log(this.$store.state.projectData);
+       
+       console.log(this.$store.state.projectData.xmxxXmbh);
         sqsfxyApi.getYshAccount(1, 100,this.xmxxXmbh,).then(ret => {
-          this.navInfo.list = ret.data.records.map(item=>({
+           this.navInfo.list = ret.data.records.map(item=>({
             ...item, id: item.zjjgzhId, name: item.zjjgzhYhzh
           }));
           this.navInfo.list.unshift({id:-1, name: "请选择监管账号"});
         })
       },
-
-      fetchDataByAccountId(id){
-
-        sqsfxyApi.getContractByAccount(this.currentPage, this.pageSize,this.kfsId,id).then(ret => {
-          console.log(ret);
-          console.log("where is my ...");
-
+     
+     fetchDataByAccountId(id){
+       
+       sqsfxyApi.getContractByAccount(this.currentPage, this.pageSize,this.kfsId,id).then(ret => {
+         console.log(ret);
+         console.log("where is my ...");
+         
           this.pages=ret.data.pages;
           this.tableData = ret.data.records;
           this.total = ret.data.total;
           this.tableData.map(function (val) {
-            if (val.hetongLczt == 0) {
-              val.hetongLczt = '受理'
-            } else if (val.hetongLczt == 1) {
-              val.hetongLczt = '上报'
-            } else if (val.hetongLczt == 2) {
-              val.hetongLczt = '初审'
-            } else if (val.hetongLczt == 3) {
-              val.hetongLczt = '复审'
-            } else if (val.hetongLczt == 4) {
-              val.hetongLczt = '终审'
-            } else if (val.hetongLczt == 5) {
-              val.hetongLczt = '已终审'
-            }  else if (val.hetongLczt == 6) {
-              val.hetongLczt = '退件'
-            }
-          })
+              if (val.hetongLczt == 0) {
+                val.hetongLczt = '受理'
+              } else if (val.hetongLczt == 1) {
+                val.hetongLczt = '上报'
+              } else if (val.hetongLczt == 2) {
+                val.hetongLczt = '初审'
+              } else if (val.hetongLczt == 3) {
+                val.hetongLczt = '复审'
+              } else if (val.hetongLczt == 4) {
+                val.hetongLczt = '终审'
+              } else if (val.hetongLczt == 5) {
+                val.hetongLczt = '已终审'
+              }  else if (val.hetongLczt == 6) {
+                val.hetongLczt = '退件'
+              }     
+            })
         })
-      },
+     },
       liClick(index) {
         this.selectedIndex = index;
         console.log("index:"+index);
         console.log(this.$store.state.projectData.xmxxXmbh);
-
-        this.selectedIndex = this.navInfo.list[index];
-        this.zjjgzhId=this.navInfo.list[index].id;
-        this.zjjgzhZhmc=this.navInfo.list[index].zjjgzhZhmc;
-        this.zjjgzhGsmc=this.navInfo.list[index].zjjgzhGsmc;
-        this.zjjgzhYhmc=this.navInfo.list[index].zjjgzhYhmc;
-        this.zjjgzhXmmc=this.navInfo.list[index].zjjgzhXmmc;
-        this.zjjgzhYhzh=this.navInfo.list[index].zjjgzhYhzh;
-        this.kfsId=this.navInfo.list[index].kfsId;
-        console.log(this.zjjgzhId);
-        console.log(this.zjjgzhZhmc);
-        console.log(this.zjjgzhGsmc);
-        console.log(this.zjjgzhYhmc);
-        this.fetchDataByAccountId(this.zjjgzhYhzh);
+        
+         this.selectedIndex = this.navInfo.list[index];
+         this.zjjgzhId=this.navInfo.list[index].id;
+         this.zjjgzhZhmc=this.navInfo.list[index].zjjgzhZhmc;
+         this.zjjgzhGsmc=this.navInfo.list[index].zjjgzhGsmc;
+         this.zjjgzhYhmc=this.navInfo.list[index].zjjgzhYhmc;
+         this.zjjgzhXmmc=this.navInfo.list[index].zjjgzhXmmc;
+         this.zjjgzhYhzh=this.navInfo.list[index].zjjgzhYhzh;
+         this.kfsId=this.navInfo.list[index].kfsId;
+         console.log(this.zjjgzhId);
+         console.log(this.zjjgzhZhmc);
+         console.log(this.zjjgzhGsmc);
+         console.log(this.zjjgzhYhmc);
+         this.fetchDataByAccountId(this.zjjgzhYhzh);        
       },
-
+      
       addClick() {
         this.dialogVisible = true;
         this.dialogTitle = "添加合同";
@@ -306,38 +306,38 @@
         })
       },
       handleInform(index, row){
-        if(window.confirm("确定要上报该三方协议吗?")){
-          sqsfxyApi.informContract(this.currentRow.hetongId).then(ret => {
-            if (ret.code === 200) {
-              this.$message.success("上报成功");
-              this.fetchDataByAccountId(this.zjjgzhYhzh);
-            } else {
-
-              this.$message.error(ret.message)
-            }
-          })
-        }
+          if(window.confirm("确定要上报该三方协议吗?")){
+            sqsfxyApi.informContract(this.currentRow.hetongId).then(ret => {
+              if (ret.code === 200) {
+                this.$message.success("上报成功");
+               this.fetchDataByAccountId(this.zjjgzhYhzh);
+              } else {
+                
+                this.$message.error(ret.message)
+              }
+            })
+          }
       },
       handleDelete(index, row){
-        if(window.confirm("确定要删除该三方协议吗?")){
-          sqsfxyApi.deleteContract(this.currentRow.hetongId).then(ret => {
-            if (ret.code === 200) {
-              this.$message.success("删除成功");
-              this.fetchDataByAccountId(this.zjjgzhYhzh);
-            } else {
-
-              this.$message.error(ret.message)
-            }
-          })
-        }
+          if(window.confirm("确定要删除该三方协议吗?")){
+            sqsfxyApi.deleteContract(this.currentRow.hetongId).then(ret => {
+              if (ret.code === 200) {
+                this.$message.success("删除成功");
+                this.fetchDataByAccountId(this.zjjgzhYhzh);
+              } else {
+                
+                this.$message.error(ret.message)
+              }
+            })
+          }
       },
       loadPic(){},
       managePic(){},
       handlePrint(index, row){
-
+        
       },
       handleGetFile(index, row){
-        this.dialogVisible = true;
+         this.dialogVisible = true;
         this.dialogTitle = "业务收件操作";
         this.hetongYwzh=this.currentRow.hetongYwzh;
         this.dialogType = 4;
@@ -347,32 +347,32 @@
       },
       handleDelFile(){
         if(window.confirm("确定要清除收件吗?")){
-          sqsfxyApi.deleteSj(this.currentRow.hetongYwzh).then(ret => {
-            if (ret.code === 200) {
-              this.$message.success("删除成功");
-              this.fetchDataByAccountId(this.zjjgzhYhzh);
-            } else {
-
-              this.$message.error(ret.message)
-            }
-          })
-        }
+            sqsfxyApi.deleteSj(this.currentRow.hetongYwzh).then(ret => {
+              if (ret.code === 200) {
+                this.$message.success("删除成功");
+                this.fetchDataByAccountId(this.zjjgzhYhzh);
+              } else {
+                
+                this.$message.error(ret.message)
+              }
+            })
+          }
       },
       handlePrintFile(){},
       submitSuccess() {
-        this.$nextTick(()=>{
-          this.$refs.dialog.reset();
-        });
-        this.fetchDataByAccountId(this.zjjgzhYhzh);
+         this.$nextTick(()=>{
+                this.$refs.dialog.reset();
+            });
+            this.fetchDataByAccountId(this.zjjgzhYhzh);
         this.dialogVisible = false;
       },
-      cellMouseEnter(row) {
+       cellMouseEnter(row) {
         this.currentRow = row;
       },
       currentChange(num) {
-        this.currentPage = num;
-        this.fetchDataByAccountId(this.zjjgzhYhzh)
-      },
+         this.currentPage = num;         
+           this.fetchDataByAccountId(this.zjjgzhYhzh)
+                },
     }
   }
 </script>

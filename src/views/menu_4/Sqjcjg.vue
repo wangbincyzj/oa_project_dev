@@ -1,45 +1,79 @@
 <template>
-  <!-- 申请解除监管 -->
   <div class="sqjcjg">
-    <ContainerTwoType :nav-info="navInfo" @liClick="liClick">
-      <!-- > :loading="navInfo.loading" -->
-      <TitleTable title="项目对应楼栋列表">
+    <ContainerTwoType
+     
+      :nav-info="navInfo"
+      @liClick="liClick">
+    <!-- > :loading="navInfo.loading" -->
+      <TitleTable
+        title="项目对应楼栋列表">
         <div slot="controls">
-          <el-alert type="warning" center :closable="false">
-            <span
-              class="warning"
-              style="color: red"
-            >备注：商品房预售资金监管账户撤销条件，除该商品房取得房地产初始登记外，还必须取得房屋物业承接查验备案证明相关文件！</span>
+          <el-alert
+            type="warning"
+            center
+            :closable="false">
+            <span class="warning" style="color: red">备注：商品房预售资金监管账户撤销条件，除该商品房取得房地产初始登记外，还必须取得房屋物业承接查验备案证明相关文件！</span>
           </el-alert>
         </div>
-        <el-table :data="tableData" style="width: 100%">
-          <el-table-column label="楼栋名称" prop="id"></el-table-column>
-          <el-table-column label="建筑面积" prop="companyName"></el-table-column>
-          <el-table-column label="监管总额" prop="itemName"></el-table-column>
-          <el-table-column label="使用总额" prop="ldName"></el-table-column>
-          <el-table-column label="退款总额" prop="phone"></el-table-column>
-          <el-table-column align="center" label="剩余金额" prop="status"></el-table-column>
-          <el-table-column align="center" label="解除监管" prop="operation"></el-table-column>
-
-          <el-table-column align="center" label="操作">
+        <el-table
+          :data="tableData"
+          style="width: 100%">
+          <el-table-column
+            label="楼栋名称"
+            prop="id">
+          </el-table-column>
+          <el-table-column
+            label="建筑面积"
+            prop="companyName">
+          </el-table-column>
+          <el-table-column
+            label="监管总额"
+            prop="itemName">
+          </el-table-column>
+          <el-table-column
+            label="使用总额"
+            prop="ldName">
+          </el-table-column>
+          <el-table-column
+            label="退款总额"
+            prop="phone">
+          </el-table-column>
+          <el-table-column
+            align="center"
+            label="剩余金额"
+            prop="status">           
+          </el-table-column>
+          <el-table-column
+            align="center"
+            label="解除监管"
+            prop="operation">           
+          </el-table-column>
+         
+          <el-table-column
+            align="center"
+            label="操作"
+          >
             <!-- <template slot="header" slot-scope="scope">
               <el-input
                 v-model="search"
                 size="mini"
                 placeholder="输入关键字搜索"/>
-            </template>-->
+            </template> -->
             <template slot-scope="scope">
-              <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">更正</el-button>
+              <el-button
+                size="mini"
+                @click="handleEdit(scope.$index, scope.row)">更正
+              </el-button>
               <el-button
                 size="mini"
                 type="primary"
-                @click="handleDetail(scope.$index, scope.row)"
-              >详情</el-button>
+                @click="handleDetail(scope.$index, scope.row)">详情
+              </el-button>
               <el-button
                 size="mini"
                 type="warning"
-                @click="handleDelete(scope.$index, scope.row)"
-              >删除</el-button>
+                @click="handleDelete(scope.$index, scope.row)">删除
+              </el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -52,7 +86,11 @@
           :visible.sync="dialogVisible"
           @close="dialogVisible = false"
         >
-          <TjjgzjDialog ref="dialog" :dialog-type="dialogType" @submitSuccess="submitSuccess" />
+          <TjjgzhDialog
+            ref="dialog"
+            :dialog-type="dialogType"
+            @submitSuccess="submitSuccess"
+          />
         </el-dialog>
       </TitleTable>
     </ContainerTwoType>
@@ -60,92 +98,94 @@
 </template>
 
 <script>
-import ContainerTwoType from "@/components/current/containerTwoType/ContainerTwoType";
-import TitleTable from "@/components/current/titleTable/TitleTable";
-import TjjgzjDialog from "@/views/menu_4/TjjgzjDialog";
+  import ContainerTwoType from "@/components/current/containerTwoType/ContainerTwoType";
+  import TitleTable from "@/components/current/titleTable/TitleTable";
+  import TjjgzhDialog from "@/views/menu_4/TjjgzhDialog";
+ 
+  //import {tjrwyhApi} from "@/api/menu_4/tjrwyh";
+  import {mixins} from "@/utils/mixins";
 
-//import {tjrwyhApi} from "@/api/menu_4/tjrwyh";
-import { mixins } from "@/utils/mixins";
-
-export default {
-  name: "sqjcjg",
-  mixins: [mixins.dialogMixin],
-  components: { TjjgzjDialog, TitleTable, ContainerTwoType },
-  data() {
-    return {
-      navInfo: {
-        loading: false,
-        list: [
-          { id: 1, name: "别问" },
-          { id: 2, name: "问就是不知道" }
-        ]
+  export default {
+    name: "sqjcjg",
+    mixins: [mixins.dialogMixin],
+    components: {TjjgzhDialog, TitleTable, ContainerTwoType},
+    data() {
+      return{
+        navInfo:{
+          loading: false,
+          list: [
+             { id:1,name:"别问"},
+             { id:2,name:"问就是不知道"},
+          ]
+        },
+        tableData: [
+        ],
+        search: "",
+        dialogVisible: false,
+        dialogTitle: "",
+        dialogType: 0,
+        authList: [],
+        selectedIndex: 0,
+        selectedIndex: null,
+      }
+    },
+    created() {
+      this.fetchNavInfo();
+    },
+    methods:{
+      fetchNavInfo() {
+        this.navInfo.loading = true;
+        // tjrwqyApi.getAccessEnterprisesByPage(1, 50).then(ret=>{
+        //   this.navInfo.loading = false;
+        //   this.navInfo.list = ret.data.records.map(item=>({
+        //     ...item, id: item.rwqyxxId, name: item.rwqyxxTitle
+        //   }));
+         this.navInfo.list.unshift({id:0, name: "请选择项目名称"})
+        // })
       },
-      tableData: [],
-      search: "",
-      dialogVisible: false,
-      dialogTitle: "",
-      dialogType: 0,
-      authList: [],
-      selectedIndex: 0,
-      selectedIndex: null
-    };
-  },
-  created() {
-    this.fetchNavInfo();
-  },
-  methods: {
-    fetchNavInfo() {
-      this.navInfo.loading = true;
-      // tjrwqyApi.getAccessEnterprisesByPage(1, 50).then(ret=>{
-      //   this.navInfo.loading = false;
-      //   this.navInfo.list = ret.data.records.map(item=>({
-      //     ...item, id: item.rwqyxxId, name: item.rwqyxxTitle
-      //   }));
-      this.navInfo.list.unshift({ id: 0, name: "请选择项目名称" });
-      // })
-    },
-    // fetchTableData
-
-    liClick(index) {
-      this.selectedIndex = index;
-      if (index === 0) return;
-      // this.selectedIndex = this.navInfo.list[index];
-      // this.getAccessEnterprisesInfo(this.navInfo.list[index].id)
-    },
-
-    addClick() {
-      this.dialogVisible = true;
-      this.dialogTitle = "添加监管账户";
-      this.dialogType = 0;
-      this.$nextTick(() => {
-        this.$refs.dialog.setMode(1);
-      });
-    },
-    handleEdit(index, row) {
-      this.dialogVisible = true;
-      this.dialogTitle = "修改";
-      this.dialogType = 1;
-      this.$nextTick(() => {
-        this.$refs.dialog.setMode(2, row.Id);
-        //this.$refs.dialog.reset();
-      });
-    },
-    submitSuccess() {
-      this.$nextTick(() => {
-        //this.$refs.dialog.reset();
-      });
-      this.dialogVisible = false;
-    },
-    handleDelete(flag, row) {
-      console.log(flag, row);
+      // fetchTableData
+     
+      liClick(index) {
+        this.selectedIndex = index;
+        if(index===0)return;
+        // this.selectedIndex = this.navInfo.list[index];
+        // this.getAccessEnterprisesInfo(this.navInfo.list[index].id)
+      },
+      
+      addClick() {
+        this.dialogVisible = true;
+        this.dialogTitle = "添加监管账户";
+        this.dialogType = 0;
+        this.$nextTick(()=>{
+          this.$refs.dialog.setMode(1)
+        })
+      },
+      handleEdit(index, row){
+        this.dialogVisible = true;
+        this.dialogTitle = "修改";
+        this.dialogType = 1;
+        this.$nextTick(()=>{
+          this.$refs.dialog.setMode(2, row.Id);
+          //this.$refs.dialog.reset();
+        })
+      },
+      submitSuccess() {
+         this.$nextTick(()=>{
+                //this.$refs.dialog.reset();
+            });
+        this.dialogVisible = false;
+      },
+      handleDelete(flag, row){
+        console.log(flag, row)
+      },
     }
   }
-};
 </script>
 
 <style scoped lang="scss">
-@import "~@/assets/css/var.scss";
-.tjrwry {
-  padding: $pm;
-}
+  @import "~@/assets/css/var.scss";
+  .tjrwry{
+    padding: $pm;
+  }
+
 </style>
