@@ -174,13 +174,11 @@
            this.pages=ret.data.pages;
           });
       },
-      searchData(arg1,arg2,arg3){
-        //  httksqApi.getContractBySearch(this.currentPage,this.pageSize,this.$store.state.projectData.xmxxXmbh,arg1,arg2,arg3).then(ret=>{
+      
+     search(){
+        // httksqApi.getContractBySearch(this.currentPage,this.pageSize,this.$store.state.projectData.xmxxXmbh,this.person,this.certificate,this.code).then(ret=>{
         //   this.tableData = ret.data.records
         //   });
-      },
-     search(){
-       searchData(this.person,this.certificate,this.code);
      },
       handleWithdraw(){
         this.dialogVisible=true;
