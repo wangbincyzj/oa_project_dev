@@ -12,14 +12,41 @@
       <el-table
         v-loading="loading"
         style="width: 100%"
+        @expand-change="handleExpand"
         :data="tableData">
+        <el-table-column type="expand">
+          <template #default="{row}">
+            <el-table
+              v-loading="row.loading"
+              :data="row.expand" style="box-shadow: 3px 3px 3px rgba(20,150,220,0.11), -3px -3px 3px rgba(20,157,220,0.15)">
+              <el-table-column label="创建日期" align="center" prop="createDt" />
+              <el-table-column label="变更单号" align="center" prop="changeNr" />
+              <el-table-column label="经办人" align="center" prop="creator"/>
+              <el-table-column label="变更类型" align="center" prop="changeType">
+                <template #default="{row}">
+                  {{row.changeType==="1"?"变更条款":"变更买受人"}}
+                </template>
+              </el-table-column>
+              <el-table-column label="变更单状态" align="center" #default="{row}"  width="80">
+                {{row.status|statusFilter}}
+              </el-table-column>
+              <el-table-column label="操作" align="center" width="300">
+                <template #default="scope">
+                  <el-button @click="handleSubmit(scope.row, scope.$index)" size="mini" :disabled="scope.row.status===1||scope.row.status===2">提交审核</el-button>
+                  <el-button @click="handleUpdate(scope.row)" size="mini" :disabled="scope.row.status===1||scope.row.status===2">内容修改</el-button>
+                  <el-button @click="handleChangeDetail(scope.row)" size="mini" >变更详情</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </template>
+        </el-table-column>
         <el-table-column label="合同备案号" align="center" prop="htBah" width="70"/>
-        <el-table-column label="买受人" #default="{row}" align="center" prop="htMc" width="80">
+        <el-table-column label="买受人" #default="{row}" align="center" prop="htMc">
           <ul>
             <li v-for="item in row.houseOwners">{{item.fwsyqrSyqr}}</li>
           </ul>
         </el-table-column>
-        <el-table-column label="证件号码" #default="{row}" align="center" prop="htMc" width="180">
+        <el-table-column label="证件号码" #default="{row}" align="center" prop="htMc">
           <ul>
             <li v-for="item in row.houseOwners">{{item.fwsyqrZjhm}}</li>
           </ul>
@@ -40,10 +67,13 @@
         <el-table-column label="撤销状态" align="center" #default="{row}"  width="80">
           {{row.htCxzt}}
         </el-table-column>
-        <el-table-column label="操作" align="center">
+        <el-table-column label="变更状态" align="center" #default="{row}"  width="80">
+          {{row.htBgzt}}
+        </el-table-column>
+        <el-table-column label="操作" align="center" width="300">
           <template #default="{row}">
             <el-button @click="handleChange(row)" size="mini" >变更买受人</el-button>
-            <el-button @click="handleChange(row)" size="mini" >变更合同条款</el-button>
+            <el-button @click="handleChangeContent(row)" size="mini" >变更条款</el-button>
             <el-button @click="handleDetail(row)" size="mini">合同详情</el-button>
           </template>
         </el-table-column>
@@ -93,13 +123,27 @@
         htId: null,
       }
     },
+    filters:{
+      statusFilter(val){
+        switch (val) {
+          case 0: return "新建";
+          case 1: return "审核中";
+          case 2: return "审核完成";
+          case 3: return "驳回";
+        }
+      }
+    },
     created(){
       this.fetchTableData()
     },
     methods:{
       fetchTableData() {
         yushouContractApi.getAllContract({htBazt:2}).then(ret=>{
-          this.tableData = ret.data.records;
+          this.tableData = ret.data.records.map(item=>({
+            ...item,
+            expand: [],
+            loading: false
+          }));
         })
       },
       handleChange(item){
@@ -110,6 +154,21 @@
           this.$refs.dialog.setMode(0, item.htBh)
         })
       },
+      handleChangeContent(item){
+        this.dialogVisible = true;
+        this.htId = item.htId;
+        this.dialogTitle = "变更合同条款"
+        this.$nextTick(()=>{
+          this.$refs.dialog.setMode(1, item.htBh)
+        })
+      },
+      handleExpand(row) {
+        row.loading = true;
+        yushouContractApi.getChangeIdByHtId(row.htId).then(ret=>{
+          row.loading = false;
+          row.expand = ret.data.contractChanges
+        })
+      },
       handleDetail(row){
         this.active = true;
         this.htId = row.htId;
@@ -117,8 +176,32 @@
           this.$refs.ref1.fetchData();
         })
       },
-      handleSubmit(item){},
-      handleChangeDetail(item){},
+      handleSubmit(item,index){
+        let sIndex = this.tableData.findIndex(item2=>item2.expand[index]===item)
+        console.log(sIndex)
+        yushouContractApi.submitContractChange(item.id).then(ret=>{
+          if(ret.code===200){
+            this.$message.success("上报成功")
+            this.handleExpand(this.tableData[sIndex])
+          }else{
+            this.$message.error(ret.message||"未知错误")
+          }
+        })
+      },
+      handleUpdate(item) {
+
+      },
+      handleChangeDetail(item){
+        this.dialogVisible = true;
+        this.htId = item.htId;
+        this.dialogTitle = "变更买受人详情"
+        this.$nextTick(()=>{
+          this.$refs.dialog.setMode(0, item.htBh)
+        })
+        yushouContractApi.getChangeById(item.id).then(ret=>{
+
+        })
+      },
       submitSuccess(){
         this.dialogVisible = false;
         this.fetchTableData()

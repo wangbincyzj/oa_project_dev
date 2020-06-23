@@ -269,10 +269,94 @@ let auditContract = function ({businessId, processName, processId, approveOpinio
   })
 }
 
+
+
+
+
 /*---------------------------------图片上传与获取--------------------------------*/
 /*arg:files*/
 let uploadPic = config.productMode ? "/data-presale-license/houseOwner/update" : `http://192.168.1.${config.baseIP}:8094/data-presale-license/houseOwner/update`
 let previewPic = config.productMode ? "/data-presale-license/contract/getFile?id=" : `http://192.168.1.${config.baseIP}:8094/data-presale-license/contract/getFile?id=`
+
+
+
+/*---------------------------------合同变更相关--------------------------------*/
+
+/**
+ * 更改合同买受人
+ */
+let contractChangeOwner = function(htId, houseOwners, remark){
+  return requests.post("data-presale-license/contractChange/save", {htId, houseOwners,remark,changeType:2})
+}
+
+/**
+ * 更改合同条款
+ */
+let contractChangeContent = function(htId, remark, content){
+  return requests.post("data-presale-license/contractChange/save", {htId, remark, content, changeType:1})
+}
+/**
+ * 合同变更列表
+ * @param status 0 1 2 3
+ * @param changeType 1 内容 2 人员
+ */
+let contractChangeList = function ({status, changeType, processStatus}) {
+  return requests.get("data-presale-license/contractChange/selectPage", {status, changeType, processStatus})
+}
+
+/**
+ * 根据合同查变更单ID
+ * @param htId
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+let getChangeIdByHtId = function(htId){
+  return requests.get("data-presale-license/contractChange/selectByHtId", {htId})
+}
+
+/**
+ * 根据变更单id查详细
+ * @param id
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+let getChangeById = function(id){
+  return requests.get("data-presale-license/contractChange/selectById", {id})
+}
+
+
+/**
+ * 提交变更审批
+ * @param id  变更单id(通过合同查询)
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+let submitContractChange = function (id) {
+  return requests.get("data-presale-license/contractChange/submit", {id})
+}
+
+
+/**
+ * 合同变更审核
+ * @param id  变更单ID
+ * @param processName
+ * @param processId
+ * @param approveOpinion
+ * @param status  2通过  3驳回
+ * @param lczt
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+let auditChange = function ({businessId, processName, processId, approveOpinion, status, lczt}) {
+  return requests.post("data-presale-license/contractChange/audit", {
+    businessId,
+    processName,
+    processId,
+    approveOpinion,
+    status,
+    lczt
+  })
+}
+
+
+
+
 
 export const yushouContractApi = {
   getContractBuildingTree,
@@ -310,5 +394,13 @@ export const yushouContractApi = {
   auditContract,
   //////////
   uploadPic,
-  previewPic
+  previewPic,
+  //////////
+  contractChangeOwner,
+  contractChangeContent,
+  contractChangeList,
+  getChangeIdByHtId,
+  submitContractChange,
+  getChangeById,
+  auditChange
 }

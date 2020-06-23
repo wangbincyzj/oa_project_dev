@@ -143,7 +143,7 @@
         })
       },
       handleAdd() {
-        this.form.fwsyqrSqrpic = this.fileList.map(item=>item.response.data[0].fujianId).join(",")
+        this.form.fwsyqrSqrpic = this.fileList.map(item=>item.fjid||item.response.data[0].fujianId).join(",")
         yushouContractApi.saveHouseOwner(this.form).then(ret=>{
           if(ret.code===200){
             this.$message.success("添加成功");

@@ -10,18 +10,18 @@
       >
         <el-table-column align="center" label="产权人" prop="fwsyqrSyqr" width="100"/>
         <el-table-column align="center" label="证件号码" prop="fwsyqrZjhm" width="200"/>
-        <el-table-column align="center" #default="{row}" label="共有方式"  width="100">
+        <el-table-column align="center" #default="{row}" label="共有方式" width="100">
           {{row.fwsyqrGyfs===1?"比例":"面积"}}
         </el-table-column>
         <el-table-column align="center" label="共有比例" prop="fwsyqrGybl" width="100"/>
         <el-table-column align="center" label="联系电话" prop="fwsyqrLxdh" width="150"/>
         <el-table-column align="center" label="家庭地址" prop="fwsyqrJtdz" width="100"/>
         <el-table-column #default="{row}" align="center" label="买受人照片" prop="xsqrdZxyy" width="120">
-          <div class="demo-image__preview" v-if="row.pics&&row.pics.length">
+          <div class="demo-image__preview" v-if="row.fwsyqrSqrpic">
             <el-image
               style="width: 100px; height: 80px"
-              :src="row.pics[0]"
-              :preview-src-list="row.pics">
+              :src="firstImage(row.fwsyqrSqrpic)"
+              :preview-src-list="allImage(row.fwsyqrSqrpic)">
             </el-image>
           </div>
           <div v-else>未上传</div>
@@ -37,13 +37,34 @@
 
         </el-table-column>
       </el-table>
-      <CenterButton style="margin-top: 20px" title="提交"/>
+      <div class="reason">
+        <div class="title">变更原因</div>
+        <div class="content">
+          <el-input v-model="reason" type="textarea"/>
+        </div>
+      </div>
+      <CenterButton @btnClick="handleSubmit" style="margin-top: 20px" title="提交"/>
     </div>
-    <div v-if="mode===1"></div>
+    <div v-if="mode===1">
+      <div class="reason">
+        <div class="title">变更内容</div>
+        <div class="content">
+          <el-input v-model="content" type="textarea"/>
+        </div>
+      </div>
+      <div class="reason">
+        <div class="title">变更原因</div>
+        <div class="content">
+          <el-input v-model="reason" type="textarea"/>
+        </div>
+      </div>
+      <CenterButton style="margin-top: 15px" @btnClick="handleSubmit2" title="确认提交"/>
+    </div>
     <el-dialog
       :visible.sync="dialogVisible"
       append-to-body
       width="1000px"
+      :before-close="handleClose"
     >
       <InfoListPlus>
         <template slot="title">买受人信息</template>
@@ -76,19 +97,15 @@
               :file-list="fileList"
               list-type="picture-card"
               :on-preview="handlePictureCardPreview"
-              :on-progress="handleUpload"
               :on-success="handleSuccess"
               :on-remove="handleRemove">
               <i class="el-icon-plus"></i>
             </el-upload>
-            <el-dialog :visible.sync="dialogVisible" append-to-body>
-              <img width="100%" :src="dialogImageUrl" alt="">
-            </el-dialog>
           </InfoListPlusItem2>
 
         </template>
       </InfoListPlus>
-      <CenterButton  :title="addMode?'确认添加':'确认修改'" @btnClick="handleUpdateOne"/>
+      <CenterButton :title="addMode?'确认添加':'确认修改'" @btnClick="handleUpdateOne"/>
     </el-dialog>
   </div>
 </template>
@@ -105,11 +122,14 @@
     name: "HtbgsqDialog",
     mixins: [mixins.dialogMixin],
     components: {InfoListPlusItem2, CenterButton, InfoListPlusItem, InfoListPlus},
+    props: ["htId"],
     data() {
-      return{
+      return {
         mode: null,  // 0变更买受人界面  1变更条款界面
         tableData: [],
-        htBh:"",
+        htBh: "",
+        reason: "",
+        content: "",
         form: {
           fwsyqrSyqr: "",
           fwsyqrZjhm: "",
@@ -119,6 +139,7 @@
           fwsyqrSqrpic: "",
           fwsyqrGyfs: "",
           fwsyqrGybl: "",
+          pics: ""
         },
         formBlank: {
           fwsyqrSyqr: "",
@@ -131,56 +152,129 @@
           fwsyqrGybl: "",
         },
         index: 0,
-        addMode: false
+        addMode: false,
+        fileList: []
       }
     },
-    methods:{
-      setMode(mode, ...args){
+    methods: {
+      reset() {
+        console.log(111)
+      },
+      setMode(mode, ...args) {
         this.mode = mode;
-        if(mode===0){
+        if (mode === 0) {
           this.htBh = args[0];
           this.fetchTableData()
         }
       },
-      handleUpdate(scope){
+      handleSubmit() {
+        this.tableData.forEach(item => {
+          delete item["fwsyqrId"]
+        })
+        yushouContractApi.contractChangeOwner(this.htId, this.tableData, this.reason).then(ret => {
+          if (ret.code === 200) {
+            this.$message.success("买受人变更申请成功")
+            this.$emit("submitSuccess");
+            this.reason = ""
+          } else {
+            this.$message.error(ret.message||"操作失败")
+          }
+        })
+      },
+      handleSubmit2() {
+        yushouContractApi.contractChangeContent(this.htId, this.reason, this.content).then(ret => {
+          if (ret.code === 200) {
+            this.$message.success("买受人变更申请成功")
+            this.$emit("submitSuccess");
+            this.reason = ""
+            this.content = ""
+          } else {
+            this.$message.error(ret.message||"操作失败")
+          }
+        })
+      },
+      firstImage(item) {
+        return yushouContractApi.previewPic + item.split(',')[0]
+      },
+      allImage(item) {
+        return item.split(',').map(item => yushouContractApi.previewPic + item)
+      },
+      handleUpdate(scope) {
         this.dialogVisible = true;
         this.index = scope.$index;
         this.form = scope.row;
+        console.log(scope.row)
         this.addMode = false;
+        this.fileList = scope.row.fwsyqrSqrpic ? scope.row.fwsyqrSqrpic.split(",").map(id => ({
+          name: "图片" + id,
+          url: yushouContractApi.previewPic + id,
+          fjid: id
+        })) : []
         //yushouContractApi.selectByIdHouseOwner()
       },
       fetchTableData() {
         this.loading = true;
-        yushouContractApi.selectHouseOwnerList(this.htBh).then(ret=>{
+        yushouContractApi.selectHouseOwnerList(this.htBh).then(ret => {
           this.loading = false
           this.tableData = ret.data;
-          this.tableData.forEach(item=>{
-            if(item.fwsyqrSqrpic){
-              item.pics = item.fwsyqrSqrpic.split(",").map(id=>yushouContractApi.previewPic+id)
-            }else{
+          this.tableData.forEach(item => {
+            if (item.fwsyqrSqrpic) {
+              item.pics = item.fwsyqrSqrpic.split(",").map(id => yushouContractApi.previewPic + id)
+            } else {
               item.pics = []
             }
           })
         })
       },
-      handleUpdateOne(){
+      handleClose() {
+        this.fileList = [];
         this.dialogVisible = false;
-        if(this.addMode){
+      },
+      handleUpdateOne() {
+        this.dialogVisible = false;
+        console.log(this.fileList);
+        this.$set(this.form, "fwsyqrSqrpic", this.fileList.map(item => item.fjid || item.response.data[0].fujianId).join(","))
+        this.form.pics = this.form.fwsyqrSqrpic.split(",").map(id => yushouContractApi.previewPic + id)
+        if (this.addMode) {
           this.tableData.push(this.form)
-        }else{
+        } else {
           this.tableData[this.index] = this.form
           this.$message.warning("买受人信息修改完成,需提交新的买受人信息!")
         }
+        console.log(this.tableData)
       },
       handleAddBuyer() {
         this.dialogVisible = true;
         this.form = this.formBlank
         this.addMode = true;
-      }
+      },
+      handleRemove(file, fileList) {
+        this.fileList = fileList
+        console.log(this.fileList)
+      },
+      handlePictureCardPreview(file) {
+        this.dialogImageUrl = file.url;
+        this.dialogVisible = true;
+      },
+      handleSuccess(response, file, fileList) {
+        this.fileList = fileList
+        console.log(this.fileList)
+      },
     }
   }
 </script>
 
 <style scoped lang="scss">
-
+  .reason{
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    .title{
+      font-weight: 600;
+      margin-right: 10px;
+    }
+    .content{
+      flex: 1;
+    }
+  }
 </style>
