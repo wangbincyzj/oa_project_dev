@@ -66,6 +66,16 @@ export default {
         {title: "定金关联", path: "fwdDjgl"},
         {title: "定金退款", path: "fwdDjtk"},
       ]
+    },
+    {
+      title: "房屋定金管理",
+      path: "/fwdjgl",
+      group:[
+        {title: "定金缴存", path: "fwdDjjc"},
+        {title: "定金关联", path: "fwdDjgl"},
+        {title: "定金退款", path: "fwdDjtk"},
+        {title: "定金统计", path: "fwdDjtj"},
+      ]
     }
   ]
 }

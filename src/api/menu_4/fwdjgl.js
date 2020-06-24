@@ -1,10 +1,11 @@
-//1231
+//1049906948
 
 /*房屋定金管理*/
 import { requests } from "@/api";
-import { requests8093 } from "../jianguan";
+import { requests8083 } from "../jianguan"
 
 
+// 定金缴存##############################
 /**
  * 定金缴存 分页查询
  * @param {*} current  
@@ -14,9 +15,10 @@ import { requests8093 } from "../jianguan";
  * @param {*} djDjtkzt 
  * @param {*} zjjgzhYhzh 
  */
-let getlist = function (current, size, djDjglzt, djJkzt, djDjtkzt, zjjgzhYhzh) {
-  return requests8093.get("data-presale-funds/deposit/selectPage", {
-    current, size, djDjglzt, djJkzt, djDjtkzt, zjjgzhYhzh
+
+let getlist = function (current, size, djDjglzt, djJkzt, djDjtkzt, djJkyhzh) {
+  return requests8083.get("data-presale-funds/deposit/selectPage", {
+    current, size, djDjglzt, djJkzt, djDjtkzt, djJkyhzh
   })
 }
 
@@ -28,7 +30,7 @@ let getlist = function (current, size, djDjglzt, djJkzt, djDjtkzt, zjjgzhYhzh) {
  */
 
 let reporinfo = function (id) {
-  return requests8093.get("data-presale-funds/deposit/submit", { id })
+  return requests8083.get("data-presale-funds/deposit/submit", { id })
 }
 
 
@@ -36,8 +38,7 @@ let reporinfo = function (id) {
  * 新增記錄
  */
 let addDeposit = function (_form) {
-  // console.log(requests8093)
-  return requests8093.post("data-presale-funds/deposit/save", _form)
+  return requests8083.post("data-presale-funds/deposit/save", _form)
 }
 
 
@@ -45,7 +46,7 @@ let addDeposit = function (_form) {
  * 根据定金id 查询查看按钮
  */
 let getProjectById = function (id) {
-  return requests8093.get("data-presale-funds/deposit/selectOne", { id })
+  return requests8083.get("data-presale-funds/deposit/selectOne", { id })
 }
 
 
@@ -53,8 +54,7 @@ let getProjectById = function (id) {
  * 修改记录
  */
 let updateDeposit = function (_form) {
-  // console.log(requests8093)
-  return requests8093.post("data-presale-funds/deposit/update", _form)
+  return requests8083.post("data-presale-funds/deposit/update", _form)
 }
 
 
@@ -62,14 +62,12 @@ let updateDeposit = function (_form) {
  * 删除接口
  */
 let delDeposit = function (id) {
-  // console.log(requests8093)
-  return requests8093.get("data-presale-funds/deposit/delete", { id })
+  return requests8083.get("data-presale-funds/deposit/delete", { id })
 }
 
 
 /**
  * 定金关联
- * ######################################################
  */
 
 /**
@@ -78,9 +76,10 @@ let delDeposit = function (id) {
  * @param {*} current 
  * @param {*} size 
  */
-let relationlist = function (current, size, djDjglzt, djJkzt, djDjtkzt, zjjgzhYhzh) {
-  return requests8093.get("data-presale-funds/deposit/selectPage", {
-    current, size, djDjglzt, djJkzt, djDjtkzt, zjjgzhYhzh
+
+let relationlist = function (current, size, djDjglzt, djJkzt, djDjtkzt, djJkyhzh) {
+  return requests8083.get("data-presale-funds/deposit/selectPage", {
+    current, size, djDjglzt, djJkzt, djDjtkzt, djJkyhzh
   })
 }
 
@@ -97,23 +96,16 @@ let relationlist = function (current, size, djDjglzt, djJkzt, djDjtkzt, zjjgzhYh
  * @param {*} jiaocunHtbh 
  */
 let getdata = function (kfsRwbh, htShzt) {
-  return requests8093.get("data-presale-funds/jiaocun/selectPage", { kfsRwbh, htShzt })
+  return requests8083.get("data-presale-funds/jiaocun/selectPage", { kfsRwbh, htShzt })
 }
 
-//关联
-
-let relationData = function (
-  djId, jiaocunMsrxm, jiaocunMsrzjhm, jiaocunXmmc, jiaocunXmbh, 
-  jiaocunLdmc, jiaocunLdbh, jiaocunFh, jiaocunFwbh, jiaocunFwmj, 
-  jiaocunJkje, jiaocunJksy, jiaocunJkrq,jiaocunZhmc,jiaocunJkzh,
-  jiaocunKhyh,jiaocunYhid,jiaocunHtbh,jiaocunHtbah,kfsRwbh,jiaocunDjrxm,jiaocunXxlyzt
-  ) {
-  return requests8093.get("data-presale-funds/deposit/relation", {
-    djId, jiaocunMsrxm, jiaocunMsrzjhm, jiaocunXmmc, jiaocunXmbh, jiaocunLdmc, 
-    jiaocunLdbh, jiaocunFh, jiaocunFwbh, jiaocunFwmj, jiaocunJkje, jiaocunJksy,
-    jiaocunJkrq,jiaocunZhmc,jiaocunJkzh,jiaocunKhyh,jiaocunYhid,jiaocunHtbh,
-    jiaocunHtbah,kfsRwbh,jiaocunDjrxm,jiaocunXxlyzt
-  })
+/**
+ * 关联合同
+ * @param {*} djId   定金id
+ * @param {*} htBh   合同编号
+ */
+let relationData = function (djId,htBh) {
+  return requests8083.get("data-presale-funds/deposit/relation", {djId,htBh})
 }
 
 
