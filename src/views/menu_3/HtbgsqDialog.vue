@@ -60,6 +60,109 @@
       </div>
       <CenterButton style="margin-top: 15px" @btnClick="handleSubmit2" title="确认提交"/>
     </div>
+    <div v-if="mode===3">
+      <el-tabs value="first" type="card">
+        <el-tab-pane label="基本信息" name="first">
+          <InfoListPlus>
+            <template slot="title">合同变更详情</template>
+            <InfoListPlusItem :name="item.name" v-for="item in changeDetail">{{item.content}}</InfoListPlusItem>
+          </InfoListPlus>
+          <InfoListPlus>
+            <template slot="title">开发商信息</template>
+            <InfoListPlusItem name="开发公司">{{form2.kfgs}}</InfoListPlusItem>
+            <InfoListPlusItem name="项目名称">{{form2.xmmc}}</InfoListPlusItem>
+            <InfoListPlusItem name="楼栋名称">{{form2.ldmc}}</InfoListPlusItem>
+            <InfoListPlusItem name="所在单元">{{form2.szdy}}</InfoListPlusItem>
+            <InfoListPlusItem name="房号">{{form2.fh}}</InfoListPlusItem>
+            <InfoListPlusItem name="建筑面积">{{form2.fwmj}}</InfoListPlusItem>
+          </InfoListPlus>
+        </el-tab-pane>
+        <el-tab-pane label="变更详细" name="second">
+          <div v-if="contractChange.changeType===1">
+            <div style="border: 1px solid rgba(128,128,128,0.55); margin-top: 20px; padding: 10px 2px">
+              <div style="font-weight: 600">变更内容:</div>
+              <p style="text-indent: 2em; font-size: 16px; line-height: 1.5">{{content}}</p>
+            </div>
+            <div style="border: 1px solid rgba(128,128,128,0.55); margin-top: 20px; padding: 10px 2px">
+              <div style="font-weight: 600">变更原因:</div>
+              <p style="text-indent: 2em; font-size: 16px; line-height: 1.5">{{reason}}</p>
+            </div>
+
+          </div>  <!--条款变更-->
+          <div v-if="contractChange.changeType===2">
+            <h3>原买受人信息</h3>
+            <el-table
+              v-loading="loading"
+              :data="tableData2"
+              border
+              style="width: 100%"
+            >
+              <el-table-column align="center" label="产权人" prop="fwsyqrSyqr" width="100"/>
+              <el-table-column align="center" label="证件号码" prop="fwsyqrZjhm" width="200"/>
+              <el-table-column align="center" #default="{row}" label="共有方式" width="100">
+                {{row.fwsyqrGyfs===1?"比例":"面积"}}
+              </el-table-column>
+              <el-table-column align="center" label="共有比例" prop="fwsyqrGybl" width="100"/>
+              <el-table-column align="center" label="联系电话" prop="fwsyqrLxdh" />
+              <el-table-column align="center" label="家庭地址" prop="fwsyqrJtdz" />
+              <el-table-column #default="{row}" align="center" label="买受人照片" prop="xsqrdZxyy" width="120">
+                <div class="demo-image__preview" v-if="row.fwsyqrSqrpic">
+                  <el-image
+                    style="width: 100px; height: 80px"
+                    :src="firstImage(row.fwsyqrSqrpic)"
+                    :preview-src-list="allImage(row.fwsyqrSqrpic)">
+                  </el-image>
+                </div>
+                <div v-else>未上传</div>
+              </el-table-column>
+            </el-table>
+            <h3>新买受人信息</h3>
+            <el-table
+              v-loading="loading"
+              :data="tableData"
+              border
+              style="width: 100%"
+            >
+              <el-table-column align="center" label="产权人" prop="fwsyqrSyqr" width="100"/>
+              <el-table-column align="center" label="证件号码" prop="fwsyqrZjhm" width="200"/>
+              <el-table-column align="center" #default="{row}" label="共有方式" width="100">
+                {{row.fwsyqrGyfs===1?"比例":"面积"}}
+              </el-table-column>
+              <el-table-column align="center" label="共有比例" prop="fwsyqrGybl" width="100"/>
+              <el-table-column align="center" label="联系电话" prop="fwsyqrLxdh" />
+              <el-table-column align="center" label="家庭地址" prop="fwsyqrJtdz" />
+              <el-table-column #default="{row}" align="center" label="买受人照片" prop="xsqrdZxyy" width="120">
+                <div class="demo-image__preview" v-if="row.fwsyqrSqrpic">
+                  <el-image
+                    style="width: 100px; height: 80px"
+                    :src="firstImage(row.fwsyqrSqrpic)"
+                    :preview-src-list="allImage(row.fwsyqrSqrpic)">
+                  </el-image>
+                </div>
+                <div v-else>未上传</div>
+              </el-table-column>
+            </el-table>
+            <div style="border: 1px solid rgba(128,128,128,0.55); margin-top: 20px; padding: 10px 2px">
+              <div style="font-weight: 600">变更原因:</div>
+              <p style="text-indent: 2em; font-size: 16px; line-height: 1.5">{{reason}}</p>
+            </div>
+          </div>  <!--买受人变更-->
+        </el-tab-pane>
+        <el-tab-pane label="审核意见" name="third">
+          <InfoListPlus>
+            <template slot="title">审核意见</template>
+            <template v-for="item in form2.approveProcess">
+              <InfoListPlusItem :name="`${item.processName}人`">{{item.approvePerson}}</InfoListPlusItem>
+              <InfoListPlusItem :name="`${item.processName}时间`">{{item.approveTime}}</InfoListPlusItem>
+              <InfoListPlusItem oneline :name="isReject(item.approveOpinion) ? '驳回原因' :`${item.processName}意见`"
+                                :type="isReject(item.approveOpinion) ? 'danger': null">
+                {{item.approveOpinion|opinionFilter}}
+              </InfoListPlusItem>
+            </template>
+          </InfoListPlus>
+        </el-tab-pane>
+      </el-tabs>
+    </div>
     <el-dialog
       :visible.sync="dialogVisible"
       append-to-body
@@ -125,6 +228,7 @@
     props: ["htId"],
     data() {
       return {
+        loading: false,
         mode: null,  // 0变更买受人界面  1变更条款界面
         tableData: [],
         htBh: "",
@@ -153,19 +257,52 @@
         },
         index: 0,
         addMode: false,
-        fileList: []
+        fileList: [],
+        changeDetail: {
+          sqr: {name: "申请人", content: ""},
+          sqsj: {name: "申请时间", content: ""},
+          msr: {name: "买 受 人", content: ""},
+          zjhm: {name: "证件号码", content: ""},
+          fwmj: {name: "房屋面积", content: ""},
+          htze: {name: "合同总额", content: ""},
+          fkfs: {name: "付款方式", content: ""},
+          qdsj: {name: "签订时间", content: ""},
+          sbsj: {name: "上报时间", content: ""},
+          basj: {name: "备案时间", content: ""},
+          zjjgzt: {name: "资金监管状态", content: ""},
+          nrjgze: {name: "纳入监管总额", content: ""},
+          cxyy: {name: "申请原因", content: ""},
+        },
+        form2: {},
+        contractChange: {},
+      }
+    },
+    filters: {
+      opinionFilter(value = "") {
+        if (value.startsWith("bhyy:")) {
+          return value.split("bhyy:")[1]
+        } else {
+          return value
+        }
       }
     },
     methods: {
-      reset() {
-        console.log(111)
-      },
       setMode(mode, ...args) {
         this.mode = mode;
-        if (mode === 0) {
+        if (mode === 0) {  // 变更买受人
           this.htBh = args[0];
           this.fetchTableData()
+        }else if(mode === 1){  // 变更条款
+
+        }else if(mode===2){  // 更改变更条款
+
+        }else if(mode===3){  // 变更详情
+          let item = args[0]
+          this.fetchDetail(item.id, item.htId)
         }
+      },
+      isReject(val) {
+        return val.startsWith("bhyy:")
       },
       handleSubmit() {
         this.tableData.forEach(item => {
@@ -259,6 +396,25 @@
       handleSuccess(response, file, fileList) {
         this.fileList = fileList
         console.log(this.fileList)
+      },
+      fetchDetail(id, htId) {
+        yushouContractApi.revokeContractDetail(htId).then(ret => {
+          this.form2 = ret.data;
+          this.form2.approveProcess = []
+          Object.keys(this.changeDetail).forEach(key => {
+            this.changeDetail[key].content = ret.data[key]
+          })
+          yushouContractApi.getChangeById(id).then(ret => {
+            console.log(ret.data)
+            this.changeDetail.cxyy.content = ret.data.contractChange.remark;
+            this.form2.approveProcess = ret.data.approveProcess;
+            this.contractChange = ret.data.contractChange;
+            this.tableData = ret.data.contractChange.houseOwners;
+            this.tableData2 = ret.data.contractChange.oldHouseOwners;
+            this.reason = ret.data.contractChange.remark;
+            this.content = ret.data.contractChange.content;
+          })
+        })
       },
     }
   }

@@ -194,18 +194,35 @@
       handleChangeDetail(item){
         this.dialogVisible = true;
         this.htId = item.htId;
-        this.dialogTitle = "变更买受人详情"
+        this.dialogTitle = "查看变更详情"
         this.$nextTick(()=>{
-          this.$refs.dialog.setMode(0, item.htBh)
+          this.$refs.dialog.setMode(3, item)
         })
-        yushouContractApi.getChangeById(item.id).then(ret=>{
 
-        })
       },
       submitSuccess(){
         this.dialogVisible = false;
         this.fetchTableData()
-      }
+      },
+      fetchDetail(id, htId) {
+        yushouContractApi.revokeContractDetail(htId).then(ret => {
+          this.form = ret.data;
+          this.form.approveProcess = []
+          Object.keys(this.changeDetail).forEach(key => {
+            this.changeDetail[key].content = ret.data[key]
+          })
+          yushouContractApi.getChangeById(id).then(ret => {
+            console.log(ret)
+            this.changeDetail.cxyy.content = ret.data.contractChange.remark;
+            this.form.approveProcess = ret.data.approveProcess;
+            this.contractChange = ret.data.contractChange;
+            this.tableData = ret.data.contractChange.houseOwners;
+            this.tableData2 = ret.data.contractChange.oldHouseOwners;
+            this.reason = ret.data.contractChange.remark;
+            this.content = ret.data.contractChange.content;
+          })
+        })
+      },
     }
   }
 </script>
