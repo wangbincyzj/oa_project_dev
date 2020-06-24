@@ -2,12 +2,11 @@
   <div class="myTable-p0">
     <TitleTable title="合同变更申请" bgc="#848DF9" color="white">
       <div class="controls" slot="controls" style="background-color:white;">
-        <InfoListPlus :count="3">
-          <InfoListPlusItem name="买受人"><el-input size="mini" class="border__bottom"/></InfoListPlusItem>
-          <InfoListPlusItem name="证件号码"><el-input size="mini" class="border__bottom"/></InfoListPlusItem>
-          <InfoListPlusItem name="备案号"><el-input size="mini" class="border__bottom"/></InfoListPlusItem>
-        </InfoListPlus>
-        <div style="height: 15px; background-color:#E4EDF9;"></div>
+        <SearchBar mode="each">
+          <SearchBarItem prefix="买受人"/>
+          <SearchBarItem prefix="证件号码"/>
+          <SearchBarItem prefix="备案号"/>
+        </SearchBar>
       </div>
       <el-table
         v-loading="loading"
@@ -72,8 +71,8 @@
         </el-table-column>
         <el-table-column label="操作" align="center" width="300">
           <template #default="{row}">
-            <el-button @click="handleChange(row)" size="mini" >变更买受人</el-button>
-            <el-button @click="handleChangeContent(row)" size="mini" >变更条款</el-button>
+            <el-button :disabled="row.htBgzt!==0" @click="handleChange(row)" size="mini" >变更买受人</el-button>
+            <el-button :disabled="row.htBgzt!==0" @click="handleChangeContent(row)" size="mini" >变更条款</el-button>
             <el-button @click="handleDetail(row)" size="mini">合同详情</el-button>
           </template>
         </el-table-column>
@@ -110,11 +109,15 @@
   import {mixins} from "@/utils/mixins";
   import CxbasqDialog from "@/views/menu_3/CxbasqDialog";
   import HtbgsqDialog from "@/views/menu_3/HtbgsqDialog";
+  import SearchBar from "@/components/current/searchBar/SearchBar";
+  import SearchBarItem from "@/components/current/searchBar/SearchBarItem";
 
   export default {
     name: "Cxbasq",
     mixins: [mixins.dialogMixin],
-    components: {HtbgsqDialog, CxbasqDialog, WsyshtLayout, InfoListPlusItem, InfoListPlus, TitleTable},
+    components: {
+      SearchBarItem,
+      SearchBar, HtbgsqDialog, CxbasqDialog, WsyshtLayout, InfoListPlusItem, InfoListPlus, TitleTable},
     data() {
       return{
         tableData: [],
