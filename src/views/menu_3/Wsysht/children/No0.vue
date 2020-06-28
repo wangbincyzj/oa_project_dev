@@ -75,7 +75,7 @@
       slot="dialog"
       append-to-body
       :visible.sync="dialogVisible"
-      @close="dialogVisible = false"
+      @close="handleClose"
     >
       <No0Dialog
         ref="dialog"
@@ -155,6 +155,11 @@
             this.$message.success(ret.message||"未知错误")
           }
         })
+      },
+      handleClose() {
+        this.$refs.dialog.reset()
+        this.dialogVisible = false;
+
       },
       fetchBaseData() {
         contractAbout.getRwqyBaseInfo((this.$store.state.rwbh + "").slice(0,4)).then(ret=>{

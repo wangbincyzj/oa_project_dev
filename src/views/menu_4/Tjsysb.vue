@@ -96,7 +96,6 @@
              
               <el-button
                 size="mini"
-               
                 @click="handleDetail(scope.$index, scope.row)">详情
               </el-button>
               
@@ -171,7 +170,6 @@
         total:0,
         pages:1,
         selectedIndex: 0,
-        selectedIndex: null,
         ldbh:"",
       }
     },

@@ -27,118 +27,116 @@
           :key="index"
           :class="{active: index===currentIndex}"
           @click="liClick(index)"
-        >{{item.name}}
-        </li>
+        >{{item.name}}</li>
       </ul>
     </div>
     <div class="left" v-else>
       <slot name="leftSlot"></slot>
     </div>
     <div class="right">
-      <slot/>
+      <slot />
     </div>
   </div>
 </template>
 
 <script>
-  export default {
-    name: "ContainerTwoType",
-    props: {
-      leftSlot:{
-        type: Boolean,
-        default: false
-      },
-      navInfo: {},  //
-      height: {
-        type: String,
-        default: "100%"
-      },
-      loading:{
-        type: Boolean,
-        default: false
-      }
-
+export default {
+  name: "ContainerTwoType",
+  props: {
+    leftSlot: {
+      type: Boolean,
+      default: false
     },
-    data() {
-      return {
-        currentIndex: 0,
-        searchValue: ""
-      }
+    navInfo: {}, //
+    height: {
+      type: String,
+      default: "100%"
     },
-    methods: {
-      liClick(index) {
-        this.$emit("liClick", index);
-        this.currentIndex = index;
-      },
-      // loading(){
+    loading: {
+      type: Boolean,
+      default: false
+    }
+  },
+  data() {
+    return {
+      currentIndex: 0,
+      searchValue: ""
+    };
+  },
+  methods: {
+    liClick(index) {
+      this.$emit("liClick", index);
+      this.currentIndex = index;
+    },
+    // loading(){
 
-      // },
-      searchChange(){
-        this.$emit("searchChange", this.searchValue)
-      }
+    // },
+    searchChange() {
+      this.$emit("searchChange", this.searchValue);
     }
   }
+};
 </script>
 
 <style scoped lang="scss">
-  @import "~@/assets/css/var.scss";
+@import "~@/assets/css/var.scss";
 
-  .root {
-    display: flex;
+.root {
+  display: flex;
 
-    .left {
-      width: 200px;
-      flex-shrink: 0;
-      height: 100%;
-      padding: $ps;
-      background-color: #eee;
-      box-shadow: $box-shadow;
-      overflow: auto;
+  .left {
+    width: 200px;
+    flex-shrink: 0;
+    height: 100%;
+    padding: $ps;
+    background-color: #eee;
+    box-shadow: $box-shadow;
+    overflow: auto;
 
-      .title {
-        text-align: center;
-        color: white;
+    .title {
+      text-align: center;
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.5;
+      margin: $ps-f $ps-f 10px;
+      background-color: $brand-light;
+      padding: $pxs;
+    }
+
+    .searchWrapper {
+      display: flex;
+      justify-content: space-around;
+    }
+
+    ul {
+      li {
+        cursor: pointer;
+        color: $text-info;
         font-size: 14px;
         font-weight: 600;
-        line-height: 1.5;
-        margin: $ps-f $ps-f 10px;
-        background-color: $brand-light;
-        padding: $pxs;
-      }
+        padding: 10px 10px;
+        border-radius: $border-radius;
 
-      .searchWrapper {
-        display: flex;
-        justify-content: space-around;
-      }
+        &:hover {
+          color: $hover-color;
+          background-color: #ccc;
+        }
 
-      ul {
-        li {
-          cursor: pointer;
-          color: $text-info;
-          font-size: 14px;
-          font-weight: 600;
-          padding: 10px 10px;
-          border-radius: $border-radius;
-
-          &:hover {
-            color: $hover-color;
-            background-color: #ccc;
-          }
-
-          &.active {
-            color: white;
-            background-color: $brand;
-          }
+        &.active {
+          color: white;
+          background-color: $brand;
         }
       }
     }
-
-    .right {
-      overflow: auto;
-      flex: 1;
-      margin-left: $pm;
-      background-color: #eee;
-      box-shadow: $box-shadow;
-    }
   }
+
+  .right {
+    overflow: auto;
+    flex: 1;
+    margin-left: $pm;
+    background-color: #eee;
+    box-shadow: $box-shadow;
+  }
+}
 </style>

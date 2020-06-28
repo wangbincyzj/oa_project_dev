@@ -249,7 +249,7 @@
           <el-input v-model="form1.ldxxSfydt"></el-input>
         </el-form-item>
         <el-form-item label="启用资金监管状态" >
-          <el-input v-model="form1.zjjgszjlZjjgzt"></el-input>
+          <el-input v-model="form1.ldxxZjjgzt"></el-input>
         </el-form-item>
         <el-form-item label="重点资金监管方式" >
           <el-input v-model="form1.ldxxZjjgfs"></el-input>
@@ -444,6 +444,9 @@
        
       }else if(mode===2){
          tjsysbApi.getLdDetail(id).then(ret => {
+           console.log(ret);
+           console.log(ret.data.ldxxZjjgzt);
+           
           this.form1=ret.data;
           if(this.form1.ldxxFwlx=0){
             this.form1.ldxxFwlx="预售商品房"
@@ -470,28 +473,28 @@
               this.form1.ldxxSfydt="有"
             }
         });
-         szldjgzjApi.getSupervisionByLdid(id).then(ret => {
-          this.tableData=ret.data.buildingFundsSupervisions;
-          console.log(ret.data.buildingFundsSupervisions);
+        //  szldjgzjApi.getSupervisionByLdid(id).then(ret => {
+        //   this.tableData=ret.data.buildingFundsSupervisions;
+        //   console.log(ret.data.buildingFundsSupervisions);
           
-           this.tableData.map(function (val) {
+        //    this.tableData.map(function (val) {
              
-               if (val.zjjgszjlZjjgzt == 0) {
-                val.zjjgszjlZjjgzt = '不启动'
-              } else if (val.zjjgszjlZjjgzt == 1) {
-                val.zjjgszjlZjjgzt = '启动'
-              } 
-               if (val.zjjgszjlZjjgfs == 1) {
-                val.zjjgszjlZjjgfs = '按固定金额监管'
-              } else if (val.zjjgszjlZjjgfs == 2) {
-                val.zjjgszjlZjjgfs = '按预售总价比例监管 '
-              } else if (val.zjjgszjlZjjgfs == 3) {
-                val.zjjgszjlZjjgfs = '按实时缴存房款比例监管'
-              } else if (val.zjjgszjlZjjgfs == 4) {
-                val.zjjgszjlZjjgfs = '按合同成交比例监管'
-              } 
-            });
-        });
+        //        if (val.zjjgszjlZjjgzt == 0) {
+        //         val.zjjgszjlZjjgzt = '不启动'
+        //       } else if (val.zjjgszjlZjjgzt == 1) {
+        //         val.zjjgszjlZjjgzt = '启动'
+        //       } 
+        //        if (val.zjjgszjlZjjgfs == 1) {
+        //         val.zjjgszjlZjjgfs = '按固定金额监管'
+        //       } else if (val.zjjgszjlZjjgfs == 2) {
+        //         val.zjjgszjlZjjgfs = '按预售总价比例监管 '
+        //       } else if (val.zjjgszjlZjjgfs == 3) {
+        //         val.zjjgszjlZjjgfs = '按实时缴存房款比例监管'
+        //       } else if (val.zjjgszjlZjjgfs == 4) {
+        //         val.zjjgszjlZjjgfs = '按合同成交比例监管'
+        //       } 
+        //     });
+        // });
       }
 
     },

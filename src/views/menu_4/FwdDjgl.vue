@@ -81,10 +81,10 @@ export default {
            return index = null
       }
       this.getData(this.navInfo.list[index].zjjgzhYhzh);
-      
     },
     getnavInfo(){
-        axios.get('http://192.168.1.161:8093/data-presale-funds/supervisedAccount/selectPage').then(async res=>{
+       fwdjglApi.getzjzh()
+        .then(async res=>{
             const navlist = res.data.records
             this.navInfo.list = navlist.map( item => ({...item,id:item.zjjgzhId,name: item.zjjgzhYhzh}))
             this.navInfo.list.unshift({id: -1, name: "监管账户"})

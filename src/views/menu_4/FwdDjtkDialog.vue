@@ -4,35 +4,27 @@
       <!-- 房屋定金   退款弹框    1049906948-->
       <el-form label-position="right" label-width="150px" size="mini" inline :model="ruleForm">
         <el-form-item label="开发商：">
-          <el-input v-model="ruleForm.djsyKfs" disabled></el-input>
+          <el-input v-model="form.djKfstitle" disabled></el-input>
         </el-form-item>
 
-        <el-form-item label="项目编号：">
+        <!-- <el-form-item label="项目编号：">
           <el-input v-model="ruleForm.djsyXmbh" disabled></el-input>
-        </el-form-item>
+        </el-form-item>-->
 
         <el-form-item label="项目名称：">
-          <el-input v-model="ruleForm.djsyXmmc" disabled></el-input>
+          <el-input v-model="form.djXmmc" disabled></el-input>
         </el-form-item>
 
-        <el-form-item label="入网编号：">
-          <el-input v-model="ruleForm.kfsRwbh" disabled></el-input>
-        </el-form-item>
-
-        <el-form-item label="定金id：">
-          <el-input v-model="ruleForm.djsyDjid" disabled></el-input>
-        </el-form-item>
-
-        <el-form-item label="汇入账户名称：">
-          <el-input v-model="ruleForm.djsyHrzhmc" disabled></el-input>
+        <el-form-item label="监管银行名称：">
+          <el-input v-model="form.djJkyh" disabled></el-input>
         </el-form-item>
 
         <el-form-item label="监管账户：">
-          <el-input v-model="ruleForm.djsyJgzh" disabled></el-input>
+          <el-input v-model="form.djJkyhzh" disabled></el-input>
         </el-form-item>
 
-        <el-form-item label="监管银行id：">
-          <el-input v-model="ruleForm.djsyJgyhid" disabled></el-input>
+        <el-form-item label="汇入账户名称：">
+          <el-input v-model="ruleForm.djsyHrzhmc"></el-input>
         </el-form-item>
 
         <el-form-item label="申请人姓名：" prop="djsySqrxm">
@@ -46,12 +38,8 @@
           <el-input v-model="ruleForm.djsyHrzhzh"></el-input>
         </el-form-item>
 
-        <el-form-item label="申报金额：" prop="djsySbje">
-          <el-input v-model="ruleForm.djsySbje"></el-input>
-        </el-form-item>
-
-        <el-form-item label="监管银行名称：" prop="djsyJgzh">
-          <el-input v-model="ruleForm.djsyJgzh"></el-input>
+        <el-form-item label="申报金额：">
+          <el-input v-model="form.djJkje" disabled></el-input>
         </el-form-item>
 
         <el-form-item label="用款事由：">
@@ -70,6 +58,9 @@
 <script>
 import { fwddjtklApi } from "@/api/menu_4/fwddjtk";
 
+//查看接口
+import { fwdjglApi } from "@/api/menu_4/fwdjgl";
+
 export default {
   name: "FwdDjtkDialog",
   props: {
@@ -79,72 +70,82 @@ export default {
   },
   data() {
     return {
-      ruleForm: {
-        djsyKfs: "",
-        djsySqrxm: "",
-        djsyHrzhyh: "",
-        djsyHrzhmc: "",
-        djsyHrzhzh: "",
-        djsyJgzh: "",
-        djsyJgyhmc: "",
-        djsyJgyhid: "",
-        djsyYksy: "",
-        djsySbje: "",
-        djsyXmbh: "",
-        djsyXmmc: "",
-        kfsRwbh: "",
-        djsyDjid: ""
-      }
+      form: {},
+      ruleForm: {}
     };
   },
   methods: {
-    getlist() {},
     submitForm() {
+
+      console.log(this.form)
       let list = {
-        djsyKfs: this.ruleForm.djsyKfs,
-        djsySqrxm: this.ruleForm.djsySqrxm,
-        djsyHrzhyh: this.ruleForm.djsyHrzhyh,
+        djsyKfs: this.form.djKfstitle, //开发商8
+
+        djsySqrxm: this.ruleForm.djsySqrxm,//10
+        djsyHrzhyh: this.ruleForm.djsyHrzhyh,//3
         djsyHrzhmc: this.ruleForm.djsyHrzhmc,
-        djsyHrzhzh: this.ruleForm.djsyHrzhzh,
-        djsyJgzh: this.ruleForm.djsyJgzh,
-        djsyJgyhmc: this.ruleForm.djsyJgyhmc,
-        djsyJgyhid: this.ruleForm.djsyJgyhid,
-        djsyYksy: this.ruleForm.djsyYksy,
-        djsySbje: this.ruleForm.djsySbje,
-        djsyXmbh: this.ruleForm.djsyXmbh,
-        djsyXmmc: this.ruleForm.djsyXmmc,
-        kfsRwbh: this.ruleForm.kfsRwbh,
-        djsyDjid: this.ruleForm.djsyDjid
+        djsyHrzhzh: this.ruleForm.djsyHrzhzh,//4
+        djsyJgzh: this.form.djJkyhzh, //监管账户//7
+        djsyJgyhmc: this.form.djJkyh, //6
+
+        djsyJgyhid: this.form.djJkyhid, //监管银行id5
+
+        djsyYksy: this.ruleForm.djsyYksy,//11
+        djsySbje: this.form.djJkje, //需要多个id 计算9
+
+        djsyXmbh: this.form.djXmbh, //项目编号//
+        djsyXmmc: this.form.djXmmc, //项目名称2
+        kfsRwbh: this.form.kfsRwbh, //入网编号//12
+        djsyDjid: this.form.djId //定金id(样例：“123;234;345”)1
       };
       fwddjtklApi.tkData(list).then(res => {
         if (res.code == 200) {
           this.$message.success(res.message);
+          this.$emit("submitSuccess");
         } else {
           this.$message.error(res.message);
         }
-        this.$emit("submitSuccess")
       });
     },
-    setMode(row) {
-      // console.log('退款',row.djsyKfs)
-      this.ruleForm.djsyKfs = row.djsyKfs;
-      this.ruleForm.djsySqrxm = row.djsySqrxm;
-      this.ruleForm.djsyHrzhyh = row.djsyHrzhyh;
-      this.ruleForm.djsyHrzhmc = row.djsyHrzhmc;
-      this.ruleForm.djsyHrzhzh = row.djsyHrzhzh;
-      this.ruleForm.djsyJgzh = row.djsyJgzh;
-      this.ruleForm.djsyJgyhmc = row.djsyJgyhmc;
-      this.ruleForm.djsyJgyhid = row.djsyJgyhid;
-      this.ruleForm.djsyYksy = row.djsyYksy;
-      this.ruleForm.djsySbje = row.djsySbje;
-      this.ruleForm.djsyXmbh = row.djsyXmbh;
-      this.ruleForm.djsyXmmc = row.djsyXmmc;
-      this.ruleForm.kfsRwbh = row.kfsRwbh;
-      this.ruleForm.djsyDjid = row.djsyDjid;
-      // console.log('退款sss', this.form.djsyKfs)
+    //显示信息
+    listInfo(id) {
+      //根据定金id查看信息
+      fwdjglApi.getProjectById(id).then(res => {
+        console.log(res.data, "查看信息");
+
+        // debugger
+        this.$set(this.form, "djKfstitle", res.data.djKfstitle); //开发商
+        this.$set(this.form, "djXmmc", res.data.djXmmc); //项目名称
+        this.$set(this.form, "djJkyh", res.data.djJkyh); // 监管银行名称  === 缴款银行
+        this.$set(this.form, "djJkyhzh", res.data.djJkyhzh); // 监管账户  === 银行账户
+
+        //影藏显示
+        this.$set(this.form, "djJkyhid", res.data.djJkyhid); // 监管银行id  ===== 缴款银行id
+        this.$set(this.form, "djXmbh", res.data.djXmbh); // 项目编号
+        this.$set(this.form, "kfsRwbh", res.data.kfsRwbh); // 入网编号
+        this.$set(this.form, "djId", res.data.djId); // 入网编号
+
+        this.$set(this.form, "djJkje", res.data.djJkje); //申报金额
+
+        //   this.$set(this.form, "djDgrxm", res.data.djDgrxm);
+        //   this.$set(this.form, "djDgrzjhm", res.data.djDgrzjhm);
+        //   this.$set(this.form, "djJkje", res.data.djJkje);
+        //   this.$set(this.form, "djJksy", res.data.djJksy);
+        //  this.$set(this.form, "djsyJgyhmc", res.data.djsyJgyhmc);
+        //   this.$set(this.form, "djJkzhmc", res.data.djJkzhmc);
+        //  this.$set(this.form, "djJksj", res.data.djJksj);
+      });
+    },
+    setMode(index, id) {
+      // debugger
+
+      this.listInfo(id);
     }
   },
-  created() {}
+  created() {
+    this.listInfo();
+    
+  }
 };
 </script>
 

@@ -1,14 +1,15 @@
-// 针对8080端口
+// 针对8080端口   用户中心
 // 封装网络请求
 import axios from "axios"
 import store from "@/store"
+import {config} from "@/api/baseConfig";
 
 
 // 基础设置
-const BASE_URL = "http://192.168.1.153:8090/";
-// 161杨, 155陈, 153郑
+const BASE_URL = `http://192.168.1.${config.baseIP}:8090/`;
+// 155陈, 153郑,131杨
 const TIME_OUT = 5000;
-axios.defaults.baseURL = BASE_URL;
+axios.defaults.baseURL = config.productMode ? "" : BASE_URL;
 axios.defaults.timeout = TIME_OUT;
 
 // 请求注入token

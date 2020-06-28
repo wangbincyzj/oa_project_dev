@@ -55,7 +55,6 @@ export default {
       group:[
         {title: "楼栋资金信息", path: "ldzjxx"},
         {title: "账户资金信息", path: "zhzjxx"},
-       
       ]
     },
     {
@@ -65,6 +64,7 @@ export default {
         {title: "定金缴存", path: "fwdDjjc"},
         {title: "定金关联", path: "fwdDjgl"},
         {title: "定金退款", path: "fwdDjtk"},
+        {title: "定金退款管理", path: "fwdDjtkgl"},
         {title: "定金统计", path: "fwdDjtj"},
       ]
     }

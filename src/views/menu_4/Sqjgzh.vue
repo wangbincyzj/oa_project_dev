@@ -127,6 +127,7 @@
             </template>
           </el-table-column>
         </el-table>
+
         <el-pagination
           background
           layout="prev, pager, next, total"
@@ -135,6 +136,7 @@
           :page-size="pageSize"
           :total="total">
         </el-pagination>
+
         <el-dialog
           :title="dialogTitle"
           center
@@ -293,9 +295,9 @@
         this.dialogTitle = "监管账户详情";
         this.dialogType = 2;
         this.zjjgzhYwzh=this.currentRow.zjjgzhYwzh;
+
         this.$nextTick(()=>{
           this.$refs.dialog.setMode(2, this.currentRow.zjjgzhId);
-
           //this.$refs.dialog.reset();
         })
       },
@@ -323,7 +325,6 @@
                 this.$message.success("删除成功");
                 this.fetchData();
               } else {
-                
                 this.$message.error(ret.message)
               }
             })

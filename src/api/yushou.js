@@ -1,14 +1,15 @@
-// 针对预售的8084端口
+// 针对预售的8084端口  预售资金
 import axios from "axios"
 import store from "@/store";
+import {config} from "@/api/baseConfig";
 
 
 // 基础设置
-const BASE_URL = "http://192.168.1.161:8094/";
+const BASE_URL = `http://192.168.1.${config.baseIP}:8094/`;
 // 155, 161
 const TIME_OUT = 5000;
 let _ = axios.create({
-  baseURL: BASE_URL,
+  baseURL: config.productMode ? "" : BASE_URL,
   timeout: TIME_OUT
 })
 

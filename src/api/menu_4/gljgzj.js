@@ -1,4 +1,5 @@
 
+
 //管理监管资金  1049906948
 /*添加三方协议*/
 // import {requests} from "@/api";
@@ -12,7 +13,6 @@ import { requests8083 } from "../jianguan";
  * @param {*} size    每页显示条目个数
  * @param {*} jiaocunXmbh   缴存项目编号
  */
-
 let getProjectById = function(current,size,jiaocunXmbh){
     return requests8083.get("data-presale-funds/jiaocun/selectByCondition", {
         current,size,jiaocunXmbh
@@ -24,7 +24,6 @@ let getProjectById = function(current,size,jiaocunXmbh){
  * @param {*} _form 
  */
 let addDeposit = function (_form) {
-    // console.log(requests8083)
     return requests8083.post("data-presale-funds/jiaocun/report", _form)
 }
 
@@ -36,7 +35,6 @@ let addDeposit = function (_form) {
  * @param {*} jiaocunJkzt   缴存状态
  */
 let apaymentlist = function (current,size,jiaocunXmbh,jiaocunJkzt) {
-    // console.log(requests8083)
     return requests8083.get("data-presale-funds/jiaocun/selectByCondition", {current,size,jiaocunXmbh,jiaocunJkzt})
 }
 

@@ -1,11 +1,19 @@
-//1049906948  
+//1049906948
 
 /*房屋定金管理*/
 import { requests } from "@/api";
-import { requests8083 } from "../jianguan";
+import { requests8083 } from "../jianguan"
+
+/**
+ *资金监账户
+ */
+let getzjzh = function () {
+  return requests8083.get('data-presale-funds/supervisedAccount/selectPage')
+}
 
 
-// 定金缴存##############################  
+
+// 定金缴存##############################
 /**
  * 定金缴存 分页查询
  * @param {*} current  
@@ -15,6 +23,7 @@ import { requests8083 } from "../jianguan";
  * @param {*} djDjtkzt 
  * @param {*} zjjgzhYhzh 
  */
+
 let getlist = function (current, size, djDjglzt, djJkzt, djDjtkzt, djJkyhzh) {
   return requests8083.get("data-presale-funds/deposit/selectPage", {
     current, size, djDjglzt, djJkzt, djDjtkzt, djJkyhzh
@@ -37,12 +46,12 @@ let reporinfo = function (id) {
  * 新增記錄
  */
 let addDeposit = function (_form) {
-  // console.log(requests8083)
   return requests8083.post("data-presale-funds/deposit/save", _form)
 }
 
 
 /**
+ * 主键查询
  * 根据定金id 查询查看按钮
  */
 let getProjectById = function (id) {
@@ -54,7 +63,6 @@ let getProjectById = function (id) {
  * 修改记录
  */
 let updateDeposit = function (_form) {
-  // console.log(requests8083)
   return requests8083.post("data-presale-funds/deposit/update", _form)
 }
 
@@ -63,14 +71,12 @@ let updateDeposit = function (_form) {
  * 删除接口
  */
 let delDeposit = function (id) {
-  // console.log(requests8083)
   return requests8083.get("data-presale-funds/deposit/delete", { id })
 }
 
 
 /**
  * 定金关联
- * #######################################################################################################################################
  */
 
 /**
@@ -79,6 +85,7 @@ let delDeposit = function (id) {
  * @param {*} current 
  * @param {*} size 
  */
+
 let relationlist = function (current, size, djDjglzt, djJkzt, djDjtkzt, djJkyhzh) {
   return requests8083.get("data-presale-funds/deposit/selectPage", {
     current, size, djDjglzt, djJkzt, djDjtkzt, djJkyhzh
@@ -101,20 +108,6 @@ let getdata = function (kfsRwbh, htShzt) {
   return requests8083.get("data-presale-funds/jiaocun/selectPage", { kfsRwbh, htShzt })
 }
 
-//关联
-// let relationData = function (
-//   djId, jiaocunMsrxm, jiaocunMsrzjhm, jiaocunXmmc, jiaocunXmbh, 
-//   jiaocunLdmc, jiaocunLdbh, jiaocunFh, jiaocunFwbh, jiaocunFwmj, 
-//   jiaocunJkje, jiaocunJksy, jiaocunJkrq,jiaocunZhmc,jiaocunJkzh,
-//   jiaocunKhyh,jiaocunYhid,jiaocunHtbh,jiaocunHtbah,kfsRwbh,jiaocunDjrxm,jiaocunXxlyzt
-//   ) {
-//   return requests8083.get("data-presale-funds/deposit/relation", {
-//     djId, jiaocunMsrxm, jiaocunMsrzjhm, jiaocunXmmc, jiaocunXmbh, jiaocunLdmc, 
-//     jiaocunLdbh, jiaocunFh, jiaocunFwbh, jiaocunFwmj, jiaocunJkje, jiaocunJksy,
-//     jiaocunJkrq,jiaocunZhmc,jiaocunJkzh,jiaocunKhyh,jiaocunYhid,jiaocunHtbh,
-//     jiaocunHtbah,kfsRwbh,jiaocunDjrxm,jiaocunXxlyzt
-//   })
-// }
 /**
  * 关联合同
  * @param {*} djId   定金id
@@ -123,6 +116,10 @@ let getdata = function (kfsRwbh, htShzt) {
 let relationData = function (djId,htBh) {
   return requests8083.get("data-presale-funds/deposit/relation", {djId,htBh})
 }
+
+
+
+
 
 /**
 * 房屋定金管理
@@ -136,6 +133,7 @@ export const fwdjglApi ={
   delDeposit,
   relationlist,
   getdata,
-  relationData
+  relationData,
+  getzjzh
 };
 
