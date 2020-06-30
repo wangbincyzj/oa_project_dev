@@ -113,6 +113,8 @@
             :gfze="gfze"
             :jiaocunYhzh="jiaocunYhzh"
             :jiaocunKhyy="jiaocunKhyy"
+            :jiaocunYyid="jiaocunYyid"
+            :jiaocunZhmc="jiaocunZhmc"
             :ldbh="ldbh"
             @submitSuccess="submitSuccess"
           />
@@ -159,6 +161,8 @@
         gfze:0,
         jiaocunYhzh:"",
         jiaocunKhyy:"",
+        jiaocunYyid:0,
+        jiaocunZhmc:"",
         ldbh:"",
       }
     },
@@ -176,9 +180,9 @@
       },
       
      search(){
-        // httksqApi.getContractBySearch(this.currentPage,this.pageSize,this.$store.state.projectData.xmxxXmbh,this.person,this.certificate,this.code).then(ret=>{
-        //   this.tableData = ret.data.records
-        //   });
+        httksqApi.getContractBySearch(this.currentPage,this.pageSize,this.$store.state.rwbh,this.person,this.certificate,this.code).then(ret=>{
+          this.tableData = ret.data;
+          });
      },
       handleWithdraw(){
         this.dialogVisible=true;
@@ -194,9 +198,11 @@
         this.gfze=this.currentRow.gfze;
         this.jiaocunYhzh=this.currentRow.jiaocunYhzh;
         this.jiaocunKhyy=this.currentRow.jiaocunKhyy;
+        this.jiaocunYyid=this.currentRow.jiaocunYyid;
+        this.jiaocunZhmc=this.currentRow.jiaocunZhmc;
         this.ldbh=this.currentRow.ldbh;
         this.$nextTick(()=>{
-          this.$refs.dialog.setMode(1);
+          this.$refs.dialog.setMode(1,);
         })
       },
      

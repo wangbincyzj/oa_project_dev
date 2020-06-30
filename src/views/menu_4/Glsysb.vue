@@ -45,6 +45,7 @@
           <el-table-column
             align="center"
             label="收件操作"
+            width="150"
           >           
             <template slot-scope="scope">
               <el-button
@@ -64,27 +65,33 @@
           <el-table-column
             align="center"
             label="操作"
+            width="250"
           >
             <template slot-scope="scope">
               <el-button
                 size="mini"
-                @click="handleUpdate(scope.$index, scope.row)">编辑
+                @click="handleUpdate(scope.$index, scope.row)"
+                :disabled="scope.row.shiyongShzt==1">编辑
               </el-button>
               <el-button
                 size="mini"
-                @click="uploadPic(scope.$index, scope.row)">传图
+                @click="uploadPic(scope.$index, scope.row)"
+                :disabled="scope.row.shiyongShzt==1">传图
               </el-button>
               <el-button
                 size="mini"
-                @click="managePic(scope.$index, scope.row)">管图
+                @click="managePic(scope.$index, scope.row)"
+                :disabled="scope.row.shiyongShzt==1">管图
               </el-button>
               <el-button
                 size="mini"
-                @click="handleDelete(scope.$index, scope.row)">删除
+                @click="handleDelete(scope.$index, scope.row)"
+                :disabled="scope.row.shiyongShzt==1">删除
               </el-button>
                <el-button
                 size="mini"
-                @click="handleInform(scope.$index, scope.row)">上报
+                @click="handleInform(scope.$index, scope.row)"
+                :disabled="scope.row.shiyongShzt==1">上报
               </el-button>
 
               <el-button
@@ -165,6 +172,7 @@
     methods:{
      fetchData(){
          glsysbApi.getAllSysb(this.currentPage,this.pageSize).then(ret=>{
+           console.log(ret);
            
            this.tableData = ret.data.records;
            this.total=ret.total;
@@ -196,24 +204,52 @@
         this.dialogType=1;
         this.dialogVisible=true;
         this.$nextTick(()=>{
-          this.$refs.dialog.setMode(1,this.currentRow.id)
+          this.$refs.dialog.setMode(1,this.currentRow.shiyongId)
         })
       },
-      handleDelete(index,row){},
-      handleInform(index,row){
-        if(window.confirm("确定要上报该使用申报吗?")){
-            glsysbApi.informSysb(this.currentRow.shiyongId).then(ret => {
-              console.log(this.currentRow.shiyongId);
-              if (ret.code === 200) {
-                this.$message.success("上报成功");
+      
+       handleDelete(){
+        this.$confirm('确定要删除该使用申报吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+        }).then(()=>{
+           glsysbApi.delSysb(this.currentRow.shiyongId).then(ret=>{
+            if(ret.code===200){
+              this.$message.success("操作成功");
                 this.fetchData();
-              } else {
-                
-                this.$message.error(ret.message)
-              }
-            })
-          }
+            }else{
+              this.$message.error(ret.message||"操作失败")
+            }
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消操作'
+          });
+        });
       },
+
+      handleInform(){
+        this.$confirm('确定要上报该使用申报吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+        }).then(()=>{
+           glsysbApi.informSysb(this.currentRow.shiyongId).then(ret=>{
+            if(ret.code===200){
+              this.$message.success("操作成功");
+                this.fetchData();
+            }else{
+              this.$message.error(ret.message||"操作失败")
+            }
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消操作'
+          });
+        });
+      },
+     
       handleDetail(index,row){
       },
 
@@ -226,6 +262,7 @@
                 this.$refs.dialog.reset();
             });
         this.dialogVisible = false;
+        this.fetchData();
       },
       currentChange(num) {
         this.currentPage = num;

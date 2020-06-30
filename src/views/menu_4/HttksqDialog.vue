@@ -277,7 +277,9 @@
         jkje:{},
         gfze:{},
         jiaocunYhzh:{},
-        jiaocunKhyh:{},
+        jiaocunKhyy:{},
+        jiaocunYyid:{},
+        jiaocunZhmc:{},
         ldbh:{},
     },
     data() {
@@ -358,7 +360,6 @@
         
       }
     },
-   
     setMode(mode,id){
       console.log("00000000000");
       if(mode===1){
@@ -374,8 +375,10 @@
         this.form.zjjgszjlSdszdye=this.jkje;
         this.form.shiyongLdmc=this.jiaocunLdmc;
         this.form.shiyongJgyhmc=this.jiaocunKhyy;
-        this.form.shiyongJgzh="";
-        this.form.shiyongJgzhmc=this.jiaocunYhzh;
+        console.log(this.form.shiyongJgyhmc);
+        
+        this.form.shiyongJgzh=this.jiaocunYhzh;
+        this.form.shiyongJgzhmc=this.jiaocunZhmc;
 
         // httksqApi.getContractInfoById(id).then(ret => {
         //   this.form.ldxxMc=ret.data.buildingInfo.ldxxMc;

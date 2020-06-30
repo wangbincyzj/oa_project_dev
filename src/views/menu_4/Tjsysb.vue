@@ -123,6 +123,12 @@
           <TjsysbDialog
             ref="dialog"
             :dialog-type="dialogType"
+            :jiaocunYhid="jiaocunYhid"
+            :shiyongSbje="shiyongSbje"
+            :jiaocunKhyh="jiaocunKhyh"
+            :jiaocunJkje="jiaocunJkje"
+            :jiaocunZhmc="jiaocunZhmc"
+            :jiaocunJkzh="jiaocunJkzh"
             @submitSuccess="submitSuccess"
           />
         </el-dialog>
@@ -171,6 +177,12 @@
         pages:1,
         selectedIndex: 0,
         ldbh:"",
+        jiaocunYhid:0,
+        shiyongSbje:"",
+        jiaocunKhyh:"",
+        jiaocunJkje:0,
+        jiaocunZhmc:"",
+        jiaocunJkzh:"",
       }
     },
     created() {
@@ -193,7 +205,12 @@
       
       handleAdd(index,row) {
         console.log(row);
-        
+        this.jiaocunYhid=row.jiaocunYhid;
+        this.shiyongSbje=row.shiyongSbje;
+        this.jiaocunKhyh=row.jiaocunKhyh;
+        this.jiaocunJkje=row.jiaocunJkje;
+        this.jiaocunZhmc=row.jiaocunZhmc;
+        this.jiaocunJkzh=row.jiaocunJkzh;
         this.dialogVisible = true;
         this.dialogTitle = "添加申报使用";
         this.dialogType = 1;
