@@ -163,7 +163,6 @@
         pages:1,
         authList: [],
         selectedIndex: 0,
-        selectedIndex: null,
       }
     },
     created() {
@@ -172,8 +171,6 @@
     methods:{
      fetchData(){
          glsysbApi.getAllSysb(this.currentPage,this.pageSize).then(ret=>{
-           console.log(ret);
-           
            this.tableData = ret.data.records;
            this.total=ret.total;
            this.pages=ret.data.pages;
@@ -207,7 +204,6 @@
           this.$refs.dialog.setMode(1,this.currentRow.shiyongId)
         })
       },
-      
        handleDelete(){
         this.$confirm('确定要删除该使用申报吗?', '提示', {
           confirmButtonText: '确定',
@@ -249,7 +245,6 @@
           });
         });
       },
-     
       handleDetail(index,row){
       },
 

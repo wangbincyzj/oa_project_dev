@@ -180,9 +180,7 @@
       },
       
      search(){
-        httksqApi.getContractBySearch(this.currentPage,this.pageSize,this.$store.state.rwbh,this.person,this.certificate,this.code).then(ret=>{
-          this.tableData = ret.data;
-          });
+
      },
       handleWithdraw(){
         this.dialogVisible=true;

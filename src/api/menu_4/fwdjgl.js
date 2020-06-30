@@ -4,6 +4,12 @@
 import { requests } from "@/api";
 import { requests8083 } from "../jianguan"
 
+/**
+ *资金监账户
+ */
+let getzjzh = function () {
+  return requests8083.get('data-presale-funds/supervisedAccount/selectPage')
+}
 
 // 定金缴存##############################
 /**
@@ -43,6 +49,7 @@ let addDeposit = function (_form) {
 
 
 /**
+ * 主键查询
  * 根据定金id 查询查看按钮
  */
 let getProjectById = function (id) {
@@ -109,6 +116,7 @@ let relationData = function (djId,htBh) {
 }
 
 
+
 /**
 * 房屋定金管理
 */
@@ -121,6 +129,7 @@ export const fwdjglApi ={
   delDeposit,
   relationlist,
   getdata,
-  relationData
+  relationData,
+  getzjzh
 };
 

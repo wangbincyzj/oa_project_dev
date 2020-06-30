@@ -445,6 +445,34 @@ let contractClose = function (_form) {
   return requests.post("data-presale-license/contractClosed/save", _form)
 }
 
+/**
+ * 合同查封列表
+ */
+let contractClosedList = function (htId) {
+  return requests.get("data-presale-license/contractClosed/list", {htId})
+}
+
+/**
+ * 合同解封
+ */
+let delContractClose = function (_form) {
+  return requests.get("data-presale-license/contractClosed/del", _form)
+}
+
+/**
+ * 备案以图管房-获取楼盘详情
+ */
+let housingRecordRooms = function (ldxxId) {
+  return requests.get("data-presale-license/housingRecord/rooms", {ldxxId})
+}
+
+/**
+ * 备案以图管房-获取房间信息
+ */
+let getHousingRecordDetail = function (roomId) {
+  return requests.get("data-presale-license/housingRecord/room", {roomId})
+}
+
 
 export const yushouContractApi = {
   getContractBuildingTree,
@@ -506,5 +534,9 @@ export const yushouContractApi = {
   getHouseClosed,
   /////////////合同查封
   getContractClosed,
-  contractClose
+  contractClose,
+  contractClosedList,
+  delContractClose,
+  housingRecordRooms,
+  getHousingRecordDetail
 }

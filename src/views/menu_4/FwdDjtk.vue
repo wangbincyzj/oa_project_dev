@@ -5,14 +5,21 @@
       <TitleTable title="定金退款">
         <el-table :data="tableData" style="width: 100%">
           <el-table-column type="selection" width="55" align="center"></el-table-column>
-          <el-table-column align="center" label="申请人姓名" prop="djsySqrxm"></el-table-column>
-          <!-- <el-table-column align="center" label="监管账户" prop="djsyJgzh"></el-table-column> -->
-          <el-table-column align="center" label="申报金额" prop="djsySbje"></el-table-column>
+          <!--<el-table-column align="center" label="申请人姓名" prop="djsySqrxm"></el-table-column> -->
+          <!--<el-table-column align="center" label="监管账户" prop="djsyJgzh"></el-table-column> -->
+          <!--<el-table-column align="center" label="申报金额" prop="djsySbje"></el-table-column>
           <el-table-column align="center" label="监管银行名称" prop="djsyJgyhmc"></el-table-column>
           <el-table-column align="center" label="用款事由" prop="djsyYksy"></el-table-column>
           <el-table-column align="center" label="流程状态" prop="djsyLczt"></el-table-column>
           <el-table-column align="center" label="汇入账户" prop="djsyHrzhzh"></el-table-column>
-          <el-table-column align="center" label="汇入账户银行" prop="djsyHrzhyh"></el-table-column>
+          <el-table-column align="center" label="汇入账户银行" prop="djsyHrzhyh"></el-table-column> -->
+          <el-table-column align="center" label="订购人" prop="djDgrxm"></el-table-column>
+          <el-table-column align="center" label="证件号码" prop="djDgrzjhm"></el-table-column>
+          <el-table-column align="center" label="缴款金额" prop="djJkje"></el-table-column>
+          <el-table-column align="center" label="监管银行" prop="djJksy"></el-table-column>
+          <!-- <el-table-column align="center" label="银行id" prop="djJksj"></el-table-column> -->
+          <el-table-column align="center" label="缴款日期" prop="djJksj"></el-table-column>
+          <el-table-column align="center" label="缴款说明" prop="djJksy"></el-table-column>
           <el-table-column align="center" label="操作" width="200px">
             <template slot-scope="scope">
               <el-button size="mini" type="danger" @click="refund(scope.$index, scope.row)">退款</el-button>
@@ -40,12 +47,10 @@
         >
           <FwdDjtkDialog ref="dialog" :dialog-type="dialogType" @submitSuccess="submitSuccess" />
         </el-dialog>
-
       </TitleTable>
     </ContainerTwoType>
   </div>
 </template>
-
 <script>
 
 import ContainerTwoType from "@/components/current/containerTwoType/ContainerTwoType";
@@ -57,7 +62,9 @@ import { mixins } from "@/utils/mixins";
 
 import axios from "axios";
 import { fwddjtklApi } from "@/api/menu_4/fwddjtk";
-// FwdDjglDialog
+import { fwdjglApi } from "@/api/menu_4/fwdjgl";
+
+
 export default {
    name: "FwdDjtk",
   components: { TitleTable, ContainerTwoType,FwdDjtkDialog},
@@ -84,16 +91,16 @@ export default {
   },
   methods: {
     liClick(index) {
-      // debugger
       this.selectedIndex = index;
        if (this.selectedIndex === 0) {
            return index = null
       }
       this.getData(this.navInfo.list[index].zjjgzhYhzh);
-      // console.log(this.navInfo.list[index].zjjgzhYhzh)
     },
     getnavInfo(){
-        axios.get('http://192.168.1.161:8093/data-presale-funds/supervisedAccount/selectPage').then(async res=>{
+         //多个监管账户
+        fwdjglApi.getzjzh()
+        .then(async res=>{
             const navlist = res.data.records
             this.navInfo.list = navlist.map( item => ({...item,id:item.zjjgzhId,name: item.zjjgzhYhzh}))
             this.navInfo.list.unshift({id: -1, name: "监管账户"})
@@ -105,8 +112,8 @@ export default {
       this.dialogVisible = true;
       this.dialogTitle = "新增记录";
       this.dialogType = 1;
-       this.$nextTick(() => {
-        this.$refs.dialog.setMode(row);
+      this.$nextTick(() => {
+        this.$refs.dialog.setMode(1,row.djId);
       });
     },
     currentChange(num) {
@@ -116,12 +123,14 @@ export default {
     getData(id) {
       fwddjtklApi.getlist(this.currentPage, this.pageSize,this.djDjglzt,this.djJkzt,this.djDjtkzt,id).then(res => {
         // debugger
+        console.log(res.data.records,'定金分页')
         this.total = res.data.total;
         this.tableData = res.data.records;
       });
     },
     submitSuccess() {
       this.dialogVisible = false;
+      this.getData();
     },
   },
   created() {

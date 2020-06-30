@@ -25,9 +25,10 @@ let getAllContract = function(page, size = 20,kfsRwbh){
  * 根据条件分页查询合同列表
  * 
  */
-let getContractBySearch = function(page, size = 20,kfsRwbh,jiaocunMsrxm,jiaocunMsrzjhm,jiaocunHtbah){
+
+let getContractBySearch = function(page, size = 20,jiaocunXmbh,jiaocunMsrxm,jiaocunMsrzjhm,jiaocunHtbah){
     return requests8083.get("data-presale-funds/jiaocun/selectByCondition", { 
-        current: page, size,kfsRwbh,jiaocunMsrxm,jiaocunMsrzjhm,jiaocunHtbah})
+        current: page, size,jiaocunXmbh,jiaocunMsrxm,jiaocunMsrzjhm,jiaocunHtbah})
   }
 
 /**

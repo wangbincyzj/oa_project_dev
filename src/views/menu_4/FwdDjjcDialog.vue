@@ -41,7 +41,7 @@
     </div>
     <div v-if="dialogType===2">
       <!-- 查看詳情 -->
-      <el-form label-position="right" label-width="150px" size="mini" inline ref="ruleForm">
+      <el-form label-position="right" label-width="150px" size="mini" inline ref="form">
         <el-form-item label="开发商：">
           <el-input v-model="form.djKfstitle" disabled></el-input>
         </el-form-item>
@@ -76,7 +76,7 @@
     </div>
     <div v-if="dialogType===3">
       <!-- 编辑页面 -->
-      <el-form label-position="right" label-width="150px" size="mini" inline :model="ruleForm">
+      <el-form label-position="right" label-width="150px" size="mini" inline :model="form">
         <el-form-item label="开发商：">
           <el-input v-model="form.djKfstitle" disabled></el-input>
         </el-form-item>
@@ -92,6 +92,7 @@
         <el-form-item label="缴款账户名称：">
           <el-input v-model="form.djJkzhmc" disabled></el-input>
         </el-form-item>
+
         <el-form-item label="订购人姓名：" prop="djDgrxm">
           <el-input v-model="ruleForm.djDgrxm"></el-input>
         </el-form-item>
@@ -99,17 +100,31 @@
           <el-input v-model="ruleForm.djDgrzjhm"></el-input>
         </el-form-item>
 
-        <el-form-item label="缴款金额：" prop="djJkje">
+        <el-form-item label="缴款金额：">
           <el-input v-model="ruleForm.djJkje"></el-input>
         </el-form-item>
 
-        <el-form-item label="缴款事由：">
-          <el-input type="textarea" v-model="ruleForm.djJksy"></el-input>
-          <el-select style="width: 180px" v-model="ruleForm.djJksy" placeholder="首付款：">
-            <el-option label="首付款" value="首付款"></el-option>
-            <el-option label="预付款" value="预付款"></el-option>
-          </el-select>
+         <el-form-item label="缴款银行账户：">
+          <el-input v-model="ruleForm.djJkyhzh"></el-input>
         </el-form-item>
+
+         <el-form-item label="缴款账户名称：">
+          <el-input v-model="ruleForm.djJkzhmc"></el-input>
+        </el-form-item>
+
+        <el-form-item label="缴款银行id：">
+          <el-input v-model="ruleForm.djJkyhid"></el-input>
+        </el-form-item>
+
+
+        <el-form-item label="缴款银行：">
+          <el-input v-model="ruleForm.djJkyh"></el-input>
+        </el-form-item>
+
+         <el-form-item label="缴款事由：">
+          <el-input type="textarea" v-model="ruleForm.djJksy"></el-input>
+        </el-form-item>
+
       </el-form>
       <div class="buttonGroup" style="margin:0 auto;width:200px;margin-top:20px">
         <el-button-group class="buttons">
@@ -141,7 +156,8 @@ export default {
         djKfstitle: "",
         djXmmc: "",
         djJkyhzh:""
-      }
+      },
+      idcs:''
     };
   },
   methods: {
@@ -182,6 +198,7 @@ export default {
     storeInfo(id) {
       //根据定金id查看信息
       fwdjglApi.getProjectById(id).then(res => {
+        
         // debugger
         this.$set(this.form, "djKfstitle", res.data.djKfstitle);
         this.$set(this.form, "djXmmc", res.data.djXmmc);
@@ -197,7 +214,7 @@ export default {
     },
     //显示信息
     listInfo(row) {
-      // debugger
+      // 新增显示接口
       // 显示信息
       this.tableData1.djKfstitle = this.$store.state.projectData.xmxxKfs; //开发商
       this.tableData1.djXmmc = row.zjjgzhXmmc; //项目名称
@@ -207,39 +224,33 @@ export default {
       // 影藏信息
       this.tableData1.kfsId= row.kfsId // 开发商id
       this.tableData1.djJkyhid = row.zjjgzhYhid  //银行id
-
-     
       //传输信息
       console.log(this.tableData1, "账户显示信息");
       // this.tableData1.djXmbh = row.xmxxXmbh; //项目编号
       console.log(this.$store.state.projectData.xmxxXmbh, "项目显示信息");
     },
-    //储存用户信息
-    userbtn() {
-      let userlist = {
-        jiaocunMsrxm: "张三丰"
-      };
-      this.userinfo = userlist.jiaocunMsrxm;
-    },
-    updateData(id) {
-      // debugger
-      //  alert('修改')
+    // //储存用户信息
+    // userbtn() {
+    //   let userlist = {
+    //     jiaocunMsrxm: "张三丰"
+    //   };
+    //   this.userinfo = userlist.jiaocunMsrxm;
+    // },
+    updateData(ids) {
+
+      localStorage.setItem('idc',ids)
+      this.idcs = localStorage.getItem('ids')
+
       const list = {
-        djKfstitle: "开发商",
-        djXmmc: "项目名称",
-        // djJkyhzh: 123214,
-        djJkyhid: 12,
-        djJkyh: "工商银行",
-        djJkzhmc: "缴款账户名称",
-        kfsId: 6001,
-        kfsRwbh: 60019003,
-        djXmbh: 57,
-        id: id,
+        djId:this.idcs,
         djDgrxm: this.ruleForm.djDgrxm,
         djDgrzjhm: this.ruleForm.djDgrzjhm,
         djJkje: this.ruleForm.djJkje,
         djJksy: this.ruleForm.djJksy,
-        djJkyhzh: this.form.djJkyhzh
+        djJkyhzh: this.ruleForm.djJkyhzh,
+        djJkzhmc:this.ruleForm.djJkzhmc,
+        djJkyhid:this.ruleForm.djJkyhid,
+        djJkyh:this.ruleForm.djJkyh,
       };
       fwdjglApi.updateDeposit(list).then(res => {
         // debugger
@@ -257,13 +268,14 @@ export default {
       } else if (mode === 2) {
         this.storeInfo(id);
       } else if (mode === 3) {
+        this.storeInfo(id);
         this.updateData(id);
       }
     }
   },
   created() {
     //储存新增缴存信息已有信息
-    // this.storeInfo();
+    this.storeInfo();
     //储存新增缴存修改信息
     this.listInfo();
     //储存用户信息

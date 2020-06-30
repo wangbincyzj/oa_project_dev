@@ -100,33 +100,27 @@ export default {
   methods: {
     liClick(index) {
       this.selectedIndex = index;
-      // if (this.selectedIndex === 0) return null;
       if (this.selectedIndex === 0) {
-           return index = null
+        return (index = null);
       }
       this.getData(this.navInfo.list[index].zjjgzhYhzh);
-      console.log(this.navInfo.list[index], "账户");
-      this.accountinfo = this.navInfo.list[index] 
+      // console.log(this.navInfo.list[index], "账户");
+      this.accountinfo = this.navInfo.list[index];
     },
     getnavInfo() {
-      axios
-        .get(
-          "http://192.168.1.161:8093/data-presale-funds/supervisedAccount/selectPage"
-        )
-        .then(async res => {
-          // debugger
-          const navlist = res.data.records;
-          this.navInfo.list = navlist.map(item => ({
-            ...item,
-            id: item.zjjgzhId,
-            name: item.zjjgzhYhzh
-          }));
-          this.navInfo.list.unshift({
-            id: -1,
-            name: "监管账户"
-          });
-          await this.getData();
+      fwdjglApi.getzjzh().then(async res => {
+        const navlist = res.data.records;
+        this.navInfo.list = navlist.map(item => ({
+          ...item,
+          id: item.zjjgzhId,
+          name: item.zjjgzhYhzh
+        }));
+        this.navInfo.list.unshift({
+          id: -1,
+          name: "监管账户"
         });
+        await this.getData();
+      });
     },
     getData(id) {
       fwdjglApi
@@ -163,13 +157,14 @@ export default {
       });
     },
     editinfo(index, row) {
+        
       // debugger
       //修改信息
       this.dialogVisible = true;
       this.dialogTitle = "编辑信息";
       this.dialogType = 3;
       this.$nextTick(() => {
-        this.$refs.dialog.setMode(3, row.djId);
+        this.$refs.dialog.setMode(3,row.djId);
       });
     },
     deletes(index, row) {

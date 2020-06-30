@@ -24,7 +24,6 @@ let getlist = function(kfsRwbh){
  * 新增缴存
  */
 let addDeposit = function (_form) {
-    // console.log(requests8083)
     return requests8083.post("data-presale-funds/jiaocun/save", _form)
   }
 
