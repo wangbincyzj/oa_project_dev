@@ -42,68 +42,74 @@
           <el-input v-model="form.zjjgszjlSdszdye"></el-input>
         </el-form-item> -->
         <el-form-item  label="本栋监管总额">
-          <el-input v-model="form.zjjgszjlSdszdye"></el-input>
+          <el-input v-model="form.shiyongJgze" disabled></el-input>
         </el-form-item>
         <el-form-item  label="楼栋账面金额">
-          <el-input v-model="form.ldxxZzjj" disabled></el-input>
+          <el-input v-model="form.shiyongZhye" disabled></el-input>
         </el-form-item>
         <el-form-item  label="总使用金额">
-          <el-input v-model="form.ldxxFzzjj" disabled></el-input>
+          <el-input v-model="form.shiyongZsyje" disabled></el-input>
         </el-form-item>
         <el-form-item  label="本栋成交总额" >
           <el-input v-model="form.ldCjJe" disabled></el-input>
         </el-form-item>       
         <el-form-item label="监管方式" >
-          <el-input v-model="form.zjjgszjlSdszdye"></el-input>
+          <el-input v-model="form.zjjgfs" disabled></el-input>
         </el-form-item>
         <el-form-item  label="重点监管比例">
-          <el-input v-model="form.zjjgszjlSdszdye"></el-input>
+          <el-input v-model="form.zdzjjgbl" disabled></el-input>
         </el-form-item>
         <el-form-item  label="重点监管金额">
-          <el-input v-model="form.ldxxZzjj" disabled></el-input>
+          <el-input v-model="form.zdzjjgje" disabled></el-input>
         </el-form-item>
         <el-form-item  label="可使用资金">
-          <el-input v-model="form.ldxxFzzjj" disabled></el-input>
+          <el-input v-model="form.ksyje" disabled></el-input>
         </el-form-item>
         <el-form-item  label="监管银行" >
-          <el-input v-model="form.ldxxYsze" disabled></el-input>
+          <el-input v-model="form.shiyongJgyhmc" disabled></el-input>
         </el-form-item>       
         <el-form-item label="楼栋名称" >
-          <el-input v-model="form.zjjgszjlSdszdye"></el-input>
+          <el-input v-model="form.shiyongLdmc" disabled></el-input>
         </el-form-item>
         <el-form-item  label="监管账户">
-          <el-input v-model="form.zjjgszjlSdszdye"></el-input>
+          <el-input v-model="form.shiyongJgzhmc" disabled></el-input>
         </el-form-item>
         <el-form-item  label="监管账号">
-          <el-input v-model="form.zjjgszjlSdszdye"></el-input>
+          <el-input v-model="form.shiyongJgzh" disabled></el-input>
+        </el-form-item>
+         <el-form-item  label="监管资金类型">
+          <template>
+            <el-radio v-model="form.shiyongBflx" :label=0 @click.native="caculate1">重点监管</el-radio>
+            <el-radio v-model="form.shiyongBflx" :label=1 @click.native="caculate2">普通监管</el-radio>
+          </template>
         </el-form-item>
         
-        <p style="color:red;width:500px;margin:0 auto;margin-top:20px;margin-bottom:20px">注意：可使用资金为{{}},申请使用的资金不能超过可使用资金</p>
+        <p style="color:red;width:500px;margin:0 auto;margin-top:20px;margin-bottom:20px">注意：可使用资金为{{this.surplus}},申请使用的资金不能超过可使用资金</p>
         
         <el-form-item  label="划入账户名称">
-          <el-input v-model="form.ldxxZzjj" style="width:130px"></el-input>
+          <el-input v-model="form.shiyongHrzhmc" style="width:130px"></el-input>
           <el-button @click="showAccount">选择</el-button>
         </el-form-item>
         <el-form-item  label="划入账户账号">
-          <el-input v-model="form.ldxxFzzjj"></el-input>
+          <el-input v-model="form.shiyongHrzhzh"></el-input>
         </el-form-item>
         <el-form-item  label="划入账户银行" >
-          <el-input v-model="form.ldxxYsze"></el-input>
+          <el-input v-model="form.shiyongHrzhyh"></el-input>
         </el-form-item>       
         <el-form-item label="申请使用金额" >
-          <el-input v-model="form.zjjgszjlSdszdye"></el-input>
+          <el-input v-model="form.shiyongSbje" @input="count"></el-input>
         </el-form-item>
         <el-form-item  label="经办人">
-          <el-input v-model="form.zjjgszjlSdszdye"></el-input>
+          <el-input v-model="form.shiyongSqrxm"></el-input>
         </el-form-item>
         <el-form-item  label="联系电话">
-          <el-input v-model="form.zjjgszjlSdszdye"></el-input>
+          <el-input v-model="form.shiyongSqrlxdh"></el-input>
         </el-form-item>
         <el-form-item  label="经办人证件号码">
-          <el-input v-model="form.zjjgszjlSdszdye"></el-input>
+          <el-input v-model="form.shiyongSqrzjhm"></el-input>
         </el-form-item>
         <el-form-item  label="本栋剩余金额">
-          <el-input v-model="form.zjjgszjlSdszdye"></el-input>
+          <el-input v-model="form.shiyongSyje"></el-input>
         </el-form-item>
           <el-form-item label="业务类别">
           <el-cascader
@@ -114,10 +120,10 @@
           ></el-cascader>
         </el-form-item>
         <el-form-item  label="用款事由说明">
-          <el-input v-model="form.zjjgszjlSdszdye" type="textarea" style="width:200px"></el-input>
+          <el-input v-model="form.shiyongYksy" type="textarea" style="width:200px"></el-input>
         </el-form-item>
         <el-form-item  label="项目进度描述">
-          <el-input v-model="form.zjjgszjlSdszdye" type="textarea" style="width:200px"></el-input>
+          <el-input v-model="form.shiyongJdms" type="textarea" style="width:200px"></el-input>
         </el-form-item>
       </el-form>
        <el-dialog
@@ -316,6 +322,12 @@
       enum: [1, 2 /*详情*/]
       
     },
+    jiaocunYhid:0,
+    shiyongSbje:{},
+    jiaocunKhyh:{},
+    jiaocunJkje:0,
+    jiaocunZhmc:{},
+    jiaocunJkzh:{},
      
 
     },
@@ -332,7 +344,10 @@
       title:"",
       ywzh:"",
       xmxxXmbh:"",
+      ldLdbh:"",
+      shiyongXmbh:"",
       ldxxId:0,
+      surplus:null,
         form:{
           kfsMc:"",
           shiyongXmmc:"",
@@ -340,10 +355,27 @@
           zjYsJe:"",
           fzjYsJe:"",
           ldCjJe:"",
+          shiyongJgyhmc:"",
+          shiyongJgzh:"",
+          shiyongJgzhmc:"",
+          shiyongHrzhmc:"",
+          shiyongHrzhzh:"",
+          shiyongHrzhyh:"",
 
         },
          formBlank:{
-          
+          kfsMc:"",
+          shiyongXmmc:"",
+          ldYsJe:"",
+          zjYsJe:"",
+          fzjYsJe:"",
+          ldCjJe:"",
+          shiyongJgyhmc:"",
+          shiyongJgzh:"",
+          shiyongJgzhmc:"",
+          shiyongHrzhmc:"",
+          shiyongHrzhzh:"",
+          shiyongHrzhyh:"",
         },
         form1:{},
         form2:{},
@@ -383,6 +415,9 @@
     },
       selectAccount(arg) {
         this.dialogVisible1 = false;
+        this.form.shiyongHrzhmc=arg.hbzhZhmc;
+        this.form.shiyongHrzhzh=arg.hbzhZhhm;
+        this.form.shiyongHrzhyh=arg.hbzhKhyh;
         //this.form.zjjgszjlZjjgzhmc = arg.hbzhKhyh;  银行名称
         //this.form.zjjgszjlZjjgzh = arg.hbzhZhmc;   账户名称
          //this.form.zjjgszjlZjjgzhmc = arg.hbzhZhhm;  划拨账号
@@ -401,7 +436,8 @@
           return
         };
       ywxlId = this.ywlx[1];
-          tjsysbApi.addSupervision({...this.form,ywxlBh:ywxlId}).then(ret => {
+          tjsysbApi.addSysb({...this.form,xxBh:ywxlId,kfsRwbh:this.$store.state.projectData.kfsRwbh,shiyongSqsyfs:0,ldLdbh:this.ldLdbh,
+      shiyongXmbh:this.shiyongXmbh,}).then(ret => {
           if (ret.code !== 200) {
           this.$message.error(ret.message);
         } else {
@@ -420,7 +456,26 @@
         
       }
     },
-   
+    caculate1(){
+      console.log("重点监管");
+      this.surplus=this.form.zdzjjgje;
+      
+    },
+    caculate2(){surplus
+       console.log("普通监管");
+       this.surplus=this.form.ksyje;
+    },
+   count(){
+     if(this.form.shiyongSbje>this.surplus){
+        this.$message({
+          message: '金额不可超过可申请金额最大值,请重新输入',
+          type: 'warning'
+        });
+        this.form.shiyongSbje="";
+     }else{
+       this.form.shiyongSyje=this.form.shiyongZhye-this.form.shiyongSbje;
+     }
+   },
     setMode(mode,id){
       console.log("00000000000");
       
@@ -429,18 +484,42 @@
         this.form.kfsMc=this.$store.state.projectData.xmxxKfs;
         this.form.shiyongXmmc=this.$store.state.projectData.xmxxXmmc;
         tjsysbApi.getSbInfo(id).then(ret => {
-          this.form.ldYsJe=ret.data.ldYsJe;
-          this.form.zjYsJe=ret.data.zjYsJe;
-          this.form.fzjYsJe=ret.data.fzjYsJe;
-          this.form.ldCjJe=ret.data.ldCjJe;
-          this.form.ldxxJzmj=ret.data.buildingInfo.ldxxJzmj;
-          this.form.ldxxZzmj=ret.data.buildingInfo.ldxxZzmj;
-          this.form.ldxxFzzmj=ret.data.buildingInfo.ldxxFzzmj;
-          this.form.ldxxZzjj=ret.data.buildingInfo.ldxxZzjj;
-          this.form.ldxxFzzjj=ret.data.buildingInfo.ldxxFzzjj;
+          console.log(ret);
+          
+         this.form.ldYsJe=ret.data.ldYsJe;
+         this.form.zjYsJe=ret.data.zjYsJe;
+         this.form.fzjYsJe=ret.data.fzjYsJe;
+         this.form.shiyongJgze=ret.data.shiyongJgze;
+         this.form.shiyongZhye=ret.data.shiyongZhye;
+         this.form.shiyongZsyje=ret.data.shiyongZsyje;
+         this.form.ldCjJe=ret.data.ldCjJe;
+         this.form.zjjgfs=ret.data.zjjgfs;
+         if(ret.data.zjjgfs==1){
+           this.form.zjjgfs="按固定金额监管"
+         }else if(ret.data.zjjgfs==2){
+           this.form.zjjgfs="按预售总价比例监管"
+         }else if(ret.data.zjjgfs==3){
+           this.form.zjjgfs="按实时缴存房款比例监管"
+         }else if(ret.data.zjjgfs==4){
+           this.form.zjjgfs="按合同成交比例监管"
+         }
+         this.form.zdzjjgbl=ret.data.zdzjjgbl;
+         this.form.zdzjjgje=ret.data.zdzjjgje;
+         this.form.ksyje=ret.data.ksyje;
+         this.form.shiyongLdmc=ret.data.shiyongLdmc;
+        
           this.ldxxId=id;
+          this.ldLdbh=ret.data.ldLdbh;
+          this.shiyongXmbh=ret.data.shiyongXmbh;
           
         });
+         this.form.shiyongJgyhmc=this.jiaocunKhyh;
+          this.form.shiyongJgzh=this.jiaocunJkzh;
+          this.form.shiyongJgzhmc=this.jiaocunZhmc;
+          console.log(this.jiaocunKhyh);
+          console.log(this.jiaocunJkzh);
+          
+          
        
       }else if(mode===2){
          tjsysbApi.getLdDetail(id).then(ret => {

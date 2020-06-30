@@ -1,4 +1,4 @@
-/*合同退款申请*/
+/*管理使用申报*/
 import {requests} from "@/api";
 import { requests8083 } from "../jianguan";
 
@@ -31,18 +31,18 @@ let getContractBySearch = function(page, size = 20,jiaocunXmbh,jiaocunMsrxm,jiao
   }
 
 /**
- * 根据合同id查询合同详情
+ * 根据id查询使用申报详情
  * 
  */
-let getContractInfoById = function(id){
-    return requests.get("", {id})
+let getSysbById = function(id){
+    return requests8083.get("data-presale-funds/shiyong/selectById", {id})
   }
 
 /**
- * 新增退款申请
+ * 修改使用申报
  */
-let addTksq = function (_form) {
-  return requests8083.post("data-presale-funds/shiyong/save", _form)
+let updateSysb = function (_form) {
+  return requests8083.post("data-presale-funds/shiyong/update", _form)
 }
 
 
@@ -55,7 +55,22 @@ let informSysb = function (id) {
   return requests8083.get("data-presale-funds/shiyong/report", {id})
 }
 
+/**
+ * 删除
+ * @param id
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+let delSysb = function (id) {
+  return requests8083.get("data-presale-funds/shiyong/del", {id})
+}
+
+
+
 export const glsysbApi = {
     getAllSysb,
     informSysb,
+    delSysb,
+    updateSysb,
+    getSysbById,
+    
 }
