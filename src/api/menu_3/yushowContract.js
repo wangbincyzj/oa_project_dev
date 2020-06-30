@@ -270,14 +270,10 @@ let auditContract = function ({businessId, processName, processId, approveOpinio
 }
 
 
-
-
-
 /*---------------------------------图片上传与获取--------------------------------*/
 /*arg:files*/
-let uploadPic = config.productMode ? "/data-presale-license/houseOwner/update" : `http://192.168.1.${config.baseIP}:8094/data-presale-license/houseOwner/update`
+let uploadPic = config.productMode ? "/data-presale-license/contract/upload" : `http://192.168.1.${config.baseIP}:8094/data-presale-license/contract/upload`
 let previewPic = config.productMode ? "/data-presale-license/contract/getFile?id=" : `http://192.168.1.${config.baseIP}:8094/data-presale-license/contract/getFile?id=`
-
 
 
 /*---------------------------------合同变更相关--------------------------------*/
@@ -285,15 +281,15 @@ let previewPic = config.productMode ? "/data-presale-license/contract/getFile?id
 /**
  * 更改合同买受人
  */
-let contractChangeOwner = function(htId, houseOwners, remark){
-  return requests.post("data-presale-license/contractChange/save", {htId, houseOwners,remark,changeType:2})
+let contractChangeOwner = function (htId, houseOwners, remark) {
+  return requests.post("data-presale-license/contractChange/save", {htId, houseOwners, remark, changeType: 2})
 }
 
 /**
  * 更改合同条款
  */
-let contractChangeContent = function(htId, remark, content){
-  return requests.post("data-presale-license/contractChange/save", {htId, remark, content, changeType:1})
+let contractChangeContent = function (htId, remark, content) {
+  return requests.post("data-presale-license/contractChange/save", {htId, remark, content, changeType: 1})
 }
 /**
  * 合同变更列表
@@ -309,7 +305,7 @@ let contractChangeList = function ({status, changeType, processStatus}) {
  * @param htId
  * @returns {Promise<AxiosResponse<any>>}
  */
-let getChangeIdByHtId = function(htId){
+let getChangeIdByHtId = function (htId) {
   return requests.get("data-presale-license/contractChange/selectByHtId", {htId})
 }
 
@@ -318,7 +314,7 @@ let getChangeIdByHtId = function(htId){
  * @param id
  * @returns {Promise<AxiosResponse<any>>}
  */
-let getChangeById = function(id){
+let getChangeById = function (id) {
   return requests.get("data-presale-license/contractChange/selectById", {id})
 }
 
@@ -355,7 +351,99 @@ let auditChange = function ({businessId, processName, processId, approveOpinion,
 }
 
 
+/*---------------------------------销售控制管理--------------------------------*/
+/**
+ * 读取楼盘列表
+ */
+let getBuildingTree = function ({xmxxMc}) {
+  return requests.get("data-presale-license/housingRecord/buildingTree", {xmxxMc})
+}
 
+/**
+ * 读取限制房间列表
+ */
+let getLimitList = function ({ldId, roomFh, roomId, roomSzdy, roomSzc}, current = 1, size = 10) {
+  return requests.get("data-presale-license/homeSalesRestrictions/roomPage", {
+    ldId, roomFh, roomId, roomSzdy, roomSzc, current, size
+  })
+}
+
+/**
+ * 批量限制房间
+ */
+let limitRooms = function (roomIds, fwxzXzbz) {
+  return requests.post("data-presale-license/homeSalesRestrictions/save", {roomIds, fwxzXzbz})
+}
+
+/**
+ * 查询限制详细
+ */
+let getLimitDetail = function (roomId) {
+  return requests.get("data-presale-license/homeSalesRestrictions/queryRoomDetail", {roomId})
+}
+
+/**
+ * 批量解除限制
+ */
+let unLimitRooms = function (ids, fwxzJcxzbz) {
+  return requests.get("data-presale-license/homeSalesRestrictions/del", {ids, fwxzJcxzbz})
+}
+
+/**
+ * 根据楼栋id查询限制单
+ */
+let getLimitByLdid = function (ldxxId, fwxzYxzt = 1, current = 1, size = 10) {
+  return requests.get("data-presale-license/homeSalesRestrictions/selectPage", {ldxxId, fwxzYxzt, current, size})
+}
+
+/**
+ * 读取房间查封列表
+ */
+let getHouseClosedList = function ({ldId, roomSzdy, roomFh,}, current, size) {
+  return requests.get("data-presale-license/houseClosed/roomPage", {ldId, roomSzdy, roomFh, current, size})
+}
+
+/**
+ * 批量查封房间
+ */
+let setHouseClose = function (_form) {
+  return requests.post("data-presale-license/houseClosed/save", _form)
+}
+
+/**
+ * 查询房屋查封详细
+ */
+let getHouseCloseDetail = function (roomId) {
+  return requests.get("data-presale-license/houseClosed/queryRoomDetail", {roomId})
+}
+
+/**
+ * 解除查封
+ */
+let delHouseClose = function (_form) {
+  return requests.get("data-presale-license/houseClosed/del", _form)
+}
+
+/**
+ * 查询房屋查封单列表
+ */
+let getHouseClosed = function ({htcfCfjg,htcfCfwh,htcfXmmc}, current, size) {
+  return requests.get("data-presale-license/houseClosed/selectPage", {htcfCfjg,htcfCfwh,htcfXmmc, current, size, htcfYxzt: 0})
+}
+
+/**
+ * 查封购房合同分页查询
+ */
+let getContractClosed = function ({htMsrxm, htBah}, current, size) {
+  return requests.get("data-presale-license/contractClosed/selectPage", {htMsrxm, htBah,current, size})
+}
+
+/**
+ * 查封合同
+ */
+let contractClose = function (_form) {
+  return requests.post("data-presale-license/contractClosed/save", _form)
+}
 
 
 export const yushouContractApi = {
@@ -402,5 +490,21 @@ export const yushouContractApi = {
   getChangeIdByHtId,
   submitContractChange,
   getChangeById,
-  auditChange
+  auditChange,
+  /////////// 房屋限售
+  getBuildingTree,
+  getLimitList,
+  limitRooms,
+  getLimitDetail,
+  unLimitRooms,
+  getLimitByLdid,
+  ///////////// 房屋查封
+  getHouseClosedList,
+  setHouseClose,
+  getHouseCloseDetail,
+  delHouseClose,
+  getHouseClosed,
+  /////////////合同查封
+  getContractClosed,
+  contractClose
 }
