@@ -1,9 +1,7 @@
 
-//123
-
-/*添加三方协议*/  
-// import {requests} from "@/api";
-import { requests8093 } from "../jianguan";
+/*添加监管资金*/  
+ import {requests} from "@/api";
+import { requests8083 } from "../jianguan";
 
 
  /**
@@ -17,8 +15,8 @@ import { requests8093 } from "../jianguan";
   * 合同备案
   * @param {*} jiaocunHtbh 
   */
-let getlist = function(kfsRwbh){
-  return requests8093.get("data-presale-funds/jiaocun/selectPage", {kfsRwbh})
+let getContract = function({kfsRwbh,jiaocunMsrxm=null,jiaocunMsrzjhm=null,jiaocunHtbh=null}){
+  return requests8083.get("data-presale-funds/jiaocun/selectPage", {kfsRwbh,jiaocunMsrxm,jiaocunMsrzjhm,jiaocunHtbh})
 }
 
 
@@ -26,27 +24,33 @@ let getlist = function(kfsRwbh){
  * 新增缴存
  */
 let addDeposit = function (_form) {
-    // console.log(requests8093)
-    return requests8093.post("data-presale-funds/jiaocun/save", _form)
+    return requests8083.post("data-presale-funds/jiaocun/save", _form)
   }
 
 
 /**
- * 下拉列表信息
- * 根据合同编号查询  
+ * 
+ * 根据条件查询合同  
  * @param {*} kfsRwbh 
  */
-let fetchlist = function(jiaocunHtbh){
-  return requests8093.get("data-presale-funds/jiaocun/selectByCondition", {jiaocunHtbh})
+let getContractByCondition = function(kfsRwbh,jiaocunMsrxm=null,jiaocunMsrzjhm=null,jiaocunHtbh=null){
+  return requests8083.get("data-presale-funds/jiaocun/selectPage", {kfsRwbh,jiaocunMsrxm,jiaocunMsrzjhm,jiaocunHtbh})
 }
 
 
-
 /**
- * 添加监管资金
+ * 
+ * 根据合同编号查询缴款记录 
+ * @param {*} 
  */
+let getListByHtbh = function(htbh){
+  return requests8083.get("data-presale-funds/jiaocun/getListByHtbh", {htbh})
+}
+
+
   export const tjjgzjApi = {
     addDeposit,
-    getlist,
-    fetchlist
+    getContract,
+    getContractByCondition,
+    getListByHtbh,
 }

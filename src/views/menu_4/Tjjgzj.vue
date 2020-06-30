@@ -14,57 +14,57 @@
           style="width: 100%">
           <el-table-column
             label="备案号"
-            prop="id">
+            prop="jiaocunHtbh">
           </el-table-column>
           <el-table-column
             label="买受人"
-            prop="htId">
+            prop="jiaocunMsrxm">
           </el-table-column>
           <el-table-column
             label="证件号码"
-            prop="companyName">
+            prop="jiaocunMsrzjhm">
           </el-table-column>
           <el-table-column
             label="栋号"
-            prop="itemName">
+            prop="jiaocunLdmc">
           </el-table-column>
           <el-table-column
             label="房号"
-            prop="ldName">
+            prop="jiaocunFwbh">
           </el-table-column>
           <el-table-column
             label="面积"
-            prop="phone">
+            prop="fwjzmj">
           </el-table-column>
           <el-table-column
             align="center"
             label="单价"
-            prop="status">           
+            prop="fwdj">           
           </el-table-column>
          <el-table-column
             align="center"
             label="购房总额"
-            prop="status">           
+            prop="gfze">           
           </el-table-column>
           <el-table-column
             align="center"
             label="首付金额"
-            prop="status">           
+            prop="sfk">           
           </el-table-column>
           <el-table-column
             align="center"
             label="已添加资金"
-            prop="status">           
+            prop="ytjje">           
           </el-table-column>
           <el-table-column
             align="center"
             label="未添加资金"
-            prop="status">           
+            prop="wtjje">           
           </el-table-column>
           <el-table-column
             align="center"
             label="已监管资金"
-            prop="status">           
+            prop="yjgje">           
           </el-table-column>
           <el-table-column
             align="center"
@@ -104,15 +104,15 @@
 <script>
   import ContainerTwoType from "@/components/current/containerTwoType/ContainerTwoType";
   import TitleTable from "@/components/current/titleTable/TitleTable";
-  //import SqsfxyDialog from "@/views/menu_4/SqsfxyDialog";
+  import TjjgzjDialog from "@/views/menu_4/TjjgzjDialog";
  
-  //import {tjrwyhApi} from "@/api/menu_4/tjrwyh";
+  import {tjjgzjApi} from "@/api/menu_4/tjjgzj";
   import {mixins} from "@/utils/mixins";
 
   export default {
-    name: "gljgzj",
+    name: "tjjgzj",
     mixins: [mixins.dialogMixin],
-    components: { TitleTable, ContainerTwoType},
+    components: { TitleTable, ContainerTwoType,TjjgzjDialog},
     data() {
       return{
        
@@ -122,26 +122,20 @@
         dialogVisible: false,
         dialogTitle: "",
         dialogType: 0,
-        authList: [],
         selectedIndex: 0,
-        selectedIndex: null,
       }
     },
     created() {
-      this.fetchNavInfo();
+      this.fetchData();
     },
     methods:{
-      fetchNavInfo() {
-        this.navInfo.loading = true;
-        // tjrwqyApi.getAccessEnterprisesByPage(1, 50).then(ret=>{
-        //   this.navInfo.loading = false;
-        //   this.navInfo.list = ret.data.records.map(item=>({
-        //     ...item, id: item.rwqyxxId, name: item.rwqyxxTitle
-        //   }));
-         this.navInfo.list.unshift({id:0, name: "请选择对应的监管账户"})
-        // })
+      fetchData() {
+       
+        tjjgzjApi.getContract(this.$store.state.kfsRwbh).then(ret=>{
+          this.tableData = ret.data.records;
+         })
       },
-      // fetchTableData
+    
      
       liClick(index) {
         this.selectedIndex = index;
