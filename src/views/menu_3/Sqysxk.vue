@@ -6,26 +6,25 @@
     </el-alert>
     <el-table
       :data="tableData"
-      border
       style="width: 100%"
     >
-      <el-table-column align="center" label="预售证号" prop="xkzXkzbh" width="100"/>
-      <el-table-column align="center" label="预售名称" prop="xkzLdmc" width="100"/>
-      <el-table-column align="center" label="预售总面积" prop="ysxkZjzmj" width="100"/>
-      <el-table-column align="center" label="住宅面积" prop="xkzZzmj" width="100"/>
-      <el-table-column align="center" label="住宅套数" prop="xkzZzts" width="100"/>
-      <el-table-column align="center" label="非住宅面积" prop="xkzFzzmj" width="100"/>
-      <el-table-column align="center" label="非住宅套数" prop="xkzFzzts"  width="100"/>
-      <el-table-column align="center" label="上报时间" prop="xkzSbsj"  width="200"/>
-      <el-table-column align="center" label="审核状态" prop="shzt"  width="100"/>
-      <el-table-column align="center" label="收件操作" >
+      <el-table-column align="center" label="预售证号" prop="xkzXkzbh" />
+      <el-table-column align="center" label="预售名称" prop="xkzLdmc" />
+      <el-table-column align="center" label="预售总面积" prop="ysxkZjzmj" />
+      <el-table-column align="center" label="住宅面积" prop="xkzZzmj" />
+      <el-table-column align="center" label="住宅套数" prop="xkzZzts" />
+      <el-table-column align="center" label="非住宅面积" prop="xkzFzzmj" />
+      <el-table-column align="center" label="非住宅套数" prop="xkzFzzts"  />
+      <el-table-column align="center" label="上报时间" prop="xkzSbsj"  />
+      <el-table-column align="center" label="审核状态" prop="shzt"  />
+      <el-table-column align="center" label="收件操作" width="250">
         <template #default="scope">
           <el-button @click="handleReceive(scope.row)" :disabled="!_enable(scope.row)" size="mini">收件</el-button>
           <el-button @click="handleClear" :disabled="!_enable(scope.row)" size="mini">清除</el-button>
           <el-button @click="handlePrint" :disabled="!_enable(scope.row)" size="mini">打印收件</el-button>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="上报操作">
+      <el-table-column align="center" label="上报操作" width="350">
         <template #default="scope">
           <el-button @click="handleUpdate(scope.row)" size="mini">{{_enable(scope.row)?"修改":"查看"}}</el-button>
           <el-button @click="handleUploadPic(scope.row)" :disabled="!_enable(scope.row)" size="mini">传图</el-button>

@@ -47,7 +47,7 @@ let deleteAccount = function (id) {
  * @returns {Promise<AxiosResponse<any>>}
  */
 let deleteSj = function (id) {
-  return requests.get("data_center/businessAttachment/delByYwzh", {id})
+  return requests.get("data_center/businessAttachment/delByYwzh", {ywsjYwzh:id})
 }
 
 /**
@@ -179,6 +179,18 @@ let getYkhAccount = function (page, size = 20,xmxxXmbh,zjjgzhLczt) {
     current: page, size, xmxxXmbh,zjjgzhLczt
   })
 }
+
+
+let getCertificateList = function () {
+  return requests.get("/date_center/certificate/selectList")
+}
+
+
+
+
+
+
+
 export const sqjgzhApi = {
     getProject,
     addAccount,

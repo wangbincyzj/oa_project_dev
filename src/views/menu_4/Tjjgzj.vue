@@ -51,7 +51,6 @@
                   <span>资金列表</span>
                 </template>
               </el-table-column>
-
               <el-table-column prop="jiaocunJkje" label="添加金额" width="180" align="center"></el-table-column>
               <el-table-column prop="jiaocunJksy" label="缴款事由" width="180" align="center"></el-table-column>
               <el-table-column prop="id" label="添加人" align="center"></el-table-column>
@@ -106,181 +105,172 @@
         :visible.sync="dialogVisible"
         @close="dialogVisible = false"
       >
-        <TjjgzjDialog ref="dialog" :dialog-type="dialogType" @submitSuccess="submitSuccess" />
+        <TjjgzjDialog ref="dialog" :dialog-type="dialogType" @submitSuccess="submitSuccess"/>
       </el-dialog>
     </TitleTable>
   </div>
 </template>
 
 <script>
-import ContainerTwoType from "@/components/current/containerTwoType/ContainerTwoType";
-import TitleTable from "@/components/current/titleTable/TitleTable";
-import TjjgzjDialog from "@/views/menu_4/TjjgzjDialog";
+  import ContainerTwoType from "@/components/current/containerTwoType/ContainerTwoType";
+  import TitleTable from "@/components/current/titleTable/TitleTable";
+  import TjjgzjDialog from "@/views/menu_4/TjjgzjDialog";
+  import {mixins} from "@/utils/mixins";
+  import {tjjgzjApi} from "@/api/menu_4/tjjgzj";
+  import {mapState} from "vuex";
 
-
-
-import { mixins } from "@/utils/mixins";
-
-import { tjjgzjApi } from "@/api/menu_4/tjjgzj";
-
-import { mapState } from "vuex";
-
-export default {
-  name: "tjjgzj",
-  mixins: [mixins.dialogMixin],
-  components: {
-    TitleTable,
-    ContainerTwoType,
-    TjjgzjDialog
-  },
-  data() {
-    return {
-      tableData: [],
-      tableData5: [],
-      search: "",
-      dialogVisible: false,
-      dialogTitle: "",
-      dialogType: 1,
-      currentPage: 1, //分页
-      pageSize: 10,
-      total: 20,
-      pages: 1,
-      mergeSpanArr: [], // 空数组，记录每一行的合并数
-      mergeSpanArrIndex: "", // mergeSpanArr的索引
-      listQuery: {
-        jiaocunMsrxm: null,
-        Msrzjhm: null,
-        Htbh: null
-      }
-    };
-  },
-  computed: {
-    ...mapState(["rwbh"])
-  },
-  methods: {
-    //获取下拉列表信息
-    fetchNavInfo(htbh) {
-      tjjgzjApi
-        .fetchlist(htbh)
-        .then(res => {
-          this.tableData = res.data.records;
-        })
-        .finally(() => {
-          this.setMergeArr(this.tableData);
+  export default {
+    name: "tjjgzj",
+    mixins: [mixins.dialogMixin],
+    components: {
+      TitleTable,
+      ContainerTwoType,
+      TjjgzjDialog
+    },
+    data() {
+      return {
+        tableData: [],
+        tableData5: [],
+        search: "",
+        dialogVisible: false,
+        dialogTitle: "",
+        dialogType: 1,
+        currentPage: 1, //分页
+        pageSize: 10,
+        total: 20,
+        pages: 1,
+        mergeSpanArr: [], // 空数组，记录每一行的合并数
+        mergeSpanArrIndex: "", // mergeSpanArr的索引
+        listQuery: {
+          jiaocunMsrxm: null,
+          Msrzjhm: null,
+          Htbh: null
+        }
+      };
+    },
+    computed: {
+      ...mapState(["rwbh"])
+    },
+    methods: {
+      //获取下拉列表信息
+      fetchNavInfo(htbh) {
+        tjjgzjApi
+          .fetchlist(htbh)
+          .then(res => {
+            this.tableData = res.data.records;
+          })
+          .finally(() => {
+            this.setMergeArr(this.tableData);
+          });
+      },
+      //列表信息
+      getlist() {
+        tjjgzjApi.getlist(this.rwbh).then(res => {
+          this.tableData5 = res.data;
         });
-    },
-    //列表信息
-    getlist() {
-      // console.log(this.rwbh)
-      tjjgzjApi.getlist(this.rwbh).then(res => {
-        this.tableData5 = res.data;
-      });
-    },
-    //打印合同
-    handlePrint(index, row) {},
-    //弹出框
-    submitSuccess() {
-     
-      this.dialogVisible = false;
-    },
-    handleDetail(index,row) {
-      // debugger
-      this.dialogVisible = true;
-      this.dialogTitle = "添加缴款记录";
-      this.dialogType = 1;
-      this.$nextTick(() => {
-        this.$refs.dialog.setMode(1, this.xmxxid);
-        // debugger
-      });
-    },
-    handleSearchList() {
-      //搜索功能
-      this.getlist();
-    },
-    currentChange(num) {
-      this.currentPage = num;
-    },
-    open(row) {
-      this.$refs.refTable.toggleRowExpansion(row);
-    },
-    openExpand(row) {
-      //下拉列表信息
-      this.fetchNavInfo(row.jiaocunHtbh);
-    },
-    objectSpanMethod({ row, column, rowIndex, columnIndex }) {
-      if (columnIndex === 0) {
-        // 合并第二列所有行
-        const _row = this.mergeSpanArr[rowIndex];
-        const _col = _row > 0 ? 1 : 0;
-        return {
-          rowspan: _row,
-          colspan: _col
-        };
-      }
-    },
-    setMergeArr(data) {
-      for (var i = 0; i < data.length; i++) {
-        if (i === 0) {
-          this.mergeSpanArr.push(1);
-          this.mergeSpanArrIndex = 0;
-        } else {
-          // 判断当前元素与上一个元素是否相同
-          if (data[i].name === data[i - 1].name) {
-            this.mergeSpanArr[this.mergeSpanArrIndex] += 1;
-            this.mergeSpanArr.push(0);
-          } else {
+      },
+      //打印合同
+      handlePrint(index, row) {
+      },
+      //弹出框
+      submitSuccess() {
+        this.dialogVisible = false;
+      },
+      handleDetail(index, row) {
+        this.dialogVisible = true;
+        this.dialogTitle = "添加缴款记录";
+        this.dialogType = 1;
+        this.$nextTick(() => {
+          this.$refs.dialog.setMode(1, this.xmxxid);
+        });
+      },
+      handleSearchList() {
+        //搜索功能
+        this.getlist();
+      },
+      currentChange(num) {
+        this.currentPage = num;
+      },
+      open(row) {
+        this.$refs.refTable.toggleRowExpansion(row);
+      },
+      openExpand(row) {
+        //下拉列表信息
+        this.fetchNavInfo(row.jiaocunHtbh);
+      },
+      objectSpanMethod({row, column, rowIndex, columnIndex}) {
+        if (columnIndex === 0) {
+          // 合并第二列所有行
+          const _row = this.mergeSpanArr[rowIndex];
+          const _col = _row > 0 ? 1 : 0;
+          return {
+            rowspan: _row,
+            colspan: _col
+          };
+        }
+      },
+      setMergeArr(data) {
+        for (var i = 0; i < data.length; i++) {
+          if (i === 0) {
             this.mergeSpanArr.push(1);
-            this.mergeSpanArrIndex = i;
+            this.mergeSpanArrIndex = 0;
+          } else {
+            // 判断当前元素与上一个元素是否相同
+            if (data[i].name === data[i - 1].name) {
+              this.mergeSpanArr[this.mergeSpanArrIndex] += 1;
+              this.mergeSpanArr.push(0);
+            } else {
+              this.mergeSpanArr.push(1);
+              this.mergeSpanArrIndex = i;
+            }
           }
         }
       }
-    }
-  },
-  created() {
-    //列表信息
-    this.getlist();
-  },
-  mounted() {},
-  filters: {
-    formStatus(htBazt) {
-      switch (htBazt) {
-        case 0:
-          return "新建";
-        case 1:
-          return "上报";
-        case 2:
-          return "已备案";
+    },
+    created() {
+      this.getlist();
+    },
+    filters: {
+      formStatus(htBazt) {
+        switch (htBazt) {
+          case 0:
+            return "新建";
+          case 1:
+            return "上报";
+          case 2:
+            return "已备案";
+        }
       }
     }
-  }
-};
+  };
 </script>
 
 <style scoped lang="scss">
-@import "~@/assets/css/var.scss";
-.tjrwry {
-  padding: $pm;
-}
+  @import "~@/assets/css/var.scss";
 
-#search {
-  display: flex;
-  width: 100%;
+  .tjrwry {
+    padding: $pm;
+  }
 
-  .searchbox {
-    margin-left: 150px;
+  #search {
+    display: flex;
+    width: 100%;
 
-    span {
-      margin-right: 20px;
+    .searchbox {
+      margin-left: 150px;
+
+      span {
+        margin-right: 20px;
+      }
     }
   }
-}
 </style>
 
 
 <style lang="scss">
-#tjjgzjs {
-  .el-table__expand-icon {
-    display: none;
+  #tjjgzjs {
+    .el-table__expand-icon {
+      display: none;
+    }
   }
-}
 </style>
