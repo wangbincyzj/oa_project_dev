@@ -2,7 +2,7 @@ import fa from "element-ui/src/locale/lang/fa";
 
 // 全局页面跳转mixin
 const routerMixin = {
-  methods: {
+  methods:{
     go(path) {
       this.$router.push(path)
     }
@@ -15,12 +15,14 @@ const dialogMixin = {
   data() {
     return {
       dialogVisible: false,
-      dialogTitle: ""
     }
   },
-  methods: {
+  methods:{
     dialogReset() {
-      this.$refs.dialog.reset();
+      if(this.$refs.dialog && this.$refs.dialog.reset){
+        this.$refs.dialog.reset()
+      }
+      this.dialogVisible = false
     },
     closeConfirm() {
       this.$confirm('确定要取消操作吗?', '提示', {
@@ -28,8 +30,8 @@ const dialogMixin = {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {  // 点击确定的操作
-        this.dialogVisible = false  // 关闭对话
         this.dialogReset();  // 清除数据
+        this.dialogVisible = false  // 关闭对话
       }).catch(() => {  // 点击取消的操作
         //
       });
@@ -37,31 +39,43 @@ const dialogMixin = {
   }
 }
 
+
 // 配合MyPager的mixin
 /*
 <el-pagination
-  background
-  layout="prev, pager, next, total"
-  @current-change="currentChange"
-  :current-page="currentPage"
-  :page-size="pageSize"
-  :total="total">
-</el-pagination>
+    background
+    layout="prev, pager, next, total, sizes"
+    @current-change="mixinCurrentChange"
+    @size-change="mixinSizeChange"
+    :page-sizes="[10, 20, 30, 40]"
+    :current-page="currentPage"
+    :page-size="pageSize"
+    :total="total">
+  </el-pagination>
  */
 const myPagerMixin = {
   data() {
     return {
       currentPage: 1,
-      pageSize: 20,
+      pageSize: 10,
       total: 1,
     }
   },
-  methods: {
-    currentChange(num) {
-      if (this.pagerChange) {
-        this.pagerChange(num)
-      } else {
+  methods:{
+    mixinCurrentChange(num) {
+      if(this.pagerChange){
+        this.currentPage = num;
+        this.pagerChange()
+      }else{
         throw Error("必须实现pagerChange方法")
+      }
+    },
+    mixinSizeChange(num){
+      if(this.sizeChange){
+        this.pageSize = num
+        this.sizeChange()
+      }else{
+        throw Error("必须实现sizeChange方法")
       }
     }
   }
@@ -70,8 +84,12 @@ const myPagerMixin = {
 
 
 
+
+
+
+
 export const mixins = {
   routerMixin,
   dialogMixin,
-  myPagerMixin,
+  myPagerMixin
 }

@@ -1,6 +1,5 @@
 <template>
   <div class="sqjgzh">
-
     <TitleTable
       title="项目对应监管资金列表">
       <div slot="controls">
@@ -73,7 +72,7 @@
               size="mini"
               type="primary"
               @click="handlePrintFile(scope.$index, scope.row)"
-              @mouseover.native="fetchPrintData">打印收件
+              @mouseover.native="">打印收件
             </el-button>
           </template>
         </el-table-column>
@@ -124,8 +123,8 @@
         :title="dialogTitle"
         center
         width="1200px"
-        :before-close="closeConfirm"
         slot="dialog"
+        :before-close="dialogReset"
         :visible.sync="dialogVisible"
         @close="dialogVisible = false"
       >
@@ -336,6 +335,12 @@
       },
       handleManageFile(index, item) {
         this.dialogVisible = true;
+        this.dialogTitle = "管理收件";
+        this.zjjgzhYwzh = this.currentRow.zjjgzhYwzh;
+        this.dialogType = 9;
+        this.$nextTick(() => {
+          this.$refs.dialog.setMode(9, this.currentRow.zjjgzhId);
+        })
       },
       handlePrintFile() {
 

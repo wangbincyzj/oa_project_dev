@@ -6,6 +6,7 @@ import menu_1 from "@/router/menu_1";  // 主体内容的载体layout
 import menu_2 from "@/router/menu_2";
 import menu_3 from "@/router/menu_3";
 import menu_4 from "@/router/menu_4";
+import menu_7 from "@/router/menu_7";
 /**
  * 首字母大写
  * @param str
@@ -51,6 +52,7 @@ const routes = [
   objectToRoutes(menu_2),
   objectToRoutes(menu_3),
   objectToRoutes(menu_4),
+  objectToRoutes(menu_7),
 
 ]
 

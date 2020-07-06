@@ -2,23 +2,23 @@
 
 /*添加监管账户*/
 import {requests} from "@/api";
-import { requests8083 } from "../jianguan";
-
+import {requests8083} from "../jianguan";
+import {config} from "@/api/baseConfig";
 
 /**
  * 查询项目
- * 
+ *
  */
-let getProject = function(kfsRwbh,xmxxShzt=null,xmxxXmbh=null,xmxxXmmc=null,){
-  return requests.get("data_center/realEstateProject/selectPage", {kfsRwbh,xmxxShzt,xmxxXmbh,xmxxXmmc,})
+let getProject = function (kfsRwbh, xmxxShzt = null, xmxxXmbh = null, xmxxXmmc = null,) {
+  return requests.get("data_center/realEstateProject/selectPage", {kfsRwbh, xmxxShzt, xmxxXmbh, xmxxXmmc,})
 }
 /**
  * 根据项目编号查询项目
- * 
+ *
  */
-let getProjectById = function(id){
-    return requests.get("data_center/realEstateProject/selectById", {id})
-  }
+let getProjectById = function (id) {
+  return requests.get("data_center/realEstateProject/selectById", {id})
+}
 
 /**
  * 新增账户
@@ -47,7 +47,7 @@ let deleteAccount = function (id) {
  * @returns {Promise<AxiosResponse<any>>}
  */
 let deleteSj = function (id) {
-  return requests.get("data_center/businessAttachment/delByYwzh", {ywsjYwzh:id})
+  return requests.get("data_center/businessAttachment/delByYwzh", {ywsjYwzh: id})
 }
 
 /**
@@ -58,73 +58,73 @@ let deleteSj = function (id) {
 let informAccount = function (id) {
   return requests8083.get("data-presale-funds/supervisedAccount/submit", {id})
 }
- /**
+/**
  * 根据页数查询所有账户
  * @param page
  * @param size
- * 
+ *
  * @returns {Promise<AxiosResponse<any>>}
  */
 let getAllAccount = function (page, size = 20) {
-    return requests8083.get("data-presale-funds/supervisedAccount/selectPage", {
-      current: page, size
-    })
-  }
+  return requests8083.get("data-presale-funds/supervisedAccount/selectPage", {
+    current: page, size
+  })
+}
 
 /**
  * 根据项目编号查询账户列表
  * @param page
  * @param size
- * 
+ *
  * @returns {Promise<AxiosResponse<any>>}
  */
 
-let getAccountById = function (page, size = 20,xmxxXmbh,zjjgzhLczt=null) {
-    return requests8083.get("data-presale-funds/supervisedAccount/selectPage", {
-      current: page, size, xmxxXmbh,zjjgzhLczt
-    })
-  }
+let getAccountById = function (page, size = 20, xmxxXmbh, zjjgzhLczt = null) {
+  return requests8083.get("data-presale-funds/supervisedAccount/selectPage", {
+    current: page, size, xmxxXmbh, zjjgzhLczt
+  })
+}
 
 /**
  * 根据账户id查询账户信息
  * @param page
  * @param size
- * 
+ *
  * @returns {Promise<AxiosResponse<any>>}
  */
 
 let getAccountInfoById = function (id) {
-    return requests8083.get("data-presale-funds/supervisedAccount/selectById", 
+  return requests8083.get("data-presale-funds/supervisedAccount/selectById",
     {id})
-  }
+}
 
 /**
  * 获取楼栋
  * @param page
  * @param size
- * 
+ *
  * @returns {Promise<AxiosResponse<any>>}
  */
 
-let getLd = function (xmxxXmbh=null,ldxxShzt=null) {
-    return requests.get("data_center/building/selectList", {
-        xmxxXmbh,ldxxShzt
-    })
-  }
+let getLd = function (xmxxXmbh = null, ldxxShzt = null) {
+  return requests.get("data_center/building/selectList", {
+    xmxxXmbh, ldxxShzt
+  })
+}
 
 /**
  * 获取银行
  * @param page
  * @param size
- * 
+ *
  * @returns {Promise<AxiosResponse<any>>}
  */
 
-let getBank = function (yinhangTitle=null) {
-    return requests.get("data_center/cyztYinhang/selectList", {
-        yinhangTitle
-    })
-  }
+let getBank = function (yinhangTitle = null) {
+  return requests.get("data_center/cyztYinhang/selectList", {
+    yinhangTitle
+  })
+}
 
 /**
  * 查询所有业务收件
@@ -133,9 +133,9 @@ let getBank = function (yinhangTitle=null) {
  * @param
  * @returns {Promise<AxiosResponse<any>>}
  */
-let getAllYwsj = function (shoujianXxbh=null) {
+let getAllYwsj = function (shoujianXxbh = null) {
   return requests.get("data_center/businessReceive/selectList", {
-     shoujianXxbh
+    shoujianXxbh
   })
 }
 /**
@@ -170,44 +170,74 @@ let queryReceiving = function (id) {
  * 根据项目编号查询账户列表
  * @param page
  * @param size
- * 
+ *
  * @returns {Promise<AxiosResponse<any>>}
  */
 
-let getYkhAccount = function (page, size = 20,xmxxXmbh,zjjgzhLczt) {
+let getYkhAccount = function (page, size = 20, xmxxXmbh, zjjgzhLczt) {
   return requests8083.get("data-presale-funds/supervisedAccount/selectPage", {
-    current: page, size, xmxxXmbh,zjjgzhLczt
+    current: page, size, xmxxXmbh, zjjgzhLczt
   })
 }
 
+/**
+ * 收件获取证件
+ */
+let getCertificateList = function (zhengjianRkzt=1) {
+  return requests.get("data_center/certificate/selectList", {zhengjianRkzt})
+}
 
-let getCertificateList = function () {
-  return requests.get("/date_center/certificate/selectList")
+/**
+ * 收件单条删除
+ */
+let delOne = function (ywsjId) {
+  return requests.get("data_center/businessAttachment/delete", {ywsjId})
+}
+
+/**
+ * 收件单条增加
+ */
+let addOne = function (_form) {
+  return requests.post("data_center/businessAttachment/add", _form)
+};
+
+/**
+ * 上传文件的地址
+ */
+let upload = config.productMode ? "/data_center/common/upload" : `http://192.168.1.${config.baseIP}:8090/data_center/common/upload`
+let preview = config.productMode ? "/data_center/common/getFile?id=" : `http://192.168.1.${config.baseIP}:8090/data_center/common/getFile?id=`
+
+/**
+ * 删除收件图片
+ */
+let delFile = function (ids) {
+  return requests.post("data_center/common/delFiles", [ids])
 }
 
 
-
-
-
-
-
 export const sqjgzhApi = {
-    getProject,
-    addAccount,
-    updateAccount,
-    deleteAccount,
-    //getAllAccount,
-    getAccountById,
-    getProjectById,
-    getAccountInfoById,
-    getLd,
-    getBank,
-    getAllYwsj,
-    informAccount,
-    selectByYwzh,
-    submitShouJian,
-    getShlcDetail,
-    queryReceiving,
-    deleteSj,
-    getYkhAccount
+  getProject,
+  addAccount,
+  updateAccount,
+  deleteAccount,
+  //getAllAccount,
+  getAccountById,
+  getProjectById,
+  getAccountInfoById,
+  getLd,
+  getBank,
+  getAllYwsj,
+  informAccount,
+  selectByYwzh,
+  submitShouJian,
+  getShlcDetail,
+  queryReceiving,
+  deleteSj,
+  getYkhAccount,
+  getCertificateList,
+  addOne,
+  delOne,
+  upload,
+  preview,
+  delFile
 }

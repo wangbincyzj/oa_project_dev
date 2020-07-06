@@ -1,9 +1,9 @@
 <template>
   <div class="printView">
-    <Dyyshtmb v-if="args==='yshtmb'" args="yshtmb"/>
-    <Dyyshtmb v-if="args==='ysht'" args="ysht" :ba="true"/>
-    <Dyjkmds v-if="args==='Dyjkmds'"/>
-    <Dymx v-if="args==='Dymx'"/>
+    <Dyyshtmb v-if="args==='yshtmb'" args="yshtmb"/>  <!--预售合同模板-->
+    <Dyyshtmb v-if="args==='ysht'" args="ysht" :ba="true"/> <!--预售合同-->
+    <Dyjkmds v-if="args==='Dyjkmds'"/>  <!---->
+    <Dymx v-if="args==='Dymx'"/>  <!---->
   </div>
 </template>
 

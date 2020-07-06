@@ -177,17 +177,7 @@
                   <div>份数:<span>{{item.shoujianFenshu}}</span></div>
                 </div>
               </div>
-              <div class="pics">
-                <el-image
-                  style="width: 60px; height: 60px"
-                  src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
-                  :preview-src-list="srcList">
-                </el-image>
-                <div class="selectImg">
-                  <i class="el-icon-plus"/>
-                  <div>选择图片上传</div>
-                </div>
-              </div>
+
             </div>
           </div>
 
@@ -209,70 +199,177 @@
         </el-tab-pane>
       </el-tabs>
     </div>
-    <div>
-      <div v-if="dialogType===4">
-        <!-- <info-list :title="业务宗号:" /> -->
-        <h3 class="title">添加新收件</h3>
-
-        <!--
-        <div class="add">
-          <el-form
-            label-position="right"
-            label-width="150px"
-            size="mini"
-            inline
-            style="float:left"
-            :model="addForm"
-          >
-            <el-form-item label="收件名称">
-              <el-input v-model="addForm.name"></el-input>
-            </el-form-item>
-            <el-form-item label="收件性质">
-              <el-radio v-model="addForm.attr" label="原件">原件</el-radio>
-              <el-radio v-model="addForm.attr" label="复印件">复印件</el-radio>
-            </el-form-item>
-            <el-form-item label="收件份数">
-              <el-input v-model="addForm.count"></el-input>
-            </el-form-item>
-          </el-form>
-          <div style="width:80px;margin:0 auto">
-            <el-button
-              type="primary"
-              size="mini"
-              icon="el-icon-plus"
-            >添加
-            </el-button>
+    <div v-if="dialogType===4">
+      <!-- <info-list :title="业务宗号:" /> -->
+      <h3 class="title">
+        <el-button-group>
+          <el-button size="mini" @click="addFile" type="primary" icon="el-icon-plus">添加收件</el-button>
+          <el-button size="mini" @click="resetR" type="warning" icon="el-icon-warning-outline">重置默认</el-button>
+        </el-button-group>
+      </h3>
+      <!--
+      <div class="receiveList">
+        <div
+          class="item"
+          v-for="(item,index) in businessReceives"
+        >
+          <div class="no">
+            <span>{{index+1}}</span>
           </div>
-        </div> -->
-
-        <div class="receiveList">
-          <div
-            class="item"
-            v-for="(item,index) in businessReceives"
-          >
-            <div class="no">
-              <span>{{index+1}}</span>
-            </div>
-            <div class="info">
-              <div class="name">{{item.shoujianTitle}}</div>
-              <div class="attr">
-                <div>性质:<span>{{item.shoujianSjxz}}</span></div>
-                <div>份数:<span>{{item.shoujianFenshu}}</span></div>
-              </div>
+          <div class="info">
+            <div class="name">{{item.shoujianTitle}}</div>
+            <div class="attr">
+              <div>性质:<span>{{item.shoujianSjxz}}</span></div>
+              <div>份数:<span>{{item.shoujianFenshu}}</span></div>
             </div>
           </div>
         </div>
+      </div>-->
 
-        <div style="width:80px;margin:0 auto">
-          <el-button
-            @click="handleShouJian"
-            type="primary"
-            size="mini"
-          >确认收件
-          </el-button>
-        </div>
+      <div class="controls">
+
       </div>
 
+      <el-table :data="tableData2">
+        <el-table-column type="selection" width="50" align="center"/>
+        <el-table-column align="left" label="收件名称" prop="shoujianTitle">
+          <!--v-model="scope.row.shoujianTitle"-->
+          <template #default="scope">
+            <div v-if="scope.row.add" style="display: flex">
+              <div style="flex: 3; padding-right: 20px;">
+                <el-input size="mini" v-model="scope.row.shoujianTitle"/>
+              </div>
+              <div style="flex: 1">
+                <el-select
+                  size="mini"
+                  value=""
+                  @change="change($event, scope.row)"
+                  placeholder="手动输入或选择收件"
+                >
+                  <el-option v-for="item in addList" :value="item.value">{{item.value}}</el-option>
+                </el-select>
+
+              </div>
+            </div>
+            <div v-else>
+              {{scope.row.shoujianTitle}}
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="份数" width="120">
+          <template #default="{row}">
+            <el-select v-model="row.shoujianFenshu" size="mini">
+              <el-option value="1">1</el-option>
+              <el-option value="2">2</el-option>
+              <el-option value="3">3</el-option>
+              <el-option value="4">4</el-option>
+              <el-option value="5">5</el-option>
+            </el-select>
+          </template>
+
+        </el-table-column>
+        <el-table-column align="center" label="资料类型" width="120">
+          <template #default="{row}">
+            <el-select v-model="row.shoujianSjxz" size="mini">
+              <el-option value="原件">原件</el-option>
+              <el-option value="复印件">复印件</el-option>
+              <el-option value="扫描件">扫描件</el-option>
+            </el-select>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="操作" width="200">
+          <template #default="scope">
+            <el-button size="mini" type="danger" @click="handleRemove(scope.$index)">删除收件</el-button>
+          </template>
+        </el-table-column>
+
+      </el-table>
+
+      <CenterButton @btnClick="handleShouJian" title="确认收件"/>
+    </div>
+    <div v-if="dialogType===9">
+      <h3 class="title">
+        <el-button-group>
+          <el-button size="mini" @click="addFile2" type="primary" icon="el-icon-plus">添加收件</el-button>
+        </el-button-group>
+      </h3>
+      <el-table :data="businessReceives2" >
+        <el-table-column type="expand" width="50">
+          <template #default="{row}">
+            <UploadCpn
+              :file-list="row.imgList"
+              :url="url"
+              :data="{logId: row.logId}"
+              @addFile="handleUploadFile"
+              @delFile="handleRemoveFile"
+            />
+          </template>
+        </el-table-column>
+        <el-table-column align="left" label="收件名称" prop="ywsjTitle">
+          <!--v-model="scope.row.shoujianTitle"-->
+          <template #default="scope">
+            <div v-if="scope.row.add" style="display: flex">
+              <div style="flex: 3; padding-right: 20px;">
+                <el-input size="mini" v-model="scope.row.ywsjTitle"/>
+              </div>
+              <div style="flex: 1">
+                <el-select
+                  size="mini"
+                  value=""
+                  @change="change2($event, scope.row)"
+                  placeholder="手动输入或选择收件"
+                >
+                  <el-option v-for="item in addList" :value="item.value">{{item.value}}</el-option>
+                </el-select>
+              </div>
+            </div>
+            <div v-else>
+              {{scope.row.ywsjTitle}}
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="份数" width="120">
+          <template #default="{row}">
+            <div v-if="row.add">
+              <el-select v-model="row.ywsjFenshu" size="mini">
+                <el-option value="1">1</el-option>
+                <el-option value="2">2</el-option>
+                <el-option value="3">3</el-option>
+                <el-option value="4">4</el-option>
+                <el-option value="5">5</el-option>
+              </el-select>
+            </div>
+            <div v-else>
+              {{row.ywsjFenshu}}
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="资料类型" width="120">
+          <template #default="{row}">
+            <div v-if="row.add">
+              <el-select v-model="row.ywsjSjxz" size="mini" :disabled="!row.add">
+                <el-option :value="0" label="原件">原件</el-option>
+                <el-option :value="1" label="复印件">复印件</el-option>
+                <el-option :value="2" label="扫描件">扫描件</el-option>
+              </el-select>
+            </div>
+            <div v-else>
+              {{row.ywsjSjxz|sjxzFilter}}
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="操作" width="200">
+          <template #default="scope">
+            <div v-if="scope.row.add">
+              <el-button size="mini" type="primary" @click="handleEnsure(scope.$index)">确认</el-button>
+              <el-button size="mini" type="primary" @click="handleCancel(scope.$index)">取消</el-button>
+            </div>
+            <div v-else>
+              <el-button size="mini" type="danger" @click="handleRemove2(scope.$index)">删除</el-button>
+            </div>
+          </template>
+        </el-table-column>
+      </el-table>
     </div>
   </div>
 </template>
@@ -281,13 +378,14 @@
   import InfoList from "@/components/common/infoList/InfoList";
   import {businessApi} from "@/api/menu_3/__Business";
   import CenterButton from "@/components/common/centerButton/CenterButton";
+  import UploadCpn from "@/components/current/uploadCpn/UploadCpn";
 
   export default {
     name: "TjjgzhDialog",
-    components: {InfoList, CenterButton},
+    components: {UploadCpn, InfoList, CenterButton},
     props: {
       zjjgzhId: {type: String}, //type: [String, Number]
-      zjjgzhYwzh: {String},
+      zjjgzhYwzh: {type: String},
       xmxxXmbh: {type: String},
       dialogType: {
         default: 1, // 添加
@@ -296,10 +394,12 @@
     },
     data() {
       return {
+        loading: false,
         opinionList: [],
         ywlx: [],
         options: [],
         businessReceives: [],
+        businessReceives2: [],
         businessAttachments: [],
         name: "",
         ywzh: "",
@@ -335,17 +435,91 @@
           zjjgzhFzzmj: "",
           zjjgzhFzzts: "",
           zjjgzhLdmc: ""
-        }
+        },
+        tableData2: [],
+        addList: [],
+        retId: ""
       };
     },
+    computed: {
+      url() {
+        return sqjgzhApi.upload
+      }
+    },
+    filters:{
+      sjxzFilter(val) {
+        switch (val) {
+          case 0: return "原件";
+          case 1: return "复印件";
+          case 2: return "扫描件"
+        }
+      }
+    },
     created() {
+      // todo 这两个请求放到打开时候发送
       this.getLd();
       this.getBank();
+
     },
     methods: {
       reset() {
-        this.form = {...this.formBlank};
-        this.ywlx = [];
+        Object.assign(this.$data, this.$options.data())
+      },
+      fetchAddList() {
+        sqjgzhApi.getCertificateList().then(ret => {
+          this.addList = ret.data.map(item => ({
+            ...item,
+            value: item.zhengjianName
+          }))
+        })
+      },
+      addFile() {
+        this.tableData2.push({
+          add: true,
+          shoujianXuhao: "",
+          shoujianTitle: "",
+          shoujianFenshu: 1,
+          shoujianYema: "",
+          shoujianSjxz: "",
+          zhengjianId: "",
+        })
+      },
+      addFile2() {
+        this.businessReceives2.push({
+          add: true,
+          ywsjYwzh: "",
+          zhengjianId: "",
+          ywsjTitle: "",
+          ywsjFenshu: 1,
+          ywsjSjxz: "",
+        })
+      },
+      handleRemove(index) {  // 表里删除
+        this.tableData2.splice(index, 1)
+      },
+      handleRemove2(index) {  // api删除
+        let obj = this.businessReceives2[index];
+        console.log(obj)
+        sqjgzhApi.delOne(obj.ywsjId).then(ret=>{
+          if(ret.code===200){
+            this.$message.success("删除成功");
+            this.businessReceives2.splice(index, 1)
+          }else{
+            this.$message.error(ret.message||"未知错误")
+          }
+        })
+      },
+      handleUpdate(index){
+
+      },
+      resetR() {
+        this.fetchShouJian(this.retId)
+      },
+      change(val, item) {
+        item.shoujianTitle = val;
+      },
+      change2(val, item) {
+        item.ywsjTitle = val;
       },
       getYwsj() {
         sqjgzhApi.getAllYwsj().then(ret => {
@@ -361,6 +535,17 @@
         sqjgzhApi.getBank().then(ret => {
           this.zjjgzhYhid = ret.data;
         });
+      },
+      _findIndex(list) {  // 确定是不是内置证件
+        list.forEach((item1, index1) => {
+          this.addList.some((item2, index2) => {
+            if (item1.shoujianTitle === item2.zhengjianName) {
+              item1.shoujianId = item2.zhengjianId;
+              item1.shoujianXuhao = item2.zhengjianPx
+              return
+            }
+          })
+        })
       },
       getLdName(name) {
         this.ldName = name;
@@ -386,17 +571,14 @@
             return obj
           })
         })
-
       },
       addData() {
-        console.log(this.ywlx);
-
         let ywxlId = 0;
         if (this.ywlx.length < 2) {
           this.$message.error("请选择业务类型")
           return
         }
-        ;
+
         ywxlId = this.ywlx[1];
         sqjgzhApi.addAccount({
           ...this.form,
@@ -420,7 +602,7 @@
           this.$message.error("请选择业务类型")
           return
         }
-        ;
+
         ywxlId = this.ywlx[1];
         sqjgzhApi.updateAccount({
           ...this.form,
@@ -438,7 +620,6 @@
             }
           });
       },
-
       DetailData(id) {
         sqjgzhApi.getAccountInfoById(id).then(ret => {
           //console.log(ret);
@@ -454,22 +635,31 @@
         sqjgzhApi.queryReceiving(id).then(ret => {
           this.businessAttachments = ret.data.businessAttachments;
           this.businessReceives = ret.data.businessReceives;
+          this.tableData2 = this.businessReceives
         })
       },
+      handleAddOne(index, item) {
 
+      },
       handleShouJian() {
-        // 组装一个List
-        console.log("taetae");
-
-        console.log(this.businessReceives)
+        let flag = this.tableData2.some((item, index) => {
+          if (!item.shoujianSjxz) {
+            this.$message.error(`请选择${this.tableData2[index].shoujianTitle}资料类型`)
+            return true
+          }
+        })
+        if (flag) return;
+        this._findIndex(this.tableData2)
+        console.log(this.tableData2)
         let list = this.businessReceives.map(item => ({
           zhengjianId: item.shoujianId,
           ywsjTitle: item.shoujianTitle,
           ywsjFenshu: item.shoujianFenshu,
-          ywsjSjxz: item.shoujianSjxz === "原件" ? 0 : 1,
+          ywsjSjxz: this._zjlx(item.shoujianSjxz),
           ywsjYwzh: this.zjjgzhYwzh,
           ywsjXh: item.shoujianXuhao
         }))
+        console.log(list);
         sqjgzhApi.submitShouJian(list).then(ret => {
           if (ret.code === 200) {
             this.$message.success("收件成功")
@@ -479,12 +669,35 @@
           }
         })
       },
+      _zjlx(name) {
+        switch (name) {
+          case "原件":
+            return 0;
+          case "复印件":
+            return 1;
+          case "扫描件":
+            return 2;
+        }
+      },
       fetchShouJianByYwzh(id) {
         sqjgzhApi.selectByYwzh(id).then(ret => {
           this.businessReceives = ret.data.map(item => ({
             shoujianTitle: item.ywsjTitle,
             shoujianSjxz: item.ywsjSjxz === 0 ? "原件" : "复印件",
             shoujianFenshu: item.ywsjFenshu
+          }))
+        })
+      },
+      fetchShouJianByYwzh2(id) {
+        sqjgzhApi.selectByYwzh(id).then(ret => {
+          console.log(ret)
+          this.businessReceives2 = ret.data.map(item => ({
+            ...item,
+            imgList: item.enclosures.map(item => ({
+              title: item.fujianName,
+              url: sqjgzhApi.preview + item.fujianId,
+              fujianId: item.fujianId
+            }))
           }))
         })
       },
@@ -517,9 +730,62 @@
             this.ywlx = [dl, ret.data.ywxlBh]
           });
         } else if (mode === 4) {
+          this.fetchAddList();
+          this.retId = id;
+          this.fetchShouJian(id);
+        } else if (mode === 9) {
+          this.fetchAddList();
+          this.fetchShouJianByYwzh2(this.zjjgzhYwzh);
           this.fetchShouJian(id);
         }
       },
+      handleRemoveFile(obj) {
+        console.log(obj)
+        let id;
+        if (obj.fujianId) {   // 原来就存在的
+          id = obj.fujianId
+        } else {  // 刚刚上传的
+          id = obj.response.data[0].fujianId;
+        }
+        sqjgzhApi.delFile(id).then(ret => {
+          if (ret.code === 200) {
+            this.$message.info("删除成功")
+          } else {
+            this.$message.error(ret.message || "未知错误")
+          }
+        })
+      },
+      handleUploadFile(obj) {
+        this.$message.success("上传成功")
+      },
+      handleEnsure(index) {
+        let obj = this.businessReceives2[index];
+        if(!obj.ywsjTitle.trim()){
+          this.$message.warning("请输入收件名称");return
+        }
+        if(obj.ywsjSjxz===""){
+          this.$message.warning("请选择收件性质");return;
+        }
+        this.addList.some(item=>{
+          if(obj.ywsjTitle===item.value){
+            obj.ywsjId = item.zhengjianId;
+            return true;
+          }
+        })
+        obj.ywsjYwzh = this.zjjgzhYwzh;
+        this.loading = true
+        sqjgzhApi.addOne(obj).then(ret=> {
+          this.loading = false;
+          if (ret.code === 200) {
+            this.$set(this.businessReceives2, index, ret.data)
+            this.$message.success("添加成功")
+            obj.add = false;
+          }
+        })
+      },
+      handleCancel(index) {
+        this.businessReceives2.splice(index, 1)
+      }
     }
   }
 </script>

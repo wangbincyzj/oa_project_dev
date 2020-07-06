@@ -4,6 +4,7 @@
       style="display: block; width: 100px; transform: translateX(-50px)"
       :loading="loading"
       size="mini"
+      :icon="icon"
       :disabled="disabled"
       @click="$emit('btnClick')"
       :type="type">{{title}}
@@ -30,6 +31,10 @@
       disabled:{
         type: Boolean,
         default: false
+      },
+      icon:{
+        type: String,
+        default: ""
       }
     }
   }
