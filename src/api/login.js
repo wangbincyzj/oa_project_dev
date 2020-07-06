@@ -5,7 +5,7 @@ import {config} from "@/api/baseConfig";
 
 
 // 基础设置
-const BASE_URL = `http://192.168.1.${config.baseIP}:8092/`;
+const BASE_URL = `http://192.168.11.${config.baseIP}:8092/`;
 // 155, 161
 const TIME_OUT = 5000;
 let _ = axios.create({

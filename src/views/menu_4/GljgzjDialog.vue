@@ -76,7 +76,7 @@
       </el-form>
       <div class="buttonGroup" style="margin:0 auto;width:200px;margin-top:20px">
         <el-button-group class="buttons">
-          <el-button type="primary" @click="addData" size="mini">立即提交</el-button>
+          <el-button type="primary" @click="updateData" size="mini">立即提交</el-button>
         </el-button-group>
        
       </div>
@@ -86,7 +86,7 @@
 
 <script>
 
-import { tjjgzjApi } from "@/api/menu_4/tjjgzj";
+import { gljgzjApi } from "@/api/menu_4/gljgzj";
 import CenterButton from "@/components/common/centerButton/CenterButton";
 export default {
   name: "TjjgzjDialog",
@@ -109,6 +109,7 @@ export default {
      fwjzmj:0,
      jiaocunYhid:0,
      wtjje:0,
+     jiaocunId:0,
       form: {
         jiaocunXmmc:"",
         jiaocunSfajk:1,
@@ -151,6 +152,9 @@ export default {
       this.form = { ...this.formBlank };
     },
     count(){
+      // let flag=this.form.jiaocunJkje;
+      // console.log(flag);
+      
        if(this.form.jiaocunJkje>this.wtjje){
         this.$message({
           message: '金额不可超过可缴款金额最大值,请重新输入',
@@ -159,20 +163,20 @@ export default {
         this.form.jiaocunJkje="";
      }
     },
-    addData() {
+    updateData() {
      
-      tjjgzjApi.addDeposit({...this.form,jiaocunXmbh:this.$store.state.projectData.xmxxXmbh,jiaocunXxlyzt:0,
-      jiaocunFh:this.jiaocunFh,
-      jiaocunFwbh:this.jiaocunFwbh,
-      jiaocunHtbah:this.jiaocunHtbah,
-      jiaocunLdbh:this.jiaocunLdbh,
-      jiaocunHtbh:this.jiaocunHtbh,
-      jiaocunFwmj:this.fwjzmj,
-      jiaocunYhid:this.jiaocunYhid,
-      kfsRwbh:this.$store.state.projectData.kfsRwbh,
+      gljgzjApi.updateDeposit({...this.form,jiaocunId:this.jiaocunId
+      // jiaocunFh:this.jiaocunFh,
+      // jiaocunFwbh:this.jiaocunFwbh,
+      // jiaocunHtbah:this.jiaocunHtbah,
+      // jiaocunLdbh:this.jiaocunLdbh,
+      // jiaocunHtbh:this.jiaocunHtbh,
+      // jiaocunFwmj:this.fwjzmj,
+      // jiaocunYhid:this.jiaocunYhid,
+      // kfsRwbh:this.$store.state.projectData.kfsRwbh,
       }).then(res => {
           if (res.code == 200) {
-            this.$message.success("添加成功");
+            this.$message.success("修改成功");
             this.$emit("submitSuccess");
           } else {
             this.$message.error(res.message);
@@ -183,28 +187,23 @@ export default {
     setMode(mode, id) {
       if(mode===1){
         console.log("taetae");
-         tjjgzjApi.getDetail(this.$store.state.rwbh,id).then(ret => {
+        this.jiaocunId=id;
+         gljgzjApi.getDepositDetail(id).then(ret => {
            console.log(ret);
-          //this.form=ret.data[0];
-          this.wtjje=ret.data[0].wtjje;
-           this.form.jiaocunLdmc=ret.data[0].jiaocunLdmc;
-           this.form.jiaocunHtbh=ret.data[0].jiaocunHtbh;
-           this.form.fkfs=ret.data[0].fkfs;
-           this.form.gfze=ret.data[0].gfze;
-           this.form.sfk=ret.data[0].sfk;
-           this.form.jiaocunMsrxm=ret.data[0].jiaocunMsrxm;
-           this.form.jiaocunMsrzjhm=ret.data[0].jiaocunMsrzjhm;
-           this.form.jiaocunKhyh=ret.data[0].jiaocunKhyh;
-           this.form.jiaocunZhmc=ret.data[0].jiaocunZhmc;
-           this.form.jiaocunJkzh=ret.data[0].jiaocunJkzh;
-           this.form.jiaocunXmmc=this.$store.state.projectData.xmxxXmmc;
-           this.jiaocunFh=ret.data[0].jiaocunFh;
-           this.jiaocunFwbh=ret.data[0].jiaocunFwbh;
-           this.jiaocunHtbah=ret.data[0].jiaocunHtbah;
-           this.jiaocunHtbh=ret.data[0].jiaocunHtbh;
-           this.jiaocunLdbh=this.jiaocunFwbh.slice(0,7);
-           this.fwjzmj=ret.data[0].fwjzmj;
-           this.jiaocunYhid=ret.data[0].jiaocunYhid;
+          this.form=ret.data.presaleFundsDeposit;
+          this.form.fkfs=ret.data.contract.fkfs;
+          this.form.gfze=ret.data.contract.gfze;
+          this.form.sfk=ret.data.contract.sfk;
+          this.wtjje=ret.data.contract.wtjje;
+          
+          //  this.form.jiaocunXmmc=this.$store.state.projectData.xmxxXmmc;
+          //  this.jiaocunFh=ret.data[0].jiaocunFh;
+          //  this.jiaocunFwbh=ret.data[0].jiaocunFwbh;
+          //  this.jiaocunHtbah=ret.data[0].jiaocunHtbah;
+          //  this.jiaocunHtbh=ret.data[0].jiaocunHtbh;
+          //  this.jiaocunLdbh=this.jiaocunFwbh.slice(0,7);
+          //  this.fwjzmj=ret.data[0].fwjzmj;
+          //  this.jiaocunYhid=ret.data[0].jiaocunYhid;
             //this.form.jiaocunJksy="";
            //this.form.jiaocunSfajk=1;
            

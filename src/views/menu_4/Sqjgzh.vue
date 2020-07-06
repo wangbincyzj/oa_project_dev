@@ -230,9 +230,9 @@
       
     },
     methods:{
-      fetchPrintData(id){
-        
-        sqjgzhApi.selectByYwzh(id).then(ret => {
+      fetchPrintData(){
+        this.zjjgzhYwzh=this.currentRow.zjjgzhYwzh;
+        sqjgzhApi.selectByYwzh(this.zjjgzhYwzh).then(ret => {
           this.printTable = ret.data.map(item => ({
             shoujianTitle: item.ywsjTitle,
             shoujianSjxz: item.ywsjSjxz === 0 ? "原件" : "复印件",
@@ -377,16 +377,17 @@
       },
       fetchPrint(){
         this.zjjgzhYwzh=this.currentRow.zjjgzhYwzh;
+        console.log(this.zjjgzhYwzh);
+        
         this.fetchPrintData(this.zjjgzhYwzh);
       },
       cellMouseEnter(row) {
         this.currentRow = row;
-        // this.zjjgzhYwzh=this.currentRow.zjjgzhYwzh;
-        // this.fetchPrintData(this.zjjgzhYwzh);
+        //this.zjjgzhYwzh=this.currentRow.zjjgzhYwzh;
+       // this.fetchPrintData(this.zjjgzhYwzh);
       },
       currentChange(num) {
          this.currentPage = num;
-         this.zjjgzhYwzh=this.currentRow.zjjgzhYwzh;
          this.fetchData();         
        },
     }

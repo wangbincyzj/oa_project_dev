@@ -1,7 +1,6 @@
 <template>
-  <!--预售资金管理 ====》 添加监管资金1049906948 -->
-  <div class="tjjgzj" id="tjjgzjs">
-    <TitleTable title="商品房买卖合同列表">
+  <div class="djtkgl" id="djtkgl">
+    <TitleTable title="定金退款管理">
       <div  slot="controls"
         style="background-color:#fdf6ec"
       >
@@ -81,115 +80,58 @@
               </el-table-column>
 
               <el-table-column
-                prop="jiaocunJkje"
-                label="添加金额"
+                prop="djsySqrxm"
+                label="订购人"
                 align="center"
               ></el-table-column>
               <el-table-column
                 prop="jiaocunJksy"
-                label="缴款事由"
+                label="证件号码"
                 align="center"
               ></el-table-column>
-              <el-table-column
-                prop="jiaocunMsrxm"
-                label="添加人"
-                align="center"
-              ></el-table-column>
+              
               <el-table-column
                 prop="jiaocunXxlyzt"
-                label="数据来源"
+                label="缴款金额"
                 align="center"
               ></el-table-column>
               <el-table-column
-                prop="jiaocunJkrq"
-                label="时间"
+                prop="djsyHrzhyh"
+                label="监管银行"
                 align="center"
               ></el-table-column>
-              <el-table-column
-                prop="jiaocunJkzt"
-                label="资金状态"
-                align="center"
-              ></el-table-column>
+             
             </el-table>
           </template>
         </el-table-column>
-
-        <el-table-column
-          label="备案号"
-          prop="jiaocunHtbh"
-          align="center"
-        ></el-table-column>
-        <el-table-column
-          label="买受人"
-          prop="jiaocunMsrxm"
-          align="center"
-        ></el-table-column>
-        <el-table-column
-          label="证件号码"
-          prop="jiaocunMsrzjhm"
-          align="center"
-        ></el-table-column>
-        <el-table-column
-          label="栋号"
-          prop="jiaocunLdmc"
-          align="center"
-        ></el-table-column>
-        <el-table-column
-          label="房号"
-          prop="jiaocunFh"
-          align="center"
-        ></el-table-column>
-        <el-table-column
-          label="面积"
-          prop="fwjzmj"
-          align="center"
-        ></el-table-column>
-        <el-table-column
-          align="center"
-          label="单价"
-          prop="fwdj"
-        ></el-table-column>
-        <el-table-column
-          align="center"
-          label="购房总额"
-          prop="gfze"
-        ></el-table-column>
-        <el-table-column
-          align="center"
-          label="首付金额"
-          prop="sfk"
-        ></el-table-column>
-        <el-table-column
-          align="center"
-          label="已添加资金"
-          prop="ytjje"
-        ></el-table-column>
-        <el-table-column
-          align="center"
-          label="未添加资金"
-          prop="wtjje"
-        ></el-table-column>
-        <el-table-column
-          align="center"
-          label="已监管资金"
-          prop="yjgje"
-        ></el-table-column>
-        <el-table-column
-          align="center"
-          label="未纳入监管资金"
-          prop="wjgje"
-          width="120px"
-        ></el-table-column>
-        <el-table-column
-          align="center"
-          label="合同状态"
-          prop="htBazt">
+        <el-table-column label="项目名称" prop="djsyXmmc"></el-table-column>
+        <el-table-column label="监管账号" prop="djsyJgzh"></el-table-column>
+        <el-table-column label="监管银行名称" prop="djsyJgyhmc"></el-table-column>
+        <el-table-column label="申请人姓名" prop="djsySqrlxdh"></el-table-column>
+        <el-table-column label="汇入账户" prop="djsyHrzhzh"></el-table-column>
+        <el-table-column label="汇入账户银行" prop="djsyHrzhyh"></el-table-column>
+        <el-table-column align="center" label="申报金额" prop="djsySbje"></el-table-column>
+        <el-table-column align="center" label="添加时间" prop="djsyAddtime"></el-table-column>
+         <el-table-column
+            align="center"
+            label="收件操作"
+            width="150"
+          >           
+            <template slot-scope="scope">
+              <el-button
+                size="mini"
+                @click="GetFile(scope.$index, scope.row)">收件
+              </el-button>
+              <el-button
+                size="mini"
+                @click="DelFile(scope.$index, scope.row)">清除
+              </el-button>
+              <el-button
+                size="mini"
+                @click="PrintFile(scope.$index, scope.row)">打印收件
+              </el-button>
+            </template>
           </el-table-column>
-        <el-table-column
-          align="center"
-          label="备案时间"
-          prop="htAddtime"
-        ></el-table-column>
         <el-table-column
           label="操作"
           prop="desc"
@@ -201,11 +143,43 @@
               @click="open(scope.row)"
               type="text"
               size="small"
-            >查看记录</el-button>
-            <el-button
-              size="mini"
-              type="primary"
-              @click="handleAdd(scope.$index, scope.row)">新增缴存</el-button>
+            >定金明细</el-button>
+           <el-button
+                size="mini"
+                @click="handleUpdate(scope.$index, scope.row)"
+                :disabled="scope.row.shiyongShzt==1">编辑
+              </el-button>
+              <el-button
+                size="mini"
+                @click="uploadPic(scope.$index, scope.row)"
+                :disabled="scope.row.shiyongShzt==1">传图
+              </el-button>
+              <el-button
+                size="mini"
+                @click="managePic(scope.$index, scope.row)"
+                :disabled="scope.row.shiyongShzt==1">管图
+              </el-button>
+              <el-button
+                size="mini"
+                @click="handleDelete(scope.$index, scope.row)"
+                :disabled="scope.row.shiyongShzt==1">删除
+              </el-button>
+               <el-button
+                size="mini"
+                @click="handleInform(scope.$index, scope.row)"
+                :disabled="scope.row.shiyongShzt==1">上报
+              </el-button>
+
+              <el-button
+                size="mini"
+                @click="handleDetail(scope.$index, scope.row)">详情
+              </el-button>
+
+              <el-button
+                size="mini"
+                @click="printPaper(scope.$index, scope.row)">打印申请单
+              </el-button>
+
           </template>
         </el-table-column>
       </el-table>
@@ -243,10 +217,10 @@ import ContainerTwoType from "@/components/current/containerTwoType/ContainerTwo
 import TitleTable from "@/components/current/titleTable/TitleTable";
 import TjjgzjDialog from "@/views/menu_4/TjjgzjDialog";
 import { mixins } from "@/utils/mixins";
-import { tjjgzjApi } from "@/api/menu_4/tjjgzj";
+import { djtkglApi } from "@/api/menu_4/djtkgl";
 
 export default {
-  name: "tjjgzj",
+  name: "djtkgl",
   mixins: [mixins.dialogMixin],
   components: {
     TitleTable,
@@ -279,33 +253,33 @@ export default {
  
   methods: {
     //获取下拉列表信息
-    fetchRecord(htbh) {
-      tjjgzjApi.fetchlist(htbh)
+    fetchRecord(id) {
+      djtkglApi.getfundUseDetail(id)
         .then(res => {
-          this.recordTable = res.data.records;
-          this.recordTable.map(function (val) {
-              if (val.jiaocunXxlyzt == 0) {
-                val.jiaocunXxlyzt = '开发商'
-              } else if (val.jiaocunXxlyzt == 1) {
-                val.jiaocunXxlyzt = '银行端'
-              } 
-              if (val.jiaocunJkzt == 0) {
-                val.jiaocunJkzt = '新建'
-              } else if (val.jiaocunJkzt == 1) {
-                val.jiaocunJkzt = '上报'
-              } else if (val.jiaocunJkzt == 2) {
-                val.jiaocunJkzt = '入账'
-              } 
+          this.recordTable = res.data.fundUse;
+        //   this.recordTable.map(function (val) {
+        //       if (val.jiaocunXxlyzt == 0) {
+        //         val.jiaocunXxlyzt = '开发商'
+        //       } else if (val.jiaocunXxlyzt == 1) {
+        //         val.jiaocunXxlyzt = '银行端'
+        //       } 
+        //       if (val.jiaocunJkzt == 0) {
+        //         val.jiaocunJkzt = '新建'
+        //       } else if (val.jiaocunJkzt == 1) {
+        //         val.jiaocunJkzt = '上报'
+        //       } else if (val.jiaocunJkzt == 2) {
+        //         val.jiaocunJkzt = '入账'
+        //       } 
           
-        })
+        // })
         })
        
     },
     //列表信息
     getlist() {
       // console.log(this.rwbh)
-      tjjgzjApi.getlist(this.$store.state.rwbh).then(res => {
-        this.tableData = res.data;
+      djtkglApi.getfundUse(this.currentPage,this.pageSize,this.$store.state.projectData.xmxxXmbh).then(res => {
+        this.tableData = res.data.records;
       });
     },
     //打印合同
@@ -338,7 +312,7 @@ export default {
     },
     openExpand(row) {
       //下拉列表信息
-      this.fetchRecord(row.jiaocunHtbh);
+      this.fetchRecord(row.djsyId);
     },
      objectSpanMethod(){},
    
@@ -386,7 +360,7 @@ export default {
 
 
 <style lang="scss">
-#tjjgzjs {
+#djtkgl {
   .el-table__expand-icon {
     display: none;
   }
