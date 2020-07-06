@@ -1,8 +1,8 @@
 
 
-//管理监管资金  1049906948
-/*添加三方协议*/
-// import {requests} from "@/api";
+//管理监管资金  
+
+import {requests} from "@/api";
 import { requests8083 } from "../jianguan";
 
 
@@ -21,10 +21,18 @@ let getProjectById = function(current,size,jiaocunXmbh){
 
 /**
  * 状态上报
- * @param {*} _form 
+ * @param {*} 
  */
-let addDeposit = function (_form) {
-    return requests8083.post("data-presale-funds/jiaocun/report", _form)
+let informDeposit = function ({jiaocunId,jiaocunJkzt=1}) {
+    return requests8083.post("data-presale-funds/jiaocun/report", {jiaocunId,jiaocunJkzt})
+}
+
+/**
+ * 删除
+ * @param {*} 
+ */
+let deleteDeposit = function (jiaocunId) {
+    return requests8083.get("data-presale-funds/jiaocun/del", {jiaocunId})
 }
 
 /**
@@ -37,13 +45,27 @@ let addDeposit = function (_form) {
 let apaymentlist = function (current,size,jiaocunXmbh,jiaocunJkzt) {
     return requests8083.get("data-presale-funds/jiaocun/selectByCondition", {current,size,jiaocunXmbh,jiaocunJkzt})
 }
-
+/**
+ * 修改缴存
+ */
+let updateDeposit = function (_form) {
+    return requests8083.post("data-presale-funds/jiaocun/update", _form)
+  }
 
 /**
- * 管理监管资金  打印交款名单 
+ * 查询缴存明细
+ * @param {*} _form 
  */
+let getDepositDetail = function (id) {
+    return requests8083.get("data-presale-funds/jiaocun/selectOne", {id})
+}
+
+
 export const gljgzjApi = {
-    addDeposit,
+    informDeposit,
+    deleteDeposit,
+    updateDeposit,
     getProjectById,
+    getDepositDetail,
     apaymentlist
 }

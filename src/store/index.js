@@ -19,7 +19,10 @@ export default new Vuex.Store({
       userAuths: [],
       token: "",
       userId: "",
-    }
+    },
+    tabs: [
+      {title: "系统首页", path: "/menu_1/home", meta: {}}
+    ],
   },
   mutations: {
     setRwbh(state, rwbh) {
@@ -40,7 +43,24 @@ export default new Vuex.Store({
       state.loginInfo.userAuths = userAuths||[];
       state.loginInfo.token = token||"";
       state.loginInfo.userId = userId||"";
-    }
+    },
+    openTab(state, tab, index) {
+      if(state.tabs.length > 6){
+        state.tabs.splice(1,1)
+      }
+      if(index)
+        state.tabs.splice(index,0,tab)
+      else
+        state.tabs.push(tab)
+    },
+    closeTab(state, tab,){
+      if(tab==="all"){
+        state.tabs = [{title: "系统首页", path: "/menu_1/home", meta: {}}];return;
+      }
+      let tabs = state.tabs;
+      let index = tabs.findIndex(item=> item===tab)
+      tabs.splice(index, 1)
+    },
   },
   getters: {
     /*项目ID*/projectId(state) {

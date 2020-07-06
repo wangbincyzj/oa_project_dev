@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import VueRouter from "vue-router";
+import store from "../store/index"
+
 Vue.use(VueRouter)
 import MainContent from "@/views/layout/MainContent";
 import menu_1 from "@/router/menu_1";  // 主体内容的载体layout
@@ -53,11 +55,19 @@ const routes = [
   objectToRoutes(menu_3),
   objectToRoutes(menu_4),
   objectToRoutes(menu_7),
-
 ]
+
 
 const router = new VueRouter({
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  let tab = {title: to.meta.breadcrumb[2], path: to.path, meta:{}}
+  let index = store.state.tabs.findIndex(item=>item.title===tab.title)
+  if(index===-1)
+    store.commit("openTab", tab)
+  next()
 })
 
 export default router

@@ -1,5 +1,6 @@
 <template>
   <div class="sqjgzh">
+
     <TitleTable
       title="项目对应监管资金列表">
       <div slot="controls">
@@ -10,7 +11,7 @@
           <div class="controls">
             <span class="warning">【{{this.$store.state.projectData.xmxxXmmc}}】</span>
 
-            <el-button @click="addClick" icon="el-icon-plus" size="mini" type="primary">添加账户</el-button>
+            <el-button  @click="addClick" icon="el-icon-plus" size="mini" type="primary">添加账户</el-button>
           </div>
         </el-alert>
         <el-alert
@@ -31,48 +32,54 @@
         </el-table-column>
         <el-table-column
           label="公司名称"
+          width=150
           prop="zjjgzhGsmc">
         </el-table-column>
         <el-table-column
           label="项目名称"
+          width=100
           prop="zjjgzhXmmc">
         </el-table-column>
         <el-table-column
           label="楼栋名称"
+          width=100
           prop="zjjgzhLdmc">
         </el-table-column>
         <el-table-column
           label="联系电话"
+          width=100
           prop="zjjgzhLxdh">
         </el-table-column>
         <el-table-column
           align="center"
           label="状态"
+          width=100
           prop="zjjgzhLczt">
         </el-table-column>
         <el-table-column
           align="center"
           label="收件操作"
-          width="280"
+          width=280
           prop="operation">
-          <template slot-scope="scope">
+          <template slot-scope="scope" >
             <el-button
               size="mini"
               type="primary"
               @click="handleGetFile(scope.$index, scope.row)"
 
-              :disabled="scope.row.zjjgzhLczt !== '收件'">确认收件
+              :disabled="scope.row.zjjgzhLczt !== '收件'">收件
             </el-button>
             <el-button
               size="mini"
               type="primary"
-              @click="handleManageFile(scope.$index, scope.row)">管理收件
+              @click="handleDelFile(scope.$index, scope.row)"
+              :disabled="scope.row.zjjgzhLczt !== '收件'">清除
             </el-button>
             <el-button
               size="mini"
               type="primary"
               @click="handlePrintFile(scope.$index, scope.row)"
-              @mouseover.native="">打印收件
+              @mouseover.native = "fetchPrintData">打印收件
             </el-button>
           </template>
         </el-table-column>
@@ -80,7 +87,6 @@
         <el-table-column
           align="center"
           label="操作"
-          width="300"
         >
           <template slot-scope="scope">
             <el-button
@@ -93,6 +99,18 @@
               type="primary"
               @click="handleUpdate(scope.$index, scope.row)"
               :disabled="scope.row.zjjgzhLczt !== '收件'">修改
+            </el-button>
+            <el-button
+              size="mini"
+              type="primary"
+              @click="loadPic(scope.$index, scope.row)"
+              :disabled="scope.row.zjjgzhLczt !== '收件'">传图
+            </el-button>
+            <el-button
+              size="mini"
+              type="primary"
+              @click="managePic(scope.$index, scope.row)"
+              :disabled="scope.row.zjjgzhLczt !== '收件'">管图
             </el-button>
             <el-button
               size="mini"
@@ -122,9 +140,9 @@
       <el-dialog
         :title="dialogTitle"
         center
-        width="1200px"
+        width="800px"
+        :before-close="closeConfirm"
         slot="dialog"
-        :before-close="dialogReset"
         :visible.sync="dialogVisible"
         @close="dialogVisible = false"
       >
@@ -139,8 +157,7 @@
     </TitleTable>
     <div id="printData" style="width:700px;margin:0 auto;display:none">
       <h1 style="text-align:center;font-weight:bold">预售监管账户申请收件清单</h1>
-      <table style="width:700px;margin:0 auto;text-align:center;font-size:16px;text-height:25px" id="printTable"
-             border="1" cellspacing="0">
+      <table style="width:700px;margin:0 auto;text-align:center;font-size:16px;text-height:25px" id="printTable" border="1" cellspacing="0">
         <thead>
         <tr>
           <td>序号</td>
@@ -151,7 +168,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="(item, index) in printTable" :key="index">
+        <tr v-for="(item, index) in printTable" :key="index" >
           <th>{{index+1}}</th>
           <th>{{item.shoujianTitle}}</th>
           <th>{{item.shoujianSjxz}}</th>
@@ -178,53 +195,60 @@
     mixins: [mixins.dialogMixin],
     components: {TjjgzhDialog, TitleTable, ContainerTwoType},
     data() {
-      return {
-        navInfo: {
+      return{
+        navInfo:{
           loading: false,
           list: [
-            {id: 1, name: "别问"},
-            {id: 2, name: "问就是不知道"},
+            { id:1,name:"别问"},
+            { id:2,name:"问就是不知道"},
           ]
         },
-        printTable: [],
+        printTable:[],
         tableData: [
-          {id: 1, companyName: "公司", itemName: "项目", ldName: "楼栋1", phone: "110", status: "开户", operation: "收件操作"},
+          {id:1,companyName:"公司",itemName:"项目",ldName:"楼栋1",phone:"110",status:"开户",operation:"收件操作"},
         ],
         search: "",
         dialogVisible: false,
-        currentPage: 1,
-        pageSize: 10,
-        total: 20,
-        pages: 1,
+        currentPage:1,
+        pageSize:10,
+        total:20,
+        pages:1,
         dialogTitle: "",
         dialogType: 1,
-        xmxxXmbh: "",
-        xmxxid: "",
+        xmxxXmbh:"",
+        xmxxid:"",
         selectedIndex: -1,
-        fileType: 1,
-        zjjgzhYwzh: "",
-        zjjgzhId: "",
+        fileType:1,
+        zjjgzhYwzh:"",
+        zjjgzhId:"",
       }
     },
 
     created() {
+
       this.fetchData();
+
     },
-    methods: {
+    methods:{
       fetchPrintData(){
         this.zjjgzhYwzh=this.currentRow.zjjgzhYwzh;
-        sqjgzhApi.selectByYwzh(this.zjjgzhYwzh).then(ret => {
-          this.printTable = ret.data.map(item => ({
-            shoujianTitle: item.ywsjTitle,
-            shoujianSjxz: item.ywsjSjxz === 0 ? "原件" : "复印件",
-            shoujianFenshu: item.ywsjFenshu
+        sqjgzhApi.selectByYwzh(this.zjjgzhYwzh).then(ret => {
+          this.printTable = ret.data.map(item => ({
+            shoujianTitle: item.ywsjTitle,
+            shoujianSjxz: item.ywsjSjxz === 0 ? "原件" : "复印件",
+            shoujianFenshu: item.ywsjFenshu
           }))
         })
       },
-      fetchData() {
-        this.xmxxXmbh = this.$store.state.projectData.xmxxXmbh;
-        sqjgzhApi.getAccountById(this.currentPage, this.pageSize, this.xmxxXmbh).then(ret => {
-          this.pages = ret.data.pages;
+      fetchData(){
+        console.log("where is my winter bear");
+        console.log(this.$store.state.projectData.xmxxXmbh);
+        this.xmxxXmbh=this.$store.state.projectData.xmxxXmbh;
+        console.log(this.xmxxXmbh);
+        sqjgzhApi.getAccountById(this.currentPage, this.pageSize,this.xmxxXmbh).then(ret => {
+          //console.log(ret);
+
+          this.pages=ret.data.pages;
           this.tableData = ret.data.records;
           this.total = ret.data.total;
           this.tableData.map(function (val) {
@@ -240,10 +264,11 @@
               val.zjjgzhLczt = '已终审'
             } else if (val.zjjgzhLczt == 5) {
               val.zjjgzhLczt = '已开户'
-            } else if (val.zjjgzhLczt == 6) {
+            }  else if (val.zjjgzhLczt == 6) {
               val.zjjgzhLczt = '退件'
             }
           })
+
         })
       },
 
@@ -251,34 +276,34 @@
         this.dialogVisible = true;
         this.dialogTitle = "添加监管账户";
         this.dialogType = 1;
-        this.$nextTick(() => {
-          this.$refs.dialog.setMode(1, this.xmxxid)
+        this.$nextTick(()=>{
+          this.$refs.dialog.setMode(1,this.xmxxid)
         })
       },
-      handleUpdate(index, row) {
+      handleUpdate(index, row){
         this.dialogVisible = true;
         this.dialogTitle = "修改监管账户";
         this.dialogType = 3;
-        this.$nextTick(() => {
+        this.$nextTick(()=>{
           this.$refs.dialog.setMode(3, this.currentRow.zjjgzhId);
 
           //this.$refs.dialog.reset();
         })
       },
-      handleDetail(index, row) {
+      handleDetail(index, row){
         this.dialogVisible = true;
         this.dialogTitle = "监管账户详情";
         this.dialogType = 2;
-        this.zjjgzhYwzh = this.currentRow.zjjgzhYwzh;
+        this.zjjgzhYwzh=this.currentRow.zjjgzhYwzh;
 
-        this.$nextTick(() => {
+        this.$nextTick(()=>{
           this.$refs.dialog.setMode(2, this.currentRow.zjjgzhId);
           //this.$refs.dialog.reset();
         })
       },
-      handleDelete(index, row) {
+      handleDelete(index, row){
         console.log(this.currentRow);
-        if (window.confirm("确定要删除该监管账户吗?")) {
+        if(window.confirm("确定要删除该监管账户吗?")){
           sqjgzhApi.deleteAccount(this.currentRow.zjjgzhId).then(ret => {
             console.log(this.currentRow.zjjgzhId);
             if (ret.code === 200) {
@@ -291,9 +316,9 @@
           })
         }
       },
-      handleDelFile(index, row) {
+      handleDelFile(index,row){
         console.log(this.currentRow);
-        if (window.confirm("确定要清除收件吗?")) {
+        if(window.confirm("确定要清除收件吗?")){
           sqjgzhApi.deleteSj(this.currentRow.zjjgzhYwzh).then(ret => {
             console.log(this.currentRow.zjjgzhYwzh);
             if (ret.code === 200) {
@@ -305,13 +330,11 @@
           })
         }
       },
-      loadPic() {
-      },
-      managePic() {
-      },
-      handleInform(index, row) {
+      loadPic(){},
+      managePic(){},
+      handleInform(index,row){
         console.log(this.currentRow);
-        if (window.confirm("确定要上报该监管账户吗?")) {
+        if(window.confirm("确定要上报该监管账户吗?")){
           sqjgzhApi.informAccount(this.currentRow.zjjgzhId).then(ret => {
             console.log(this.currentRow.zjjgzhId);
             if (ret.code === 200) {
@@ -324,29 +347,20 @@
           })
         }
       },
-      handleGetFile() {
+      handleGetFile(){
         this.dialogVisible = true;
-        this.dialogTitle = "确认收件";
-        this.zjjgzhYwzh = this.currentRow.zjjgzhYwzh;
+        this.dialogTitle = "业务收件操作";
+        this.zjjgzhYwzh=this.currentRow.zjjgzhYwzh;
         this.dialogType = 4;
-        this.$nextTick(() => {
+        this.$nextTick(()=>{
           this.$refs.dialog.setMode(4, this.currentRow.zjjgzhId);
         })
       },
-      handleManageFile(index, item) {
-        this.dialogVisible = true;
-        this.dialogTitle = "管理收件";
-        this.zjjgzhYwzh = this.currentRow.zjjgzhYwzh;
-        this.dialogType = 9;
-        this.$nextTick(() => {
-          this.$refs.dialog.setMode(9, this.currentRow.zjjgzhId);
-        })
-      },
-      handlePrintFile() {
+      handlePrintFile(){
 
         document.getElementById('printTable').classList.add('printTable');
-        let obj = document.getElementById('printData');
-        let newWindow = window.open("打印窗口", "_blank");
+        let obj=document.getElementById('printData');
+        let newWindow=window.open("打印窗口","_blank");
         let docStr = obj.innerHTML;
         newWindow.document.write(docStr);
         newWindow.document.close();
@@ -355,24 +369,25 @@
         //window.open("https://www.baidu.com/");
       },
       submitSuccess() {
-        this.$nextTick(() => {
+        this.$nextTick(()=>{
           this.$refs.dialog.reset();
         });
         this.dialogVisible = false;
         this.fetchData();
       },
-      fetchPrint() {
-        this.zjjgzhYwzh = this.currentRow.zjjgzhYwzh;
+      fetchPrint(){
+        this.zjjgzhYwzh=this.currentRow.zjjgzhYwzh;
+        console.log(this.zjjgzhYwzh);
+
         this.fetchPrintData(this.zjjgzhYwzh);
       },
       cellMouseEnter(row) {
         this.currentRow = row;
-        // this.zjjgzhYwzh=this.currentRow.zjjgzhYwzh;
+        //this.zjjgzhYwzh=this.currentRow.zjjgzhYwzh;
         // this.fetchPrintData(this.zjjgzhYwzh);
       },
       currentChange(num) {
         this.currentPage = num;
-        this.zjjgzhYwzh = this.currentRow.zjjgzhYwzh;
         this.fetchData();
       },
     }
@@ -381,16 +396,11 @@
 
 <style scoped lang="scss">
   @import "~@/assets/css/var.scss";
-
-  .tjrwry {
+  .tjrwry{
     padding: $pm;
   }
-
-  .printTable {
-    border: black solid 2px;
-    width: 1000px;
-    margin: 0 auto;
-    text-align: center
+  .printTable{
+    border:black solid 2px;width:1000px;margin:0 auto;text-align:center
   }
 
 </style>

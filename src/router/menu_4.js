@@ -58,24 +58,16 @@ export default {
         {title: "账户资金信息", path: "zhzjxx"},
       ]
     },
+   
     {
       title: "房屋定金管理",
       path: "/fwdjgl",
       group:[
-        {title: "定金缴存", path: "fwdDjjc"},
-        {title: "定金关联", path: "fwdDjgl"},
-        {title: "定金退款", path: "fwdDjtk"},
-      ]
-    },
-    {
-      title: "房屋定金管理",
-      path: "/fwdjgl",
-      group:[
-        {title: "定金缴存", path: "fwdDjjc"},
-        {title: "定金关联", path: "fwdDjgl"},
-        {title: "定金退款", path: "fwdDjtk"},
-        {title: "定金退款管理", path: "fwdDjtkgl"},
-        {title: "定金统计", path: "fwdDjtj"},
+        {title: "定金缴存", path: "djjc"},
+        {title: "定金关联", path: "djgl"},
+        {title: "定金退款", path: "djtk"},
+        {title: "定金退款管理", path: "djtkgl"},
+        {title: "定金统计", path: "djtj"},
       ]
     }
   ]

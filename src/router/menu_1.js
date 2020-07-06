@@ -4,13 +4,14 @@ export default {
   title: "用户中心",
   path: "/menu_1",
   class: "icon-liuliangyunpingtaitubiao06",
-  redirect: "/menu_1/yhmmxg",
+  redirect: "/menu_1/home",
   routes:[
     {
       title: "系统权限设置",
       path: "/xtqxsz",
       class: "icon-shezhi1",
       group:[
+        {title: "系统首页", path: "home"},
         {title: "用户密码修改", path: "yhmmxg"},
         {title: "用户权限设置", path: "yhqxsz"},
       ]

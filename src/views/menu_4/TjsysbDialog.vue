@@ -461,8 +461,9 @@
       this.surplus=this.form.zdzjjgje;
       
     },
-    caculate2(){surplus
+    caculate2(){
        console.log("普通监管");
+        //this.surplus=this.form.zdzjjgje;
        this.surplus=this.form.ksyje;
     },
    count(){

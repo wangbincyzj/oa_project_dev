@@ -1,12 +1,12 @@
 <template>
   <div id="mainContentLayout">
-    <div class="breadcrumb">
+    <!--<div class="breadcrumb">
       <span><i class="el-icon-location"/>当前位置: </span>
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item>首页</el-breadcrumb-item>
         <el-breadcrumb-item v-for="title in $route.meta.breadcrumb">{{title}}</el-breadcrumb-item>
       </el-breadcrumb>
-    </div>
+    </div>-->
     <RouterView class="mainContent"/>
   </div>
 </template>

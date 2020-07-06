@@ -1,4 +1,4 @@
 export const config = {
-  baseIP: "161",  // 155陈, 153郑,161杨
+  baseIP: "192.168.11.32",  // 陈, 6郑, 32杨, 王健
   productMode: false
 }

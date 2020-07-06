@@ -236,11 +236,10 @@
 import InfoList from "@/components/common/infoList/InfoList";
 import CenterButton from "@/components/common/centerButton/CenterButton";
 
-import { fwddjtklApi } from "@/api/menu_4/fwddjtk";
+import { djtkApi } from "@/api/menu_4/djtk";
 
 //查看接口
-import { fwdjglApi } from "@/api/menu_4/fwdjgl";
-import axios from "axios";
+
 
 export default {
   name: "FwdDjtkglDialog",
@@ -332,7 +331,7 @@ export default {
         //   let xl = ret.data.supervisedAccount.ywxlBh.slice(4); // 8019001
         //   this.ywlx = [dl, ret.data.ywxlBh];
         // });
-        fwddjtklApi.getAccountInfoById(id).then(ret => {
+        djtkApi.getAccountInfoById(id).then(ret => {
           this.form = ret.data.fundUse;
         });
       } else if (mode === 4) {
@@ -349,7 +348,7 @@ export default {
     },
     DetailData(id) {
       //详情
-      fwddjtklApi.getAccountInfoById(id).then(ret => {
+      djtkApi.getAccountInfoById(id).then(ret => {
         this.form1 = ret.data.fundUse;
       });
     },
@@ -368,7 +367,7 @@ export default {
         djsySqrlxdh: this.form.djsySbje
       };
       //修改
-      fwddjtklApi.geteditData(list).then(res => {
+      djtkApi.geteditData(list).then(res => {
         if (res.code == 200) {
           this.$message.success(res.message);
           this.$emit("submitSuccess");

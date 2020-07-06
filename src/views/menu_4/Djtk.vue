@@ -3,7 +3,14 @@
   <div class="FwdDjtk">
     <ContainerTwoType :nav-info="navInfo" @liClick="liClick">
       <TitleTable title="定金退款">
-        <el-table :data="tableData" style="width: 100%">
+          <div slot="controls">
+          <el-alert type="warning" center :closable="false">
+        <div class="controls">
+              <el-button @click="multiWithdraw()" size="mini" type="primary">批量退款</el-button>
+            </div>
+          </el-alert>
+        </div>
+        <el-table :data="tableData" style="width: 100%"  @selection-change="handleSelectionChange" >
           <el-table-column type="selection" width="55" align="center"></el-table-column>
           <!--<el-table-column align="center" label="申请人姓名" prop="djsySqrxm"></el-table-column> -->
           <!--<el-table-column align="center" label="监管账户" prop="djsyJgzh"></el-table-column> -->
@@ -16,13 +23,13 @@
           <el-table-column align="center" label="订购人" prop="djDgrxm"></el-table-column>
           <el-table-column align="center" label="证件号码" prop="djDgrzjhm"></el-table-column>
           <el-table-column align="center" label="缴款金额" prop="djJkje"></el-table-column>
-          <el-table-column align="center" label="监管银行" prop="djJksy"></el-table-column>
+          <el-table-column align="center" label="监管银行" prop="djJkyh"></el-table-column>
           <!-- <el-table-column align="center" label="银行id" prop="djJksj"></el-table-column> -->
-          <el-table-column align="center" label="缴款日期" prop="djJksj"></el-table-column>
+          <el-table-column align="center" label="缴款日期" prop="djJkrq"></el-table-column>
           <el-table-column align="center" label="缴款说明" prop="djJksy"></el-table-column>
           <el-table-column align="center" label="操作" width="200px">
             <template slot-scope="scope">
-              <el-button size="mini" type="danger" @click="refund(scope.$index, scope.row)">退款</el-button>
+              <el-button size="mini" type="danger" @click="handleWithdraw(scope.$index, scope.row)">退款</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -43,9 +50,16 @@
           :before-close="closeConfirm"
           slot="dialog"
           :visible.sync="dialogVisible"
+        
           @close="dialogVisible = false"
         >
-          <FwdDjtkDialog ref="dialog" :dialog-type="dialogType" @submitSuccess="submitSuccess" />
+          <DjtkDialog ref="dialog" 
+          :dialog-type="dialogType" 
+          :amount="amount"
+          :jgyh="jgyh"
+          :djsyJgzh="djsyJgzh"
+          :djsyJgyhid="djsyJgyhid"
+          @submitSuccess="submitSuccess" />
         </el-dialog>
       </TitleTable>
     </ContainerTwoType>
@@ -55,19 +69,15 @@
 
 import ContainerTwoType from "@/components/current/containerTwoType/ContainerTwoType";
 import TitleTable from "@/components/current/titleTable/TitleTable";
-
-import FwdDjtkDialog from "@/views/menu_4/FwdDjtkDialog";
-
+import DjtkDialog from "@/views/menu_4/DjtkDialog";
 import { mixins } from "@/utils/mixins";
-
-import axios from "axios";
-import { fwddjtklApi } from "@/api/menu_4/fwddjtk";
-import { fwdjglApi } from "@/api/menu_4/fwdjgl";
+import { djtkApi } from "@/api/menu_4/djtk";
+import { djglApi } from "@/api/menu_4/djgl";
 
 
 export default {
    name: "FwdDjtk",
-  components: { TitleTable, ContainerTwoType,FwdDjtkDialog},
+  components: { TitleTable, ContainerTwoType,DjtkDialog},
   mixins: [mixins.dialogMixin],
   data() {
     return {
@@ -81,65 +91,95 @@ export default {
       dialogTitle: "",
       navInfo: {
         title: "监管账户",
-        selectedIndex: 0,
         list: []
       },
-      djDjglzt:0,
-      djJkzt:2,
-      djDjtkzt:0,
+     djsyDjidList:"",
+     djsyJgzh:"",
+     jgyh:"",
+     selectedIndex: 0,
+     amount:0,
+     djsyJgyhid:0,
     };
+  },
+   created() {
+    this.getNavInfo()
   },
   methods: {
     liClick(index) {
       this.selectedIndex = index;
-       if (this.selectedIndex === 0) {
-           return index = null
-      }
-      this.getData(this.navInfo.list[index].zjjgzhYhzh);
+      this.djsyJgzh=this.navInfo.list[index].name;
+      this.jgyh=this.navInfo.list[index].zjjgzhYhmc;
+      this.djsyJgyhid=this.navInfo.list[index].zjjgzhYhid;
+      this.fetchData(this.djsyJgzh);
     },
-    getnavInfo(){
-         //多个监管账户
-        fwdjglApi.getzjzh()
-        .then(async res=>{
-            const navlist = res.data.records
-            this.navInfo.list = navlist.map( item => ({...item,id:item.zjjgzhId,name: item.zjjgzhYhzh}))
-            this.navInfo.list.unshift({id: -1, name: "监管账户"})
-            await this.getData()
+     getNavInfo(){
+      djtkApi.getAccount(this.$store.state.projectData.xmxxXmbh).then(ret => {
+        console.log(ret);
+           this.navInfo.list = ret.data.map(item=>({
+            ...item, id: item.zjjgzhId, name: item.zjjgzhYhzh            
+          }));
+          
+          this.navInfo.list.unshift({id:-1, name: "请选择监管账号"});
         })
     },
-    refund(index, row) {
-    //  alert('退款') 
+     fetchData(id) {
+      djtkApi.getfundUse(this.currentPage, this.pageSize,id,this.$store.state.projectData.xmxxXmbh).then(ret => {
+        console.log(ret)
+        this.total = ret.data.total;
+        this.tableData = ret.data.records;
+      });
+    },
+    handleWithdraw(index, row) {
       this.dialogVisible = true;
-      this.dialogTitle = "新增记录";
+      this.dialogTitle = "新增退款记录";
       this.dialogType = 1;
       this.$nextTick(() => {
         this.$refs.dialog.setMode(1,row.djId);
       });
     },
-    currentChange(num) {
-      this.currentPage = num;
-      this.getData();
-    },
-    getData(id) {
-      fwddjtklApi.getlist(this.currentPage, this.pageSize,this.djDjglzt,this.djJkzt,this.djDjtkzt,id).then(res => {
-        // debugger
-        console.log(res.data.records,'定金分页')
-        this.total = res.data.total;
-        this.tableData = res.data.records;
+
+    multiWithdraw(){
+      this.dialogVisible = true;
+      this.dialogTitle = "批量新增退款记录"; 
+       this.dialogType = 1;
+      this.$nextTick(() => {
+        this.$refs.dialog.setMode(1,this.djsyDjidList);
       });
     },
+    handleSelectionChange(selection){
+      console.log(selection);
+      let array=[];
+      let money=0;
+      selection.forEach(item => {
+        
+        array.push(item.djId);
+        money=money+item.djJkje;
+       
+      });
+      this.djsyDjidList=array.join(";");
+      this.amount=money;
+      console.log(this.djsyDjidList);
+      console.log(money);
+      
+      
+           
+      
+    },
+    currentChange(num) {
+      this.currentPage = num;
+      this.fetchData(this.djsyJgzh);
+    },
+   
     submitSuccess() {
       this.dialogVisible = false;
-      this.getData();
+       this.$nextTick(() => {
+        this.$refs.dialog.reset();
+      });
+      this.fetchData(this.djsyJgzh);
     },
   },
-  created() {
-    this.getnavInfo()
-    this.getData();
-    // console.log(this.$store.state.projectData.xmxxXmbh)
-  },
-  filters: {}
-};
+}
+ 
 </script>
 
 <style>

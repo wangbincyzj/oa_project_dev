@@ -2,9 +2,17 @@
   <!--预售资金管理 ====》 添加监管资金1049906948 -->
   <div class="tjjgzj" id="tjjgzjs">
     <TitleTable title="商品房买卖合同列表">
-      <div slot="controls" style="background-color:#fdf6ec">
-        <el-alert type="success" :closable="false">
-          <div class="controls" id="search">
+      <div  slot="controls"
+            style="background-color:#fdf6ec"
+      >
+        <el-alert
+          type="success"
+          :closable="false"
+        >
+          <div
+            class="controls"
+            id="search"
+          >
             <div class="searchbox">
               <span>买受人:</span>
               <el-input
@@ -35,54 +43,169 @@
             </div>
 
             <div class="searchbox">
-              <el-button size="mini" type="success" @click="handleSearchList()">搜索</el-button>
+              <el-button
+                size="mini"
+                type="success"
+                @click="handleSearchList()">搜索</el-button>
             </div>
           </div>
         </el-alert>
-        <el-alert type="warning" center :closable="false"></el-alert>
+        <el-alert
+          type="warning"
+          center
+          :closable="false"
+        ></el-alert>
       </div>
 
-      <el-table :data="tableData5" style="width: 100%" ref="refTable" @expand-change="openExpand">
+      <el-table
+        :data="tableData"
+        style="width: 100%"
+        @expand-change="openExpand"
+        ref="refTable"
+      >
         <el-table-column type="expand">
           <template>
-            <el-table :data="tableData" style="width: 100%" border :span-method="objectSpanMethod">
-              <el-table-column label="资金列表" align="center">
+            <el-table
+              :data="recordTable"
+              style="width: 100%"
+              border
+              :span-method="objectSpanMethod"
+            >
+              <el-table-column
+                label="资金列表"
+                align="center"
+              >
                 <template>
                   <span>资金列表</span>
                 </template>
               </el-table-column>
-              <el-table-column prop="jiaocunJkje" label="添加金额" width="180" align="center"></el-table-column>
-              <el-table-column prop="jiaocunJksy" label="缴款事由" width="180" align="center"></el-table-column>
-              <el-table-column prop="id" label="添加人" align="center"></el-table-column>
-              <el-table-column prop="jiaocunJkje" label="数据来源" align="center"></el-table-column>
-              <el-table-column prop="jiaocunJkrq" label="时间" align="center"></el-table-column>
-              <el-table-column prop="jiaocunJkzt" label="资金状态" align="center"></el-table-column>
+
+              <el-table-column
+                prop="jiaocunJkje"
+                label="添加金额"
+                align="center"
+              ></el-table-column>
+              <el-table-column
+                prop="jiaocunJksy"
+                label="缴款事由"
+                align="center"
+              ></el-table-column>
+              <el-table-column
+                prop="jiaocunMsrxm"
+                label="添加人"
+                align="center"
+              ></el-table-column>
+              <el-table-column
+                prop="jiaocunXxlyzt"
+                label="数据来源"
+                align="center"
+              ></el-table-column>
+              <el-table-column
+                prop="jiaocunJkrq"
+                label="时间"
+                align="center"
+              ></el-table-column>
+              <el-table-column
+                prop="jiaocunJkzt"
+                label="资金状态"
+                align="center"
+              ></el-table-column>
             </el-table>
           </template>
         </el-table-column>
 
-        <el-table-column label="备案号" prop="id" align="left"></el-table-column>
-        <el-table-column label="买受人" prop="jiaocunMsrxm" align="center"></el-table-column>
-        <el-table-column label="证件号码" prop="jiaocunMsrzjhm" width="180px" align="center"></el-table-column>
-        <el-table-column label="栋号" prop="jiaocunLdmc" align="center"></el-table-column>
-        <el-table-column label="房号" prop="jiaocunFwbh" align="center"></el-table-column>
-        <el-table-column label="面积" prop="fwjzmj" align="center"></el-table-column>
-        <el-table-column align="center" label="单价" prop="fwdj"></el-table-column>
-        <el-table-column align="center" label="购房总额" prop="gfze"></el-table-column>
-        <el-table-column align="center" label="首付金额" prop="sfk"></el-table-column>
-        <el-table-column align="center" label="已添加资金" prop="ytjje"></el-table-column>
-        <el-table-column align="center" label="未添加资金" prop="wtjje"></el-table-column>
-        <el-table-column align="center" label="已监管资金" prop="yjgje"></el-table-column>
-        <el-table-column align="center" label="未纳入监管资金" prop="wjgje" width="120px"></el-table-column>
-
-        <el-table-column align="center" label="合同状态">
-          <template slot-scope="scope">{{ scope.row.htBazt | formStatus }}</template>
+        <el-table-column
+          label="备案号"
+          prop="jiaocunHtbh"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          label="买受人"
+          prop="jiaocunMsrxm"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          label="证件号码"
+          prop="jiaocunMsrzjhm"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          label="栋号"
+          prop="jiaocunLdmc"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          label="房号"
+          prop="jiaocunFh"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          label="面积"
+          prop="fwjzmj"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          align="center"
+          label="单价"
+          prop="fwdj"
+        ></el-table-column>
+        <el-table-column
+          align="center"
+          label="购房总额"
+          prop="gfze"
+        ></el-table-column>
+        <el-table-column
+          align="center"
+          label="首付金额"
+          prop="sfk"
+        ></el-table-column>
+        <el-table-column
+          align="center"
+          label="已添加资金"
+          prop="ytjje"
+        ></el-table-column>
+        <el-table-column
+          align="center"
+          label="未添加资金"
+          prop="wtjje"
+        ></el-table-column>
+        <el-table-column
+          align="center"
+          label="已监管资金"
+          prop="yjgje"
+        ></el-table-column>
+        <el-table-column
+          align="center"
+          label="未纳入监管资金"
+          prop="wjgje"
+          width="120px"
+        ></el-table-column>
+        <el-table-column
+          align="center"
+          label="合同状态"
+          prop="htBazt">
         </el-table-column>
-        <el-table-column align="center" label="备案时间" prop="htAddtime"></el-table-column>
-        <el-table-column label="操作" prop="desc" width="200px" align="center">
+        <el-table-column
+          align="center"
+          label="备案时间"
+          prop="htAddtime"
+        ></el-table-column>
+        <el-table-column
+          label="操作"
+          prop="desc"
+          width="200px"
+          align="center"
+        >
           <template slot-scope="scope">
-            <el-button @click="open(scope.row)" type="text" size="small">查看记录</el-button>
-            <el-button size="mini" type="primary" @click="handleDetail(scope.$index, scope.row)">新增缴存</el-button>
+            <el-button
+              @click="open(scope.row)"
+              type="text"
+              size="small"
+            >查看记录</el-button>
+            <el-button
+              size="mini"
+              type="primary"
+              @click="handleAdd(scope.$index, scope.row)">新增缴存</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -105,7 +228,11 @@
         :visible.sync="dialogVisible"
         @close="dialogVisible = false"
       >
-        <TjjgzjDialog ref="dialog" :dialog-type="dialogType" @submitSuccess="submitSuccess"/>
+        <TjjgzjDialog
+          ref="dialog"
+          :dialog-type="dialogType"
+          @submitSuccess="submitSuccess"
+        />
       </el-dialog>
     </TitleTable>
   </div>
@@ -115,9 +242,8 @@
   import ContainerTwoType from "@/components/current/containerTwoType/ContainerTwoType";
   import TitleTable from "@/components/current/titleTable/TitleTable";
   import TjjgzjDialog from "@/views/menu_4/TjjgzjDialog";
-  import {mixins} from "@/utils/mixins";
-  import {tjjgzjApi} from "@/api/menu_4/tjjgzj";
-  import {mapState} from "vuex";
+  import { mixins } from "@/utils/mixins";
+  import { tjjgzjApi } from "@/api/menu_4/tjjgzj";
 
   export default {
     name: "tjjgzj",
@@ -130,15 +256,17 @@
     data() {
       return {
         tableData: [],
-        tableData5: [],
+        recordTable: [],
         search: "",
         dialogVisible: false,
         dialogTitle: "",
         dialogType: 1,
         currentPage: 1, //分页
         pageSize: 10,
-        total: 20,
+        total: 0,
         pages: 1,
+
+
         mergeSpanArr: [], // 空数组，记录每一行的合并数
         mergeSpanArrIndex: "", // mergeSpanArr的索引
         listQuery: {
@@ -148,40 +276,54 @@
         }
       };
     },
-    computed: {
-      ...mapState(["rwbh"])
-    },
+
     methods: {
       //获取下拉列表信息
-      fetchNavInfo(htbh) {
-        tjjgzjApi
-          .fetchlist(htbh)
+      fetchRecord(htbh) {
+        tjjgzjApi.fetchlist(htbh)
           .then(res => {
-            this.tableData = res.data.records;
+            this.recordTable = res.data.records;
+            this.recordTable.map(function (val) {
+              if (val.jiaocunXxlyzt == 0) {
+                val.jiaocunXxlyzt = '开发商'
+              } else if (val.jiaocunXxlyzt == 1) {
+                val.jiaocunXxlyzt = '银行端'
+              }
+              if (val.jiaocunJkzt == 0) {
+                val.jiaocunJkzt = '新建'
+              } else if (val.jiaocunJkzt == 1) {
+                val.jiaocunJkzt = '上报'
+              } else if (val.jiaocunJkzt == 2) {
+                val.jiaocunJkzt = '入账'
+              }
+
+            })
           })
-          .finally(() => {
-            this.setMergeArr(this.tableData);
-          });
+
       },
       //列表信息
       getlist() {
-        tjjgzjApi.getlist(this.rwbh).then(res => {
-          this.tableData5 = res.data;
+        // console.log(this.rwbh)
+        tjjgzjApi.getlist(this.$store.state.rwbh).then(res => {
+          this.tableData = res.data;
         });
       },
       //打印合同
-      handlePrint(index, row) {
-      },
+      handlePrint(index, row) {},
       //弹出框
-      submitSuccess() {
-        this.dialogVisible = false;
+      submitSuccess(){
+        this.$nextTick(()=>{
+          this.$refs.dialog.reset();
+        });
+        this.dialogVisible=false;
+        this.fetchData();
       },
-      handleDetail(index, row) {
+      handleAdd(index, row) {
         this.dialogVisible = true;
         this.dialogTitle = "添加缴款记录";
         this.dialogType = 1;
         this.$nextTick(() => {
-          this.$refs.dialog.setMode(1, this.xmxxid);
+          this.$refs.dialog.setMode(1, row.jiaocunHtbh);
         });
       },
       handleSearchList() {
@@ -196,40 +338,17 @@
       },
       openExpand(row) {
         //下拉列表信息
-        this.fetchNavInfo(row.jiaocunHtbh);
+        this.fetchRecord(row.jiaocunHtbh);
       },
-      objectSpanMethod({row, column, rowIndex, columnIndex}) {
-        if (columnIndex === 0) {
-          // 合并第二列所有行
-          const _row = this.mergeSpanArr[rowIndex];
-          const _col = _row > 0 ? 1 : 0;
-          return {
-            rowspan: _row,
-            colspan: _col
-          };
-        }
-      },
-      setMergeArr(data) {
-        for (var i = 0; i < data.length; i++) {
-          if (i === 0) {
-            this.mergeSpanArr.push(1);
-            this.mergeSpanArrIndex = 0;
-          } else {
-            // 判断当前元素与上一个元素是否相同
-            if (data[i].name === data[i - 1].name) {
-              this.mergeSpanArr[this.mergeSpanArrIndex] += 1;
-              this.mergeSpanArr.push(0);
-            } else {
-              this.mergeSpanArr.push(1);
-              this.mergeSpanArrIndex = i;
-            }
-          }
-        }
-      }
+      objectSpanMethod(){},
+
     },
     created() {
+      //列表信息
       this.getlist();
     },
+
+    mounted() {},
     filters: {
       formStatus(htBazt) {
         switch (htBazt) {
@@ -247,7 +366,6 @@
 
 <style scoped lang="scss">
   @import "~@/assets/css/var.scss";
-
   .tjrwry {
     padding: $pm;
   }
