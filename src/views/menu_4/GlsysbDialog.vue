@@ -355,6 +355,7 @@
             this.$emit("submitSuccess");
           }
         });
+<<<<<<< HEAD
       },
 
 
@@ -384,6 +385,35 @@
               this.form1.ldxxFwlx = "预售商品房"
             } else if (this.form1.ldxxFwlx === 1) {
               this.form1.ldxxFwlx = "现房"
+=======
+       
+      }else if(mode===2){
+         szldjgzjApi.getLdDetail(id).then(ret => {
+          this.form1=ret.data;
+          if(this.form1.ldxxFwlx==0){
+            this.form1.ldxxFwlx="预售商品房"
+          }else if(this.form1.ldxxFwlx==1){
+            this.form1.ldxxFwlx="现房"
+          };
+           if (this.form1.ldxxZjjgzt == 0) {
+                this.form1.ldxxZjjgzt = '不启动'
+              } else if (this.form1.ldxxZjjgzt == 1) {
+                this.form1.ldxxZjjgzt = '启动'
+              };
+           if(this.form1.ldxxZjjgfs==1){
+            this.form1.ldxxZjjgfs="按固定金额监管"
+            }else if(this.form1.ldxxZjjgfs==2){
+              this.form1.ldxxZjjgfs="按预售总价比例监管"
+            }else if(this.form1.ldxxZjjgfs==3){
+              this.form1.ldxxZjjgfs="按实时缴存房款比例监管"
+            }else if(this.form1.ldxxZjjgfs==4){
+              this.form1.ldxxZjjgfs="按合同成交比例监管"
+            };
+            if(this.form1.ldxxSfydt==0){
+              this.form1.ldxxSfydt="无"
+            }else if(this.form1.ldxxSfydt==1){
+              this.form1.ldxxSfydt="有"
+>>>>>>> temp_dev
             }
 
             if (this.form1.ldxxZjjgzt === 0) {

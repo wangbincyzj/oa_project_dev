@@ -1,8 +1,11 @@
 
+<<<<<<< HEAD
 
 
 //添加监管资金  1049906948
 
+=======
+>>>>>>> temp_dev
 /*添加监管资金*/  
  import {requests} from "@/api";
 import { requests8083 } from "../jianguan";
@@ -15,6 +18,7 @@ import { requests8083 } from "../jianguan";
   * @param {*} jiaocunMsrzjhm   证件号
   * @param {*} jiaocunHtbh   合同备案
   */
+<<<<<<< HEAD
 let getlist = function(kfsRwbh){
   return requests8083.get("data-presale-funds/jiaocun/selectPage", {kfsRwbh})
 }
@@ -28,6 +32,10 @@ let getlist = function(kfsRwbh){
   */
  let getDetail = function(kfsRwbh,htBh){
   return requests8083.get("data-presale-funds/jiaocun/selectPage", {kfsRwbh,htBh})
+=======
+let getContract = function({kfsRwbh,jiaocunMsrxm=null,jiaocunMsrzjhm=null,jiaocunHtbh=null}){
+  return requests8083.get("data-presale-funds/jiaocun/selectPage", {kfsRwbh,jiaocunMsrxm,jiaocunMsrzjhm,jiaocunHtbh})
+>>>>>>> temp_dev
 }
 
 
@@ -40,22 +48,39 @@ let addDeposit = function (_form) {
 
 
 /**
- * 下拉列表信息
- * 根据合同编号查询  
+ * 
+ * 根据条件查询合同  
  * @param {*} kfsRwbh 
  */
+<<<<<<< HEAD
 let fetchlist = function(jiaocunHtbh){
   return requests8083.get("data-presale-funds/jiaocun/selectByCondition", {jiaocunHtbh})
+=======
+let getContractByCondition = function(kfsRwbh,jiaocunMsrxm=null,jiaocunMsrzjhm=null,jiaocunHtbh=null){
+  return requests8083.get("data-presale-funds/jiaocun/selectPage", {kfsRwbh,jiaocunMsrxm,jiaocunMsrzjhm,jiaocunHtbh})
+>>>>>>> temp_dev
 }
 
 
-
 /**
- * 添加监管资金
+ * 
+ * 根据合同编号查询缴款记录 
+ * @param {*} 
  */
+let getListByHtbh = function(htbh){
+  return requests8083.get("data-presale-funds/jiaocun/getListByHtbh", {htbh})
+}
+
+
   export const tjjgzjApi = {
     addDeposit,
+<<<<<<< HEAD
     getlist,
     fetchlist,
     getDetail,
+=======
+    getContract,
+    getContractByCondition,
+    getListByHtbh,
+>>>>>>> temp_dev
 }
