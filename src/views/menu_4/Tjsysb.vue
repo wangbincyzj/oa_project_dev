@@ -196,7 +196,7 @@
           this.pages=ret.data.pages;
           this.tableData = ret.data.map(item => ({
             ...item,
-            AccountTable:{},
+            AccountTable:[],
           }))
           });
       },

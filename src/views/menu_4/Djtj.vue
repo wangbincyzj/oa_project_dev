@@ -34,9 +34,9 @@
             center
             :closable="false">
        <div class="controls" style="background-color:#fdf6ec;width:100%">
-        <span>退款申请人:</span><el-input  v-model="person2" size="mini" placeholder="按退款申请人搜索" style="width:200px;" />
-        <span style="">开始时间:</span> <el-date-picker v-model="startTime2" type="date" placeholder="选择开始时间" size="mini"></el-date-picker>
-        <span>结束时间:</span><el-date-picker v-model="endTime2" type="date" placeholder="选择结束时间" size="mini"></el-date-picker>
+        <span>退款申请人:</span><el-input  v-model="person2" size="mini" placeholder="按退款申请人搜索" style="width:180px;" />
+        <span>开始时间:</span> <el-date-picker v-model="startTime2" type="date" placeholder="选择开始时间" size="mini" style="width:180px;"></el-date-picker>
+        <span>结束时间:</span><el-date-picker v-model="endTime2" type="date" placeholder="选择结束时间" size="mini" style="width:180px;"></el-date-picker>
         <el-button size="mini" type="success" @click="search2">查找</el-button>        
         <el-button size="mini" type="success" @click="reset2">重置</el-button>
         <el-button size="mini" type="success" @click="handlePrint2" >打印明细</el-button>

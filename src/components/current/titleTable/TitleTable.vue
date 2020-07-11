@@ -2,7 +2,7 @@
   组件:适用于大多数添加数据+标题+列表
 -->
 <template>
-  <div class="titleTable">
+  <div class="titleTable" style="overflow-y:scroll">
     <div class="title">
       <el-alert
         type="warning"

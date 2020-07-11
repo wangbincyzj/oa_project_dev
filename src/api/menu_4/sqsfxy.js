@@ -134,10 +134,24 @@ let getProjectById = function(id){
  * @returns {Promise<AxiosResponse<any>>}
  */
 
-let getYshAccount = function (page, size = 20,xmxxXmbh) {   //,zjjgzhShzt=3
-  return requests8083.get("data-presale-funds/supervisedAccount/selectPage", {
-    current: page, size, xmxxXmbh,
+let getYshAccount = function (xmxxXmbh) {   //,zjjgzhShzt=3
+  return requests8083.get("data-presale-funds/supervisedAccount/list", {
+    xmxxXmbh,
   })
+}
+
+ /**
+ * 根据项目编号查询三方协议
+ * @param page
+ * @param size
+ * 
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+let getSfxyByXmbh = function (page, size = 20,hetongXmbh,hetongShzt) {
+  return requests8083.get("data-presale-funds/ripartiteAgreement/selectPage", {
+    current: page, size,hetongXmbh,hetongShzt
+  })
+
 }
 
 export const sqsfxyApi = {
@@ -155,6 +169,7 @@ export const sqsfxyApi = {
     queryReceiving,
     getProjectById,
     informContract,
-    getYshAccount
+    getYshAccount,
+    getSfxyByXmbh,
 
 }

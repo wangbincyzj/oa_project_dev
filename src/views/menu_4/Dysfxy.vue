@@ -13,7 +13,7 @@
           </el-table-column>
           <el-table-column
             label="合同备案号"
-            prop="htId">
+            prop="hetongBah">
           </el-table-column>
           <el-table-column
             label="银行名称"
@@ -64,7 +64,6 @@
   import ContainerTwoType from "@/components/current/containerTwoType/ContainerTwoType";
   import TitleTable from "@/components/current/titleTable/TitleTable";
   import DysfxyDialog from "@/views/menu_4/DysfxyDialog";
- 
   import {sqjgzhApi} from "@/api/menu_4/sqjgzh";
  import {sqsfxyApi} from "@/api/menu_4/sqsfxy";
   import {mixins} from "@/utils/mixins";
@@ -94,7 +93,7 @@
       }
     },
     created() {
-      this.fetchNavInfo();
+      this.fetchDataByType();
     },
     methods:{
       fetchNavInfo() {
@@ -115,7 +114,24 @@
         // this.selectedIndex = this.navInfo.list[index];
         // this.getAccessEnterprisesInfo(this.navInfo.list[index].id)
       },
-     
+     fetchDataByType(){
+        sqsfxyApi.getSfxyByXmbh(this.$store.state.projectData.xmxxXmbh,3).then(ret => {
+         console.log(ret);
+          this.pages=ret.data.pages;
+          this.tableData = ret.data.records;
+          this.total = ret.data.total;
+          this.tableData.map(function (val) {
+             
+            });
+             this.tableData.map(function (val) {
+              if (val.hbzhBgzt == 0) {
+                val.hbzhBgzt = '未变更'
+              } else if (val.hbzhBgzt == 1) {
+                val.hbzhBgzt = '已变更'
+              } 
+            })
+        })
+     },
     
       handlePrint(index, row){
        

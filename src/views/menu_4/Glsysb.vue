@@ -71,27 +71,27 @@
               <el-button
                 size="mini"
                 @click="handleUpdate(scope.$index, scope.row)"
-                :disabled="scope.row.shiyongShzt==1">编辑
+                :disabled="scope.row.shiyongShzt!==0">编辑
               </el-button>
               <el-button
                 size="mini"
                 @click="uploadPic(scope.$index, scope.row)"
-                :disabled="scope.row.shiyongShzt==1">传图
+                :disabled="scope.row.shiyongShzt!==0">传图
               </el-button>
               <el-button
                 size="mini"
                 @click="managePic(scope.$index, scope.row)"
-                :disabled="scope.row.shiyongShzt==1">管图
+                :disabled="scope.row.shiyongShzt!==0">管图
               </el-button>
               <el-button
                 size="mini"
                 @click="handleDelete(scope.$index, scope.row)"
-                :disabled="scope.row.shiyongShzt==1">删除
+                :disabled="scope.row.shiyongShzt!==0">删除
               </el-button>
                <el-button
                 size="mini"
                 @click="handleInform(scope.$index, scope.row)"
-                :disabled="scope.row.shiyongShzt==1">上报
+                :disabled="scope.row.shiyongShzt!==0">上报
               </el-button>
 
               <el-button
