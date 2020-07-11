@@ -218,12 +218,8 @@
     methods:{
       fetchNavInfo() {
       this.xmxxXmbh=this.$store.state.projectData.xmxxXmbh;
-        console.log("taetae");
-       console.log(this.$store.state.projectData);
-       
-       console.log(this.$store.state.projectData.xmxxXmbh);
-        sqsfxyApi.getYshAccount(1, 100,this.xmxxXmbh,).then(ret => {
-           this.navInfo.list = ret.data.records.map(item=>({
+        sqsfxyApi.getYshAccount(this.xmxxXmbh,).then(ret => {
+           this.navInfo.list = ret.data.map(item=>({
             ...item, id: item.zjjgzhId, name: item.zjjgzhYhzh
           }));
           this.navInfo.list.unshift({id:-1, name: "请选择监管账号"});

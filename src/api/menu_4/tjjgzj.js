@@ -44,8 +44,8 @@ let addDeposit = function (_form) {
  * 根据合同编号查询  
  * @param {*} kfsRwbh 
  */
-let fetchlist = function(jiaocunHtbh){
-  return requests8083.get("data-presale-funds/jiaocun/selectByCondition", {jiaocunHtbh})
+let fetchlist = function(htbh){
+  return requests8083.get("data-presale-funds/jiaocun/getListByHtbh", {htbh})
 }
 
 

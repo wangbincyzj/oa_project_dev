@@ -1,14 +1,13 @@
 <template>
-  <!--预售资金管理 ====》 添加监管资金1049906948 -->
   <div class="tjjgzj" id="tjjgzjs">
-    <TitleTable title="商品房买卖合同列表">
+    <TitleTable title="商品房买卖合同列表"  style="overflow-y:scroll">
       <div  slot="controls"
             style="background-color:#fdf6ec"
       >
-        <el-alert
+        <!-- <el-alert
           type="success"
           :closable="false"
-        >
+        > -->
           <div
             class="controls"
             id="search"
@@ -49,7 +48,7 @@
                 @click="handleSearchList()">搜索</el-button>
             </div>
           </div>
-        </el-alert>
+        <!-- </el-alert> -->
         <el-alert
           type="warning"
           center
@@ -63,24 +62,19 @@
         @expand-change="openExpand"
         ref="refTable"
       >
-        <el-table-column type="expand">
-          <template>
-            <el-table
-              :data="recordTable"
-              style="width: 100%"
-              border
-              :span-method="objectSpanMethod"
-            >
-              <el-table-column
-                label="资金列表"
-                align="center"
-              >
-                <template>
-                  <span>资金列表</span>
-                </template>
-              </el-table-column>
-
-              <el-table-column
+      <el-table-column type="expand">
+        <template slot-scope="props">
+         <div>
+              <table>
+            <tr>
+              <td style="width:150px;text-align:center;font-size:20px;background-color:#EEF7FD">资金列表</td>
+              <td >
+              <el-table
+              :data="props.row.recordTable"
+              style="width:100%"
+             >
+             
+                <el-table-column
                 prop="jiaocunJkje"
                 label="添加金额"
                 align="center"
@@ -110,9 +104,15 @@
                 label="资金状态"
                 align="center"
               ></el-table-column>
-            </el-table>
-          </template>
-        </el-table-column>
+              </el-table>
+              </td>
+              </tr>
+              </table>
+          </div>
+          
+      </template>
+    </el-table-column>
+        
 
         <el-table-column
           label="备案号"
@@ -210,14 +210,14 @@
         </el-table-column>
       </el-table>
 
-      <el-pagination
+      <!-- <el-pagination
         background
         layout="prev, pager, next, total"
         @current-change="currentChange"
         :current-page="currentPage"
         :page-size="pageSize"
         :total="total"
-      ></el-pagination>
+      ></el-pagination> -->
 
       <el-dialog
         :title="dialogTitle"
@@ -256,7 +256,9 @@
     data() {
       return {
         tableData: [],
-        recordTable: [],
+        recordTable: [
+           {jiaocunJkje:""},
+        ],
         search: "",
         dialogVisible: false,
         dialogTitle: "",
@@ -279,11 +281,12 @@
 
     methods: {
       //获取下拉列表信息
-      fetchRecord(htbh) {
+      fetchRecord(row,htbh) {
         tjjgzjApi.fetchlist(htbh)
-          .then(res => {
-            this.recordTable = res.data.records;
-            this.recordTable.map(function (val) {
+          .then(ret => {
+            //this.recordTable = res.data.records;
+            this.$set(row, "recordTable", ret.data)
+            row.recordTable.map(function (val) {
               if (val.jiaocunXxlyzt == 0) {
                 val.jiaocunXxlyzt = '开发商'
               } else if (val.jiaocunXxlyzt == 1) {
@@ -301,11 +304,15 @@
           })
 
       },
+   
       //列表信息
       getlist() {
         // console.log(this.rwbh)
-        tjjgzjApi.getlist(this.$store.state.rwbh).then(res => {
-          this.tableData = res.data;
+        tjjgzjApi.getlist(this.$store.state.rwbh).then(ret => {
+          this.tableData = ret.data.map(item => ({
+            ...item,
+            recordTable:[],
+          }))
         });
       },
       //打印合同
@@ -338,7 +345,7 @@
       },
       openExpand(row) {
         //下拉列表信息
-        this.fetchRecord(row.jiaocunHtbh);
+        this.fetchRecord(row,row.jiaocunHtbh);
       },
       objectSpanMethod(){},
 

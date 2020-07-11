@@ -1,6 +1,6 @@
 <template>
   <div class="djtkgl" id="djtkgl">
-    <TitleTable title="定金退款管理">
+    <TitleTable title="定金退款管理" style="overflow-y:scroll">
       <div  slot="controls"
         style="background-color:#fdf6ec"
       >
@@ -62,52 +62,96 @@
         @expand-change="openExpand"
         ref="refTable"
       >
-        <el-table-column type="expand">
+       <el-table-column type="expand">
+        <template slot-scope="props">
+         <div>
+              <table>
+            <tr>
+              <td style="width:150px;text-align:center;font-size:20px;background-color:#EEF7FD">定金列表</td>
+              <td >
+              <el-table
+              :data="props.row.recordTable"
+              style="width:100%"
+             >
+              <!-- :header-cell-style="{background:'#EEF7FD'}" -->
+                 <el-table-column
+                prop="djDgrxm"
+                label="订购人"
+                align="center"
+              ></el-table-column>
+              <el-table-column
+                prop="djDgrzjhm"
+                label="证件号码"
+                align="center"
+              ></el-table-column>
+              
+              <el-table-column
+                prop="djJkje"
+                label="缴款金额"
+                align="center"
+              ></el-table-column>
+              <el-table-column
+                prop="djJkyh"
+                label="监管银行"
+                align="center"
+              ></el-table-column>
+               
+              </el-table>
+              </td>
+              </tr>
+              </table>
+          </div>
+          
+      </template>
+    </el-table-column>
+        <!-- <el-table-column type="expand">
           <template>
+            <table>
+            <tr>
+              <td>  <template>
+                  <span>资金列表</span>
+                </template></td>
+                <td>
             <el-table
               :data="recordTable"
               style="width: 100%"
               border
               :span-method="objectSpanMethod"
             >
+          
+            
               <el-table-column
-                label="资金列表"
-                align="center"
-              >
-                <template>
-                  <span>资金列表</span>
-                </template>
-              </el-table-column>
-
-              <el-table-column
-                prop="djsySqrxm"
+                prop="djDgrxm"
                 label="订购人"
                 align="center"
               ></el-table-column>
               <el-table-column
-                prop="jiaocunJksy"
+                prop="djDgrzjhm"
                 label="证件号码"
                 align="center"
               ></el-table-column>
               
               <el-table-column
-                prop="jiaocunXxlyzt"
+                prop="djJkje"
                 label="缴款金额"
                 align="center"
               ></el-table-column>
               <el-table-column
-                prop="djsyHrzhyh"
+                prop="djJkyh"
                 label="监管银行"
                 align="center"
               ></el-table-column>
              
             </el-table>
+                </td>
+            </tr>
+            </table>
           </template>
-        </el-table-column>
+        </el-table-column>-->
         <el-table-column label="项目名称" prop="djsyXmmc"></el-table-column>
         <el-table-column label="监管账号" prop="djsyJgzh"></el-table-column>
         <el-table-column label="监管银行名称" prop="djsyJgyhmc"></el-table-column>
-        <el-table-column label="申请人姓名" prop="djsySqrlxdh"></el-table-column>
+        <el-table-column label="申请人姓名" prop="djsySqrxm"></el-table-column>
         <el-table-column label="汇入账户" prop="djsyHrzhzh"></el-table-column>
         <el-table-column label="汇入账户银行" prop="djsyHrzhyh"></el-table-column>
         <el-table-column align="center" label="申报金额" prop="djsySbje"></el-table-column>
@@ -147,27 +191,27 @@
            <el-button
                 size="mini"
                 @click="handleUpdate(scope.$index, scope.row)"
-                :disabled="scope.row.shiyongShzt==1">编辑
+                :disabled="scope.row.djsyShzt!==0">编辑
               </el-button>
               <el-button
                 size="mini"
                 @click="uploadPic(scope.$index, scope.row)"
-                :disabled="scope.row.shiyongShzt==1">传图
+                :disabled="scope.row.djsyShzt!==0">传图
               </el-button>
               <el-button
                 size="mini"
                 @click="managePic(scope.$index, scope.row)"
-                :disabled="scope.row.shiyongShzt==1">管图
+                :disabled="scope.row.djsyShzt!==0">管图
               </el-button>
               <el-button
                 size="mini"
                 @click="handleDelete(scope.$index, scope.row)"
-                :disabled="scope.row.shiyongShzt==1">删除
+                :disabled="scope.row.djsyShzt!==0">删除
               </el-button>
                <el-button
                 size="mini"
                 @click="handleInform(scope.$index, scope.row)"
-                :disabled="scope.row.shiyongShzt==1">上报
+                :disabled="scope.row.djsyShzt!==0">上报
               </el-button>
 
               <el-button
@@ -202,7 +246,7 @@
         :visible.sync="dialogVisible"
         @close="dialogVisible = false"
       >
-        <TjjgzjDialog
+        <DjtkglDialog
           ref="dialog"
           :dialog-type="dialogType"
           @submitSuccess="submitSuccess"
@@ -215,7 +259,7 @@
 <script>
 import ContainerTwoType from "@/components/current/containerTwoType/ContainerTwoType";
 import TitleTable from "@/components/current/titleTable/TitleTable";
-import TjjgzjDialog from "@/views/menu_4/TjjgzjDialog";
+import DjtkglDialog from "@/views/menu_4/DjtkglDialog";
 import { mixins } from "@/utils/mixins";
 import { djtkglApi } from "@/api/menu_4/djtkgl";
 
@@ -225,12 +269,14 @@ export default {
   components: {
     TitleTable,
     ContainerTwoType,
-    TjjgzjDialog
+    DjtkglDialog
   },
   data() {
     return {
       tableData: [],
-      recordTable: [],
+      recordTable: [
+        {djDgrxm:"",}
+      ],
       search: "",
       dialogVisible: false,
       dialogTitle: "",
@@ -253,66 +299,107 @@ export default {
  
   methods: {
     //获取下拉列表信息
-    fetchRecord(id) {
+    fetchRecord(row,id) {
       djtkglApi.getfundUseDetail(id)
-        .then(res => {
-          this.recordTable = res.data.fundUse;
-        //   this.recordTable.map(function (val) {
-        //       if (val.jiaocunXxlyzt == 0) {
-        //         val.jiaocunXxlyzt = '开发商'
-        //       } else if (val.jiaocunXxlyzt == 1) {
-        //         val.jiaocunXxlyzt = '银行端'
-        //       } 
-        //       if (val.jiaocunJkzt == 0) {
-        //         val.jiaocunJkzt = '新建'
-        //       } else if (val.jiaocunJkzt == 1) {
-        //         val.jiaocunJkzt = '上报'
-        //       } else if (val.jiaocunJkzt == 2) {
-        //         val.jiaocunJkzt = '入账'
-        //       } 
+        .then(ret => {
+          this.$set(row, "recordTable", ret.data.deposits)
           
-        // })
+        
         })
        
     },
     //列表信息
     getlist() {
       // console.log(this.rwbh)
-      djtkglApi.getfundUse(this.currentPage,this.pageSize,this.$store.state.projectData.xmxxXmbh).then(res => {
-        this.tableData = res.data.records;
+      djtkglApi.getfundUse(this.currentPage,this.pageSize,this.$store.state.projectData.xmxxXmbh).then(ret => {
+          this.total=ret.data.total;
+          this.pages=ret.data.pages;
+          this.tableData = ret.data.records.map(item => ({
+            ...item,
+            recordTable:{},
+          }))
       });
     },
     //打印合同
     handlePrint(index, row) {},
     //弹出框
-      submitSuccess(){
+    submitSuccess(){
             this.$nextTick(()=>{
                 this.$refs.dialog.reset();
             });
             this.dialogVisible=false;
-            this.fetchData();
+            this.getlist();
         },
-    handleAdd(index, row) {
+    handleUpdate(index, row) {
       this.dialogVisible = true;
-      this.dialogTitle = "添加缴款记录";
+      this.dialogTitle = "编辑退款记录";
       this.dialogType = 1;
       this.$nextTick(() => {
-        this.$refs.dialog.setMode(1, row.jiaocunHtbh);
+        this.$refs.dialog.setMode(1, row.djsyId);
       });
     },
+    handleDetail(index, row){
+        this.dialogVisible = true;
+        this.dialogTitle = "详情";
+        this.dialogType = 2;
+        this.$nextTick(()=>{
+          this.$refs.dialog.setMode(2, row.djsyId);
+        })
+      },
+       handleDelete(index,row){
+        this.$confirm('确定要删除该定金退款申请吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+        }).then(()=>{
+            djtkglApi.deleteFundUse( row.djsyId).then(ret=>{
+            if(ret.code===200){
+              this.$message.success("操作成功");
+                 this.getlist();
+            }else{
+              this.$message.error(ret.message||"操作失败")
+            }
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消操作'
+          });
+        });
+      },
+       handleInform(index,row){
+        this.$confirm('确定要上报该定金退款申请吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+        }).then(()=>{
+             djtkglApi.confirmFundUse(row.djsyId).then(ret=>{
+            if(ret.code===200){
+              this.$message.success("操作成功");
+                this.getlist();
+            }else{
+              this.$message.error(ret.message||"操作失败")
+            }
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消操作'
+          });
+        });
+      },
     handleSearchList() {
       //搜索功能
       this.getlist();
     },
     currentChange(num) {
       this.currentPage = num;
+      this.getlist(num);
     },
     open(row) {
       this.$refs.refTable.toggleRowExpansion(row);
     },
     openExpand(row) {
       //下拉列表信息
-      this.fetchRecord(row.djsyId);
+      this.fetchRecord(row,row.djsyId);
     },
      objectSpanMethod(){},
    
@@ -322,19 +409,6 @@ export default {
     this.getlist();
   },
  
-  mounted() {},
-  filters: {
-    formStatus(htBazt) {
-      switch (htBazt) {
-        case 0:
-          return "新建";
-        case 1:
-          return "上报";
-        case 2:
-          return "已备案";
-      }
-    }
-  }
 };
 </script>
 

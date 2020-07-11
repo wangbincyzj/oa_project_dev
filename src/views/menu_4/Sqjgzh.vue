@@ -1,7 +1,7 @@
 <template>
   <div class="sqjgzh">
     <TitleTable
-      title="项目对应监管资金列表">
+      title="项目对应监管资金列表" style="overflow-y:scroll">
       <div slot="controls">
         <el-alert
           type="warning"

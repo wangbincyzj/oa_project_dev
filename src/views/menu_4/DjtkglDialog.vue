@@ -1,60 +1,49 @@
 <template>
-  <!-- 房屋定金退款管理弹窗1049906948 -->
   <div class="FwdDjtkglDialog">
-    <div v-if="dialogType===1||dialogType===3">
-      <el-form label-position="right" label-width="150px" size="mini" inline :model="ruleForm">
-        <el-form-item label="开发商：">
+    <div v-if="dialogType===1||dialogType===2">
+      <el-form label-position="right" label-width="150px" size="mini" inline :model="form">
+        <el-form-item label="开发商">
           <el-input v-model="form.djsyKfs" disabled></el-input>
         </el-form-item>
-        <!-- <el-form-item label="项目编号：">
-          <el-input v-model="ruleForm.djsyXmbh" disabled></el-input>
-        </el-form-item>-->
-        <el-form-item label="项目名称：">
+        <el-form-item label="项目名称">
           <el-input v-model="form.djsyXmmc" disabled></el-input>
         </el-form-item>
-
-        <el-form-item label="监管银行名称：">
+        <el-form-item label="监管银行名称">
           <el-input v-model="form.djsyJgyhmc" disabled></el-input>
         </el-form-item>
 
-        <el-form-item label="监管账户：">
+        <el-form-item label="监管账户">
           <el-input v-model="form.djsyJgzh" disabled></el-input>
         </el-form-item>
 
-        <el-form-item label="汇入账户名称：">
-          <el-input v-model="ruleForm.djsyHrzhmc"></el-input>
+        <el-form-item label="汇入账户名称">
+          <el-input v-model="form.djsyHrzhmc"></el-input>
         </el-form-item>
 
-        <el-form-item label="申请人姓名：" prop="djsySqrxm">
-          <el-input v-model="ruleForm.djsySqrxm"></el-input>
+        <el-form-item label="申请人姓名">
+          <el-input v-model="form.djsySqrxm"></el-input>
         </el-form-item>
-        <el-form-item label="汇入账户银行：" prop="djsyHrzhyh">
-          <el-input v-model="ruleForm.djsyHrzhyh"></el-input>
-        </el-form-item>
-
-        <el-form-item label="汇入账户：" prop="djsyHrzhzh	">
-          <el-input v-model="ruleForm.djsyHrzhzh"></el-input>
+        <el-form-item label="汇入账户银行" >
+          <el-input v-model="form.djsyHrzhyh"></el-input>
         </el-form-item>
 
-        <el-form-item label="申报金额：">
+        <el-form-item label="汇入账户" >
+          <el-input v-model="form.djsyHrzhzh"></el-input>
+        </el-form-item>
+
+        <el-form-item label="申报金额">
           <el-input v-model="form.djsySbje" disabled></el-input>
         </el-form-item>
 
-        <el-form-item label="申请人联系电话：">
-          <el-input v-model="form.djsySqrlxdh"></el-input>
-        </el-form-item>
-
-        <el-form-item label="用款事由：">
-          <el-input type="textarea" v-model="ruleForm.djsyYksy"></el-input>
+        <el-form-item label="用款事由">
+          <el-input type="textarea" v-model="form.djsyYksy"></el-input>
         </el-form-item>
       </el-form>
 
-      <!-- <el-form-item label="监管账户名称">
-          <el-input v-model="form.zjjgzhZhmc"></el-input>
-      </el-form-item>-->
-      <!-- </el-form> -->
 
-      <div class="buttonGroup" style="margin:0 auto;width:100px;margin-top:20px">
+      <div class="buttonGroup" 
+      style="margin:0 auto;width:100px;margin-top:20px"
+      v-if="">
         <el-button-group class="buttons">
           <el-button type="primary" @click="onSubmit">立即提交</el-button>
         </el-button-group>
@@ -236,13 +225,13 @@
 import InfoList from "@/components/common/infoList/InfoList";
 import CenterButton from "@/components/common/centerButton/CenterButton";
 
-import { djtkApi } from "@/api/menu_4/djtk";
+import { djtkglApi } from "@/api/menu_4/djtkgl";
 
 //查看接口
 
 
 export default {
-  name: "FwdDjtkglDialog",
+  name: "DjtkglDialog",
   components: { InfoList, CenterButton },
   props: {
     dialogType: {
@@ -275,99 +264,34 @@ export default {
       tableData: [],
       form: {},
       form1: {},
-      ruleForm: {},
-      formBlank: {
-        xmxxXmbh: "",
-        zjjgzhXmmc: "",
-        zjjgzhGsmc: "",
-        jgzhLxdh: "",
-        zjjgzhZzmj: "",
-        zjjgzhZzts: "",
-        zjjgzhFzzmj: "",
-        zjjgzhFzzts: "",
-        zjjgzhLdmc: ""
-      },
+     djsyId:0,
       url: "http://192.168.1.161:8090/data_center/common/upload"
     };
   },
   methods: {
-    beforeUpload(file) {
-      var code = 600320200624173558;
-    //   var code = 14;
-      let fd = new FormData(); //通过form数据格式来传
-      fd.append("files", file); //传文件
-      fd.append("ywzh", code); //传其他参数
-      axios.post(this.url, fd,{
-           headers: {
-              "Content-Type": "multipart/form-data"
-            }
-      }).then(res => {
-        //    debugger
-      });
-    },
-    afterRemove() {},
+   
     setMode(mode, id) {
       if (mode === 1) {
-        // sqjgzhApi.getProjectById(id).then(ret => {
-        //   this.form.xmxxXmbh = this.$store.state.projectData.xmxxXmbh;
-        //   this.form.zjjgzhXmmc = this.$store.state.projectData.xmxxXmmc;
-        //   this.form.zjjgzhGsmc = this.$store.state.projectData.xmxxKfs;
-        // });
-        // this.getBussinessType();
+       this.fetchDetail(id);
+       this.djsyId=id;
       } else if (mode === 2) {
-        //debugger
-        //查看详情
-        this.DetailData(id);
+       
+       
 
-        // this.fetchOpinion(this.zjjgzhYwzh);
-        // this.fetchShouJianByYwzh(this.zjjgzhYwzh);
-      } else if (mode === 3) {
-        //修改
-        // this.editData();
-        // sqjgzhApi.getAccountInfoById(id).then(ret => {
-        //   //console.log(ret);
-        //   this.form = ret.data.supervisedAccount;
-        //   let dl = ret.data.supervisedAccount.ywxlBh.slice(0, 4); // 8019001
-        //   let xl = ret.data.supervisedAccount.ywxlBh.slice(4); // 8019001
-        //   this.ywlx = [dl, ret.data.ywxlBh];
-        // });
-        djtkApi.getAccountInfoById(id).then(ret => {
-          this.form = ret.data.fundUse;
-        });
-      } else if (mode === 4) {
-        //收件
-        this.fetchShouJian(id);
-      }else if (mode === 5) {
-        //传图
-        this.fetchShouJian(id);
-      }
+      } 
     },
     fetchShouJian() {},
     handleShouJian() {
       //确认收件
     },
-    DetailData(id) {
+    fetchDetail(id) {
       //详情
-      djtkApi.getAccountInfoById(id).then(ret => {
-        this.form1 = ret.data.fundUse;
+      djtkglApi.getfundUseDetail(id).then(ret => {
+        this.form = ret.data.fundUse;
       });
     },
-    editData() {
-      const list = {
-        djsyId: this.form.djsyId,
-        djsySqrxm: this.ruleForm.djsySqrxm,
-        djsyHrzhyh: this.ruleForm.djsyHrzhyh,
-        djsyHrzhmc: this.ruleForm.djsyHrzhmc,
-        djsyHrzhzh: this.ruleForm.djsyHrzhzh,
-        djsyJgzh: this.form.djsyJgzh,
-        djsyJgyhmc: this.form.djsyJgyhmc,
-        djsyJgyhid: this.form.djsyJgyhid,
-        djsyYksy: this.ruleForm.djsyYksy,
-        djsySbje: this.form.djsySbje,
-        djsySqrlxdh: this.form.djsySbje
-      };
-      //修改
-      djtkApi.geteditData(list).then(res => {
+    updateData() {
+      djtkglApi.updatefundUse({...this.form,djsyId:this.djsyId}).then(res => {
         if (res.code == 200) {
           this.$message.success(res.message);
           this.$emit("submitSuccess");
@@ -377,8 +301,10 @@ export default {
       });
     },
     onSubmit() {
-      //修改确认
-      this.editData();
+      if(this.dialogType===1){
+        this.updateData();
+      }
+      
     }
   },
   created() {
