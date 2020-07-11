@@ -7,6 +7,7 @@
     <el-table
       :data="tableData"
       style="width: 100%"
+      size="mini"
     >
       <el-table-column align="center" label="预售证号" prop="xkzXkzbh" />
       <el-table-column align="center" label="预售名称" prop="xkzLdmc" />
@@ -61,7 +62,8 @@
     data() {
       return {
         tableData:[],
-        loading: false
+        loading: false,
+        dialogTitle: ""
       }
     },
     computed:{

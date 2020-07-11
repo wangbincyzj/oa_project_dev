@@ -25,48 +25,50 @@
       :data="tableData"
       style="width: 100%">
       <el-table-column
+        align="center"
         label="楼栋名称"
         width="200"
         prop="ldxxMc">
       </el-table-column>
       <el-table-column
         label="楼栋编号"
-        width="120"
+        align="center"
         prop="ldxxLdbh">
       </el-table-column>
       <el-table-column
-        width="100"
-        label="建筑面积	"
+        label="建筑面积"
+        align="center"
         prop="ldxxJzmj">
       </el-table-column>
       <el-table-column
-        width="80"
         label="总层数"
+        align="center"
         prop="ldxxZgcs">
       </el-table-column>
       <el-table-column
-        width="80"
         label="单元数"
+        align="center"
         prop="ldxxDys">
       </el-table-column>
       <el-table-column
-        width="80"
         label="一梯几户"
+        align="center"
         prop="ldxxYtjh">
       </el-table-column>
       <el-table-column
-        width="100"
         label="房屋类型"
+        align="center"
         prop="fwlx">
       </el-table-column>
       <el-table-column
-        width="100"
         label="单元号"
+        align="center"
         prop="dyh">
       </el-table-column>
       <el-table-column
         align="center"
         label="操作"
+        width="350"
       >
         <template slot-scope="scope">
           <el-button

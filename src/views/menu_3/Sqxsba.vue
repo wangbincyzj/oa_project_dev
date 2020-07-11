@@ -9,22 +9,22 @@
       border
       style="width: 100%"
     >
-      <el-table-column align="center" label="预售证号" prop="test" width="100"/>
-      <el-table-column align="center" label="预售名称" prop="" width="100"/>
-      <el-table-column align="center" label="预售总面积" prop="" width="100"/>
-      <el-table-column align="center" label="住宅面积" prop="" width="100"/>
-      <el-table-column align="center" label="住宅套数" prop="" width="100"/>
-      <el-table-column align="center" label="非住宅面积" prop="" width="100"/>
-      <el-table-column align="center" label="非住宅套数" prop=""  width="100"/>
-      <el-table-column align="center" label="审核状态" prop=""  width="100"/>
-      <el-table-column align="center" label="收件操作" >
+      <el-table-column align="center" label="预售证号" prop="test" />
+      <el-table-column align="center" label="预售名称" prop="" />
+      <el-table-column align="center" label="预售总面积" prop="" />
+      <el-table-column align="center" label="住宅面积" prop="" />
+      <el-table-column align="center" label="住宅套数" prop="" />
+      <el-table-column align="center" label="非住宅面积" prop="" />
+      <el-table-column align="center" label="非住宅套数" prop=""  />
+      <el-table-column align="center" label="审核状态" prop=""  />
+      <el-table-column align="center" label="收件操作" width="300">
         <template #default="scope">
           <el-button size="mini">收件</el-button>
           <el-button size="mini">清除</el-button>
           <el-button size="mini">打印收件</el-button>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="上报操作">
+      <el-table-column align="center" label="上报操作" width="400">
         <template #default="scope">
           <el-button size="mini">修改</el-button>
           <el-button size="mini">传图</el-button>

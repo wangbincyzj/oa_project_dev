@@ -113,7 +113,6 @@ export default {
     fetchData() {
       // 1.通过入网编号查用户的项目信息
       wsfcxmApi.getOwnProjectByRwId(this.$store.state.rwbh).then(ret => {
-        debugger
 		//数据
         this.projectData = ret.data.records[0];
 		//id
@@ -124,7 +123,6 @@ export default {
         this.projectName = this.projectData.xmxxXmmc;
         // 2.通过项目信息的项目id获取楼栋信息
         tjldxmApi.getBuildingInfo(this.projectId).then(ret => {
-          // debugger
           this.navInfo.list = ret.data.map(item => ({
             ...item,
             id: item.ldxxId,
@@ -149,15 +147,13 @@ export default {
       }
     },
     liClick(index) {
-      // debugger
       this.selectedIndex = index;
       if (this.selectedBuilding) {
         this.loading = true;
         this.fetchBuildingDetail();
 		console.log(this.selectedBuilding.id)
         lpInfoApi.getBuildingRoomDetail(this.selectedBuilding.id).then(ret => {
-			
-			debugger
+
           this.loading = false;
           let r = []; // r是排序后的结果
           Object.entries(ret.data).forEach(([k, v]) => {

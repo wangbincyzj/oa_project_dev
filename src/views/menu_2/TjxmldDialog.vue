@@ -53,7 +53,7 @@
       <el-form-item label="住宅层数">
         <el-input v-model="form.ldxxZgcs"></el-input>
       </el-form-item>
-      <el-form-item label="起始层数">
+      <el-form-item label="住宅起始层">
         <el-input v-model="form.ldxxZgqsc"></el-input>
       </el-form-item>
       <el-form-item label="单元数">

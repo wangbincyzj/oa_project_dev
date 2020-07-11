@@ -70,7 +70,6 @@ export default new Vuex.Store({
   actions: {
     fetchBaseData({commit, state}, rwbh) {
       loginApi.getOwnProjectByRwId(rwbh).then(ret => {
-        // debugger
         commit("setProjectData", ret.data.records[0]);  // 项目信息获取
         commit("setXmxxId", ret.data.records[0].xmxxId)
         loginApi.getBuildingInfo(ret.data.records[0].xmxxId).then(ret => {
@@ -82,10 +81,8 @@ export default new Vuex.Store({
     login({commit, dispatch}, payload) {
       commit("setLoginInfo", payload);
       storage.session.storage.setItem("__info__", JSON.stringify(payload));
-      // commit("setRwbh", payload.rwbh);
-      commit("setRwbh", 60039001);  //  目前只有60039001有预售条件
-      // dispatch("fetchBaseData", payload.rwbh)
-      dispatch("fetchBaseData", 60039001)
+      commit("setRwbh", payload.rwbh);  //  目前只有60039001有预售条件
+      dispatch("fetchBaseData", payload.rwbh)
     },
     logout({commit}) {
       // debugger

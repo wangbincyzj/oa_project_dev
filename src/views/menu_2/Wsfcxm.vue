@@ -15,37 +15,32 @@
         style="width: 100%">
         <el-table-column
           label="项目编号"
-          width="200"
           prop="xmxxXmbh">
         </el-table-column>
         <el-table-column
-          label="项目名称	"
-          width="300"
+          label="项目名称"
           prop="xmxxXmmc">
         </el-table-column>
         <el-table-column
-          width="200"
           label="建筑面积	"
           prop="xmxxZzjmj">
         </el-table-column>
         <el-table-column
-          width="100"
           label="联系电话"
           prop="xmxxXsdh">
         </el-table-column>
         <el-table-column
-          width="100"
-          label="项目地址	"
+          label="项目地址"
           prop="xmxxJtzl">
         </el-table-column>
         <el-table-column
-          width="100"
-          label="审核状态	"
+          label="审核状态"
           prop="status">
         </el-table-column>
         <el-table-column
           align="center"
           label="操作"
+          width="400px"
         >
           <template slot-scope="scope">
 
@@ -79,7 +74,7 @@
         :title="dialogTitle"
         center
         width="1200px"
-        :before-close="closeConfirm"
+        :before-close="dialogReset"
         slot="dialog"
         :visible.sync="dialogVisible"
         @close="dialogVisible = false"
