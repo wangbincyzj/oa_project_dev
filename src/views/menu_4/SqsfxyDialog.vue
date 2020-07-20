@@ -8,18 +8,18 @@
         inline
         :model="form">
         <!-- 0添加 1编辑 2查看-->
-        <el-form-item  label="甲方(企业名称)">
-          <el-input v-model="form.hetongKfsmc"></el-input>
+         <el-form-item label="甲方(工程监理企业)" >
+          <el-input v-model="form.hetongJgjgmc"></el-input>
         </el-form-item>
-        <el-form-item  label="企业地址">
-          <el-input v-model="form.hetongKfsdz"></el-input>
+        <el-form-item  label="甲方地址">
+          <el-input v-model="form.hetongJgjgdz"></el-input>
         </el-form-item>
         <el-form-item  label="甲方法定代表人">
-          <el-input v-model="form.hetongKfxm"></el-input>
+          <el-input v-model="form.hetongJgjgfr"></el-input>
         </el-form-item>
         <el-form-item  label="甲方联系方式">
-          <el-input v-model="form.hetongKflxdh"></el-input>
-        </el-form-item>
+          <el-input v-model="form.hetongJgjglxdh"></el-input>
+        </el-form-item> 
         <el-form-item label="乙方(银行名称)">
            <el-select style="width: 180px" v-model="form.hetongYhmc" placeholder="请选择监管银行">
                 <el-option
@@ -39,18 +39,18 @@
         <el-form-item  label="乙方联系方式">
           <el-input v-model="form.hetongYhdlrlxdh"></el-input>
         </el-form-item>       
-        <el-form-item label="丙方(工程监理企业)" >
-          <el-input v-model="form.hetongJgjgmc"></el-input>
+        <el-form-item  label="丙方(企业名称)">
+          <el-input v-model="form.hetongKfsmc"></el-input>
         </el-form-item>
-        <el-form-item  label="丙方地址">
-          <el-input v-model="form.hetongJgjgdz"></el-input>
+        <el-form-item  label="企业地址">
+          <el-input v-model="form.hetongKfsdz"></el-input>
         </el-form-item>
         <el-form-item  label="丙方法定代表人">
-          <el-input v-model="form.hetongJgjgfr"></el-input>
+          <el-input v-model="form.hetongKfxm"></el-input>
         </el-form-item>
-        <el-form-item  label="乙方联系方式">
-          <el-input v-model="form.hetongJgjglxdh"></el-input>
-        </el-form-item>  
+        <el-form-item  label="丙方联系方式">
+          <el-input v-model="form.hetongKflxdh"></el-input>
+        </el-form-item>
         <el-form-item label="项目名称" >
           <el-input v-model="form.hetongXmmc"></el-input>
         </el-form-item>
@@ -116,18 +116,18 @@
         inline
         :model="form"
       >
-         <el-form-item  label="甲方(企业名称)">
-          <el-input v-model="form.hetongKfsmc"></el-input>
+        <el-form-item label="甲方(工程监理企业)" >
+          <el-input v-model="form.hetongJgjgmc"></el-input>
         </el-form-item>
-        <el-form-item  label="企业地址">
-          <el-input v-model="form.hetongKfsdz"></el-input>
+        <el-form-item  label="甲方地址">
+          <el-input v-model="form.hetongJgjgdz"></el-input>
         </el-form-item>
         <el-form-item  label="甲方法定代表人">
-          <el-input v-model="form.hetongKfxm"></el-input>
+          <el-input v-model="form.hetongJgjgfr"></el-input>
         </el-form-item>
         <el-form-item  label="甲方联系方式">
-          <el-input v-model="form.hetongKflxdh"></el-input>
-        </el-form-item>
+          <el-input v-model="form.hetongJgjglxdh"></el-input>
+        </el-form-item> 
         <el-form-item label="乙方(银行名称)">
            <el-input v-model="form.hetongYhmc"></el-input>
         </el-form-item>
@@ -140,18 +140,18 @@
         <el-form-item  label="乙方联系方式">
           <el-input v-model="form.hetongYhdlrlxdh"></el-input>
         </el-form-item>       
-        <el-form-item label="丙方(工程监理企业)" >
-          <el-input v-model="form.hetongJgjgmc"></el-input>
+        <el-form-item  label="丙方(企业名称)">
+          <el-input v-model="form.hetongKfsmc"></el-input>
         </el-form-item>
-        <el-form-item  label="丙方地址">
-          <el-input v-model="form.hetongJgjgdz"></el-input>
+        <el-form-item  label="企业地址">
+          <el-input v-model="form.hetongKfsdz"></el-input>
         </el-form-item>
         <el-form-item  label="丙方法定代表人">
-          <el-input v-model="form.hetongJgjgfr"></el-input>
+          <el-input v-model="form.hetongKfxm"></el-input>
         </el-form-item>
-        <el-form-item  label="乙方联系方式">
-          <el-input v-model="form.hetongJgjglxdh"></el-input>
-        </el-form-item>  
+        <el-form-item  label="丙方联系方式">
+          <el-input v-model="form.hetongKflxdh"></el-input>
+        </el-form-item>
         <el-form-item label="项目名称" >
           <el-input v-model="form.hetongXmmc"></el-input>
         </el-form-item>
@@ -226,74 +226,207 @@
             <div class="itemIndex">3</div>
             <div class="itemTitle">审核意见</div>
           </div>
-          <InfoList
-            v-for="(item, index) in opinionList"
-            :info="[
-              {key:'审批人', value: item.approvePerson},
-              {key: '审核时间', value: item.approveTime},
-              {key: '审批意见', value: item.approveOpinion}]"
-          />
+           <el-table :data="opinionList" size="mini">
+            <el-table-column label="流程" align="center" prop="processName"/>
+            <el-table-column label="时间" align="center" prop="approveTime" width="150">
+              <template #default="{row}">
+                <div v-if="row.processName==='受理'">
+                  <div>{{row.approveTime}}</div>
+                  <div v-if="row.promiseDate">允诺时间:{{row.promiseDate}}</div>
+                </div>
+                <div v-else>
+                  <div>{{row.approveTime}}</div>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column label="审核人" align="center" prop="approvePerson"/>
+            <el-table-column label="结果" align="center" prop="processResult">
+              <template #default="{row}">
+                <div v-if="row.processResult===1 && row.processName!=='受理'">通过</div>
+                <div v-if="row.processResult===1 && row.processName==='受理'">受理</div>
+                <div class="danger" v-if="row.processResult===2 && row.processName!=='受理'">驳回</div>
+                <div class="danger" v-if="row.processResult===2 && row.processName==='受理'">退件</div>
+              </template>
+            </el-table-column>
+            <el-table-column label="意见" align="center" prop="approveOpinion" width="500"/>
+          </el-table>
         </div>
       </el-tab-pane>
     </el-tabs>
     </div>
   
-    <div v-if="dialogType===4">
-        <!-- <info-list :title="业务宗号:" /> -->
-        
-          <h3 class="title">添加新收件</h3>
-          
-      <el-form
-        label-position="right"
-        label-width="150px"
-        size="mini"
-        inline
-        style="float:left"
-        :model="addForm"
-      >
-       <el-form-item label="收件名称">
-          <el-input v-model="addForm.name"></el-input>
-        </el-form-item>
-         <el-form-item label="收件性质">
-          <el-radio v-model="addForm.attr" label="原件">原件</el-radio>
-          <el-radio v-model="addForm.attr" label="复印件">复印件</el-radio>
-        </el-form-item>
-         <el-form-item label="收件份数">
-          <el-input v-model="addForm.count"></el-input>
-        </el-form-item>
-      </el-form>
-      <div  style="width:80px;margin:0 auto">
-          <el-button
-            type="primary"
-            size="mini"
-            icon="el-icon-plus"
-           
-          >添加</el-button></div>
-        <div class="receiveList">
-          <div
-            class="item"
-            v-for="(item,index) in businessReceives"
-          >
-            <div class="no">
-              <span>{{index+1}}</span>
+   <div v-if="dialogType===4">
+      <!-- <info-list :title="业务宗号:" /> -->
+      <h3 class="title">
+        <el-button-group>
+          <el-button size="mini" @click="addFile" type="primary" icon="el-icon-plus">添加收件</el-button>
+          <el-button size="mini" @click="resetR" type="warning" icon="el-icon-warning-outline">重置默认</el-button>
+        </el-button-group>
+      </h3>
+      <!--
+      <div class="receiveList">
+        <div
+          class="item"
+          v-for="(item,index) in businessReceives"
+        >
+          <div class="no">
+            <span>{{index+1}}</span>
+          </div>
+          <div class="info">
+            <div class="name">{{item.shoujianTitle}}</div>
+            <div class="attr">
+              <div>性质:<span>{{item.shoujianSjxz}}</span></div>
+              <div>份数:<span>{{item.shoujianFenshu}}</span></div>
             </div>
-            <div class="info">
-              <div class="name">{{item.shoujianTitle}}</div>
-              <div class="attr">
-                <div>性质:<span>{{item.shoujianSjxz}}</span></div>
-                <div>份数:<span>{{item.shoujianFenshu}}</span></div>
+          </div>
+        </div>
+      </div>-->
+
+      <div class="controls">
+
+      </div>
+
+      <el-table :data="tableData2">
+        <el-table-column type="selection" width="50" align="center"/>
+        <el-table-column align="left" label="收件名称" prop="shoujianTitle">
+          <!--v-model="scope.row.shoujianTitle"-->
+          <template #default="scope">
+            <div v-if="scope.row.add" style="display: flex">
+              <div style="flex: 3; padding-right: 20px;">
+                <el-input size="mini" v-model="scope.row.shoujianTitle"/>
+              </div>
+              <div style="flex: 1">
+                <el-select
+                  size="mini"
+                  value=""
+                  @change="change($event, scope.row)"
+                  placeholder="手动输入或选择收件"
+                >
+                  <el-option v-for="item in addList" :value="item.value">{{item.value}}</el-option>
+                </el-select>
+
               </div>
             </div>
-          </div>
-          </div>
-           <div  style="width:80px;margin:0 auto">
-        <el-button
-          @click="handleShouJian"
-          type="primary"
-          size="mini"
-        >确认收件
-        </el-button></div>
-        </div>
+            <div v-else>
+              {{scope.row.shoujianTitle}}
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="份数" width="120">
+          <template #default="{row}">
+            <el-select v-model="row.shoujianFenshu" size="mini">
+              <el-option value="1">1</el-option>
+              <el-option value="2">2</el-option>
+              <el-option value="3">3</el-option>
+              <el-option value="4">4</el-option>
+              <el-option value="5">5</el-option>
+            </el-select>
+          </template>
+
+        </el-table-column>
+        <el-table-column align="center" label="资料类型" width="120">
+          <template #default="{row}">
+            <el-select v-model="row.shoujianSjxz" size="mini">
+              <el-option value="原件">原件</el-option>
+              <el-option value="复印件">复印件</el-option>
+              <el-option value="扫描件">扫描件</el-option>
+            </el-select>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="操作" width="200">
+          <template #default="scope">
+            <el-button size="mini" type="danger" @click="handleRemove(scope.$index)">删除收件</el-button>
+          </template>
+        </el-table-column>
+
+      </el-table>
+
+      <CenterButton @btnClick="handleShouJian" title="确认收件"/>
+    </div>
+    <div v-if="dialogType===9">
+      <h3 class="title">
+        <el-button-group>
+          <el-button size="mini" @click="addFile2" type="primary" icon="el-icon-plus">添加收件</el-button>
+        </el-button-group>
+      </h3>
+      <el-table :data="businessReceives2" >
+        <el-table-column type="expand" width="50">
+          <template #default="{row}">
+            <UploadCpn
+              :file-list="row.imgList"
+              :url="url"
+              :data="{logId: row.logId}"
+              @addFile="handleUploadFile"
+              @delFile="handleRemoveFile"
+            />
+          </template>
+        </el-table-column>
+        <el-table-column align="left" label="收件名称" prop="ywsjTitle">
+          <!--v-model="scope.row.shoujianTitle"-->
+          <template #default="scope">
+            <div v-if="scope.row.add" style="display: flex">
+              <div style="flex: 3; padding-right: 20px;">
+                <el-input size="mini" v-model="scope.row.ywsjTitle"/>
+              </div>
+              <div style="flex: 1">
+                <el-select
+                  size="mini"
+                  value=""
+                  @change="change2($event, scope.row)"
+                  placeholder="手动输入或选择收件"
+                >
+                  <el-option v-for="item in addList" :value="item.value">{{item.value}}</el-option>
+                </el-select>
+              </div>
+            </div>
+            <div v-else>
+              {{scope.row.ywsjTitle}}
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="份数" width="120">
+          <template #default="{row}">
+            <div v-if="row.add">
+              <el-select v-model="row.ywsjFenshu" size="mini">
+                <el-option value="1">1</el-option>
+                <el-option value="2">2</el-option>
+                <el-option value="3">3</el-option>
+                <el-option value="4">4</el-option>
+                <el-option value="5">5</el-option>
+              </el-select>
+            </div>
+            <div v-else>
+              {{row.ywsjFenshu}}
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="资料类型" width="120">
+          <template #default="{row}">
+            <div v-if="row.add">
+              <el-select v-model="row.ywsjSjxz" size="mini" :disabled="!row.add">
+                <el-option :value="0" label="原件">原件</el-option>
+                <el-option :value="1" label="复印件">复印件</el-option>
+                <el-option :value="2" label="扫描件">扫描件</el-option>
+              </el-select>
+            </div>
+            <div v-else>
+              {{row.ywsjSjxz|sjxzFilter}}
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="操作" width="200">
+          <template #default="scope">
+            <div v-if="scope.row.add">
+              <el-button size="mini" type="primary" @click="handleEnsure(scope.$index)">确认</el-button>
+              <el-button size="mini" type="primary" @click="handleCancel(scope.$index)">取消</el-button>
+            </div>
+            <div v-else>
+              <el-button size="mini" type="danger" @click="handleRemove2(scope.$index)">删除</el-button>
+            </div>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
         
  
  </div>
@@ -301,10 +434,12 @@
 
 <script>
   import CenterButton from "@/components/common/centerButton/CenterButton";
-import InfoList from "@/components/common/infoList/InfoList";
-import {businessApi} from "@/api/menu_3/__Business";
+  import InfoList from "@/components/common/infoList/InfoList";
+  import UploadCpn from "@/components/current/uploadCpn/UploadCpn";
+  import {businessApi} from "@/api/menu_3/__Business";
   import {sqsfxyApi} from "@/api/menu_4/sqsfxy";
-  import {sqjgzhApi} from "@/api/menu_4/sqjgzh";
+  import {sqjgzhApi} from "@/api/menu_4/sqjgzh";   
+  import {authApi} from "@/api/menu_4/auth";
   export default {
     name: "SqsfxyDialog",
     components: {CenterButton,InfoList},
@@ -332,7 +467,8 @@ import {businessApi} from "@/api/menu_3/__Business";
       hetongId:0,
       options: [],
       businessReceives: [],
-      businessAttachments:[],
+      businessAttachments:[],      
+      businessReceives2: [],
       name: "",
       ywzh:"",
       addForm: {
@@ -343,9 +479,12 @@ import {businessApi} from "@/api/menu_3/__Business";
         form:{},
         form1:{},
         form2:{},
-        tableData:{},
+        tableData:[],
         loading: false,
         zjjgzhYhid:[],
+        tableData2:[],
+        addList: [],
+        retId: ""
         }
     },
     created(){
@@ -353,7 +492,7 @@ import {businessApi} from "@/api/menu_3/__Business";
     },
     methods:{
       reset() {
-        this.form = {};
+        this.form = {...formBlank};
       },
       getBussinessType(){
       businessApi.getBusinessType().then(ret => {
@@ -431,8 +570,8 @@ import {businessApi} from "@/api/menu_3/__Business";
         });
     },
      fetchOpinion(id){
-         sqsfxyApi.getShlcDetail(id).then(ret => {
-          this.opinionList = ret.data
+          authApi.getAuditInfo(id).then(ret => {
+          this.opinionList = ret.data;
         })
        },
       
@@ -487,7 +626,9 @@ import {businessApi} from "@/api/menu_3/__Business";
         console.log(this.zjjgzhZhmc);
         this.form.zjjgzhId = this.zjjgzhId;
         this.form.hetongZhmc = this.zjjgzhZhmc;
-        this.form.hetongKfsmc = this.$store.state.xmxxKfs;
+        this.form.hetongKfsmc = this.$store.state.projectData.xmxxKfs;
+        console.log(this.$store.state.xmxxKfs);
+        
         this.form.hetongYhmc = this.zjjgzhYhmc;
         this.form.hetongXmmc=this.zjjgzhXmmc;
         // sqsfxyApi.getProjectByName(this.zjjgzhXmmc).then(ret=>{
@@ -498,7 +639,7 @@ import {businessApi} from "@/api/menu_3/__Business";
         //     //this.form.hetongTdsymj=
         // })
     },
-    setMode(mode,id){
+    setMode(mode,id,logId){
       console.log("00000000000");
       
       if(mode===1){
@@ -517,7 +658,7 @@ import {businessApi} from "@/api/menu_3/__Business";
 
       }else if(mode===3){
         this.fetchDetail(id);
-         this.fetchOpinion(this.hetongYwzh);
+         this.fetchOpinion(logId);
         this.fetchShouJianByYwzh(this.hetongYwzh);
       }else if(mode===4){
         this.fetchShouJian(id);

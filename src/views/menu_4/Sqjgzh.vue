@@ -48,7 +48,7 @@
         <el-table-column
           align="center"
           label="状态"
-          prop="zjjgzhLczt">
+          prop="zjjgzhShzt">
         </el-table-column>
         <el-table-column
           align="center"
@@ -60,8 +60,7 @@
               size="mini"
               type="primary"
               @click="handleGetFile(scope.$index, scope.row)"
-
-              :disabled="scope.row.zjjgzhLczt !== '收件'">确认收件
+             >确认收件
             </el-button>
             <el-button
               size="mini"
@@ -92,19 +91,19 @@
               size="mini"
               type="primary"
               @click="handleUpdate(scope.$index, scope.row)"
-              :disabled="scope.row.zjjgzhLczt !== '收件'">修改
+              :disabled="scope.row.zjjgzhShzt>0">修改
             </el-button>
             <el-button
               size="mini"
               type="primary"
               @click="handleInform(scope.$index, scope.row)"
-              :disabled="scope.row.zjjgzhLczt !== '收件'">上报
+              :disabled="scope.row.zjjgzhShzt>0">上报
             </el-button>
             <el-button
               size="mini"
               type="primary"
               @click="handleDelete(scope.$index, scope.row)"
-              :disabled="scope.row.zjjgzhLczt !== '收件'">删除
+              :disabled="scope.row.zjjgzhShzt>0">删除
             </el-button>
           </template>
         </el-table-column>
@@ -194,7 +193,7 @@
         dialogVisible: false,
         currentPage: 1,
         pageSize: 10,
-        total: 20,
+        total: 0,
         pages: 1,
         dialogTitle: "",
         dialogType: 1,
@@ -227,21 +226,15 @@
           this.pages = ret.data.pages;
           this.tableData = ret.data.records;
           this.total = ret.data.total;
-          this.tableData.map(function (val) {
-            if (val.zjjgzhLczt == 0) {
-              val.zjjgzhLczt = '收件'
-            } else if (val.zjjgzhLczt == 1) {
-              val.zjjgzhLczt = '上报'
-            } else if (val.zjjgzhLczt == 2) {
-              val.zjjgzhLczt = '已初审'
-            } else if (val.zjjgzhLczt == 3) {
-              val.zjjgzhLczt = '已复审'
-            } else if (val.zjjgzhLczt == 4) {
-              val.zjjgzhLczt = '已终审'
-            } else if (val.zjjgzhLczt == 5) {
-              val.zjjgzhLczt = '已开户'
-            } else if (val.zjjgzhLczt == 6) {
-              val.zjjgzhLczt = '退件'
+          this.tableData.forEach(function(row,index){
+            if(row.zjjgzhShzt===0){
+              row.zjjgzhShzt="新建"
+            }else if(row.zjjgzhShzt===1){
+              row.zjjgzhShzt="审核中"
+            }else if(row.zjjgzhShzt===2){
+              row.zjjgzhShzt="审核通过"
+            }else if(row.zjjgzhShzt===3){
+              row.zjjgzhShzt="驳回"
             }
           })
         })
@@ -276,53 +269,67 @@
           //this.$refs.dialog.reset();
         })
       },
-      handleDelete(index, row) {
-        console.log(this.currentRow);
-        if (window.confirm("确定要删除该监管账户吗?")) {
-          sqjgzhApi.deleteAccount(this.currentRow.zjjgzhId).then(ret => {
-            console.log(this.currentRow.zjjgzhId);
-            if (ret.code === 200) {
-              this.$message.success("删除成功");
-              this.fetchData();
-            } else {
-
-              this.$message.error(ret.message)
+    
+      
+      handleDelFile(index,row){
+        this.$confirm('确定要清除收件吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+        }).then(()=>{
+         sqjgzhApi.deleteSj(this.currentRow.zjjgzhYwzh).then(ret=>{
+            if(ret.code===200){
+              this.$message.success("操作成功");
+                this.fetchData();
+            }else{
+              this.$message.error(ret.message||"操作失败")
             }
           })
-        }
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消操作'
+          });
+        });
       },
-      handleDelFile(index, row) {
-        console.log(this.currentRow);
-        if (window.confirm("确定要清除收件吗?")) {
-          sqjgzhApi.deleteSj(this.currentRow.zjjgzhYwzh).then(ret => {
-            console.log(this.currentRow.zjjgzhYwzh);
-            if (ret.code === 200) {
-              this.$message.success("删除成功");
-              this.fetchData();
-            } else {
-              this.$message.error(ret.message)
+       handleInform(index,row){
+        this.$confirm('确定要上报该监管账户吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+        }).then(()=>{
+          sqjgzhApi.informAccount(row.zjjgzhId).then(ret=>{
+            if(ret.code===200){
+              this.$message.success("操作成功");
+                this.fetchData();
+            }else{
+              this.$message.error(ret.message||"操作失败")
             }
           })
-        }
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消操作'
+          });
+        });
       },
-      loadPic() {
-      },
-      managePic() {
-      },
-      handleInform(index, row) {
-        console.log(this.currentRow);
-        if (window.confirm("确定要上报该监管账户吗?")) {
-          sqjgzhApi.informAccount(this.currentRow.zjjgzhId).then(ret => {
-            console.log(this.currentRow.zjjgzhId);
-            if (ret.code === 200) {
-              this.$message.success("上报成功");
-              this.fetchData();
-            } else {
-
-              this.$message.error(ret.message)
+      handleDelete(index,row){
+        this.$confirm('确定要删除该监管账户吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+        }).then(()=>{
+           sqjgzhApi.deleteAccount(row.zjjgzhId).then(ret=>{
+            if(ret.code===200){
+              this.$message.success("操作成功");
+                this.fetchData();
+            }else{
+              this.$message.error(ret.message||"操作失败")
             }
           })
-        }
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消操作'
+          });
+        });
       },
       handleGetFile() {
         this.dialogVisible = true;
@@ -343,8 +350,6 @@
         })
       },
       handlePrintFile() {
-
-        document.getElementById('printTable').classList.add('printTable');
         let obj = document.getElementById('printData');
         let newWindow = window.open("打印窗口", "_blank");
         let docStr = obj.innerHTML;

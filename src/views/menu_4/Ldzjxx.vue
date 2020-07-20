@@ -157,10 +157,10 @@
          
         </el-table>
       </ContainerTwoType>
-       <div id="printData1" style="width:700px;margin:0 auto;display:none">
+       <div id="printData1" style="width:1000px;margin:0 auto;display:none">
       <h2 style="text-align:center;font-weight:bold">预售资金监管</h2>
 
-       <table style="width:700px;margin:0 auto;text-align:center;font-size:16px;text-height:25px" border="1" cellspacing="0"> 
+       <table style="width:1000px;margin:0 auto;text-align:center;font-size:16px;text-height:25px" border="1" cellspacing="0"> 
             <thead>
                 <th style="text-align:center" colspan="8">【{{this.ldxxMc}}】截止到{{this.date}}期间的缴存记录</th>
                 <tr>
@@ -191,9 +191,9 @@
       </table>
        </div>
 
-        <div id="printData2" style="width:700px;margin:0 auto;display:none">
+        <div id="printData2" style="width:1000px;margin:0 auto;display:none">
       <h2 style="text-align:center;font-weight:bold">预售资金监管</h2>
-       <table style="width:700px;margin:0 auto;text-align:center;font-size:16px;text-height:25px" border="1" cellspacing="0"> 
+       <table style="width:1000px;margin:0 auto;text-align:center;font-size:16px;text-height:25px" border="1" cellspacing="0"> 
             <thead>
                 <th style="text-align:center" colspan="8">【{{this.ldxxMc}}】截止到{{this.date}}期间的缴存记录</th>
                 <tr>

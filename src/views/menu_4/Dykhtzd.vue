@@ -36,12 +36,13 @@
           <el-table-column
             align="center"
             label="流程"
-            prop="zjjgzhLczt">           
+            prop="zjjgzhShzt">           
           </el-table-column>
          
           <el-table-column
             align="center"
             label="操作"
+            width="200px"
           >
             <template slot-scope="scope">
               <el-button
@@ -177,29 +178,23 @@
       fetchData(){
         console.log(this.$store.state.projectData.xmxxXmbh);
         
-       sqjgzhApi.getYkhAccount(this.currentPage, this.pageSize,this.$store.state.projectData.xmxxXmbh,5).then(ret => {
+       sqjgzhApi.getYkhAccount(this.currentPage, this.pageSize,this.$store.state.projectData.xmxxXmbh,2).then(ret => {
          //console.log(ret);
          
           this.pages=ret.data.pages;
           this.tableData = ret.data.records;
           this.total = ret.data.total;
-          this.tableData.map(function (val) {
-              if (val.zjjgzhLczt == 0) {
-                val.zjjgzhLczt = '收件'
-              } else if (val.zjjgzhLczt == 1) {
-                val.zjjgzhLczt = '上报'
-              } else if (val.zjjgzhLczt == 2) {
-                val.zjjgzhLczt = '初审'
-              } else if (val.zjjgzhLczt == 3) {
-                val.zjjgzhLczt = '复审'
-              } else if (val.zjjgzhLczt == 4) {
-                val.zjjgzhLczt = '终审'
-              } else if (val.zjjgzhLczt == 5) {
-                val.zjjgzhLczt = '已开户'
-              }  else if (val.zjjgzhLczt == 6) {
-                val.zjjgzhLczt = '退件'
-              }     
-            })
+          this.tableData.forEach(function(row,index){
+            if(row.zjjgzhShzt===0){
+              row.zjjgzhShzt="新建"
+            }else if(row.zjjgzhShzt===1){
+              row.zjjgzhShzt="审核中"
+            }else if(row.zjjgzhShzt===2){
+              row.zjjgzhShzt="审核通过"
+            }else if(row.zjjgzhShzt===3){
+              row.zjjgzhShzt="驳回"
+            }
+          })
           
         })
      },

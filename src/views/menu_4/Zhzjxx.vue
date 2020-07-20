@@ -20,6 +20,7 @@
           :data="tableData"
           show-summary
           sum-text="汇总信息"
+          :summary-method="getSummaries"
           style="width: 100%">
           
           <el-table-column
@@ -45,14 +46,14 @@
           
          
         </el-table>
-        <el-pagination
+        <!-- <el-pagination
           background
           layout="prev, pager, next, total"
           @current-change="currentChange"
           :current-page="currentPage"
           :page-size="pageSize"
           :total="total">
-        </el-pagination>
+        </el-pagination> -->
       
       </TitleTable>
   <div id="printData" style="width:700px;margin:0 auto;display:none">
@@ -78,7 +79,9 @@
                     <th>{{item.syje}}</th>
                 </tr>
             </tbody>
-            <th style="text-align:center">汇总信息</th><th style="text-align:center" colspan="4">{{}}</th>
+            <th style="text-align:center">汇总信息</th><th style="text-align:center" >{{this.rowNum}}</th>
+            <th style="text-align:center" >{{this.amount1}}</th><th style="text-align:center" >{{this.amount2}}</th>
+            <th style="text-align:center" >{{this.amount3}}</th>
       </table>
        </div>
   </div>
@@ -120,7 +123,8 @@
         zhzjxxApi.getInfo().then(ret => {
          console.log(ret);
          console.log("where is my ...");
-          this.tableData = ret.data;          
+          this.tableData = ret.data;    
+           this.rowNum=this.tableData.length;      
         })
         this.xmxxKfs=this.$store.state.projectData.xmxxKfs;
        
@@ -137,6 +141,41 @@
        let myDate = new Date();
       this.date=myDate.toLocaleDateString();
      },
+      getSummaries(param) {
+        let { columns, data } = param;
+        let sums = [];
+        columns.forEach((column, index) => {            
+          if (index === 0) {
+            sums[index] = "汇总信息";
+            return;
+          }
+          if (index === 1) {
+             
+            sums[index] = this.rowNum;
+            return;
+          }
+          
+        let values = data.map(item => Number(item[column.property]));  
+          if (!values.every(value => isNaN(value))) {
+            sums[index] = values.reduce((prev, curr) => {
+              const value = Number(curr);
+              if (!isNaN(value)) {
+                return prev + curr;
+              } else {
+                return prev;
+              }
+            }, 0);
+            sums[index] += "";
+          } else {
+            sums[index] = '';
+          }
+        });
+        this.amount1=sums[2];
+        this.amount2=sums[3];
+        this.amount3=sums[4];
+        
+        return sums;
+      },
       currentChange(num) {
         this.currentPage = num;
         this.fetchData()

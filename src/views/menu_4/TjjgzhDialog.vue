@@ -457,8 +457,8 @@
     },
     created() {
       // todo 这两个请求放到打开时候发送
-      this.getLd();
-      this.getBank();
+      // this.getLd();
+      // this.getBank();
 
     },
     methods: {
@@ -527,7 +527,7 @@
         });
       },
       getLd() {
-        sqjgzhApi.getLd().then(ret => {
+        sqjgzhApi.getLd(this.$store.state.projectData.xmxxXmbh).then(ret => {
           this.zjjgzhLdbh = ret.data;
         });
       },
@@ -710,17 +710,25 @@
       },
       setMode(mode, id) {
         if (mode === 1) {
-          sqjgzhApi.getProjectById(id).then(ret => {
+
+            this.getLd();
+            this.getBank();
+            console.log(".....");
+            
             this.form.xmxxXmbh = this.$store.state.projectData.xmxxXmbh;
             this.form.zjjgzhXmmc = this.$store.state.projectData.xmxxXmmc;
             this.form.zjjgzhGsmc = this.$store.state.projectData.xmxxKfs;
-          });
+         
           this.getBussinessType();
         } else if (mode === 2) {
+         
           this.DetailData(id);
           this.fetchOpinion(this.zjjgzhYwzh);
           this.fetchShouJianByYwzh(this.zjjgzhYwzh);
         } else if (mode === 3) {
+           this.getLd();
+          this.getBank();
+            console.log(".....");
           this.getBussinessType();
           sqjgzhApi.getAccountInfoById(id).then(ret => {
             //console.log(ret);
