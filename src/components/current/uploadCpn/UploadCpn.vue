@@ -29,14 +29,14 @@
 </template>
 
 <script>
-  import {yushouContractApi} from "@/api/menu_3/yushowContract";
+  import {filesApi} from "@/api/files";
 
   export default {
     name: "UploadCpn",
     props: {
       url: {
         type: String,
-        default: ""
+        default: filesApi.upload
       },
       fieldName: {
         type: String,
@@ -72,10 +72,17 @@
       },
       handleUpload(event, file, fileList) {
         this.$emit("addFile", file)
-
       },
       handleRemove(file, fileList) {
-        this.$emit("delFile", file)
+        if(this.$listeners.delFile){
+          this.$emit("delFile", file)
+        }else{
+          if (file.fujianId) {
+            filesApi.delFile(file.fujianId)
+          } else {
+            filesApi.delFile(file.response.data[0].fujianId)
+          }
+        }
       },
     }
   }

@@ -12,21 +12,24 @@
       style="width: 100%">
       <el-table-column
         label="楼栋名称"
-        width="200"
+        align="center"
         prop="ldxxMc">
       </el-table-column>
       <el-table-column
         label="楼栋编号"
         width="120"
+        align="center"
         prop="ldxxLdbh">
       </el-table-column>
       <el-table-column
         width="100"
-        label="建筑面积	"
+        label="建筑面积"
+        align="center"
         prop="ldxxJzmj">
       </el-table-column>
       <el-table-column
         width="80"
+        align="center"
         label="总层数"
         prop="ldxxZgcs">
       </el-table-column>
@@ -37,11 +40,12 @@
       </el-table-column>
       <el-table-column
         width="80"
+        align="center"
         label="一梯几户"
         prop="ldxxYtjh">
       </el-table-column>
       <el-table-column
-        width="100"
+        align="center"
         label="房屋类型"
         prop="fwlx">
       </el-table-column>
@@ -53,13 +57,14 @@
       <el-table-column
         align="center"
         label="操作"
+        width="300"
       >
         <template slot-scope="scope">
           <el-button
             size="mini"
-            @click="handleDetail(scope.$index, scope.row)">楼盘表
+            @click="handleDetail(scope.$index, scope.row)">楼盘表生成房间
           </el-button>
-          <el-button
+          <!--<el-button
             size="mini"
             :disabled="scope.row.ldxxShzt===1||scope.row.ldxxShzt===2"
             @click="handleCreate(scope.$index, scope.row)">自动生成
@@ -68,15 +73,14 @@
             size="mini"
             :disabled="scope.row.ldxxShzt===1||scope.row.ldxxShzt===2"
             @click="handleCreate2(scope.$index, scope.row)">手动输入
-          </el-button>
+          </el-button>-->
         </template>
       </el-table-column>
     </el-table>
     <el-dialog
-      :title="dialogTitle"
+      title="楼盘表生成房间"
       center
-      width="800px"
-      :before-close="closeConfirm"
+      width="1200px"
       slot="dialog"
       :visible.sync="dialogVisible"
       @close="dialogVisible = false"
@@ -144,11 +148,9 @@
         }
       },
       handleDetail(index, item) {
-        this.mode=3;
         this.dialogVisible = true;
-        this.dialogTitle = "楼盘图例";
         this.$nextTick(()=>{
-          this.$refs.dialog.fetchRoomStructure(item.ldxxId);
+          this.$refs.dialog.setMode(0, item.ldxxId)
         })
       },
       handleCreate(index, item) {

@@ -71,6 +71,7 @@
             </el-option>
           </el-select>
         </el-form-item>
+        <!--
         <el-form-item label="业务类别">
           <el-cascader
             clearable
@@ -78,7 +79,7 @@
             :options="options"
             :props="{ expandTrigger: 'hover' }"
           ></el-cascader>
-        </el-form-item>
+        </el-form-item>-->
         <!-- <el-form-item label="监管账户名称">
           <el-input v-model="form.zjjgzhZhmc"></el-input>
         </el-form-item> -->
@@ -188,13 +189,30 @@
               <div class="itemIndex">3</div>
               <div class="itemTitle">审核意见</div>
             </div>
-            <InfoList
-              v-for="(item, index) in opinionList"
-              :info="[
-              {key:'审批人', value: item.approvePerson},
-              {key: '审核时间', value: item.approveTime},
-              {key: '审批意见', value: item.approveOpinion}]"
-            />
+            <el-table :data="opinionList" size="mini" >
+              <el-table-column label="流程" align="center" prop="processName"/>
+              <el-table-column label="时间" align="center" prop="approveTime" width="150">
+                <template #default="{row}">
+                  <div v-if="row.processName==='受理'">
+                    <div>{{row.approveTime}}</div>
+                    <div v-if="row.promiseDate">允诺时间:{{row.promiseDate}}</div>
+                  </div>
+                  <div v-else>
+                    <div>{{row.approveTime}}</div>
+                  </div>
+                </template>
+              </el-table-column>
+              <el-table-column label="审核人" align="center" prop="approvePerson"/>
+              <el-table-column label="结果" align="center" prop="processResult">
+                <template #default="{row}">
+                  <div v-if="row.processResult===1 && row.processName!=='受理'">通过</div>
+                  <div v-if="row.processResult===1 && row.processName==='受理'">受理</div>
+                  <div class="danger" v-if="row.processResult===2 && row.processName!=='受理'">驳回</div>
+                  <div class="danger" v-if="row.processResult===2 && row.processName==='受理'">退件</div>
+                </template>
+              </el-table-column>
+              <el-table-column label="意见" align="center" prop="approveOpinion" width="500"/>
+            </el-table>
           </div>
         </el-tab-pane>
       </el-tabs>
@@ -379,6 +397,7 @@
   import {businessApi} from "@/api/menu_3/__Business";
   import CenterButton from "@/components/common/centerButton/CenterButton";
   import UploadCpn from "@/components/current/uploadCpn/UploadCpn";
+  import {filesApi} from "@/api/files";
 
   export default {
     name: "TjjgzhDialog",
@@ -574,10 +593,6 @@
       },
       addData() {
         let ywxlId = 0;
-        if (this.ywlx.length < 2) {
-          this.$message.error("请选择业务类型")
-          return
-        }
 
         ywxlId = this.ywlx[1];
         sqjgzhApi.addAccount({
@@ -585,7 +600,7 @@
           zjjgzhLdmc: this.ldName,
           zjjgzhYhmc: this.bankName,
           kfsId: this.$store.state.projectData.kfsId,
-          ywxlBh: ywxlId
+          ywxlBh: "8002001"
         })
           .then(ret => {
             if (ret.code !== 200) {
@@ -598,10 +613,7 @@
       },
       updateData() {
         let ywxlId = 0;
-        if (this.ywlx.length < 2) {
-          this.$message.error("请选择业务类型")
-          return
-        }
+
 
         ywxlId = this.ywlx[1];
         sqjgzhApi.updateAccount({
@@ -609,7 +621,7 @@
           zjjgzhLdmc: this.ldName,
           zjjgzhYhmc: this.bankName,
           kfsId: this.$store.state.projectData.kfsId,
-          ywxlBh: ywxlId
+          ywxlBh: "8002001"
         })
           .then(ret => {
             if (ret.code !== 200) {
@@ -626,9 +638,9 @@
           this.form1 = ret.data.supervisedAccount;
         });
       },
-      fetchOpinion(id) {
-        sqjgzhApi.getShlcDetail(id).then(ret => {
-          this.opinionList = ret.data
+      fetchOpinion() {
+        filesApi.getAuditInfo(this.logId).then(ret=>{
+          this.opinionList = ret.data;
         })
       },
       fetchShouJian(id) {
@@ -708,7 +720,7 @@
           this.updateData();
         }
       },
-      setMode(mode, id) {
+      setMode(mode, id, ...args) {
         if (mode === 1) {
           sqjgzhApi.getProjectById(id).then(ret => {
             this.form.xmxxXmbh = this.$store.state.projectData.xmxxXmbh;
@@ -718,7 +730,8 @@
           this.getBussinessType();
         } else if (mode === 2) {
           this.DetailData(id);
-          this.fetchOpinion(this.zjjgzhYwzh);
+          this.logId = args[0]
+          this.fetchOpinion();
           this.fetchShouJianByYwzh(this.zjjgzhYwzh);
         } else if (mode === 3) {
           this.getBussinessType();

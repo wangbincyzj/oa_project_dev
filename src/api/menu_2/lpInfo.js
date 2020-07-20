@@ -42,6 +42,13 @@ let delRoom = function (id) {
 }
 
 /**
+ * 批量删除房间
+ */
+let delRooms = function (ids) {
+  return requests.get("data_center/room/delByIds", {ids})
+}
+
+/**
  * 提交楼栋审批
  */
 let submitForReview = function (ldxxId) {
@@ -55,5 +62,6 @@ export const lpInfoApi = {
   getRoomDetail,
   updateRoom,
   delRoom,
-  submitForReview
+  submitForReview,
+  delRooms
 }

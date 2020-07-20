@@ -14,8 +14,8 @@
         :data="tableData"
         style="width: 100%">
         <el-table-column
-          label="项目编号"
-          prop="xmxxXmbh">
+          label="入网编号"
+          prop="kfsRwbh">
         </el-table-column>
         <el-table-column
           label="项目名称"
@@ -40,19 +40,9 @@
         <el-table-column
           align="center"
           label="操作"
-          width="400px"
+          width="300px"
         >
           <template slot-scope="scope">
-
-            <el-button
-              size="mini"
-              :disabled="scope.row.xmxxShzt===1||scope.row.xmxxShzt===2"
-              @click="handleEdit(scope.$index, scope.row)">传图
-            </el-button>
-            <el-button
-              size="mini"
-              @click="handleEdit(scope.$index, scope.row)">管图
-            </el-button>
             <el-button
               size="mini"
               :disabled="scope.row.xmxxShzt===1||scope.row.xmxxShzt===2"

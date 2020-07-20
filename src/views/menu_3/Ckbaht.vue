@@ -122,7 +122,7 @@
       },
       handlePrint(item){
         window.open(`#/printView/ysht?id=${item.htId}`)
-      }
+      },
     }
   }
 </script>

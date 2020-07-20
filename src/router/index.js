@@ -63,6 +63,10 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  if(to.path.indexOf("printView")>0){
+    next()
+    return
+  }
   let tab = {title: to.meta.breadcrumb[2], path: to.path, meta:{}}
   let index = store.state.tabs.findIndex(item=>item.title===tab.title)
   if(index===-1)

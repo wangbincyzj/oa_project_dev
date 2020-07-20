@@ -24,7 +24,7 @@ let getProjectById = function (id) {
  * 新增账户
  */
 let addAccount = function (_form) {
-  return requests8083.post("data-presale-funds/supervisedAccount/save", _form)
+  return requests8083.post("data-presale-funds/supervisedAccount/save", {..._form, zjjgzhJczhbs:1})
 }
 
 /**
@@ -204,14 +204,21 @@ let addOne = function (_form) {
 /**
  * 上传文件的地址
  */
-let upload = config.productMode ? "/data_center/common/upload" : `http://192.168.1.${config.baseIP}:8090/data_center/common/upload`
-let preview = config.productMode ? "/data_center/common/getFile?id=" : `http://192.168.1.${config.baseIP}:8090/data_center/common/getFile?id=`
+let upload = config.productMode ? "/data_center/common/upload" : `http://${config.baseIP}:8090/data_center/common/upload`
+let preview = config.productMode ? "/data_center/common/getFile?id=" : `http://${config.baseIP}:8090/data_center/common/getFile?id=`
 
 /**
  * 删除收件图片
  */
 let delFile = function (ids) {
   return requests.post("data_center/common/delFiles", [ids])
+}
+
+/**
+ * 查询收件
+ */
+let getFiles = function (logId) {
+  return requests.post("data_center/common/files", {logId})
 }
 
 
@@ -239,5 +246,6 @@ export const sqjgzhApi = {
   delOne,
   upload,
   preview,
-  delFile
+  delFile,
+  getFiles
 }

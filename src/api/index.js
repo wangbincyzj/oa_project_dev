@@ -27,7 +27,6 @@ axios.interceptors.response.use(resp => {
   }else{
     return resp.data
   }
-  // return resp.data
 }, reason => {
   return {code: 999, message: "网络错误,请检查网络连接"}
 });

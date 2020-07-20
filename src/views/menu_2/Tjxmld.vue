@@ -68,17 +68,9 @@
       <el-table-column
         align="center"
         label="操作"
-        width="350"
+        width="250"
       >
         <template slot-scope="scope">
-          <el-button
-            size="mini"
-            @click="handleEdit(scope.$index, scope.row)">传图
-          </el-button>
-          <el-button
-            size="mini"
-            @click="handleEdit(scope.$index, scope.row)">管图
-          </el-button>
           <el-button
             size="mini"
             @click="handleDetail(scope.$index, scope.row)">详情
@@ -99,7 +91,7 @@
       :title="dialogTitle"
       center
       width="1200px"
-      :before-close="closeConfirm"
+      :before-close="dialogReset"
       slot="dialog"
       :visible.sync="dialogVisible"
       @close="dialogVisible = false"
@@ -120,6 +112,7 @@
   import TjxmldDialog from "@/views/menu_2/TjxmldDialog";
   import {wsfcxmApi} from "@/api/menu_2/wsfcxm";
   import {tjldxmApi} from "@/api/menu_2/tjldxm";
+
   export default {
     name: "Tjxmld",
     mixins: [mixins.dialogMixin],

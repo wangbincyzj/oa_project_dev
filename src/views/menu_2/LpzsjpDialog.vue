@@ -83,7 +83,7 @@
       </el-form-item>
 
     </el-form>
-    <div style="display: flex; justify-content: center; margin-top: 10px">
+    <div style="display: flex; justify-content: center; margin-top: 10px" v-if="!confirm">
       <el-button @click="handleSave" size="mini">保存</el-button>
       <el-button @click="handleDelete" size="mini" type="danger">删除</el-button>
     </div>
@@ -98,6 +98,12 @@
   export default {
     name: "LpzsjpDialog",
     components: {CenterButton},
+    props:{
+      confirm:{
+        type: Boolean,
+        defalut: false
+      }
+    },
     data() {
       return {
         loading: false,

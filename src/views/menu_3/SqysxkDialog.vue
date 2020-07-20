@@ -25,12 +25,7 @@
           <el-input v-model="form1.xkzLdmc"/>
         </el-form-item>
         <el-form-item label="业务类别">
-          <el-cascader
-            clearable
-            v-model="ywlx"
-            :options="options"
-            :props="{ expandTrigger: 'hover' }"
-          ></el-cascader>
+          <el-input disabled value="新增预售许可"/>
         </el-form-item>
         <br/>
         <el-form-item label="住宅面积">
@@ -255,12 +250,7 @@
       },
       handleAdd() {
         this.form1.xmxxId = this.$store.state.projectData.xmxxId;
-        let ywxlId = 0;
-        if (this.ywlx.length < 2) {
-          this.$message.error("请选择业务类型")
-          return
-        }
-        ywxlId = this.ywlx[1]
+        let ywxlId = 8001001;
         if (this.mode === 1) {
           yushowApi.save({...this.form1, ldxxIds: this.form1.ldxxIds.join(","), ywxlBh: ywxlId}).then(ret => {
             if (ret.code === 200) {

@@ -42,6 +42,13 @@ let getBuildingDetail = function (id) {
   return requests.get("data_center/building/selectById", {id})
 }
 
+/**
+ * 获取自动生成房间限制
+ */
+let getBuildingLimit = function(id){
+  return requests.get("data_center/room/getBuildInfo", {ldxxId:id})
+}
+
 
 /**
  * 根据楼栋ID自审入库
@@ -59,5 +66,6 @@ export const tjldxmApi = {
   delBuilding,
   updateBuilding,
   getBuildingDetail,
-  selfInspection
+  selfInspection,
+  getBuildingLimit
 }

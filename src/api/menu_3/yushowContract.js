@@ -272,8 +272,8 @@ let auditContract = function ({businessId, processName, processId, approveOpinio
 
 /*---------------------------------图片上传与获取--------------------------------*/
 /*arg:files*/
-let uploadPic = config.productMode ? "/data-presale-license/contract/upload" : `http://192.168.1.${config.baseIP}:8094/data-presale-license/contract/upload`
-let previewPic = config.productMode ? "/data-presale-license/contract/getFile?id=" : `http://192.168.1.${config.baseIP}:8094/data-presale-license/contract/getFile?id=`
+let uploadPic = config.productMode ? "/data-presale-license/contract/upload" : `http://${config.baseIP}:8094/data-presale-license/contract/upload`
+let previewPic = config.productMode ? "/data-presale-license/contract/getFile?id=" : `http://${config.baseIP}:8094/data-presale-license/contract/getFile?id=`
 
 
 /*---------------------------------合同变更相关--------------------------------*/

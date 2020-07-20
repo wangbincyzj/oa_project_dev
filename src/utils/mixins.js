@@ -63,27 +63,31 @@ const myPagerMixin = {
   },
   methods:{
     mixinCurrentChange(num) {
+      this.currentPage = num;
       if(this.pagerChange){
-        this.currentPage = num;
         this.pagerChange()
       }else{
-        throw Error("必须实现pagerChange方法")
+        if(this.fetchTableData && this.fetchTableData.length===0){
+          this.fetchTableData();
+        }else{
+          throw Error("必须实现pagerChange方法");
+        }
       }
     },
     mixinSizeChange(num){
+      this.pageSize = num
       if(this.sizeChange){
-        this.pageSize = num
         this.sizeChange()
       }else{
-        throw Error("必须实现sizeChange方法")
+        if(this.fetchTableData && this.fetchTableData.length===0){
+          this.fetchTableData();
+        }else{
+          throw Error("必须实现sizeChange方法");
+        }
       }
     }
   }
 }
-
-
-
-
 
 
 

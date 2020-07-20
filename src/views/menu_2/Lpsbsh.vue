@@ -1,37 +1,37 @@
 <template>
   <TitleTable title="审核上报">
     <el-table
+      class="myTable-p0"
+      size="mini"
       v-loading="loading"
-      style="width: 100%"
       :data="tableData">
       <el-table-column
         prop="ldxxMc"
         align="center"
-        width="80"
         label="楼栋名称">
       </el-table-column>
       <el-table-column
         prop="ldxxLdbh"
         align="center"
-        width="80"
+        width="60"
         label="楼栋编号">
       </el-table-column>
       <el-table-column
         prop="ldxxJzmj"
         align="center"
-        width="80"
+        width="60"
         label="建筑面积">
       </el-table-column>
       <el-table-column
         prop="ldxxKsmj"
         align="center"
-        width="80"
+        width="60"
         label="可售面积">
       </el-table-column>
       <el-table-column
         prop="bksmj"
         align="center"
-        width="90"
+        width="60"
         label="不可售面积">
       </el-table-column>
       <el-table-column
@@ -41,13 +41,13 @@
         <el-table-column
           prop="ldxxZzmj"
           align="center"
-          width="80"
+          width="60"
           label="面积">
         </el-table-column>
         <el-table-column
           prop="ldxxZzts"
           align="center"
-          width="80"
+          width="60"
           label="套数">
         </el-table-column>
       </el-table-column>
@@ -57,13 +57,13 @@
         <el-table-column
           prop="ldxxFzzmj"
           align="center"
-          width="80"
+          width="60"
           label="面积">
         </el-table-column>
         <el-table-column
           prop="ldxxFzzts"
           align="center"
-          width="80"
+          width="60"
           label="套数">
         </el-table-column>
       </el-table-column>
@@ -82,13 +82,13 @@
       <el-table-column
         prop="ldxxYtjh"
         align="center"
-        width="80"
+        width="60"
         label="一梯几户">
       </el-table-column>
       <el-table-column
         prop="fwlx"
         align="center"
-        width="100"
+        width="60"
         label="房屋类型">
       </el-table-column>
       <el-table-column
@@ -97,45 +97,52 @@
         <el-table-column
           prop="zszt"
           align="center"
-          width="80"
+          width="60"
           label="自审状态">
         </el-table-column>
         <el-table-column
           prop="lpzt"
           align="center"
-          width="80"
+          width="60"
           label="楼盘状态">
         </el-table-column>
         <el-table-column
           prop="yfyj"
           align="center"
-          width="80"
+          width="60"
           label="一房一价">
         </el-table-column>
         <el-table-column
           prop="ldxxZjjgszzt"
           align="center"
-          width="80"
+          width="60"
           label="预售资金">
+          <template #default="{row}">
+            {{row.ldxxZjjgszzt? "√": "×"}}
+          </template>
         </el-table-column>
         <el-table-column
           prop="ldxxBzszzt"
           align="center"
-          width="80"
+          width="60"
           label="维修资金">
+          <template #default="{row}">
+            {{row.ldxxBzszzt? "√": "×"}}
+          </template>
         </el-table-column>
       </el-table-column>
       <el-table-column
         label="操作"
+        width="250"
         align="center">
         <template slot-scope="scope">
           <el-button
             size="mini"
-            @click="handleDetail(scope.$index, scope.row)">查看楼盘表
+            @click="handleDetail(scope.$index, scope.row)">楼盘表
           </el-button>
           <el-button
             size="mini"
-            @click="handleBuildingDetail(scope.$index, scope.row)">楼栋详情
+            @click="handleBuildingDetail(scope.$index, scope.row)">详情
           </el-button>
           <el-button
             size="mini"
@@ -150,7 +157,6 @@
       :title="dialogTitle"
       center
       width="1200px"
-      :before-close="closeConfirm"
       slot="dialog"
       :visible.sync="dialogVisible"
       @close="dialogVisible = false"
@@ -198,7 +204,7 @@
           case 1:
             return "审核中";
           case 2:
-            return "通过";
+            return "√";
           case 3:
             return "撤回";
           default:
@@ -208,9 +214,9 @@
       _mapStatusNumToString2(_num) {
         switch (_num) {
           case 0:
-            return "未审";
+            return "未自审";
           case 1:
-            return "已审";
+            return "√";
           default:
             return "Error"
         }

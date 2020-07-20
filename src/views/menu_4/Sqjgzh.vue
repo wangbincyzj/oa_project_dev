@@ -48,7 +48,10 @@
         <el-table-column
           align="center"
           label="状态"
-          prop="zjjgzhLczt">
+          prop="zjjgzhShzt">
+          <template #default="{row}">
+            {{row.zjjgzhShzt|shztFilter}}
+          </template>
         </el-table-column>
         <el-table-column
           align="center"
@@ -60,12 +63,12 @@
               size="mini"
               type="primary"
               @click="handleGetFile(scope.$index, scope.row)"
-
-              :disabled="scope.row.zjjgzhLczt !== '收件'">确认收件
+              :disabled="scope.row.zjjgzhShzt===1 ||scope.row.zjjgzhShzt===2">确认收件
             </el-button>
             <el-button
               size="mini"
               type="primary"
+              :disabled="scope.row.zjjgzhShzt===1 ||scope.row.zjjgzhShzt===2"
               @click="handleManageFile(scope.$index, scope.row)">管理收件
             </el-button>
             <el-button
@@ -92,19 +95,19 @@
               size="mini"
               type="primary"
               @click="handleUpdate(scope.$index, scope.row)"
-              :disabled="scope.row.zjjgzhLczt !== '收件'">修改
+              :disabled="scope.row.zjjgzhShzt===1 ||scope.row.zjjgzhShzt===2">修改
             </el-button>
             <el-button
               size="mini"
               type="primary"
               @click="handleInform(scope.$index, scope.row)"
-              :disabled="scope.row.zjjgzhLczt !== '收件'">上报
+              :disabled="scope.row.zjjgzhShzt===1 ||scope.row.zjjgzhShzt===2">上报
             </el-button>
             <el-button
               size="mini"
               type="primary"
               @click="handleDelete(scope.$index, scope.row)"
-              :disabled="scope.row.zjjgzhLczt !== '收件'">删除
+              :disabled="scope.row.zjjgzhShzt===1 ||scope.row.zjjgzhShzt===2">删除
             </el-button>
           </template>
         </el-table-column>
@@ -182,13 +185,10 @@
         navInfo: {
           loading: false,
           list: [
-            {id: 1, name: "别问"},
-            {id: 2, name: "问就是不知道"},
           ]
         },
         printTable: [],
         tableData: [
-          {id: 1, companyName: "公司", itemName: "项目", ldName: "楼栋1", phone: "110", status: "开户", operation: "收件操作"},
         ],
         search: "",
         dialogVisible: false,
@@ -227,23 +227,6 @@
           this.pages = ret.data.pages;
           this.tableData = ret.data.records;
           this.total = ret.data.total;
-          this.tableData.map(function (val) {
-            if (val.zjjgzhLczt == 0) {
-              val.zjjgzhLczt = '收件'
-            } else if (val.zjjgzhLczt == 1) {
-              val.zjjgzhLczt = '上报'
-            } else if (val.zjjgzhLczt == 2) {
-              val.zjjgzhLczt = '已初审'
-            } else if (val.zjjgzhLczt == 3) {
-              val.zjjgzhLczt = '已复审'
-            } else if (val.zjjgzhLczt == 4) {
-              val.zjjgzhLczt = '已终审'
-            } else if (val.zjjgzhLczt == 5) {
-              val.zjjgzhLczt = '已开户'
-            } else if (val.zjjgzhLczt == 6) {
-              val.zjjgzhLczt = '退件'
-            }
-          })
         })
       },
 
@@ -272,7 +255,7 @@
         this.zjjgzhYwzh = this.currentRow.zjjgzhYwzh;
 
         this.$nextTick(() => {
-          this.$refs.dialog.setMode(2, this.currentRow.zjjgzhId);
+          this.$refs.dialog.setMode(2, this.currentRow.zjjgzhId, row.logId);
           //this.$refs.dialog.reset();
         })
       },
