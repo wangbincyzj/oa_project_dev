@@ -4,13 +4,13 @@ export default {
   title: "项目管理",
   path: "/menu_2",
   class: "icon-dc-icon-beiangaoqishuliang",
-  redirect: "/menu_2/xmlcgl",
+  redirect: "/menu_2/wsfcxm",
   routes:[
     {
       title: "项目信息管理",
       path: "/xmxxgl",
       group:[
-        {title: "项目流程管理", path: "xmlcgl"},
+        // {title: "项目流程管理", path: "xmlcgl"},
         {title: "完善房产项目", path: "wsfcxm"},
         {title: "添加项目楼栋", path: "tjxmld"},
         {title: "添加户室房间", path: "tjhsfj"},
