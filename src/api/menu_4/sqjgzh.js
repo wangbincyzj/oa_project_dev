@@ -174,9 +174,9 @@ let queryReceiving = function (id) {
  * @returns {Promise<AxiosResponse<any>>}
  */
 
-let getYkhAccount = function (page, size = 20, xmxxXmbh, zjjgzhLczt) {
+let getYkhAccount = function (page, size = 20, xmxxXmbh, zjjgzhShzt) {
   return requests8083.get("data-presale-funds/supervisedAccount/selectPage", {
-    current: page, size, xmxxXmbh, zjjgzhLczt
+    current: page, size, xmxxXmbh, zjjgzhShzt
   })
 }
 

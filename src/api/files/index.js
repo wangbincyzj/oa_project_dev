@@ -2,7 +2,11 @@ import {config} from "@/api/baseConfig";
 import {requests} from "@/api";
 
 /**
+<<<<<<< HEAD
  * 上传文件的地址{files:[], logId:""}
+=======
+ * 上传文件的地址
+>>>>>>> sy_dev
  */
 let upload = config.productMode ? "/data_center/common/upload" : `http://${config.baseIP}:8090/data_center/common/upload`
 let preview = config.productMode ? "/data_center/common/getFile?id=" : `http://${config.baseIP}:8090/data_center/common/getFile?id=`
@@ -27,6 +31,7 @@ let getFiles = function (logId) {
 let getAuditInfo = function (logId) {
   return requests.get("data_center/approveProcess/list", {logId})
 }
+
 
 
 export const filesApi = {

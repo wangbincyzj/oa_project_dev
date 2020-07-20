@@ -194,7 +194,7 @@
         dialogVisible: false,
         currentPage: 1,
         pageSize: 10,
-        total: 20,
+        total: 0,
         pages: 1,
         dialogTitle: "",
         dialogType: 1,
@@ -259,53 +259,67 @@
           //this.$refs.dialog.reset();
         })
       },
-      handleDelete(index, row) {
-        console.log(this.currentRow);
-        if (window.confirm("确定要删除该监管账户吗?")) {
-          sqjgzhApi.deleteAccount(this.currentRow.zjjgzhId).then(ret => {
-            console.log(this.currentRow.zjjgzhId);
-            if (ret.code === 200) {
-              this.$message.success("删除成功");
-              this.fetchData();
-            } else {
-
-              this.$message.error(ret.message)
+    
+      
+      handleDelFile(index,row){
+        this.$confirm('确定要清除收件吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+        }).then(()=>{
+         sqjgzhApi.deleteSj(this.currentRow.zjjgzhYwzh).then(ret=>{
+            if(ret.code===200){
+              this.$message.success("操作成功");
+                this.fetchData();
+            }else{
+              this.$message.error(ret.message||"操作失败")
             }
           })
-        }
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消操作'
+          });
+        });
       },
-      handleDelFile(index, row) {
-        console.log(this.currentRow);
-        if (window.confirm("确定要清除收件吗?")) {
-          sqjgzhApi.deleteSj(this.currentRow.zjjgzhYwzh).then(ret => {
-            console.log(this.currentRow.zjjgzhYwzh);
-            if (ret.code === 200) {
-              this.$message.success("删除成功");
-              this.fetchData();
-            } else {
-              this.$message.error(ret.message)
+       handleInform(index,row){
+        this.$confirm('确定要上报该监管账户吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+        }).then(()=>{
+          sqjgzhApi.informAccount(row.zjjgzhId).then(ret=>{
+            if(ret.code===200){
+              this.$message.success("操作成功");
+                this.fetchData();
+            }else{
+              this.$message.error(ret.message||"操作失败")
             }
           })
-        }
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消操作'
+          });
+        });
       },
-      loadPic() {
-      },
-      managePic() {
-      },
-      handleInform(index, row) {
-        console.log(this.currentRow);
-        if (window.confirm("确定要上报该监管账户吗?")) {
-          sqjgzhApi.informAccount(this.currentRow.zjjgzhId).then(ret => {
-            console.log(this.currentRow.zjjgzhId);
-            if (ret.code === 200) {
-              this.$message.success("上报成功");
-              this.fetchData();
-            } else {
-
-              this.$message.error(ret.message)
+      handleDelete(index,row){
+        this.$confirm('确定要删除该监管账户吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+        }).then(()=>{
+           sqjgzhApi.deleteAccount(row.zjjgzhId).then(ret=>{
+            if(ret.code===200){
+              this.$message.success("操作成功");
+                this.fetchData();
+            }else{
+              this.$message.error(ret.message||"操作失败")
             }
           })
-        }
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消操作'
+          });
+        });
       },
       handleGetFile() {
         this.dialogVisible = true;
@@ -326,8 +340,6 @@
         })
       },
       handlePrintFile() {
-
-        document.getElementById('printTable').classList.add('printTable');
         let obj = document.getElementById('printData');
         let newWindow = window.open("打印窗口", "_blank");
         let docStr = obj.innerHTML;
