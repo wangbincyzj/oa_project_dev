@@ -103,7 +103,7 @@
         type="border-card"
         value="first"
       >
-        <el-tab-pane label="1.楼栋信息详情" name="first">
+        <el-tab-pane label="1.申报使用信息详情" name="first">
 
           <div class="dialogItem">
             <div class="itemIndex">1</div>
@@ -117,37 +117,37 @@
             :model="form1"
           >
             <el-form-item label="公司名称">
-              <el-input v-model="form1.ldxxMc"></el-input>
+              <el-input v-model="form1.shiyongKfs"></el-input>
             </el-form-item>
             <el-form-item label="项目名称">
-              <el-input v-model="form1.ldxxJzmj"></el-input>
+              <el-input v-model="form1.shiyongXmmc"></el-input>
             </el-form-item>
             <el-form-item label="划入账户名称">
-              <el-input v-model="form1.ldxxKsmj"></el-input>
+              <el-input v-model="form1.shiyongHrzhmc"></el-input>
             </el-form-item>
             <el-form-item label="划入账户账号">
-              <el-input v-model="form1.fwjgName"></el-input>
+              <el-input v-model="form1.shiyongHrzhzh"></el-input>
             </el-form-item>
             <el-form-item label="划入账户银行">
-              <el-input v-model="form1.zzksmj"></el-input>
+              <el-input v-model="form1.shiyongHrzhyh"></el-input>
             </el-form-item>
             <el-form-item label="申请用款金额">
-              <el-input v-model="form1.zzksts"></el-input>
+              <el-input v-model="form1.shiyongSbje"></el-input>
             </el-form-item>
-            <el-form-item label="合同编号">
+            <!-- <el-form-item label="合同编号">
               <el-input v-model="form1.fzzksmj"></el-input>
             </el-form-item>
             <el-form-item label="房屋编号">
-              <el-input v-model="form1.fzzksts"></el-input>
-            </el-form-item>
+              <el-input v-model="form1.shiyongFwbh"></el-input>
+            </el-form-item> -->
             <el-form-item label="监管银行">
-              <el-input v-model="form1.ldxxZzjj"></el-input>
+              <el-input v-model="form1.shiyongJgyhmc"></el-input>
             </el-form-item>
             <el-form-item label="监管账号">
-              <el-input v-model="form1.ldxxFzzjj"></el-input>
+              <el-input v-model="form1.shiyongJgzh"></el-input>
             </el-form-item>
             <el-form-item label="用款事由说明">
-              <el-input v-model="form1.fwytName"></el-input>
+              <el-input v-model="form1.shiyongYksy" type="textarea"></el-input>
             </el-form-item>
 
           </el-form>
@@ -184,6 +184,38 @@
             </div>
           </div>
         </el-tab-pane>
+         <el-tab-pane label="3.审核意见" name="third">
+        <div>
+          <div class="dialogItem">
+            <div class="itemIndex">3</div>
+            <div class="itemTitle">审核意见</div>
+          </div>
+          <el-table :data="opinionList" size="mini">
+            <el-table-column label="流程" align="center" prop="processName"/>
+            <el-table-column label="时间" align="center" prop="approveTime" width="150">
+              <template #default="{row}">
+                <div v-if="row.processName==='受理'">
+                  <div>{{row.approveTime}}</div>
+                  <div v-if="row.promiseDate">允诺时间:{{row.promiseDate}}</div>
+                </div>
+                <div v-else>
+                  <div>{{row.approveTime}}</div>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column label="审核人" align="center" prop="approvePerson"/>
+            <el-table-column label="结果" align="center" prop="processResult">
+              <template #default="{row}">
+                <div v-if="row.processResult===1 && row.processName!=='受理'">通过</div>
+                <div v-if="row.processResult===1 && row.processName==='受理'">受理</div>
+                <div class="danger" v-if="row.processResult===2 && row.processName!=='受理'">驳回</div>
+                <div class="danger" v-if="row.processResult===2 && row.processName==='受理'">退件</div>
+              </template>
+            </el-table-column>
+            <el-table-column label="意见" align="center" prop="approveOpinion" width="500"/>
+          </el-table>
+        </div>
+      </el-tab-pane>
       </el-tabs>
     </div>
     <div v-if="dialogType===4">
@@ -252,7 +284,8 @@
 <script>
   import CenterButton from "@/components/common/centerButton/CenterButton";
   import InfoList from "@/components/common/infoList/InfoList";
-  import {glsysbApi} from "@/api/menu_4/glsysb";
+  import {glsysbApi} from "@/api/menu_4/glsysb";   
+  import {authApi} from "@/api/menu_4/auth";
   import AccountDialog from "@/views/menu_4/TjsysbDialog2";
 
   export default {
@@ -346,6 +379,11 @@
           }
         }
       },
+       fetchOpinion(id){
+          authApi.getAuditInfo(id).then(ret => {
+          this.opinionList = ret.data;
+        })
+       },
       updateData() {
         glsysbApi.updateSysb({...this.form, shiyongId: this.shiyongId}).then(ret => {
           if (ret.code !== 200) {
@@ -361,13 +399,11 @@
       onSubmit() {
         if (this.dialogType === 1) {
           this.updateData();
-        } else if (this.dialogType === 2) {
-
-        }
+        } 
       },
 
-      setMode(mode, id) {
-        if (mode === 1) {
+      setMode(mode, id,logId) {
+        if (mode === 1 ) {
           this.shiyongId = id;
           glsysbApi.getSysbById(id).then(ret => {
             this.form = ret.data.presaleFundsUse;
@@ -376,60 +412,18 @@
             this.form.shiyongKfs = ret.data.building.shiyongKfs;
             this.form.ksyje = ret.data.building.ksyje;
           });
-
-        } else if (mode === 2) {
-          szldjgzjApi.getLdDetail(id).then(ret => {
-            this.form1 = ret.data;
-            if (this.form1.ldxxFwlx === 0) {
-              this.form1.ldxxFwlx = "预售商品房"
-            } else if (this.form1.ldxxFwlx === 1) {
-              this.form1.ldxxFwlx = "现房"
-            }
-
-            if (this.form1.ldxxZjjgzt === 0) {
-              this.form1.ldxxZjjgzt = '不启动'
-            } else if (this.form1.ldxxZjjgzt === 1) {
-              this.form1.ldxxZjjgzt = '启动'
-            }
-
-            if (this.form1.ldxxZjjgfs === 1) {
-              this.form1.ldxxZjjgfs = "按固定金额监管"
-            } else if (this.form1.ldxxZjjgfs === 2) {
-              this.form1.ldxxZjjgfs = "按预售总价比例监管"
-            } else if (this.form1.ldxxZjjgfs === 3) {
-              this.form1.ldxxZjjgfs = "按实时缴存房款比例监管"
-            } else if (this.form1.ldxxZjjgfs === 4) {
-              this.form1.ldxxZjjgfs = "按合同成交比例监管"
-            }
-
-            if (this.form1.ldxxSfydt === 0) {
-              this.form1.ldxxSfydt = "无"
-            } else if (this.form1.ldxxSfydt === 1) {
-              this.form1.ldxxSfydt = "有"
-            }
+          this.fetchOpinion(logId);
+        
+        }else if(mode===2){
+           this.shiyongId = id;
+          glsysbApi.getSysbById(id).then(ret => {
+            this.form1 = ret.data.presaleFundsUse;
+            this.form1.shiyongZsyje = ret.data.building.shiyongZsyje;
+            this.form1.zdzjjgje = ret.data.building.zdzjjgje;
+            this.form1.shiyongKfs = ret.data.building.shiyongKfs;
+            this.form1.ksyje = ret.data.building.ksyje;
           });
-          szldjgzjApi.getSupervisionByLdid(id).then(ret => {
-            this.tableData = ret.data.buildingFundsSupervisions;
-            console.log(ret.data.buildingFundsSupervisions);
-
-            this.tableData.map(function (val) {
-
-              if (val.zjjgszjlZjjgzt == 0) {
-                val.zjjgszjlZjjgzt = '不启动'
-              } else if (val.zjjgszjlZjjgzt == 1) {
-                val.zjjgszjlZjjgzt = '启动'
-              }
-              if (val.zjjgszjlZjjgfs == 1) {
-                val.zjjgszjlZjjgfs = '按固定金额监管'
-              } else if (val.zjjgszjlZjjgfs == 2) {
-                val.zjjgszjlZjjgfs = '按预售总价比例监管 '
-              } else if (val.zjjgszjlZjjgfs == 3) {
-                val.zjjgszjlZjjgfs = '按实时缴存房款比例监管'
-              } else if (val.zjjgszjlZjjgfs == 4) {
-                val.zjjgszjlZjjgfs = '按合同成交比例监管'
-              }
-            });
-          });
+          this.fetchOpinion(logId);
         }
 
       },

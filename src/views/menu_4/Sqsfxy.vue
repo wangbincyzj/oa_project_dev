@@ -89,20 +89,20 @@
                 size="mini"
                 type="primary"
                 @click="handleUpdate(scope.$index, scope.row)"
-                 :disabled="scope.row.hetongShzt!==0">修改
+                 :disabled="scope.row.hetongShzt!==0&&scope.row.hetongShzt!==3">修改
                 <!-- :disabled="scope.row.hetongShzt>0" -->
               </el-button>
                <el-button
                 size="mini"
                 type="primary"
                 @click="handleInform(scope.$index, scope.row)"
-                :disabled="scope.row.hetongShzt!==0">上报
+                :disabled="scope.row.hetongShzt!==0&&scope.row.hetongShzt!==3">上报
               </el-button>
               <el-button
                 size="mini"
                 type="primary"
                 @click="handleDelete(scope.$index, scope.row)"
-                :disabled="scope.row.hetongShzt!==0">删除
+                :disabled="scope.row.hetongShzt!==0&&scope.row.hetongShzt!==3">删除
               </el-button>
               <el-button
                 size="mini"

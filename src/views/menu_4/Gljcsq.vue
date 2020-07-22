@@ -30,61 +30,72 @@
           </el-table-column>
           <el-table-column
             label="审核状态"
-            prop="jczjjgShzt">
+            prop="jczjjgShztN">
           </el-table-column>
           
           <el-table-column
             align="center"
             label="收件操作"
+            width="300px"
           >           
             <template slot-scope="scope">
               <el-button
                 size="mini"
+                type="primary"
                 @click="GetFile(scope.$index, scope.row)">收件
               </el-button>
               <el-button
                 size="mini"
+                type="primary"
                 @click="DelFile(scope.$index, scope.row)">清除
               </el-button>
               <el-button
                 size="mini"
+                type="primary"
                 @click="PrintFile(scope.$index, scope.row)">打印收件
               </el-button>
             </template>
           </el-table-column>
           <el-table-column
             align="center"
-            label="操作"
+            label="操作"            
+            width="300px"
           >
             <template slot-scope="scope">
               <el-button
                 size="mini"
+                type="primary"
                 @click="handleUpdate(scope.$index, scope.row)"
                 :disabled="scope.row.jczjjgShzt!==0">编辑
               </el-button>
               <el-button
-                size="mini"
+                size="mini"                
+                type="primary"
                 @click="uploadPic(scope.$index, scope.row)"
                 :disabled="scope.row.jczjjgShzt!==0">传图
               </el-button>
               <el-button
-                size="mini"
+                size="mini"                
+                type="primary"
                 @click="managePic(scope.$index, scope.row)"
                 :disabled="scope.row.jczjjgShzt!==0">管图
               </el-button>
               <el-button
-                size="mini"
+                size="mini"                
+                type="primary"
                 @click="handleDelete(scope.$index, scope.row)"
                 :disabled="scope.row.jczjjgShzt!==0">删除
               </el-button>
                <el-button
                 size="mini"
+                type="primary"
                 @click="handleInform(scope.$index, scope.row)"
                 :disabled="scope.row.jczjjgShzt!==0">上报
               </el-button>
 
               <el-button
                 size="mini"
+                type="primary"
                 @click="handleDetail(scope.$index, scope.row)">详情
               </el-button>
 
@@ -162,6 +173,17 @@
            this.tableData=ret.data.records;
           //  this.total=ret.records.total;
           //  this.pages=ret.records.pages;
+          this.tableData.forEach(function(val){
+            if(val.jczjjgShzt===0){
+              val.jczjjgShztN="新建"
+            }else if(val.jczjjgShzt===1){
+              val.jczjjgShztN="审核中"
+            }else if(val.jczjjgShzt===2){
+              val.jczjjgShztN="审核通过"
+            }else if(val.jczjjgShzt===3){
+              val.jczjjgShztN="驳回"
+            }
+          })
          })
 
        },
@@ -215,7 +237,14 @@
           });
         });
       },
-      
+      handleDetail(index,row){
+        this.dialogVisible = true;
+        this.dialogTitle = "解除监管申请详情";
+        this.dialogType = 2;
+        this.$nextTick(()=>{
+          this.$refs.dialog.setMode(2,this.currentRow.jczjjgId,row.logId)
+        })
+      },
      submitSuccess() {
          this.$nextTick(()=>{
                 this.$refs.dialog.reset();

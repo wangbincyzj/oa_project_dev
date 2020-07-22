@@ -8,7 +8,7 @@
         inline
         :model="form">
         <el-form-item  label="公司名称">
-          <el-input v-model="form.kfsMc" disabled></el-input>
+          <el-input v-model="form.shiyongKfs" disabled></el-input>
         </el-form-item>
         <el-form-item  label="项目名称">
           <el-input v-model="form.shiyongXmmc" disabled></el-input>
@@ -349,7 +349,7 @@
       ldxxId:0,
       surplus:null,
         form:{
-          kfsMc:"",
+          shiyongKfs:"",
           shiyongXmmc:"",
           ldYsJe:"",
           zjYsJe:"",
@@ -364,7 +364,7 @@
 
         },
          formBlank:{
-          kfsMc:"",
+          shiyongKfs:"",
           shiyongXmmc:"",
           ldYsJe:"",
           zjYsJe:"",
@@ -385,6 +385,7 @@
         loading: false,
         zjjgzhYhid:[],
         dialogVisible1:false,
+        shiyongJgyhid:0,
         
         }
     },
@@ -437,7 +438,8 @@
         };
       ywxlId = this.ywlx[1];
           tjsysbApi.addSysb({...this.form,xxBh:ywxlId,kfsRwbh:this.$store.state.projectData.kfsRwbh,shiyongSqsyfs:0,ldLdbh:this.ldLdbh,
-      shiyongXmbh:this.shiyongXmbh,}).then(ret => {
+      shiyongXmbh:this.shiyongXmbh,
+      shiyongJgyhid:this.shiyongJgyhid}).then(ret => {
           if (ret.code !== 200) {
           this.$message.error(ret.message);
         } else {
@@ -482,7 +484,7 @@
       
       if(mode===1){
 
-        this.form.kfsMc=this.$store.state.projectData.xmxxKfs;
+        this.form.shiyongKfs=this.$store.state.projectData.xmxxKfs;
         this.form.shiyongXmmc=this.$store.state.projectData.xmxxXmmc;
         tjsysbApi.getSbInfo(id).then(ret => {
           console.log(ret);
@@ -495,6 +497,7 @@
          this.form.shiyongZsyje=ret.data.shiyongZsyje;
          this.form.ldCjJe=ret.data.ldCjJe;
          this.form.zjjgfs=ret.data.zjjgfs;
+         this.shiyongJgyhid=ret.data.shiyongJgyhid;
          if(ret.data.zjjgfs==1){
            this.form.zjjgfs="按固定金额监管"
          }else if(ret.data.zjjgfs==2){
