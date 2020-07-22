@@ -335,7 +335,7 @@ export default {
       this.dialogTitle = "编辑退款记录";
       this.dialogType = 1;
       this.$nextTick(() => {
-        this.$refs.dialog.setMode(1, row.djsyId);
+        this.$refs.dialog.setMode(1, row.djsyId,row.logId);
       });
     },
     handleDetail(index, row){
@@ -343,7 +343,7 @@ export default {
         this.dialogTitle = "详情";
         this.dialogType = 2;
         this.$nextTick(()=>{
-          this.$refs.dialog.setMode(2, row.djsyId);
+          this.$refs.dialog.setMode(2, row.djsyId,row.logId);
         })
       },
        handleDelete(index,row){

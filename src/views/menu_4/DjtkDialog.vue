@@ -35,14 +35,24 @@
         <el-form-item label="申报金额">
           <el-input v-model="form.djsySbje" disabled></el-input>
         </el-form-item>
-
+        <el-form-item label="联系方式">
+          <el-input v-model="form.djsySqrlxdh"></el-input>
+        </el-form-item>
+         <el-form-item label="业务类别">
+          <el-cascader
+            clearable
+            v-model="ywlx"
+            :options="options"
+            :props="{ expandTrigger: 'hover' }"
+          ></el-cascader>
+        </el-form-item>   
         <el-form-item label="用款事由">
           <el-input type="textarea" v-model="form.djsyYksy"></el-input>
         </el-form-item>
       </el-form>
       <div class="buttonGroup" style="margin:0 auto;width:200px;margin-top:20px">
         <el-button-group class="buttons">
-          <el-button type="primary" @click="onSubmit">立即提交</el-button>
+          <el-button type="primary" @click="onSubmit" size="mini">立即提交</el-button>
         </el-button-group>
       </div>
     </div>
@@ -51,6 +61,7 @@
 
 <script>
 import { djtkApi } from "@/api/menu_4/djtk";
+import {businessApi} from "@/api/menu_3/__Business";
 
 export default {
   name: "FwdDjtkDialog",
@@ -71,16 +82,46 @@ export default {
       },
       formBlank:{},
       djsyDjid:"",
+      ywlx: [],
+      options: [],
     };
+  },
+  created(){
+    this.getBussinessType();
   },
   methods: {
     reset(){
       this.form={...this.formBlank};
     },
+    getBussinessType(){
+      businessApi.getBusinessType().then(ret => {
+          // value, label, children []
+          this.options = ret.data.map(dl => {
+            let obj = {};  // value同意用编号
+            obj.label = dl.xtywdxName;
+            obj.value = dl.xtywdxDxbh;
+            obj.xtywdxDxbh = dl.xtywdxDxbh;
+            obj.children = dl.children.map(zl => ({
+              label: zl.xtywxxName,
+              value: zl.xtywxxXxbh,
+              xtywxxId: zl.xtywxxId
+            }));
+            return obj
+          })
+        })
+      
+    },
     onSubmit() {
+      let ywxlId = 0;
+        if (this.ywlx.length < 2) {
+          this.$message.error("请选择业务类型")
+          return
+        };
+      ywxlId = this.ywlx[1];
         djtkApi.addfundUse({ ...this.form,djsyDjid:this.djsyDjid,djsyJgyhid:this.djsyJgyhid,
         djsyXmbh:this.$store.state.projectData.xmxxXmbh,
-        kfsRwbh:this.$store.state.rwbh}).then(ret => {
+        kfsRwbh:this.$store.state.rwbh,
+        ywxlBh:ywxlId}).then(ret => {
           if(ret.code===200){
             this.$message.success("操作成功");
             this.$emit("submitSuccess");

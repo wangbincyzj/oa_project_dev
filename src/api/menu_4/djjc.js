@@ -60,7 +60,7 @@ let updateDeposit = function (_form) {
  * @param {*} 
  */
 let confirmDeposit = function (id) {
-    return requests8083.get("data-presale-funds/jiaocun/selectOne", {id})
+    return requests8083.get("data-presale-funds/deposit/submit", {id})
 }
 
 /**
@@ -68,7 +68,7 @@ let confirmDeposit = function (id) {
  * @param {*} 
  */
 let deleteDeposit = function (id) {
-    return requests8083.get("data-presale-funds/jiaocun/selectOne", {id})
+    return requests8083.get("data-presale-funds/deposit/delete", {id})
 }
 
 export const djjcApi ={

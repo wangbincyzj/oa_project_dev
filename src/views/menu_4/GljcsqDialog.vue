@@ -70,7 +70,6 @@
 
     <div
       class="detail myForm-mb5 myDialog"
-      v-loading="loading"
       v-if="dialogType===2"
     >
       <!--详情部分-->
@@ -91,42 +90,42 @@
         inline
         :model="form1"
       >
+       <el-form-item label="公司名称">
+          <el-input v-model="form1.jczjjgKfs"></el-input>
+        </el-form-item>
         <el-form-item label="项目名称">
-          <el-input v-model="form1.zjjgzhXmmc"></el-input>
+          <el-input v-model="form1.jczjjgXmmc"></el-input>
         </el-form-item>
-        <el-form-item label="项目编号">
-          <el-input v-model="form1.xmxxXmbh"></el-input>
-        </el-form-item>
-        <el-form-item label="企业名称">
-          <el-input v-model="form1.zjjgzhGsmc"></el-input>
-        </el-form-item>
-        <el-form-item label="联系电话">
-          <el-input v-model="form1.zjjgzhLxdh"></el-input>
-        </el-form-item>
-        <el-form-item
-          label="住宅面积"
-          class="area"
-        >
-          <el-input v-model="form1.zjjgzhZzmj"></el-input>
-        </el-form-item>
-        <el-form-item label="住宅套数">
-          <el-input v-model="form1.zjjgzhZzts"></el-input>
-        </el-form-item>
-        <el-form-item
-          label="非住宅面积"
-          class="area"
-        >
-          <el-input v-model="form1.zjjgzhFzzmj"></el-input>
-        </el-form-item>
-        <el-form-item label="非住宅套数">
-          <el-input v-model="form1.zjjgzhFzzts"></el-input>
+        <el-form-item label="楼栋名称">
+          <el-input v-model="form1.jczjjgLdmc"></el-input>
         </el-form-item>
        
-         <el-form-item label="拟设监管银行">
-          <el-input v-model="form1.zjjgzhYhmc"></el-input>
+        <el-form-item label="监管总额">
+          <el-input v-model="form1.jczjjgJgze"></el-input>
         </el-form-item>
-         <el-form-item label="楼栋名称">
-          <el-input v-model="form1.zjjgzhLdmc"></el-input>
+        <el-form-item label="使用金额">
+          <el-input v-model="form1.jczjjgSyze"></el-input>
+        </el-form-item>
+        <el-form-item label="账面余额">
+          <el-input v-model="form1.jczjjgZmye"></el-input>
+        </el-form-item>
+        <el-form-item label="监管银行">
+          <el-input v-model="form1.jczjjgYhmc"></el-input>
+        </el-form-item>
+        <el-form-item label="账户名称">
+          <el-input v-model="form1.jczjjgZhmc"></el-input>
+        </el-form-item>
+         <el-form-item label="监管账号">
+          <el-input v-model="form1.jczjjgJgzh"></el-input>
+        </el-form-item>
+         <el-form-item label="首次登记证明号">
+          <el-input v-model="form1.jczjjgDjzmh"></el-input>
+        </el-form-item>
+          <el-form-item label="首次登记日期">
+          <el-input v-model="form1.jczjjgDjrq"></el-input>
+        </el-form-item>
+          <el-form-item label="备注信息">
+          <el-input v-model="form1.jczjjgBzxx" type="textarea"></el-input>
         </el-form-item>
       </el-form>
        </el-tab-pane>
@@ -169,13 +168,30 @@
             <div class="itemIndex">3</div>
             <div class="itemTitle">审核意见</div>
           </div>
-          <InfoList
-            v-for="(item, index) in opinionList"
-            :info="[
-              {key:'审批人', value: item.approvePerson},
-              {key: '审核时间', value: item.approveTime},
-              {key: '审批意见', value: item.approveOpinion}]"
-          />
+          <el-table :data="opinionList" size="mini">
+            <el-table-column label="流程" align="center" prop="processName"/>
+            <el-table-column label="时间" align="center" prop="approveTime" width="150">
+              <template #default="{row}">
+                <div v-if="row.processName==='受理'">
+                  <div>{{row.approveTime}}</div>
+                  <div v-if="row.promiseDate">允诺时间:{{row.promiseDate}}</div>
+                </div>
+                <div v-else>
+                  <div>{{row.approveTime}}</div>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column label="审核人" align="center" prop="approvePerson"/>
+            <el-table-column label="结果" align="center" prop="processResult">
+              <template #default="{row}">
+                <div v-if="row.processResult===1 && row.processName!=='受理'">通过</div>
+                <div v-if="row.processResult===1 && row.processName==='受理'">受理</div>
+                <div class="danger" v-if="row.processResult===2 && row.processName!=='受理'">驳回</div>
+                <div class="danger" v-if="row.processResult===2 && row.processName==='受理'">退件</div>
+              </template>
+            </el-table-column>
+            <el-table-column label="意见" align="center" prop="approveOpinion" width="500"/>
+          </el-table>
         </div>
       </el-tab-pane>
     </el-tabs>
@@ -245,7 +261,8 @@
 <script>
 import { gljcsqApi } from "@/api/menu_4/gljcsq";
 import InfoList from "@/components/common/infoList/InfoList";
-import {businessApi} from "@/api/menu_3/__Business";
+import {businessApi} from "@/api/menu_3/__Business"; 
+import {authApi} from "@/api/menu_4/auth";
 import CenterButton from "@/components/common/centerButton/CenterButton";
 export default {
   name: "GljcsqDialog",
@@ -339,11 +356,11 @@ export default {
     //     this.form1 = ret.data.supervisedAccount;
     //   });
     // },
-    //  fetchOpinion(id){
-    //      sqjgzhApi.getShlcDetail(id).then(ret => {
-    //       this.opinionList = ret.data
-    //     })
-    //    },
+     fetchOpinion(id){
+         authApi.getAuditInfo(id).then(ret => {
+          this.opinionList = ret.data;
+        })
+       },
     //    fetchShouJian(id) {
     //     sqjgzhApi.queryReceiving(id).then(ret => {
     //       this.businessAttachments = ret.data.businessAttachments;
@@ -387,7 +404,7 @@ export default {
         this.updateData();
       }
     },
-    setMode(mode, id) {
+    setMode(mode, id,logId) {
      if (mode === 1) {
           this.getBussinessType();
         gljcsqApi.getSqDetail(id).then(ret => {
@@ -397,6 +414,11 @@ export default {
           let xl = ret.data.xxBh.slice(4);  // 8019001
           this.ywlx = [dl, ret.data.xxBh]
         });
+      }else if(mode===2){
+        gljcsqApi.getSqDetail(id).then(ret => {       
+          this.form1 = ret.data;
+        });
+        this.fetchOpinion(logId);
       }else if(mode===4){
         this.fetchShouJian(id);
       }

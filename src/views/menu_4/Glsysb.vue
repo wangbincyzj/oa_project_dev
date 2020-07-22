@@ -40,7 +40,7 @@
          <el-table-column
             align="center"
             label="审核状态"
-            prop="shiyongShzt">           
+            prop="shiyongShztN">           
           </el-table-column>
           <el-table-column
             align="center"
@@ -174,12 +174,22 @@
            this.tableData = ret.data.records;
            this.total=ret.total;
            this.pages=ret.data.pages;
-           this.tableData.map(function (val) {
+           this.tableData.forEach(function (val) {
               if (val.shiyongSqsyfs == 0) {
                 val.shiyongSqsyfs = '正常使用'
               } else if (val.shiyongSqsyfs == 1) {
                 val.shiyongSqsyfs = '撤销合同退款'
-              }     
+              } 
+              if(val.shiyongShzt===0){
+                val.shiyongShztN="新建"
+              }else if(val.shiyongShzt===1){
+                val.shiyongShztN="审核中"
+              }else if(val.shiyongShzt===2){
+                val.shiyongShztN="审核通过"
+              }else if(val.shiyongShzt===3){
+                val.shiyongShztN="驳回"
+              }
+              
             })
 
           });
@@ -246,6 +256,12 @@
         });
       },
       handleDetail(index,row){
+        this.dialogTitle="申报使用详情";
+        this.dialogType=2;
+        this.dialogVisible=true;
+        this.$nextTick(()=>{
+          this.$refs.dialog.setMode(2,this.currentRow.shiyongId,row.logId)
+        })
       },
 
       printPaper(index,row){},
