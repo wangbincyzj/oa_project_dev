@@ -1,7 +1,7 @@
 <template>
   <div class="dialog myDialog myForm-mb5">
     <!--mode1增加  mode3修改-->
-    <div v-if="mode===1||mode===3" class="add">
+    <div v-if="mode===1" class="add">
       <el-alert style="margin-bottom: 20px; line-height: 1.2" :closable="false">
         该楼栋必须具备以下四个条件才能在下面框中显示：1、楼栋已审核；2、一房一价已审核；3、设置好了预售资金监管方式；4、设置了维修资金缴存标准；如果你要选择的楼栋未在下面显示请你到“项目管理”——“楼盘上报审核”中查看下该栋房屋的某个状态是否有没有完成。
       </el-alert>
@@ -57,7 +57,7 @@
           <el-input v-model="form1.xkzJgyh" style="width: 180px" type="textarea"/>
         </el-form-item>
       </el-form>
-      <CenterButton :disabled="!form1.ldxxIds.length" @btnClick="handleAdd" :title="mode===1?'新增':'修改' "/>
+      <CenterButton v-if="!readOnly" :disabled="!form1.ldxxIds.length" @btnClick="handleAdd" :title="mode===1?'新增':'修改' "/>
     </div>
     <!--mode2收件-->
     <div v-if="mode===2">
@@ -101,7 +101,66 @@
     </div>
     <!--mode3修改-->
     <div v-if="mode===3">
-
+      <el-tabs value="first" >
+        <el-tab-pane label="基本信息" name="first">
+          <el-form
+            ref="form"
+            label-position="right"
+            label-width="150px"
+            size="mini"
+            inline
+            :model="form1">
+            <el-form-item label="选择楼栋">
+              <el-checkbox-group v-model="form1.ldxxIds" @change="_handleChange">
+                <el-checkbox :label="item.ldxxId" v-for="item in lds">{{item.ldxxMc}}</el-checkbox>
+              </el-checkbox-group>
+            </el-form-item>
+            <br>
+            <el-form-item label="开盘日期">
+              <el-date-picker v-model="form1.ysxkKprq" placeholder="选择开盘日期"/>
+            </el-form-item>
+            <el-form-item label="预售名称">
+              <el-input v-model="form1.xkzLdmc"/>
+            </el-form-item>
+            <el-form-item label="业务类别">
+              <el-input disabled value="新增预售许可"/>
+            </el-form-item>
+            <br/>
+            <el-form-item label="住宅面积">
+              <el-input disabled v-model="form1.xkzZzmj"/>
+            </el-form-item>
+            <el-form-item label="住宅套数">
+              <el-input disabled v-model="form1.xkzZzts"/>
+            </el-form-item>
+            <el-form-item label="非住宅面积">
+              <el-input disabled v-model="form1.xkzFzzmj"/>
+            </el-form-item>
+            <el-form-item label="非住宅套数">
+              <el-input disabled v-model="form1.xkzFzzts"/>
+            </el-form-item>
+            <el-form-item label="预售总面积">
+              <el-input disabled v-model="form1.xkzZjzmj"/>
+            </el-form-item>
+            <el-form-item label="预售总套数">
+              <el-input disabled v-model="form1.xkzZts"/>
+            </el-form-item>
+            <el-divider/>
+            <el-form-item label="监管账户名称">
+              <el-input v-model="form1.xkzJgzhmc" style="width: 180px" type="textarea"/>
+            </el-form-item>
+            <el-form-item label="监管账户">
+              <el-input v-model="form1.xkzJgzh" style="width: 180px" type="textarea"/>
+            </el-form-item>
+            <el-form-item label="监管银行">
+              <el-input v-model="form1.xkzJgyh" style="width: 180px" type="textarea"/>
+            </el-form-item>
+          </el-form>
+        </el-tab-pane>
+        <el-tab-pane label="收件信息" name="second"></el-tab-pane>
+        <el-tab-pane label="图片管理" name="third">
+          <UploadCpn :data="{logId}" :file-list="fileList" @delFile="delFile"/>
+        </el-tab-pane>
+      </el-tabs>
     </div>
   </div>
 </template>
@@ -111,10 +170,18 @@
   import {yushowApi} from "@/api/menu_3/yushow";
   import {businessApi} from "@/api/menu_3/__Business";
   import InfoList from "@/components/common/infoList/InfoList";
+  import UploadCpn from "@/components/current/uploadCpn/UploadCpn";
+  import {filesApi} from "@/api/files";
 
   export default {
     name: "SqysxkDialog",
-    components: {InfoList, CenterButton},
+    components: {UploadCpn, InfoList, CenterButton},
+    props:{
+      readOnly:{
+        default: false,
+        type: Boolean
+      }
+    },
     data() {
       return {
         mode: 2, // 1 预售申报  2业务收件操作
@@ -137,24 +204,7 @@
           xkzLdmc: null,
           ldFwlx: 0,
         },
-        form1Blank: {
-          ldxxIds: [],
-          xkzZzmj: null,
-          xkzZzts: null,
-          xkzFzzmj: null,
-          xkzFzzts: null,
-          xkzZjzmj: null,
-          xkzZts: null,
-          xkzLdid: [],  // ids需要处理
-          xmxxId: null,  // store
-          // kfsId: null, 没有开发商id
-          xkzJgzhmc: null,
-          xkzJgzh: null,
-          xkzJgyh: null,
-          ysxkKprq: null,
-          xkzLdmc: null,
-          ldFwlx: 0,
-        },
+        fileList: [],
         name: "",
         lds: [],
         options: [],
@@ -167,28 +217,46 @@
           name: "",
           attr: "原件",
           count: 1,
-        }
+        },
+        logId: ""
       }
     },
     computed: {
       ywzh/*业务宗号*/() {
         return this.preSaleLicense ? this.preSaleLicense.xkzYwzh : null
-      }
+      },
     },
     methods: {
-      reset() {
-        this.form1 = {...this.form1Blank}
-        this.ywlx = [];
+      delFile(file) {
+        if (file.fujianId) {
+          filesApi.delFile(file.fujianId)
+        } else {
+          filesApi.delFile(file.response.data[0].fujianId)
+        }
       },
-      setMode(mode, arg) {
+      fetchImg() {
+        filesApi.getFiles(this.logId).then(ret => {
+          this.fileList = ret.data.map(item => ({
+            url: filesApi.preview + item.fujianId,
+            fujianId: item.fujianId
+          }))
+        })
+      },
+      reset() {
+        Object.assign(this.$data, this.$options.data())
+      },
+      setMode(mode, ...arg) {
         this.mode = mode;
+        console.log(mode, arg)
         if (mode === 1) {
           this.fetchLdData()
         } else if (mode === 2) {
-          this.fetchShouJian(arg)
+          this.fetchShouJian(arg[0])
         } else if (mode === 3) {
           this.fetchLdData()
-          this.fetchForUpdate(arg)
+          this.fetchForUpdate(arg[0])
+          this.logId = arg[1]
+          this.fetchImg()
         }
       },
       fetchLdData() {

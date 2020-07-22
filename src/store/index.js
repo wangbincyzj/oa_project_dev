@@ -9,16 +9,18 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     navList,
-    /*入网编号写死*/rwbh: 60039001,  //   todo 从login获取
+    rwbh: 60039001,  //   todo 从login获取
     /*项目信息 */projectData: null,   // 在App created中创建
     /*项目楼栋信息*/buildingInfo: null,  //  在App created中创建
     xmxxId: 3,  // todo 后期由登录获得状态,测试时候,
     loginInfo: {
-      username: "",
+      username: "",  // 用户名
       loginStatus: false,
       userAuths: [],
       token: "",
       userId: "",
+      rwdqrq: "",  // 到期日期
+      rwdqrqzt: ""  // 到期状态 1:15天内到期  2:已结到期
     },
     tabs: [
       {title: "系统首页", path: "/menu_1/home", meta: {}}
@@ -37,12 +39,14 @@ export default new Vuex.Store({
     setBuildingInfo(state, buildingInfo) {
       state.buildingInfo = buildingInfo;
     },
-    setLoginInfo(state, {username, loginStatus, userAuths, token, userId}){
+    setLoginInfo(state, {username, loginStatus, userAuths, token, userId, rwdqrq, rwdqrqzt}){
       state.loginInfo.username = username||"";
       state.loginInfo.loginStatus = loginStatus||false;
       state.loginInfo.userAuths = userAuths||[];
       state.loginInfo.token = token||"";
       state.loginInfo.userId = userId||"";
+      state.loginInfo.rwdqrq = rwdqrq;
+      state.loginInfo.rwdqrqzt = rwdqrqzt;
     },
     openTab(state, tab, index) {
       if(state.tabs.length > 6){

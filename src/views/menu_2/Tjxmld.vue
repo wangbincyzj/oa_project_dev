@@ -75,15 +75,18 @@
             size="mini"
             @click="handleDetail(scope.$index, scope.row)">详情
           </el-button>
-          <el-button
-            size="mini"
-            @click="handleEdit(scope.$index, scope.row)">修改
-          </el-button>
-          <el-button
-            size="mini"
-            type="danger"
-            @click="handleDelete(scope.$index, scope.row)">删除
-          </el-button>
+
+          <template v-if="scope.row.ldxxShzt===0||scope.row.ldxxShzt===3">
+            <el-button
+              size="mini"
+              @click="handleEdit(scope.$index, scope.row)">修改
+            </el-button>
+            <el-button
+              size="mini"
+              type="danger"
+              @click="handleDelete(scope.$index, scope.row)">删除
+            </el-button>
+          </template>
         </template>
       </el-table-column>
     </el-table>
@@ -205,7 +208,6 @@
             }
           })
         })
-
       }
     }
   }

@@ -18,6 +18,7 @@
 			</template>
 			<el-menu-item-group>
 				<el-menu-item
+					v-if="canShow(child.title)"
 					@click="itemClick(asideNav.path + '/' + child.path, child)"
 					:index="asideNav.path + '/' + child.path"
 					v-for="child in item.group"
@@ -40,6 +41,9 @@
 			},
 			routes() {
 				return this.asideNav ? this.asideNav.routes : null
+			},
+			authsCN() {
+				return this.$store.state.loginInfo.userAuths.map(item=>item.qxName)
 			}
 		},
 		methods: {
@@ -51,6 +55,9 @@
 			},
 			itemClick(arg1, arg2) {
 				this.$emit("navClick", arg1, arg2)
+			},
+			canShow(item) {
+				return this.authsCN.includes(item)
 			}
 		}
 	}

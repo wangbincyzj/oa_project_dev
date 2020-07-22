@@ -225,31 +225,11 @@
           <el-button size="mini" @click="resetR" type="warning" icon="el-icon-warning-outline">重置默认</el-button>
         </el-button-group>
       </h3>
-      <!--
-      <div class="receiveList">
-        <div
-          class="item"
-          v-for="(item,index) in businessReceives"
-        >
-          <div class="no">
-            <span>{{index+1}}</span>
-          </div>
-          <div class="info">
-            <div class="name">{{item.shoujianTitle}}</div>
-            <div class="attr">
-              <div>性质:<span>{{item.shoujianSjxz}}</span></div>
-              <div>份数:<span>{{item.shoujianFenshu}}</span></div>
-            </div>
-          </div>
-        </div>
-      </div>-->
 
-      <div class="controls">
-
-      </div>
-
-      <el-table :data="tableData2">
-        <el-table-column type="selection" width="50" align="center"/>
+      <el-table :data="tableData2" size="mini">
+        <el-table-column
+          type="index"
+          width="50"/>
         <el-table-column align="left" label="收件名称" prop="shoujianTitle">
           <!--v-model="scope.row.shoujianTitle"-->
           <template #default="scope">
@@ -266,7 +246,6 @@
                 >
                   <el-option v-for="item in addList" :value="item.value">{{item.value}}</el-option>
                 </el-select>
-
               </div>
             </div>
             <div v-else>
@@ -300,7 +279,6 @@
             <el-button size="mini" type="danger" @click="handleRemove(scope.$index)">删除收件</el-button>
           </template>
         </el-table-column>
-
       </el-table>
 
       <CenterButton @btnClick="handleShouJian" title="确认收件"/>
@@ -314,13 +292,15 @@
       <el-table :data="businessReceives2" >
         <el-table-column type="expand" width="50">
           <template #default="{row}">
-            <UploadCpn
-              :file-list="row.imgList"
-              :url="url"
-              :data="{logId: row.logId}"
-              @addFile="handleUploadFile"
-              @delFile="handleRemoveFile"
-            />
+            <div style="height: 100px; overflow: hidden; background-color:green">
+              <UploadCpn
+                :file-list="row.imgList"
+                :url="url"
+                :data="{logId: row.logId}"
+                @addFile="handleUploadFile"
+                @delFile="handleRemoveFile"
+              />
+            </div>
           </template>
         </el-table-column>
         <el-table-column align="left" label="收件名称" prop="ywsjTitle">

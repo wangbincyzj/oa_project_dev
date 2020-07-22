@@ -15,7 +15,7 @@
 						</div>
 						<hr>
 						<ul class="menu">
-							<li>修改密码</li>
+							<li @click="setPwd">修改密码</li>
 							<li @click="logout">退出登录</li>
 						</ul>
 					</div>
@@ -27,18 +27,28 @@
 
 			</div>
 		</div>
+		<WbDialog :visible.sync="visible" :title="dialogTitle">
+			<ChangePwd @success="success"/>
+		</WbDialog>
 	</div>
 </template>
 
 <script>
 	import HeaderMenu from "@/views/layout/components/HeaderMenu";
+	import WbDialog from "@/components/common/wb-dialog/WbDialog";
+	import ChangePwd from "@/components/common/wb-dialog/components/ChangePwd";
 	export default {
 		name: "Header",
 		components: {
+			ChangePwd,
+			WbDialog,
 			HeaderMenu
 		},
 		data() {
-			return {}
+			return {
+				visible: false,
+				dialogTitle: ""
+			}
 		},
 		computed: {
 			navList() {
@@ -51,10 +61,40 @@
 				return this.$store.state.loginInfo.title || "职称获取中..."
 			}
 		},
+		mounted() {
+			this.checkStatus()
+		},
 		methods: {
 			logout() {
 				this.$store.dispatch("logout");
 				this.$message.info("退出登录成功")
+			},
+			checkStatus() {
+				if(this.$store.state.loginInfo.rwdqrqzt === 1){
+					this.$notify({
+						title: "密钥提醒",
+						message: "密钥将于15日内过期,请及时续期",
+						type: "warning",
+						duration: 0,
+						position: 'top-left'
+					})
+				}
+				if(this.$store.state.loginInfo.rwdqrqzt === 2){
+					this.$notify({
+						title: "密钥提醒",
+						message: "密钥已过期, 请续期",
+						type: "error",
+						duration: 0,
+						position: 'top-left'
+					})
+				}
+			},
+			setPwd() {
+				this.visible = true;
+				this.dialogTitle = "修改密码"
+			},
+			success() {
+				this.visible = false
 			}
 		}
 	}

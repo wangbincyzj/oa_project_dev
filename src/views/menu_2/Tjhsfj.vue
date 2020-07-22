@@ -64,16 +64,7 @@
             size="mini"
             @click="handleDetail(scope.$index, scope.row)">楼盘表生成房间
           </el-button>
-          <!--<el-button
-            size="mini"
-            :disabled="scope.row.ldxxShzt===1||scope.row.ldxxShzt===2"
-            @click="handleCreate(scope.$index, scope.row)">自动生成
-          </el-button>
-          <el-button
-            size="mini"
-            :disabled="scope.row.ldxxShzt===1||scope.row.ldxxShzt===2"
-            @click="handleCreate2(scope.$index, scope.row)">手动输入
-          </el-button>-->
+          
         </template>
       </el-table-column>
     </el-table>

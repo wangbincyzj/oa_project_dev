@@ -1,21 +1,11 @@
 <template>
   <div class="myDialog myForm-mb5">
-    <div  class="controls" style="text-align: center">
-      <el-link  type="info" @click="checkAll">全选</el-link>
-      <el-link type="info" @click="cancel">取消</el-link>
-      <el-input size="mini" v-model="price" clearable placeholder="请输入要设置的单价"/>
-      <el-button  type="default" size="mini" @click="setPrice" :disabled="mode===2">设置单价</el-button>
-    </div>
-    <div style="text-align: center; color: red">
-      <span>提示:点击房间即可选中或者取消房间</span>
-    </div>
-    <RoomStructure
-      v-loading="loading"
-      :yfyj="true"
-      ref="ref"
-      v-if="mode===1||mode===2"
-      @roomClick="roomClick"
-    />
+
+    <Rooms ref="rooms" >
+      <template #default="{room}">
+        <div>单价:{{room.roomGpdj}}</div>
+      </template>
+    </Rooms>
   </div>
 </template>
 
@@ -24,9 +14,10 @@
   import {tjldxmApi} from "@/api/menu_2/tjldxm";
   import CenterButton from "@/components/common/centerButton/CenterButton";
   import {yfyjApi} from "@/api/menu_2/yfyj";
+  import Rooms from "@/components/common/rooms/Rooms";
   export default {
     name: "SzyfyjDialog",
-    components: {CenterButton, RoomStructure},
+    components: {Rooms, CenterButton, RoomStructure},
     props:{
       mode:{
         required: true  // 1,楼盘表  2,楼栋详情
@@ -52,7 +43,7 @@
       initRoomStructure(id) {
         this.ldxxId = id;
         this.$nextTick(()=>{
-          this.$refs.ref.fetchData(id)
+          this.$refs.rooms.fetchRooms(id)
         })
       },
       fetchData(){

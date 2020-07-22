@@ -1,7 +1,7 @@
 <template>
   <TitleTable title="一房一价上报">
     <div slot="controls">
-      <el-alert center type="warning">
+      <el-alert center type="warning" :closable="false">
         <span style="font-size: 16px; color: #1248b3">{{xmmc? `当前项目:【${xmmc}】`: "项目载入中..."}}</span>
       </el-alert>
     </div>
@@ -84,7 +84,7 @@
       :title="dialogTitle"
       center
       width="1200px"
-      :before-close="closeConfirm"
+      :before-close="dialogReset"
       slot="dialog"
       :visible.sync="dialogVisible"
       @close="dialogVisible = false"

@@ -42,8 +42,8 @@
           </el-form-item>
           <el-form-item label="房屋类型">
             <el-select v-model="form.ldxxFwlx" placeholder="请选择房屋类型">
-              <el-option label="现房" :value="1"></el-option>
               <el-option label="预售商品房" :value="0"></el-option>
+              <el-option label="现房" :value="1"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="住宅均价">
@@ -162,7 +162,7 @@
           ldxxDyhzt: null,
           ldxxSgdw: null,
           fwytName: null,
-          ldxxFwlx: null,
+          ldxxFwlx: 0,
           ldxxZzjj: null,
           ldxxFzzjj: null,
           ldxxZgcs: null,

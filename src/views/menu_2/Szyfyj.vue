@@ -73,7 +73,7 @@
       :title="dialogTitle"
       center
       width="1200px"
-      :before-close="closeConfirm"
+      :before-close="dialogReset"
       slot="dialog"
       :visible.sync="dialogVisible"
       @close="dialogVisible = false"

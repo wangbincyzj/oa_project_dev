@@ -11,7 +11,7 @@
     >
       <el-table-column align="center" label="预售证号" prop="xkzXkzbh" />
       <el-table-column align="center" label="预售名称" prop="xkzLdmc" />
-      <el-table-column align="center" label="预售总面积" prop="ysxkZjzmj" />
+      <el-table-column align="center" label="预售总面积" prop="xkzZjzmj" />
       <el-table-column align="center" label="住宅面积" prop="xkzZzmj" />
       <el-table-column align="center" label="住宅套数" prop="xkzZzts" />
       <el-table-column align="center" label="非住宅面积" prop="xkzFzzmj" />
@@ -27,11 +27,10 @@
       </el-table-column>
       <el-table-column align="center" label="上报操作" width="350">
         <template #default="scope">
-          <el-button @click="handleUpdate(scope.row)" size="mini">{{_enable(scope.row)?"修改":"查看"}}</el-button>
-          <el-button @click="handleUploadPic(scope.row)" :disabled="!_enable(scope.row)" size="mini">传图</el-button>
-          <el-button @click="handleManagePic(scope.row)" :disabled="!_enable(scope.row)" size="mini">管图</el-button>
+          <el-button @click="handleUpdate(scope.row)" :disabled="!_enable(scope.row)" size="mini">修改</el-button>
           <el-button @click="handleCommit(scope.row)" :disabled="!_enable(scope.row)" size="mini">上报</el-button>
           <el-button @click="handleDelete(scope.row)" :disabled="!_enable(scope.row)" size="mini" type="danger">删除</el-button>
+          <el-button @click="handleDetail(scope.row)" size="mini">查看详情</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -39,12 +38,12 @@
       :title="dialogTitle"
       center
       width="1200px"
-      :before-close="closeConfirm"
+      :before-close="dialogReset"
       slot="dialog"
       :visible.sync="dialogVisible"
       @close="dialogVisible = false"
     >
-      <SqysxkDialog ref="dialog" @submitSuccess="submitSuccess"/>
+      <SqysxkDialog :read-only="readOnly" ref="dialog" @submitSuccess="submitSuccess"/>
     </el-dialog>
   </TitleTable>
 </template>
@@ -63,7 +62,8 @@
       return {
         tableData:[],
         loading: false,
-        dialogTitle: ""
+        dialogTitle: "",
+        readOnly: false,
       }
     },
     computed:{
@@ -121,10 +121,11 @@
       handleClear(){},
       handlePrint(){},
       handleUpdate(item){
+        this.readOnly = false
         this.dialogVisible = true;
         this.dialogTitle = "预售申报 信息修改"
         this.$nextTick(()=>{
-          this.$refs.dialog.setMode(3, item.xkzId)
+          this.$refs.dialog.setMode(3, item.xkzId, item.logId)
         })
       },
       handleUploadPic(){},
@@ -163,7 +164,14 @@
           })
         })
       },
-      handleDetail(){},
+      handleDetail(item){
+        this.dialogVisible = true;
+        this.dialogTitle = "预售申报 信息修改"
+        this.readOnly =true
+        this.$nextTick(()=>{
+          this.$refs.dialog.setMode(3, item.xkzId, item.logId)
+        })
+      },
     }
   }
 </script>

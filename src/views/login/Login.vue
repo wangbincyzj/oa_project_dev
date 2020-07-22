@@ -58,11 +58,12 @@
               userAuths: ret.data.userAuths,
               token:ret.data.token,
               rwbh: ret.data.user.rybh,
-              userId: ret.data.user.userId
+              userId: ret.data.user.userId,
+              rwdqrq: ret.data.user.rwdqrq,
+              rwdqrqzt: ret.data.user.rwdqrqzt
             })
           } else {
             this.$message.error(ret.message || "登录失败");
-            // this.password = "";
           }
         })
       },

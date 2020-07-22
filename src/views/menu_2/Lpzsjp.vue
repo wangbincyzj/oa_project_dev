@@ -30,6 +30,9 @@
             <CenterButton v-else :disabled="true" @btnClick="btnClick" title="已完成自审"/>-->
             <div class="btns">
               <template v-if="!confirmStatus">
+                <el-button size="mini" icon="el-icon-finished" @click="selectAll" type="">全选</el-button>
+                <el-button size="mini" icon="el-icon-turn-off" @click="antiSelect" type="">反选</el-button>
+
                 <el-button size="mini" icon="el-icon-close" @click="delRooms" type="danger">删除选中房间</el-button>
                 <!--
                 <el-button size="mini" icon="el-icon-plus">自动生成房间</el-button>
@@ -160,7 +163,6 @@
           this.fetchBuildingDetail();
           this.$refs.rooms.fetchRooms(this.selectedBuilding.id)
         }
-
       },
       roomClick(room) {
         this.dialogVisible = true;
@@ -176,7 +178,6 @@
             selectedRooms.push(room)
           }
         }))
-        console.log(selectedRooms)
         if(!selectedRooms.length){
           this.$message.warning("请先选择房间")
           return
@@ -205,6 +206,20 @@
         tjldxmApi.getBuildingDetail(this.selectedBuilding.id).then(ret => {
           this.tableData = [ret.data];
         });
+      },
+      selectAll() {
+        this.$refs.rooms.rooms.forEach(floor=>{
+          floor.v.forEach(room=>{
+            this.$set(room, "active", true)
+          })
+        })
+      },
+      antiSelect() {
+        this.$refs.rooms.rooms.forEach(floor=>{
+          floor.v.forEach(room=>{
+            this.$set(room, "active", !room.active)
+          })
+        })
       },
       btnClick() {
         this.$confirm("你确定要自审入库吗?,一旦入库则无法修改信息", "提示", {
