@@ -21,6 +21,22 @@
         <el-form-item label="联系电话">
           <el-input v-model="form.zjjgzhLxdh"></el-input>
         </el-form-item>
+        <el-form-item label="楼栋名称">
+          <el-select
+            style="width: 180px"
+            v-model="form.zjjgzhLdbh"
+            placeholder="请选择楼栋"
+          >
+            <el-option
+              v-for="(item,index) in zjjgzhLdbh"
+              :key="index"
+              :label="item.ldxxMc"
+              :value="item.ldxxLdbh"
+              @click.native="getLdName(item.ldxxMc,item.ldxxZzmj,item.ldxxZzts,item.ldxxFzzmj,item.ldxxFzzts)"
+            >
+            </el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item
           label="住宅面积"
           class="area"
@@ -39,22 +55,7 @@
         <el-form-item label="非住宅套数">
           <el-input v-model="form.zjjgzhFzzts"></el-input>
         </el-form-item>
-        <el-form-item label="楼栋名称">
-          <el-select
-            style="width: 180px"
-            v-model="form.zjjgzhLdbh"
-            placeholder="请选择楼栋"
-          >
-            <el-option
-              v-for="(item,index) in zjjgzhLdbh"
-              :key="index"
-              :label="item.ldxxMc"
-              :value="item.ldxxLdbh"
-              @click.native="getLdName(item.ldxxMc)"
-            >
-            </el-option>
-          </el-select>
-        </el-form-item>
+        
         <el-form-item label="银行名称">
           <el-select
             style="width: 180px"
@@ -71,7 +72,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <!--
+        
         <el-form-item label="业务类别">
           <el-cascader
             clearable
@@ -79,7 +80,7 @@
             :options="options"
             :props="{ expandTrigger: 'hover' }"
           ></el-cascader>
-        </el-form-item>-->
+        </el-form-item>
         <!-- <el-form-item label="监管账户名称">
           <el-input v-model="form.zjjgzhZhmc"></el-input>
         </el-form-item> -->
@@ -546,8 +547,13 @@
           })
         })
       },
-      getLdName(name) {
+      getLdName(name,arg1,arg2,arg3,arg4) {
         this.ldName = name;
+        this.form.zjjgzhZzmj=arg1;
+        this.form.zjjgzhZzts=arg2;
+        this.form.zjjgzhFzzmj=arg3;
+        this.form.zjjgzhFzzts=arg4;
+
         console.log(this.ldName);
       },
       getBankName(name) {
@@ -580,7 +586,7 @@
           zjjgzhLdmc: this.ldName,
           zjjgzhYhmc: this.bankName,
           kfsId: this.$store.state.projectData.kfsId,
-          ywxlBh: "8002001"
+          ywxlBh: ywxlId
         })
           .then(ret => {
             if (ret.code !== 200) {
@@ -601,7 +607,7 @@
           zjjgzhLdmc: this.ldName,
           zjjgzhYhmc: this.bankName,
           kfsId: this.$store.state.projectData.kfsId,
-          ywxlBh: "8002001"
+          ywxlBh:ywxlId
         })
           .then(ret => {
             if (ret.code !== 200) {
