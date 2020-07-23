@@ -11,39 +11,29 @@
      <el-form-item label="公司名称" >
         <el-input v-model="form.zizhiGsmc" ></el-input>
       </el-form-item>
-      <el-form-item label="公司法人">
+      <el-form-item label="年检年度">
         <el-input v-model="form.zizhiFrxm" ></el-input>
       </el-form-item>
-       <el-form-item label="联系人">
-        <el-input v-model="form.zizhiLxrxm"></el-input>
+       <el-form-item label="资质等级">
+        <el-select v-model="form.zizhiSbzzdj" placeholder="请选择" style="width:180px">
+            <el-option
+            v-for="item in zzdjList"
+            :key="item"
+            :label="item"
+            :value="item">
+            </el-option>
+        </el-select>
       </el-form-item>
-      <el-form-item label="联系电话" >
+      <el-form-item label="资质编号" >
         <el-input v-model="form.zizhiLxdh" ></el-input>
       </el-form-item>
-      <el-form-item label="注册地址">
-        <el-input v-model="form.zizhiZcdz" ></el-input>
+      <el-form-item label="批准日期">
+         <el-date-picker v-model="value1" type="date" placeholder="选择日期" style="width:185px"></el-date-picker>
       </el-form-item>
-       <el-form-item label="注册资金">
-        <el-input v-model="form.zizhiZczj" class="count"></el-input>
+       <el-form-item label="截止日期">
+       <el-date-picker v-model="value1" type="date" placeholder="选择日期" style="width:185px"></el-date-picker>
       </el-form-item>
-      <el-form-item label="营业证号" >
-        <el-input v-model="form.zizhiYyzh" ></el-input>
-      </el-form-item>
-      <el-form-item label="注册日期">
-        <el-input v-model="form.zizhiZcrq" ></el-input>
-      </el-form-item>
-       <el-form-item label="开户银行">
-        <el-input v-model="form.zizhiKhyh"></el-input>
-      </el-form-item>
-       <el-form-item label="银行账户">
-        <el-input v-model="form.zizhiYhzh"></el-input>
-      </el-form-item>
-       <el-form-item label="资质等级">
-        <el-input v-model="form.zizhiZzdj"></el-input>
-      </el-form-item>
-       <el-form-item label="资质证号">
-        <el-input v-model="form.zizhiZzzh"></el-input>
-      </el-form-item>
+     
        <!-- <el-form-item label="审批日期">
         <el-date-picker v-model="form.value1"  type="date" placeholder="选择日期" style="width:180px"></el-date-picker>
     </el-date-picker> 
@@ -55,36 +45,22 @@
             :props="{ expandTrigger: 'hover' }"
           ></el-cascader>
         </el-form-item>-->
-      </el-form-item>
-       <el-form-item label="截止日期">
-       <el-date-picker v-model="form.zizhiJzrq"  type="date" placeholder="选择日期" style="width:180px"></el-date-picker>
-      </el-form-item>
-       <el-form-item label="申报等级">
-        <el-select v-model="form.zizhiSbzzdj" placeholder="请选择" style="width:180px">
+      
+       <el-form-item label="备注信息">
+        <el-select v-model="form.zizhiSbzzdj" placeholder="请选择" style="width:185px">
             <el-option
-            v-for="item in sbdjList"
+            v-for="item in bzxxList"
             :key="item"
             :label="item"
             :value="item">
             </el-option>
         </el-select>
       </el-form-item>
-       <el-form-item label="申报类型">
-        <el-select v-model="form.zizhiSbsx" placeholder="请选择" style="width:180px">
-            <el-option
-            v-for="(item,index) in sblxList"
-            :key="item"
-            :label="item"
-            :value="index+1">
-            </el-option>
-        </el-select>
+       
+      <el-form-item label="上传资质">
+        <el-input v-model="form.zizhiSbyjxx" style="width:160px"></el-input><el-button>上传</el-button>
       </el-form-item>
-      <el-form-item label="申报意见">
-        <el-input v-model="form.zizhiSbyjxx" type="textarea"></el-input>
-      </el-form-item>
-      <el-form-item label="备注信息">
-        <el-input v-model="form.zizhiBzxx" type="textarea"></el-input>
-      </el-form-item>
+     
  </el-form>
 
     <div  class="buttonGroup" style="margin:0 auto;width:100px;margin-top:20px">
@@ -95,7 +71,7 @@
 </div>
 </template>
 <script>
-import {kfzzglApi} from "@/api/menu_1/kfzzgl";
+import {zznjglApi} from "@/api/menu_1/zznjgl";
 import {businessApi} from "@/api/menu_3/__Business";
 export default {
     name:"KfzzglDialog",
@@ -110,8 +86,8 @@ export default {
         return{
             ywxl:[],
             options:[],
-            sbdjList:["一级","二级","三级","暂定级"],
-            sblxList:["开发资质申请","暂定资质申请"],
+            zzdjList:["一级","二级","三级","暂定级"],
+            bzxxList:["开发资质延期","资质等级升级"],
             form:{
                 zizhiGsmc:"",
                 zizhiFrxm:"",
@@ -187,7 +163,7 @@ export default {
             // console.log("ywxlId="+ywxlId);
       
       
-            kfzzglApi.addQualification({...this.form,kfsId:this.$store.state.projectData.kfsId}).then(ret => {
+            zznjglApi.addInspection({...this.form,kfsId:this.$store.state.projectData.kfsId}).then(ret => {
           if (ret.code !== 200) {
             this.$message.error(ret.message)
           } else {
@@ -204,7 +180,7 @@ export default {
     //       return
     //     };
     //   ywxlId = this.ywlx[1];
-             kfzzglApi.updateQualification({...this.form,kfsId:this.$store.state.projectData.kfsId}).then(ret => {
+             zznjglApi.updateInspection({...this.form,kfsId:this.$store.state.projectData.kfsId}).then(ret => {
           if (ret.code !== 200) {
             this.$message.error(ret.message)
           } else {
@@ -214,7 +190,7 @@ export default {
         })
         },
          fetchDetail(id){
-             kfzzglApi.getQualicationById(id).then(ret => {
+             zznjglApi.getInspectionById(id).then(ret => {
                 this.form=ret.data;
         })
         },
@@ -228,21 +204,8 @@ export default {
         },
         setMode(mode,id){
           if(mode===1){
-          kfzzglApi.getkfsDetail(this.$store.state.projectData.kfsId).then(ret => {
-              console.log(ret);
-              this.form.zizhiGsmc =ret.data.enterprises.rwqyxxTitle; 
-              this.form.zizhiFrxm=ret.data.enterprises.rwqyxxFaren; 
-              this.form.zizhiLxrxm=ret.data.enterprises.rwqyxxLxrxm;
-              this.form.zizhiLxdh=ret.data.enterprises.rwqyxxLxdh;
-              this.form.zizhiZcdz=ret.data.enterprises.rwqyxxZcdz;
-              this.form.zizhiZczj=ret.data.enterprises.rwqyxxZczj;
-              this.form.zizhiYyzh=ret.data.enterprises.rwqyxxYyzh;
-              this.form.zizhiZcrq=ret.data.enterprises.rwqyxxZcrq;
-              this.form.zizhiZzdj=ret.data.enterprises.rwqyxxZzdj;
-              this.form.zizhiZzzh=ret.data.enterprises.rwqyxxZzbh;
-              console.log(this.form.zizhiZcrq);
-              
-          } ) 
+        
+        
           //this.getBussinessType();
          
           }else if(mode===2||mode===3){

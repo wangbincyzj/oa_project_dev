@@ -14,7 +14,7 @@
           </el-table-column>
           <el-table-column
             label="合同备案号"
-            prop="hetongBah">
+            prop="hetongHtbah">
           </el-table-column>
           <el-table-column
             label="银行名称"
@@ -58,7 +58,7 @@
         </el-table>
         <div style="width:700px;margin:0 auto;display:none;" id="printData">
           <p style="font-size:20px;width:350px;margin:0 auto">潼关县新建商品房预售资金监管协议书</p>
-          <p style="width:200px;margin:0 auto">合同备案号（{{this.htbah}}）</p>
+          <p style="width:250px;margin:0 auto">合同备案号（{{this.htbah}}）</p>
           <p>甲方(监管机构)：{{this.jgjg}}</p>
           <p>乙方(监管银行)：{{this.jgyh}}</p>
           <p>丙方(开发企业)：{{this.kfqy}}</p>

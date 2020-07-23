@@ -59,6 +59,7 @@
           <el-table-column
             align="center"
             label="收件操作"
+            width="200px"
             prop="operation">       
             <template slot-scope="scope" >
               <el-button
@@ -82,6 +83,7 @@
           <el-table-column
             align="center"
             label="操作"
+             width="250px"
           >
            
             <template slot-scope="scope">

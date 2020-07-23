@@ -23,8 +23,9 @@
 					:index="asideNav.path + '/' + child.path"
 					v-for="child in item.group"
 					:key="asideNav.path + '/' + child.path"
-				>{{child.title}}</el-menu-item>
+				>{{child.title}}</el-menu-item>     <!-- v-if="canShow(child.title)"-->
 			</el-menu-item-group>
+
 		</el-submenu>
 	</el-menu>
 </template>

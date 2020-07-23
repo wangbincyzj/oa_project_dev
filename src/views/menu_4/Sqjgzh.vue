@@ -75,7 +75,7 @@
               size="mini"
               type="primary"
               @click="handlePrintFile(scope.$index, scope.row)"
-              @mouseover.native="">打印收件
+              @mouseover.native="fetchPrint(scope.$index, scope.row)">打印收件
             </el-button>
           </template>
         </el-table-column>
