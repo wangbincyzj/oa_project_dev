@@ -51,6 +51,13 @@
         loginApi.login(this.username, this.password).then(ret => {
           this.loading = false;
           if (ret.code === 200) {
+            console.log(ret.data)
+            let uDun = ret.data.user.rwdqrqzt;
+            if(uDun === 1){
+              alert("U盾将于15日内过期,请及时续期")
+            }else if(uDun === 2){
+              alert("U盾已过期,请及时续期")
+            }
             this.$message.success("登录成功");
             this.$store.dispatch("login", {
               username: this.username,

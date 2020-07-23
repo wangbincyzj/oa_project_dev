@@ -78,7 +78,7 @@
             this.$refs.dialog.fetchTemplateList()
           })
         }else{
-          this.$message.info("只允许选择签订过消除承诺书的房间")
+          this.$message.info("只允许选择签订过销售承诺书的房间")
         }
       },
       submitSuccess(){

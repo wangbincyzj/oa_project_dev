@@ -17,8 +17,8 @@
 				<span>{{item.title}}</span>
 			</template>
 			<el-menu-item-group>
+				<!--v-if="canShow(child.title)"-->
 				<el-menu-item
-					v-if="canShow(child.title)"
 					@click="itemClick(asideNav.path + '/' + child.path, child)"
 					:index="asideNav.path + '/' + child.path"
 					v-for="child in item.group"

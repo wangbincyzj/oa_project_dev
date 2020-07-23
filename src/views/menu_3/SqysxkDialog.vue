@@ -57,7 +57,8 @@
           <el-input v-model="form1.xkzJgyh" style="width: 180px" type="textarea"/>
         </el-form-item>
       </el-form>
-      <CenterButton v-if="!readOnly" :disabled="!form1.ldxxIds.length" @btnClick="handleAdd" :title="mode===1?'新增':'修改' "/>
+      <CenterButton v-if="!readOnly" :disabled="!form1.ldxxIds.length" @btnClick="handleAdd"
+                    :title="mode===1?'新增':'修改' "/>
     </div>
     <!--mode2收件-->
     <div v-if="mode===2">
@@ -101,7 +102,7 @@
     </div>
     <!--mode3修改-->
     <div v-if="mode===3">
-      <el-tabs value="first" >
+      <el-tabs value="first">
         <el-tab-pane label="基本信息" name="first">
           <el-form
             ref="form"
@@ -110,7 +111,7 @@
             size="mini"
             inline
             :model="form1">
-            <el-form-item label="选择楼栋">
+            <el-form-item label="选择楼栋" v-if="false">
               <el-checkbox-group v-model="form1.ldxxIds" @change="_handleChange">
                 <el-checkbox :label="item.ldxxId" v-for="item in lds">{{item.ldxxMc}}</el-checkbox>
               </el-checkbox-group>
@@ -176,8 +177,8 @@
   export default {
     name: "SqysxkDialog",
     components: {UploadCpn, InfoList, CenterButton},
-    props:{
-      readOnly:{
+    props: {
+      readOnly: {
         default: false,
         type: Boolean
       }
@@ -262,6 +263,13 @@
       fetchLdData() {
         yushowApi.getReportBuildingsByProjectId(this.$store.state.projectData.xmxxId, 0).then(ret => {
           this.lds = ret.data;
+          return this.lds
+        }).then(ret=>{
+          ret.forEach(item=>{
+            yushowApi.getBankList(item.ldxxLdbh).then(ret=>{
+              console.log(ret)
+            })
+          })
         });
         businessApi.getBusinessType().then(ret => {
           // value, label, children []
@@ -295,7 +303,21 @@
         })
       },
       _handleChange(val) {
-        this.form1.xkzLdid = val.join(",")
+        let title = "";
+        if(!val.length){
+          title = ""
+        }else{
+          this.form1.xkzLdid = val.join(",")
+          title = this.$store.state.projectData.xmxxXmmc + "-"
+
+          val.forEach(id => {
+            let obj = this.lds.find(item => id === item.ldxxId)
+            console.log(obj.ldxxMc)
+            title += obj.ldxxMc
+          })
+          title += "预售"
+        }
+        this.form1.xkzLdmc = title
         if (val.length) {
           yushowApi.getBuildingParameters(val.join(",")).then(ret => {
             this.form1.xkzZts = ret.data.yszts;   // 预售总套数
@@ -350,11 +372,11 @@
           ywsjYwzh: this.ywzh,
           ywsjXh: item.shoujianXuhao
         }))
-        yushowApi.submitShouJian(list).then(ret=>{
-          if (ret.code===200){
+        yushowApi.submitShouJian(list).then(ret => {
+          if (ret.code === 200) {
             this.$message.success("收件成功")
             this.$emit("submitSuccess")
-          }else{
+          } else {
             this.$message.error(ret.message)
           }
         })

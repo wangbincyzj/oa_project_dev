@@ -103,6 +103,7 @@
       add() {
         this.dialogVisible = true;
         this.dialogTitle = "预售申报"
+        this.readOnly = false
         this.$nextTick(()=>{
           this.$refs.dialog.setMode(1)
         })

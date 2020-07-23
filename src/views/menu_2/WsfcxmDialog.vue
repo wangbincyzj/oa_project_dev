@@ -13,13 +13,13 @@
           <el-form-item label="项目命名性质" v-if="editMode===0">
             <el-input v-model="form.xmxxXmmmlx"></el-input>
           </el-form-item>
-          <el-form-item label="项目名称" >
+          <el-form-item label="项目名称">
             <el-input v-model="form.xmxxXmmc" disabled></el-input>
           </el-form-item>
           <el-form-item label="项目开发商">
             <el-input v-model="form.xmxxKfs" disabled></el-input>
           </el-form-item>
-          <el-form-item label="项目编号" >
+          <el-form-item label="项目编号">
             <el-input v-model="form.xmxxXmbh" disabled></el-input>
           </el-form-item>
           <el-form-item label="项目负责人">
@@ -28,7 +28,7 @@
           <el-form-item label="销售电话">
             <el-input v-model="form.xmxxXsdh"></el-input>
           </el-form-item>
-          <el-form-item label="用地规划许可证号" >
+          <el-form-item label="用地规划许可证号">
             <el-input v-model="form.xmxxYdghxkzh"></el-input>
           </el-form-item>
           <el-form-item label="项目地址">
@@ -193,6 +193,7 @@
   import {wsfcxmApi} from "@/api/menu_2/wsfcxm";
   import {filesApi} from "@/api/files";
   import UploadCpn from "@/components/current/uploadCpn/UploadCpn";
+  import {config} from "@/api/baseConfig";
 
   export default {
     name: "WsfcxmDialog",
@@ -238,23 +239,23 @@
         })
       },
       addFile(file) {
-        if(file.response.code===200){
+        if (file.response.code === 200) {
           this.$message.success("上传成功")
-        }else {
-          this.$message.error(file.response.message||"上传失败")
+        } else {
+          this.$message.error(file.response.message || "上传失败")
         }
       },
       delFile(file) {
         let fujianId;
-        if(file.fujianId){
+        if (file.fujianId) {
           fujianId = file.fujianId;
-        }else{
+        } else {
           fujianId = file.response.data[0].fujianId
         }
-        filesApi.delFile(fujianId).then(ret=>{
-          if(ret.code===200){
+        filesApi.delFile(fujianId).then(ret => {
+          if (ret.code === 200) {
             this.$message.success("删除成功")
-          }else{
+          } else {
             this.$message.error("操作失败")
           }
         })
@@ -264,7 +265,7 @@
           console.log(ret)
           this.fileList = ret.data.map(item => (
             {
-              url: filesApi.preview + item.fujianId,
+              url: config.productMode ? item.fujianPath : filesApi.preview + item.fujianId,
               fujianId: item.fujianId
             }))
         })

@@ -17,20 +17,20 @@
             <li v-for="item in row.houseOwners">{{item.fwsyqrZjhm}}</li>
           </ul>
         </el-table-column>
-        <el-table-column label="楼栋名称" align="center" prop="ldMc" width="80"/>
-        <el-table-column label="房号" align="center" prop="roomFh" width="60"/>
-        <el-table-column label="面积" align="center" prop="roomMj" width="80"/>
+        <el-table-column label="楼栋名称" align="center" prop="ldMc" />
+        <el-table-column label="房号" align="center" prop="roomFh" />
+        <el-table-column label="面积" align="center" prop="roomMj" />
         <el-table-column label="单价" align="center" prop="" width="80"/>
-        <el-table-column label="挂牌单价" align="center" prop="roomGpdj" width="100"/>
-        <el-table-column label="付款方式" align="center" prop="htFkfs" width="50"/>
-        <el-table-column label="监管状态" align="center" prop="htZjjgzt" width="100"/>
-        <el-table-column label="预售资金缴存情况" align="center" prop="htYsjkzt" width="60"/>
-        <el-table-column label="维修资金缴存" align="center" prop="roomWxzjjczt" width="100"/>
-        <el-table-column label="签订时间" align="center" prop="htQdsj" width="100"/>
-        <el-table-column label="状态" align="center" #default="{row}" width="100">
+        <el-table-column label="挂牌单价" align="center" prop="roomGpdj" />
+        <el-table-column label="付款方式" align="center" prop="htFkfs" />
+        <el-table-column label="监管状态" align="center" prop="htZjjgzt" />
+        <el-table-column label="预售资金缴存情况" align="center" prop="htYsjkzt"/>
+        <el-table-column label="维修资金缴存" align="center" prop="roomWxzjjczt" />
+        <el-table-column label="签订时间" align="center" prop="htQdsj"/>
+        <el-table-column label="状态" align="center" #default="{row}">
           {{row.htBazt|shztFilter}}
         </el-table-column>
-        <el-table-column label="操作" align="center">
+        <el-table-column label="操作" align="center" width="300px">
           <template #default="{row}">
             <template v-if="row.htBazt===0||row.htBazt===3">
               <el-button size="mini" @click="handleContract(row)">完善合同</el-button>
@@ -78,7 +78,8 @@
         tableData: [{}],
         active: false,
         htId: null,
-        readOnly: false
+        readOnly: false,
+        dialogTitle: ""
       }
     },
     created() {

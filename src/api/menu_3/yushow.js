@@ -1,5 +1,6 @@
 import {requests} from "@/api/yushou";
 import {requests as r} from "@/api"
+import {requests8083 as r2} from "@/api/jianguan";
 
 /**
  * 上报
@@ -146,6 +147,13 @@ let getShlcDetail = function (businessId) {
   return requests.get("data-presale-license/preSaleLicense/getApproveList", {businessId})
 }
 
+/**
+ * 获取银行列表
+ */
+let getBankList = function (ldbh) {
+  return r2.get("data-presale-funds/supervisedAccount/list", {ldbh})
+}
+
 
 
 
@@ -166,7 +174,8 @@ export const yushowApi = {
   selectByYwzh,
   submitShouJian,
   getByDxbhAndUser,
-  getShlcDetail
+  getShlcDetail,
+  getBankList
 }
 
 

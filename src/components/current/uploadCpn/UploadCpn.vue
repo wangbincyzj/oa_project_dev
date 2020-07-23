@@ -56,7 +56,7 @@
       },
       data:{
         type: Object,
-        default: {}
+        default: () => {}
       }
     },
     data() {

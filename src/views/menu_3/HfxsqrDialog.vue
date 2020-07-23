@@ -84,19 +84,23 @@
       </el-form-item>
 
       <el-form-item label="限制状态">
-        <el-input v-model="form.roomBaxzzt"></el-input>
+        <!--<el-input v-model="form.roomBaxzzt"></el-input>-->
+        <el-input value="无"></el-input>
       </el-form-item>
 
       <el-form-item label="查封状态">
-        <el-input v-model="form.roomCfzt"></el-input>
+        <!--<el-input v-model="form.roomCfzt"></el-input>-->
+        <el-input value="无"></el-input>
       </el-form-item>
 
       <el-form-item label="交易状态">
-        <el-input v-model="form.roomJyzt"></el-input>
+        <!--<el-input v-model="form.roomJyzt"></el-input>-->
+        <el-input value="无"></el-input>
       </el-form-item>
 
       <el-form-item label="抵押状态">
-        <el-input v-model="form.roomDybazt"></el-input>
+        <!--<el-input v-model="form.roomDybazt"></el-input>-->
+        <el-input value="无"></el-input>
       </el-form-item>
 
     </el-form>

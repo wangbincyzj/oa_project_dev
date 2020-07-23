@@ -189,7 +189,7 @@
               <div class="itemIndex">3</div>
               <div class="itemTitle">审核意见</div>
             </div>
-            <el-table :data="opinionList" size="mini" >
+            <el-table :data="opinionList" size="mini">
               <el-table-column label="流程" align="center" prop="processName"/>
               <el-table-column label="时间" align="center" prop="approveTime" width="150">
                 <template #default="{row}">
@@ -218,7 +218,6 @@
       </el-tabs>
     </div>
     <div v-if="dialogType===4">
-      <!-- <info-list :title="业务宗号:" /> -->
       <h3 class="title">
         <el-button-group>
           <el-button size="mini" @click="addFile" type="primary" icon="el-icon-plus">添加收件</el-button>
@@ -289,11 +288,12 @@
           <el-button size="mini" @click="addFile2" type="primary" icon="el-icon-plus">添加收件</el-button>
         </el-button-group>
       </h3>
-      <el-table :data="businessReceives2" >
+      <!--<el-table :data="businessReceives2" >
         <el-table-column type="expand" width="50">
           <template #default="{row}">
-            <div style="height: 100px; overflow: hidden; background-color:green">
+            <div>
               <UploadCpn
+                :key="row.fujianId"
                 :file-list="row.imgList"
                 :url="url"
                 :data="{logId: row.logId}"
@@ -304,7 +304,7 @@
           </template>
         </el-table-column>
         <el-table-column align="left" label="收件名称" prop="ywsjTitle">
-          <!--v-model="scope.row.shoujianTitle"-->
+          &lt;!&ndash;v-model="scope.row.shoujianTitle"&ndash;&gt;
           <template #default="scope">
             <div v-if="scope.row.add" style="display: flex">
               <div style="flex: 3; padding-right: 20px;">
@@ -367,7 +367,8 @@
             </div>
           </template>
         </el-table-column>
-      </el-table>
+      </el-table>-->
+      <ReceiveListPic :receive-list.sync="businessReceives2"/>
     </div>
   </div>
 </template>
@@ -378,10 +379,13 @@
   import CenterButton from "@/components/common/centerButton/CenterButton";
   import UploadCpn from "@/components/current/uploadCpn/UploadCpn";
   import {filesApi} from "@/api/files";
+  import ReceiveListPic from "@/components/current/receiveListPic/ReceiveListPic";
+  import {config} from "@/api/baseConfig";
+
 
   export default {
     name: "TjjgzhDialog",
-    components: {UploadCpn, InfoList, CenterButton},
+    components: {ReceiveListPic, UploadCpn, InfoList, CenterButton},
     props: {
       zjjgzhId: {type: String}, //type: [String, Number]
       zjjgzhYwzh: {type: String},
@@ -445,12 +449,15 @@
         return sqjgzhApi.upload
       }
     },
-    filters:{
+    filters: {
       sjxzFilter(val) {
         switch (val) {
-          case 0: return "原件";
-          case 1: return "复印件";
-          case 2: return "扫描件"
+          case 0:
+            return "原件";
+          case 1:
+            return "复印件";
+          case 2:
+            return "扫描件"
         }
       }
     },
@@ -499,16 +506,16 @@
       handleRemove2(index) {  // api删除
         let obj = this.businessReceives2[index];
         console.log(obj)
-        sqjgzhApi.delOne(obj.ywsjId).then(ret=>{
-          if(ret.code===200){
+        sqjgzhApi.delOne(obj.ywsjId).then(ret => {
+          if (ret.code === 200) {
             this.$message.success("删除成功");
             this.businessReceives2.splice(index, 1)
-          }else{
-            this.$message.error(ret.message||"未知错误")
+          } else {
+            this.$message.error(ret.message || "未知错误")
           }
         })
       },
-      handleUpdate(index){
+      handleUpdate(index) {
 
       },
       resetR() {
@@ -619,7 +626,7 @@
         });
       },
       fetchOpinion() {
-        filesApi.getAuditInfo(this.logId).then(ret=>{
+        filesApi.getAuditInfo(this.logId).then(ret => {
           this.opinionList = ret.data;
         })
       },
@@ -687,7 +694,7 @@
             ...item,
             imgList: item.enclosures.map(item => ({
               title: item.fujianName,
-              url: sqjgzhApi.preview + item.fujianId,
+              url: config.productMode ? item.fujianPath : sqjgzhApi.preview + item.fujianId,
               fujianId: item.fujianId
             }))
           }))
@@ -703,25 +710,25 @@
       setMode(mode, id, ...args) {
         if (mode === 1) {
 
-            this.getLd();
-            this.getBank();
-            console.log(".....");
-            
-            this.form.xmxxXmbh = this.$store.state.projectData.xmxxXmbh;
-            this.form.zjjgzhXmmc = this.$store.state.projectData.xmxxXmmc;
-            this.form.zjjgzhGsmc = this.$store.state.projectData.xmxxKfs;
-         
+          this.getLd();
+          this.getBank();
+          console.log(".....");
+
+          this.form.xmxxXmbh = this.$store.state.projectData.xmxxXmbh;
+          this.form.zjjgzhXmmc = this.$store.state.projectData.xmxxXmmc;
+          this.form.zjjgzhGsmc = this.$store.state.projectData.xmxxKfs;
+
           this.getBussinessType();
         } else if (mode === 2) {
-         
+
           this.DetailData(id);
           this.logId = args[0]
           this.fetchOpinion();
           this.fetchShouJianByYwzh(this.zjjgzhYwzh);
         } else if (mode === 3) {
-           this.getLd();
+          this.getLd();
           this.getBank();
-            console.log(".....");
+          console.log(".....");
           this.getBussinessType();
           sqjgzhApi.getAccountInfoById(id).then(ret => {
             //console.log(ret);
@@ -761,21 +768,23 @@
       },
       handleEnsure(index) {
         let obj = this.businessReceives2[index];
-        if(!obj.ywsjTitle.trim()){
-          this.$message.warning("请输入收件名称");return
+        if (!obj.ywsjTitle.trim()) {
+          this.$message.warning("请输入收件名称");
+          return
         }
-        if(obj.ywsjSjxz===""){
-          this.$message.warning("请选择收件性质");return;
+        if (obj.ywsjSjxz === "") {
+          this.$message.warning("请选择收件性质");
+          return;
         }
-        this.addList.some(item=>{
-          if(obj.ywsjTitle===item.value){
+        this.addList.some(item => {
+          if (obj.ywsjTitle === item.value) {
             obj.ywsjId = item.zhengjianId;
             return true;
           }
         })
         obj.ywsjYwzh = this.zjjgzhYwzh;
         this.loading = true
-        sqjgzhApi.addOne(obj).then(ret=> {
+        sqjgzhApi.addOne(obj).then(ret => {
           this.loading = false;
           if (ret.code === 200) {
             this.$set(this.businessReceives2, index, ret.data)

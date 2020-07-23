@@ -119,6 +119,7 @@
   .tjysmb {
     padding: 30px 50px;
     color: $text-normal;
+    overflow-y: auto!important;
 
     .floatBtn {
       position: fixed;

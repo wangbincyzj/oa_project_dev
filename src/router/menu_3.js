@@ -18,10 +18,10 @@ export default {
       title: "预售合同备案",
       path: "/yshtba",
       group:[
-        {title: "合法销售确认", path: "hfxsqr"},
-        {title: "打印销售承诺书", path: "dyxscns"},
         {title: "添加预售模板", path: "tjysmb"},
         {title: "管理预售模板", path: "glysmb"},
+        {title: "合法销售确认", path: "hfxsqr"},
+        {title: "打印销售承诺书", path: "dyxscns"},
         {title: "签订预售合同", path: "qdysht"},
         {title: "完善预售合同", path: "wsysht"},
         {title: "查看备案合同", path: "ckbaht"},

@@ -3,7 +3,6 @@ import axios from "axios"
 import store from "@/store";
 import {config} from "@/api/baseConfig";
 
-
 // 基础设置
 const BASE_URL = `http://${config.baseIP}:8094/`;
 // 155, 161
@@ -29,7 +28,7 @@ _.interceptors.response.use(resp => {
     return resp.data
   }
 }, reason => {
-  return {code: 999, message: "网络错误,请检查网络连接"}
+  return {code: 555, message: "系统错误,请联系软件公司"}
 });
 
 // get请求

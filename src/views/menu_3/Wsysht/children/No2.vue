@@ -18,7 +18,7 @@
             计算该商品房价款,其中面积：
             <input disabled v-model="ht06.ht06002" type="text" class="w100">
             , 单价每平方米
-            <input @input="handleHt06003" v-model="ht06.ht06003" type="text" class="w100">元 。</li>
+            <input @input="handleHt06003" v-model="ht06.ht06003" type="text" class="w100">元(不能超过{{sectionData.roomGpdj}}元) 。</li>
           <li>
             该商品房总价款或总金额为（小写
             <input @input="handleBlur($event, 'this.ht06.ht06005')" v-model="ht06.ht06004" type="text" class="w100">
@@ -333,6 +333,10 @@
         let val = e.target.value;
         if(Number.isNaN(val*1)){
           this.$message.error("请输入正确的数字");
+          this.ht06.ht06003 = ""
+        }
+        if(val* 1 > this.sectionData.roomGpdj){
+          this.$message.warning("单价不能超过一房一价审核价格")
           this.ht06.ht06003 = ""
         }
         this.ht06.ht06004 = this.ht06.ht06002 * this.ht06.ht06003 + ""

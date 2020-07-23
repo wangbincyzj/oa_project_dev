@@ -15,7 +15,7 @@ export default {
         {title: "添加项目楼栋", path: "tjxmld"},
         {title: "添加户室房间", path: "tjhsfj"},
         {title: "楼盘自审结盘", path: "lpzsjp"},
-        {title: "楼盘上报审核", path: "lpsbsh"},
+        {title: "楼盘审核上报", path: "lpsbsh"},
       ]
     },
     {

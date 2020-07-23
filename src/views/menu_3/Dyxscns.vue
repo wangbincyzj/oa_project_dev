@@ -11,17 +11,15 @@
       </div>
       <el-table
         :data="tableData"
-        border
-        style="width: 100%"
       >
-        <el-table-column align="center" label="项目名称" prop="xsqrdXmmc" width="100"/>
-        <el-table-column align="center" label="楼栋名称" prop="xsqrdLdmc" width="200"/>
-        <el-table-column align="center" label="房号" prop="xsqrdFh" width="100"/>
-        <el-table-column align="center" label="签订时间" prop="createTime" width="100"/>
-        <el-table-column align="center" label="注销状态" prop="logoutStatus" width="100"/>
-        <el-table-column align="center" label="注销时间" prop="xsqrdZxtime" width="100"/>
-        <el-table-column align="center" label="注销原因" prop="xsqrdZxyy" width="300"/>
-        <el-table-column align="center" label="操作">
+        <el-table-column align="center" label="项目名称" prop="xsqrdXmmc"/>
+        <el-table-column align="center" label="楼栋名称" prop="xsqrdLdmc" />
+        <el-table-column align="center" label="房号" prop="xsqrdFh" />
+        <el-table-column align="center" label="签订时间" prop="createTime" />
+        <el-table-column align="center" label="注销状态" prop="logoutStatus" />
+        <el-table-column align="center" label="注销时间" prop="xsqrdZxtime" />
+        <el-table-column align="center" label="注销原因" prop="xsqrdZxyy" />
+        <el-table-column align="center" label="操作" width="400">
           <template #default="scope">
             <div v-if="scope.row.xsqrdZxzt===1">
               <el-link>已注销</el-link>
