@@ -26,8 +26,6 @@
             </el-table-column>
           </el-table>
           <div class="controls" v-if="selectedBuilding">
-            <!--<CenterButton v-if="!selectedBuilding.ldxxLdjpzt" @btnClick="btnClick" title="自审入库"/>
-            <CenterButton v-else :disabled="true" @btnClick="btnClick" title="已完成自审"/>-->
             <div class="btns">
               <template v-if="!confirmStatus">
                 <el-button size="mini" icon="el-icon-finished" @click="selectAll" type="">全选</el-button>
@@ -231,7 +229,8 @@
           tjldxmApi.selfInspection(this.selectedBuilding.id).then(ret => {
             if (ret.code === 200) {
               this.$message.success("自审入库成功");
-              this.$refs.rooms.fetchRooms(this.selectedBuilding.id)
+              this.$refs.rooms.fetchRooms(this.selectedBuilding.id);
+              this.fetchBuildingDetail();
             } else {
               this.$message.error(ret.message);
             }

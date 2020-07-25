@@ -1,6 +1,3 @@
-<!--
-  解决element-table的table传图bug
--->
 <template>
   <el-collapse accordion @change="handleChange">
     <el-collapse-item v-for="(item, index) in listData" :name="index">
@@ -18,7 +15,7 @@
   import UploadCpn from "@/components/current/uploadCpn/UploadCpn";
 
   export default {
-    name: "ReceiveListPic",
+    name: "WbTable",
     components: {UploadCpn},
     props:{
       listData: {
@@ -29,7 +26,7 @@
 
     methods:{
       handleChange(index) {
-        console.log(index)
+        this.$emit("indexChange", index!==""? index:-1)
       },
 
     }

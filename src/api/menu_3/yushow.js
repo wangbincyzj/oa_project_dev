@@ -22,8 +22,8 @@ let update = function (_form) {
  * 分页查询 申请预售许可列表（申请预售许可 ldFwlx= 0 申请现售备案 ldFwlx=1）  todo kfsId xmxxId?
  * （0未上报 1上报 2已收件 3已初审 4已复审 5已终审 6已缮证 7驳回）
  */
-let selectPage = function (ldFwlx, xkzLczt, xmxxId) {
-  return requests.get("data-presale-license/preSaleLicense/selectPage", {ldFwlx, xkzLczt, xmxxId})
+let selectPage = function (ldFwlx, xkzLczt, xmxxId, current, size) {
+  return requests.get("data-presale-license/preSaleLicense/selectPage", {ldFwlx, xkzLczt, xmxxId, current, size})
 }
 
 
@@ -151,7 +151,7 @@ let getShlcDetail = function (businessId) {
  * 获取银行列表
  */
 let getBankList = function (ldbh) {
-  return r2.get("data-presale-funds/supervisedAccount/list", {ldbh})
+  return r2.get("data-presale-funds/supervisedAccount/list", {zjjgzhLdbh:ldbh})
 }
 
 

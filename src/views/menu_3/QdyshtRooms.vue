@@ -13,7 +13,7 @@
       <div class="floor" :class="{noRoom:!floor.v.length}" v-for="floor in rooms">
         <div class="floorHd">{{floor.k}}层</div>
         <div class="room"
-             :class="[mapStatusToClass(room.roomFwzt), enableColor && 'enableColor']"
+             :class="[mapStatusToClass(room.roomFwzt, room.roomBazt), enableColor && 'enableColor']"
              v-for="room in floor.v"
              @click="$emit('roomClick', room)">
           <div class="roomNo">{{room.roomFh}}</div>
@@ -30,7 +30,7 @@
   import {yushouContractApi} from "@/api/menu_3/yushowContract";
 
   export default {
-    name: "BuildingStructure",
+    name: "QdyshtRooms",
     components: {RoomColor},
     props: {
       loadRoomColorCpn: {
@@ -78,8 +78,12 @@
           this.rooms = r.reverse();
         })
       },
-      mapStatusToClass(status) {
-        return this.enableColor ? "c" + status : null
+      mapStatusToClass(status, roomBazt) {
+        if(roomBazt===1){
+          return this.enableColor ? "c" + 3 : null
+        }else{
+          return this.enableColor ? "c" + status : null
+        }
       }
     }
   }

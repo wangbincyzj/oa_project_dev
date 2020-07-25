@@ -32,13 +32,13 @@
       </template>
       <ul>
         <li class="tempLi"><span style="flex: 1">出 卖 人:</span><span
-          style="text-align: left; flex: 3">{{baseData.rwqyxxTitle}}</span></li>
+          style="text-align: left; flex: 3">{{d.rwqyxxTitle}}</span></li>
         <li class="tempLi"><span style="flex: 1">买 受 人:</span><span
           style="text-align: left; flex: 3">{{d.htBuyuser}}</span></li>
         <li class="tempLi"><span style="flex: 1">项目名称:</span><span
           style="text-align: left; flex: 3">{{d.ht01008}}</span></li>
         <li class="tempLi"><span>楼栋名称:</span><span style="text-align: left">{{d.ht03004}} </span><span>房号:</span><span
-          style="text-align: left">123</span></li>
+          style="text-align: left">{{d.ht03007}}</span></li>
       </ul>
       <div class="d1">
         <div class="d2">
@@ -1030,7 +1030,7 @@
       },
       fetchBaseData() {
         contractAbout.getRwqyBaseInfo((this.$store.state.rwbh + "").slice(0, 4)).then(ret => {
-          this.baseData = ret.data;
+          this.baseData = ret.data.enterprises;
         })
       },
     }

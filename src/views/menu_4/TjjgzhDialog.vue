@@ -369,7 +369,19 @@
           </template>
         </el-table-column>
       </el-table>-->
-      <ReceiveListPic :receive-list.sync="businessReceives2"/>
+      <WbTable :list-data.sync="businessReceives2">
+        <template #title="{item, index}">
+          <div class="item" >
+            <div class="s1">{{index+1}}</div>
+            <div class="s2">{{item.ywsjTitle}}</div>
+            <div class="s3">{{item.ywsjSjxz|typeFilter}}</div>
+            <div class="s4">{{item.ywsjFenshu}}份</div>
+          </div>
+        </template>
+        <template #add="{item}">
+          <UploadCpn :file-list="item.imgList" :data="{logId:item.logId}"/>
+        </template>
+      </WbTable>
     </div>
   </div>
 </template>
@@ -382,11 +394,12 @@
   import {filesApi} from "@/api/files";
   import ReceiveListPic from "@/components/current/receiveListPic/ReceiveListPic";
   import {config} from "@/api/baseConfig";
+  import WbTable from "@/components/common/wb-table/WbTable";
 
 
   export default {
     name: "TjjgzhDialog",
-    components: {ReceiveListPic, UploadCpn, InfoList, CenterButton},
+    components: {WbTable, ReceiveListPic, UploadCpn, InfoList, CenterButton},
     props: {
       zjjgzhId: {type: String}, //type: [String, Number]
       zjjgzhYwzh: {type: String},
@@ -459,6 +472,13 @@
             return "复印件";
           case 2:
             return "扫描件"
+        }
+      },
+      typeFilter(num) {
+        switch (num) {
+          case 0: return "原件";
+          case 1: return "复印件";
+          case 2: return "扫描件";
         }
       }
     },
@@ -967,6 +987,30 @@
 
         }
       }
+    }
+  }
+  .item{
+    width: 100%;
+    display: flex;
+    .s1{
+      width: 40px;
+      text-align: center;
+      color: $info;
+    }
+    .s2{
+      flex: 1;
+      font-weight: 600;
+      text-shadow: $box-shadow;
+    }
+    .s3{
+      padding: 0 20px;
+      text-shadow: $box-shadow;
+    }
+    .s4{
+      padding: 0 20px;
+    }
+    .add{
+      padding: 0 50px;
     }
   }
 </style>

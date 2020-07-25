@@ -20,12 +20,22 @@
         <el-table-column label="楼栋名称" align="center" prop="ldMc" />
         <el-table-column label="房号" align="center" prop="roomFh" />
         <el-table-column label="面积" align="center" prop="roomMj" />
-        <el-table-column label="单价" align="center" prop="" width="80"/>
+        <el-table-column label="单价" align="center" prop="roomDj" width="80"/>
         <el-table-column label="挂牌单价" align="center" prop="roomGpdj" />
         <el-table-column label="付款方式" align="center" prop="htFkfs" />
         <el-table-column label="监管状态" align="center" prop="htZjjgzt" />
-        <el-table-column label="预售资金缴存情况" align="center" prop="htYsjkzt"/>
-        <el-table-column label="维修资金缴存" align="center" prop="roomWxzjjczt" />
+        <el-table-column label="预售资金缴存情况" align="center" prop="htYsjkzt">
+          <template #default="{row}">
+            <i class="el-icon-check" v-if="row.htYsjkzt"/>
+            <i class="el-icon-close" v-else/>
+          </template>
+        </el-table-column>
+        <el-table-column label="维修资金缴存" align="center" prop="roomWxzjjczt" >
+          <template #default="{row}">
+            <i class="el-icon-check" v-if="row.roomWxzjjczt"/>
+            <i class="el-icon-close" v-else/>
+          </template>
+        </el-table-column>
         <el-table-column label="签订时间" align="center" prop="htQdsj"/>
         <el-table-column label="状态" align="center" #default="{row}">
           {{row.htBazt|shztFilter}}

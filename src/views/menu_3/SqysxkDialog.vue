@@ -1,5 +1,5 @@
 <template>
-  <div class="dialog myDialog myForm-mb5">
+  <div class="dialog  myForm-mb5">
     <!--mode1增加  mode3修改-->
     <div v-if="mode===1" class="add">
       <el-alert style="margin-bottom: 20px; line-height: 1.2" :closable="false">
@@ -19,7 +19,7 @@
         </el-form-item>
         <br>
         <el-form-item label="开盘日期">
-          <el-date-picker v-model="form1.ysxkKprq" placeholder="选择开盘日期"/>
+          <el-date-picker style="width: 178px" v-model="form1.ysxkKprq" placeholder="选择开盘日期"/>
         </el-form-item>
         <el-form-item label="预售名称">
           <el-input v-model="form1.xkzLdmc"/>
@@ -47,6 +47,12 @@
           <el-input disabled v-model="form1.xkzZts"/>
         </el-form-item>
         <el-divider/>
+        <el-form-item label="选择账户">
+          <el-select v-model="bank" @change="handleBankChange">
+            <el-option :label="bank.zjjgzhZhmc" :value="index" v-for="(bank,index) in bankList" />
+          </el-select>
+        </el-form-item>
+        <br>
         <el-form-item label="监管账户名称">
           <el-input v-model="form1.xkzJgzhmc" style="width: 180px" type="textarea"/>
         </el-form-item>
@@ -62,43 +68,46 @@
     </div>
     <!--mode2收件-->
     <div v-if="mode===2">
-      <info-list :title="`业务宗号:${ywzh?ywzh:'读取中...'}`"/>
-      <div class="addItem">
-        <h3 class="title">添加新收件</h3>
-        <div>
-          <label>收件名称</label>
-          <el-select placeholder="请选择收件名称" size="mini" v-model="addForm.name">
-            <el-option value="1" label="潼关县商品房预售许可证申请表"></el-option>
-            <el-option value="2" label="开发企业《营业执照》（原件及彩色复印件"></el-option>
-          </el-select>
-        </div>
-        <div>
-          <label for="">收件性质</label>
-          <el-radio v-model="addForm.attr" label="原件">原件</el-radio>
-          <el-radio v-model="addForm.attr" label="复印件">复印件</el-radio>
-        </div>
-        <div>
-          <el-select placeholder="请选择收件份数" size="mini" clearable v-model="addForm.count">
-            <el-option :value="item" v-for="item in 5">{{item}}</el-option>
-          </el-select>
-        </div>
-        <el-button type="primary" size="mini" icon="el-icon-plus">添加</el-button>
-      </div>
-      <div class="receiveList">
-        <div class="item" v-for="(item,index) in businessReceives">
-          <div class="no">
-            <span>{{index+1}}</span>
+      <div v-if="false">
+        <info-list :title="`业务宗号:${ywzh?ywzh:'读取中...'}`"/>
+        <div class="addItem">
+          <h3 class="title">添加新收件</h3>
+          <div>
+            <label>收件名称</label>
+            <el-select placeholder="请选择收件名称" size="mini" v-model="addForm.name">
+              <el-option value="1" label="潼关县商品房预售许可证申请表"></el-option>
+              <el-option value="2" label="开发企业《营业执照》（原件及彩色复印件"></el-option>
+            </el-select>
           </div>
-          <div class="info">
-            <div class="name">{{item.shoujianTitle}}</div>
-            <div class="attr">
-              <div>性质:<span>{{item.shoujianSjxz}}</span></div>
-              <div>份数:<span>{{item.shoujianFenshu}}</span></div>
+          <div>
+            <label for="">收件性质</label>
+            <el-radio v-model="addForm.attr" label="原件">原件</el-radio>
+            <el-radio v-model="addForm.attr" label="复印件">复印件</el-radio>
+          </div>
+          <div>
+            <el-select placeholder="请选择收件份数" size="mini" clearable v-model="addForm.count">
+              <el-option :value="item" v-for="item in 5">{{item}}</el-option>
+            </el-select>
+          </div>
+          <el-button type="primary" size="mini" icon="el-icon-plus">添加</el-button>
+        </div>
+        <div class="receiveList">
+          <div class="item" v-for="(item,index) in businessReceives">
+            <div class="no">
+              <span>{{index+1}}</span>
+            </div>
+            <div class="info">
+              <div class="name">{{item.shoujianTitle}}</div>
+              <div class="attr">
+                <div>性质:<span>{{item.shoujianSjxz}}</span></div>
+                <div>份数:<span>{{item.shoujianFenshu}}</span></div>
+              </div>
             </div>
           </div>
         </div>
+        <CenterButton @btnClick="handleShouJian" title="确认收件"/>
       </div>
-      <CenterButton @btnClick="handleShouJian" title="确认收件"/>
+      <ConfirmReceive ref="ref1" @receive="receive"/>
     </div>
     <!--mode3修改-->
     <div v-if="mode===3">
@@ -173,10 +182,11 @@
   import InfoList from "@/components/common/infoList/InfoList";
   import UploadCpn from "@/components/current/uploadCpn/UploadCpn";
   import {filesApi} from "@/api/files";
+  import ConfirmReceive from "@/components/current/confirmReceive/ConfirmReceive";
 
   export default {
     name: "SqysxkDialog",
-    components: {UploadCpn, InfoList, CenterButton},
+    components: {ConfirmReceive, UploadCpn, InfoList, CenterButton},
     props: {
       readOnly: {
         default: false,
@@ -186,6 +196,7 @@
     data() {
       return {
         mode: 2, // 1 预售申报  2业务收件操作
+        bank: "",
         // 新增预售申报
         form1: {
           ldxxIds: [],
@@ -219,7 +230,8 @@
           attr: "原件",
           count: 1,
         },
-        logId: ""
+        logId: "",
+        bankList: [],
       }
     },
     computed: {
@@ -228,6 +240,9 @@
       },
     },
     methods: {
+      receive(list){
+        console.log(list)
+      },
       delFile(file) {
         if (file.fujianId) {
           filesApi.delFile(file.fujianId)
@@ -242,6 +257,13 @@
             fujianId: item.fujianId
           }))
         })
+      },
+      handleBankChange(value){
+        let bank = this.bankList[value];
+        console.log(bank);
+        this.form1.xkzJgzhmc = bank.zjjgzhZhmc;
+        this.form1.xkzJgzh = bank.zjjgzhYhzh;
+        this.form1.xkzJgyh = bank.zjjgzhYhmc;
       },
       reset() {
         Object.assign(this.$data, this.$options.data())
@@ -267,7 +289,11 @@
         }).then(ret=>{
           ret.forEach(item=>{
             yushowApi.getBankList(item.ldxxLdbh).then(ret=>{
-              console.log(ret)
+              ret.data.forEach(item=>{
+                if(!this.bankList.includes(bank=>bank.logId===item.logId)){
+                  this.bankList.push(item)
+                }
+              })
             })
           })
         });
@@ -292,6 +318,9 @@
           this.businessAttachments = ret.data.businessAttachments;
           this.preSaleLicense = ret.data.preSaleLicense;
           this.businessReceives = ret.data.businessReceives;
+          this.$nextTick(()=>{
+            this.$refs.ref1.setList(this.businessReceives)
+          })
         })
       },
       fetchForUpdate(id) {

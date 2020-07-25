@@ -34,6 +34,16 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+      background
+      layout="prev, pager, next, total, sizes"
+      @current-change="mixinCurrentChange"
+      @size-change="mixinSizeChange"
+      :page-sizes="[10, 20, 30, 40]"
+      :current-page="currentPage"
+      :page-size="pageSize"
+      :total="total">
+    </el-pagination>
     <el-dialog
       :title="dialogTitle"
       center
@@ -56,7 +66,7 @@
   import {yushowApi} from "@/api/menu_3/yushow";
   export default {
     name: "Sqysxk",
-    mixins: [mixins.dialogMixin],
+    mixins: [mixins.dialogMixin, mixins.myPagerMixin],
     components: {SqysxkDialog, TitleTable},
     data() {
       return {
@@ -93,7 +103,8 @@
         }
       },
       fetchTableData() {
-        yushowApi.selectPage(0, null, this.xmxxId).then(ret=>{
+        yushowApi.selectPage(0, null, this.xmxxId, this.currentPage, this.pageSize).then(ret=>{
+          this.total = ret.data.total
           this.tableData = ret.data.records.map(item=>({
             ...item,
             shzt: this._mapStatusNumToString(item.xkzShzt)

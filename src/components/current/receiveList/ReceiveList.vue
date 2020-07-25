@@ -1,3 +1,6 @@
+<!--
+  展示端的收件列表 不带传图的  只能查看的
+-->
 <template>
   <div class="receiveList">
     <div class="item" v-for="(item,index) in businessReceives">

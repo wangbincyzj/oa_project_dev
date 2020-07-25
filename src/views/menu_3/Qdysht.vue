@@ -5,11 +5,13 @@
         <div>
           <RoomColor/>
           <!--          <RoomStructure ref="roomStructure" @roomClick="roomClick"/>-->
-          <BuildingStructure
+          <QdyshtRooms
             ref="roomStructure"
             :enable-color="true"
             @roomClick="roomClick"
-          />
+          >
+            <template #default="{room}">{{room.roomGmr}}</template>
+          </QdyshtRooms>
         </div>
       </TitleTable>
     </ContainerTwoType>
@@ -41,10 +43,12 @@
   import BuildingStructure from "@/components/common/buildingStructure/BuildingStructure";
   import {yushouContractApi} from "@/api/menu_3/yushowContract";
   import QdyshtDialog from "@/views/menu_3/QdyshtDialog";
+  import QdyshtRooms from "@/views/menu_3/QdyshtRooms";
 
   export default {
     name: "Qdysht",
     components: {
+      QdyshtRooms,
       QdyshtDialog,
       BuildingStructure, RoomColor, HfxsqrDialog, RoomStructure, TitleTable, MyNav, ContainerTwoType},
     mixins: [mixins.dialogMixin],
@@ -72,6 +76,10 @@
       },
       roomClick(room) {
         if (room.roomFwzt === 12) {
+          if(room.roomBazt===1){
+            this.$message.warning("该房间已经预定")
+            return
+          }
           this.dialogVisible = true
           this.$nextTick(() => {
             this.$refs.dialog.fetchRoomDetail(this.ldxxId, room.roomId)
