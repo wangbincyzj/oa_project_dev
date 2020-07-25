@@ -9,13 +9,13 @@
       
       
      <el-form-item label="公司名称" >
-        <el-input v-model="form.zizhiGsmc" ></el-input>
+        <el-input v-model="form.nianjianGsmc" ></el-input>
       </el-form-item>
       <el-form-item label="年检年度">
-        <el-input v-model="form.zizhiFrxm" ></el-input>
+        <el-input v-model="form.nianjianSznf" ></el-input>
       </el-form-item>
        <el-form-item label="资质等级">
-        <el-select v-model="form.zizhiSbzzdj" placeholder="请选择" style="width:180px">
+        <el-select v-model="form.nianjianZzdj" placeholder="请选择" style="width:180px">
             <el-option
             v-for="item in zzdjList"
             :key="item"
@@ -25,13 +25,13 @@
         </el-select>
       </el-form-item>
       <el-form-item label="资质编号" >
-        <el-input v-model="form.zizhiLxdh" ></el-input>
+        <el-input v-model="form.zizhiZzzh" ></el-input>
       </el-form-item>
       <el-form-item label="批准日期">
-         <el-date-picker v-model="value1" type="date" placeholder="选择日期" style="width:185px"></el-date-picker>
+         <el-date-picker v-model="form.nianjianPzkssj" type="date" placeholder="选择日期" style="width:185px"></el-date-picker>
       </el-form-item>
        <el-form-item label="截止日期">
-       <el-date-picker v-model="value1" type="date" placeholder="选择日期" style="width:185px"></el-date-picker>
+       <el-date-picker v-model="form.nianjianPzjssj" type="date" placeholder="选择日期" style="width:185px"></el-date-picker>
       </el-form-item>
      
        <!-- <el-form-item label="审批日期">
@@ -47,7 +47,7 @@
         </el-form-item>-->
       
        <el-form-item label="备注信息">
-        <el-select v-model="form.zizhiSbzzdj" placeholder="请选择" style="width:185px">
+        <el-select v-model="form.nianjianBzxx" placeholder="请选择" style="width:185px">
             <el-option
             v-for="item in bzxxList"
             :key="item"
@@ -58,7 +58,7 @@
       </el-form-item>
        
       <el-form-item label="上传资质">
-        <el-input v-model="form.zizhiSbyjxx" style="width:160px"></el-input><el-button>上传</el-button>
+        <el-input v-model="form.nianjianZspic" style="width:160px"></el-input><el-button>上传</el-button>
       </el-form-item>
      
  </el-form>
@@ -89,43 +89,24 @@ export default {
             zzdjList:["一级","二级","三级","暂定级"],
             bzxxList:["开发资质延期","资质等级升级"],
             form:{
-                zizhiGsmc:"",
-                zizhiFrxm:"",
-                zizhiLxrxm:"",
-                zizhiLxdh:"",
-                zizhiZcdz:"",
-                zizhiZczj:"",
-                zizhiYyzh:"",
-                zizhiZcrq:"",
-                zizhiKhyh:"",
-                zizhiYhzh:"",
-                zizhiZzdj:"",
-                zizhiZzzh:"",
-                zizhiJzrq:"",
-                zizhiSbzzdj:"",
-                zizhiSbsx:"",
-                zizhiSbyjxx:"",
-                zizhiBzxx:"",
-
+               nianjianGsmc:"",
+               nianjianSznf:"",
+               nianjianZzdj:"",
+               zizhiZzzh:"",
+               nianjianPzkssj:"",
+               nianjianPzjssj:"",
+               nianjianBzxx:"",
+               nianjianZspic:"",
             },
             formBlank:{
-               zizhiGsmc:"",
-                zizhiFrxm:"",
-                zizhiLxrxm:"",
-                zizhiLxdh:"",
-                zizhiZcdz:"",
-                zizhiZczj:"",
-                zizhiYyzh:"",
-                zizhiZcrq:"",
-                zizhiKhyh:"",
-                zizhiYhzh:"",
-                zizhiZzdj:"",
-                zizhiZzzh:"",
-                zizhiJzrq:"",
-                zizhiSbzzdj:"",
-                zizhiSbsx:"",
-                zizhiSbyjxx:"",
-                zizhiBzxx:"",
+               nianjianGsmc:"",
+               nianjianSznf:"",
+               nianjianZzdj:"",
+               zizhiZzzh:"",
+               nianjianPzkssj:"",
+               nianjianPzjssj:"",
+               nianjianBzxx:"",
+               nianjianZspic:"",
             }
 
         }
@@ -204,7 +185,7 @@ export default {
         },
         setMode(mode,id){
           if(mode===1){
-        
+              this.form.nianjianGsmc=this.$store.state.projectData.xmxxKfs;
         
           //this.getBussinessType();
          

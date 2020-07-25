@@ -643,13 +643,13 @@
       console.log("00000000000");
       
       if(mode===1){
-        this.getBankInfo();
-        // sqjgzhApi.getProjectById(id).then(ret => {
-        //   this.form.xmxxXmbh = ret.data.xmxxXmbh;
-        //   this.form.zjjgzhXmmc = ret.data.xmxxXmmc;
-        //   this.form.hetongKfsmc = ret.data.xmxxKfs;
+        //this.getBankInfo();
+        sqjgzhApi.fetchBeforeAdd(id).then(ret => {
+          this.form = ret.data;
+          this.form.hetongZhmc = ret.data.zjjgzhZhmc;
+          //this.form.hetongKfsmc = ret.data.xmxxKfs;
           
-        // });
+        });
         this.getBussinessType();
       }else if(mode===2){
         this.hetongId=id;

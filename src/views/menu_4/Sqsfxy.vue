@@ -356,7 +356,7 @@
         this.dialogType = 1;
         //this.zjjgzhId=this.currentRow.zjjgzhId;
         this.$nextTick(()=>{
-          this.$refs.dialog.setMode(1,this.$store.state.projectData.xmxxId);
+          this.$refs.dialog.setMode(1,this.zjjgzhId);
         })
       },
       handleUpdate(index,row){

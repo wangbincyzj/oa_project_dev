@@ -1,7 +1,7 @@
 <template>
   <div class="root">
     <div class="add">
-      <span>年检记录管理</span> <el-button size="mini" type="primary" @click="addClick">添加开发资质申请</el-button>
+      <span>年检记录管理</span> <el-button size="mini" type="primary" @click="addClick">添加记录</el-button>
     </div>
     <div class="tableWrapper">
       <el-table
@@ -13,7 +13,7 @@
         <el-table-column
           align="center"
           label="记录ID号"
-          prop="zizhiId">
+          prop="nianjianId">
         </el-table-column>
         <el-table-column
           align="center"
@@ -72,18 +72,18 @@
             <el-button
               size="mini"
               @click="handleEdit(scope.$index, scope.row)"
-             :disabled="scope.row.zizhiShzt!==0">修改
+             >修改
             </el-button>
             <el-button
               size="mini"
               @click="handleInform(scope.$index, scope.row)"
-             :disabled="scope.row.zizhiShzt!==0">上报
+             >上报
             </el-button>
             <el-button
               size="mini"
               type="danger"
               @click="handleDelete(scope.$index, scope.row)"
-              :disabled="scope.row.zizhiShzt!==0">删除
+              >删除
             </el-button>
             <el-button
               size="mini"
