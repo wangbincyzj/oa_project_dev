@@ -290,12 +290,19 @@
           jczjjgJgzh:"",
           jczjjgDjzmh:"",
           jczjjgDjrq:"",
-          
-
-
         },
          formBlank:{
-          
+          jczjjgKfs:"",
+          jczjjgXmmc:"",
+          jczjjgLdmc:"",
+          jczjjgJgze:0,
+          jczjjgSyze:0,
+          jczjjgZmye:0,
+          jczjjgYhmc:"",
+          jczjjgZhmc:"",
+          jczjjgJgzh:"",
+          jczjjgDjzmh:"",
+          jczjjgDjrq:"",
         },
         form1:{},
         form2:{},

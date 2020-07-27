@@ -209,7 +209,7 @@
           this.pages=ret.data.pages;
           this.tableData = ret.data.map(item => ({
             ...item,
-            AccountTable:{},
+            AccountTable:[],
           }))
           });
           console.log("taetae");
@@ -240,7 +240,6 @@
         this.jiaocunJkje=row.jiaocunJkje;
         this.jiaocunJkzh=row.jiaocunJkzh;
         this.jiaocunKhyh=row.jiaocunKhyh;
-        this.jiaocunYhid=row.jiaocunYhid;
         this.jiaocunYhid=row.jiaocunYhid;
         this.jiaocunZhmc=row.jiaocunZhmc;
         this.dialogVisible = true;

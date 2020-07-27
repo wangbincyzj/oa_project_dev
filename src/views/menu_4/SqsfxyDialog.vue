@@ -512,6 +512,14 @@
         })
       
     },
+    fetchCertificate(){
+       sqsfxyApi.fetchCertificate().then(ret=>{
+         this.addList=ret.data.map(item=>({
+           ...item,
+           value:item.zhengjianName,
+         }));
+       })
+    },
       fetchDetail(id) {
          sqsfxyApi.getContractInfoById(id).then(ret => {
          //console.log(ret);
@@ -643,13 +651,13 @@
       console.log("00000000000");
       
       if(mode===1){
-        this.getBankInfo();
-        // sqjgzhApi.getProjectById(id).then(ret => {
-        //   this.form.xmxxXmbh = ret.data.xmxxXmbh;
-        //   this.form.zjjgzhXmmc = ret.data.xmxxXmmc;
-        //   this.form.hetongKfsmc = ret.data.xmxxKfs;
+        //this.getBankInfo();
+        sqsfxyApi.fetchBeforeAdd(id).then(ret => {
+          this.form = ret.data;
+          this.form.hetongZhmc = ret.data.zjjgzhZhmc;
+          //this.form.hetongKfsmc = ret.data.xmxxKfs;
           
-        // });
+        });
         this.getBussinessType();
       }else if(mode===2){
         this.hetongId=id;
@@ -662,9 +670,22 @@
         this.fetchShouJianByYwzh(this.hetongYwzh);
       }else if(mode===4){
         this.fetchShouJian(id);
+        this.fetchCertificate();
       }
 
     },
+    addFile() {
+        this.tableData2.push({
+          add: true,
+          shoujianXuhao: "",
+          shoujianTitle: "",
+          shoujianFenshu: 1,
+          shoujianYema: "",
+          shoujianSjxz: "",
+          zhengjianId: "",
+        })
+      },
+      
     }
   }
 </script>
