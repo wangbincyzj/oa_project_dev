@@ -131,7 +131,7 @@
         <el-dialog
           :title="dialogTitle"
           center
-          width="800px"
+          width="1200px"
           slot="dialog"
           :visible.sync="dialogVisible"
           @close="dialogVisible = false"
@@ -406,7 +406,6 @@
       handleGetFile() {
         this.dialogVisible = true;
         this.dialogTitle = "确认收件";
-        this.zjjgzhYwzh = this.currentRow.zjjgzhYwzh;
         this.dialogType = 4;
         this.$nextTick(() => {
           this.$refs.dialog.setMode(4, this.currentRow.zjjgzhId);

@@ -160,6 +160,14 @@ let getSfxyByXmbh = function (page, size = 20,hetongXmbh,hetongShzt) {
 let fetchBeforeAdd = function(zjzgzhId){
   return requests8083.get("data-presale-funds/ripartiteAgreement/queryParameters", {zjzgzhId})
 }
+
+ /**
+ * 获取证件列表
+ * 
+ */
+let fetchCertificate = function(){
+  return requests.get("data_center/certificate/selectList")
+}
 export const sqsfxyApi = {
     addContract,
     getAllContract,
@@ -178,5 +186,6 @@ export const sqsfxyApi = {
     getYshAccount,
     getSfxyByXmbh,
     fetchBeforeAdd,
+    fetchCertificate,
 
 }

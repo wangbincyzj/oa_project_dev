@@ -604,10 +604,8 @@
             }
           });
       },
-      updateData() {
+      updateData() {  
         let ywxlId = 0;
-
-
         ywxlId = this.ywlx[1];
         sqjgzhApi.updateAccount({
           ...this.form,
