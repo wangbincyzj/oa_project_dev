@@ -115,6 +115,9 @@
       change(val, item) {
         item.shoujianTitle = val;
       },
+      handleRemove(index) {
+        this.list.splice(index,1)
+      }
     }
   }
 </script>

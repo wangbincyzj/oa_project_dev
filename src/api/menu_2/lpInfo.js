@@ -55,6 +55,13 @@ let submitForReview = function (ldxxId) {
   return requests.get("data_center/building/submit", {ldxxId})
 }
 
+/**
+ * 合并房间
+ */
+let mergeRoom = function (roomId,roomIds, {roomZdts, roomZdcm}) {
+  return requests.post("data_center/room/mergeRoom")
+}
+
 
 
 export const lpInfoApi = {
@@ -63,5 +70,6 @@ export const lpInfoApi = {
   updateRoom,
   delRoom,
   submitForReview,
-  delRooms
+  delRooms,
+  mergeRoom
 }

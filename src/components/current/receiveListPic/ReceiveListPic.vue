@@ -31,7 +31,6 @@
       handleChange(index) {
         console.log(index)
       },
-
     }
   }
 </script>

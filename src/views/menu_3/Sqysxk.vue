@@ -21,8 +21,8 @@
       <el-table-column align="center" label="收件操作" width="250">
         <template #default="scope">
           <el-button @click="handleReceive(scope.row)" :disabled="!_enable(scope.row)" size="mini">收件</el-button>
-          <el-button @click="handleClear" :disabled="!_enable(scope.row)" size="mini">清除</el-button>
-          <el-button @click="handlePrint" :disabled="!_enable(scope.row)" size="mini">打印收件</el-button>
+          <el-button @click="handleClear(scope.row)" :disabled="!_enable(scope.row)" size="mini">传图</el-button>
+          <el-button @click="handlePrint(scope.row)" :disabled="!_enable(scope.row)" size="mini">打印收件</el-button>
         </template>
       </el-table-column>
       <el-table-column align="center" label="上报操作" width="350">
@@ -130,7 +130,13 @@
           this.$refs.dialog.setMode(2, item.xkzId)
         })
       },
-      handleClear(){},
+      handleClear(item){
+        this.dialogVisible = true;
+        this.dialogTitle = "收件图片管理";
+        this.$nextTick(()=>{
+          this.$refs.dialog.setMode(4, item.xkzId)
+        })
+      },
       handlePrint(){},
       handleUpdate(item){
         this.readOnly = false

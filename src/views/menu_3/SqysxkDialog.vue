@@ -68,45 +68,6 @@
     </div>
     <!--mode2收件-->
     <div v-if="mode===2">
-      <div v-if="false">
-        <info-list :title="`业务宗号:${ywzh?ywzh:'读取中...'}`"/>
-        <div class="addItem">
-          <h3 class="title">添加新收件</h3>
-          <div>
-            <label>收件名称</label>
-            <el-select placeholder="请选择收件名称" size="mini" v-model="addForm.name">
-              <el-option value="1" label="潼关县商品房预售许可证申请表"></el-option>
-              <el-option value="2" label="开发企业《营业执照》（原件及彩色复印件"></el-option>
-            </el-select>
-          </div>
-          <div>
-            <label for="">收件性质</label>
-            <el-radio v-model="addForm.attr" label="原件">原件</el-radio>
-            <el-radio v-model="addForm.attr" label="复印件">复印件</el-radio>
-          </div>
-          <div>
-            <el-select placeholder="请选择收件份数" size="mini" clearable v-model="addForm.count">
-              <el-option :value="item" v-for="item in 5">{{item}}</el-option>
-            </el-select>
-          </div>
-          <el-button type="primary" size="mini" icon="el-icon-plus">添加</el-button>
-        </div>
-        <div class="receiveList">
-          <div class="item" v-for="(item,index) in businessReceives">
-            <div class="no">
-              <span>{{index+1}}</span>
-            </div>
-            <div class="info">
-              <div class="name">{{item.shoujianTitle}}</div>
-              <div class="attr">
-                <div>性质:<span>{{item.shoujianSjxz}}</span></div>
-                <div>份数:<span>{{item.shoujianFenshu}}</span></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <CenterButton @btnClick="handleShouJian" title="确认收件"/>
-      </div>
       <ConfirmReceive ref="ref1" @receive="receive"/>
     </div>
     <!--mode3修改-->
@@ -127,7 +88,7 @@
             </el-form-item>
             <br>
             <el-form-item label="开盘日期">
-              <el-date-picker v-model="form1.ysxkKprq" placeholder="选择开盘日期"/>
+              <el-date-picker style="width: 178px" v-model="form1.ysxkKprq" placeholder="选择开盘日期"/>
             </el-form-item>
             <el-form-item label="预售名称">
               <el-input v-model="form1.xkzLdmc"/>
@@ -172,6 +133,11 @@
         </el-tab-pane>
       </el-tabs>
     </div>
+
+    <!--收件管图-->
+    <div v-if="mode===4">
+      <ReceiveListPic/>
+    </div>
   </div>
 </template>
 
@@ -183,10 +149,12 @@
   import UploadCpn from "@/components/current/uploadCpn/UploadCpn";
   import {filesApi} from "@/api/files";
   import ConfirmReceive from "@/components/current/confirmReceive/ConfirmReceive";
+  import {config} from "@/api/baseConfig";
+  import ReceiveListPic from "@/components/current/receiveListPic/ReceiveListPic";
 
   export default {
     name: "SqysxkDialog",
-    components: {ConfirmReceive, UploadCpn, InfoList, CenterButton},
+    components: {ReceiveListPic, ConfirmReceive, UploadCpn, InfoList, CenterButton},
     props: {
       readOnly: {
         default: false,
@@ -253,7 +221,7 @@
       fetchImg() {
         filesApi.getFiles(this.logId).then(ret => {
           this.fileList = ret.data.map(item => ({
-            url: filesApi.preview + item.fujianId,
+            url: config.productMode ? item.fujianPath : filesApi.preview + item.fujianId,
             fujianId: item.fujianId
           }))
         })
@@ -271,15 +239,17 @@
       setMode(mode, ...arg) {
         this.mode = mode;
         console.log(mode, arg)
-        if (mode === 1) {
+        if (mode === 1) {  // 增加
           this.fetchLdData()
-        } else if (mode === 2) {
+        } else if (mode === 2) {  // 收件
           this.fetchShouJian(arg[0])
-        } else if (mode === 3) {
+        } else if (mode === 3) {  // 修改
           this.fetchLdData()
           this.fetchForUpdate(arg[0])
           this.logId = arg[1]
           this.fetchImg()
+        } else if(mode===4){
+          this.fetchShouJian(arg[0])
         }
       },
       fetchLdData() {

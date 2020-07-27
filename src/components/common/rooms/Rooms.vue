@@ -68,6 +68,12 @@
           })
           r.sort((a, b) => a.k - b.k)
           this.rooms = r.reverse();
+          // [{k:123,v:[]}]
+          this.rooms.forEach(item=>{
+            item.v.forEach((room,index)=>{
+              room.index = index
+            })
+          })
         })
       },
       roomClick(room){

@@ -28,6 +28,8 @@
           <div class="controls" v-if="selectedBuilding">
             <div class="btns">
               <template v-if="!confirmStatus">
+                <el-button size="mini" icon="el-icon-s-help" @click="handleMerge" type="">合并</el-button>
+
                 <el-button size="mini" icon="el-icon-finished" @click="selectAll" type="">全选</el-button>
                 <el-button size="mini" icon="el-icon-turn-off" @click="antiSelect" type="">反选</el-button>
 
@@ -103,6 +105,7 @@
         if (this.selectedIndex === 0) return null;
         return this.navInfo.list[this.selectedIndex];
       },
+
       title() {
         //切换标题
         let ret;
@@ -119,6 +122,41 @@
       this.fetchData();
     },
     methods: {
+      handleMerge() {
+        let rooms = this.$refs.rooms.rooms;
+        let selectedRooms = [];
+        rooms.forEach(floor=>floor.v.forEach(room=>{
+          if(room.active){
+            selectedRooms.push(room)
+          }
+        }))
+        if(selectedRooms.length!==2){
+          this.$message.warning("只允许合并两个房间")
+        }else{
+          let room1 = selectedRooms[0];
+          let room2 = selectedRooms[1];
+          console.log(room1)
+          //// 判断条件
+          if(Math.abs(room1.roomSzc*1 - room2.roomSzc *1)>1){
+            this.$message.warning("所选房间不满足合并条件:楼层错误")
+            return
+          }
+          if(room1.roomSzdy!==room2.roomSzdy){
+            this.$message.warning("所选房间不满足合并条件:单元错误")
+            return;
+          }
+          if(room1. roomSzc !== room2.roomSzc && room1.index !== room2.index){
+            this.$message.warning("所选房间不满足合并条件:上下房间序号不匹配")
+            return;
+          }
+          if(room1. roomSzc === room2.roomSzc && Math.abs(room1.index - room2.index)>1){
+            this.$message.warning("所选房间不满足合并条件:左右房间序号不匹配")
+            return;
+          }
+          //// 判断基准房间
+          
+        }
+      },
       fetchData() {
         // 1.通过入网编号查用户的项目信息
         wsfcxmApi.getOwnProjectByRwId(this.$store.state.rwbh).then(ret => {

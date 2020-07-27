@@ -289,86 +289,6 @@
           <el-button size="mini" @click="addFile2" type="primary" icon="el-icon-plus">添加收件</el-button>
         </el-button-group>
       </h3>
-      <!--<el-table :data="businessReceives2" >
-        <el-table-column type="expand" width="50">
-          <template #default="{row}">
-            <div>
-              <UploadCpn
-                :key="row.fujianId"
-                :file-list="row.imgList"
-                :url="url"
-                :data="{logId: row.logId}"
-                @addFile="handleUploadFile"
-                @delFile="handleRemoveFile"
-              />
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column align="left" label="收件名称" prop="ywsjTitle">
-          &lt;!&ndash;v-model="scope.row.shoujianTitle"&ndash;&gt;
-          <template #default="scope">
-            <div v-if="scope.row.add" style="display: flex">
-              <div style="flex: 3; padding-right: 20px;">
-                <el-input size="mini" v-model="scope.row.ywsjTitle"/>
-              </div>
-              <div style="flex: 1">
-                <el-select
-                  size="mini"
-                  value=""
-                  @change="change2($event, scope.row)"
-                  placeholder="手动输入或选择收件"
-                >
-                  <el-option v-for="item in addList" :value="item.value">{{item.value}}</el-option>
-                </el-select>
-              </div>
-            </div>
-            <div v-else>
-              {{scope.row.ywsjTitle}}
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="份数" width="120">
-          <template #default="{row}">
-            <div v-if="row.add">
-              <el-select v-model="row.ywsjFenshu" size="mini">
-                <el-option value="1">1</el-option>
-                <el-option value="2">2</el-option>
-                <el-option value="3">3</el-option>
-                <el-option value="4">4</el-option>
-                <el-option value="5">5</el-option>
-              </el-select>
-            </div>
-            <div v-else>
-              {{row.ywsjFenshu}}
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="资料类型" width="120">
-          <template #default="{row}">
-            <div v-if="row.add">
-              <el-select v-model="row.ywsjSjxz" size="mini" :disabled="!row.add">
-                <el-option :value="0" label="原件">原件</el-option>
-                <el-option :value="1" label="复印件">复印件</el-option>
-                <el-option :value="2" label="扫描件">扫描件</el-option>
-              </el-select>
-            </div>
-            <div v-else>
-              {{row.ywsjSjxz|sjxzFilter}}
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="操作" width="200">
-          <template #default="scope">
-            <div v-if="scope.row.add">
-              <el-button size="mini" type="primary" @click="handleEnsure(scope.$index)">确认</el-button>
-              <el-button size="mini" type="primary" @click="handleCancel(scope.$index)">取消</el-button>
-            </div>
-            <div v-else>
-              <el-button size="mini" type="danger" @click="handleRemove2(scope.$index)">删除</el-button>
-            </div>
-          </template>
-        </el-table-column>
-      </el-table>-->
       <WbTable :list-data.sync="businessReceives2">
         <template #title="{item, index}">
           <div class="item" >
@@ -379,7 +299,7 @@
           </div>
         </template>
         <template #add="{item}">
-          <UploadCpn :file-list="item.imgList" :data="{logId:item.logId}"/>
+          <UploadCpn :file-list="item.imgList" :data="{logId:item.logId}" @delFile="delFile"/>
         </template>
       </WbTable>
     </div>
@@ -491,6 +411,14 @@
     methods: {
       reset() {
         Object.assign(this.$data, this.$options.data())
+      },
+      delFile(file){
+        if(file.fujianId){
+          filesApi.delFile(file.fujianId)
+        }else{
+          let id = file.response.data[0].fujianId
+          filesApi.delFile(id)
+        }
       },
       fetchAddList() {
         sqjgzhApi.getCertificateList().then(ret => {
