@@ -37,7 +37,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item
+        <!-- <el-form-item
           label="住宅面积"
           class="area"
         >
@@ -54,7 +54,7 @@
         </el-form-item>
         <el-form-item label="非住宅套数">
           <el-input v-model="form.zjjgzhFzzts"></el-input>
-        </el-form-item>
+        </el-form-item> -->
         
         <el-form-item label="银行名称">
           <el-select
@@ -73,14 +73,14 @@
           </el-select>
         </el-form-item>
         
-        <el-form-item label="业务类别">
+        <!-- <el-form-item label="业务类别">
           <el-cascader
             clearable
             v-model="ywlx"
             :options="options"
             :props="{ expandTrigger: 'hover' }"
           ></el-cascader>
-        </el-form-item>
+        </el-form-item> -->
         <!-- <el-form-item label="监管账户名称">
           <el-input v-model="form.zjjgzhZhmc"></el-input>
         </el-form-item> -->
@@ -88,11 +88,12 @@
 
       <div
         class="buttonGroup"
-        style="margin:0 auto;width:100px;margin-top:20px"
+        style="margin:0 auto;width:80px;margin-top:20px"
       >
         <el-button-group class="buttons">
           <el-button
             type="primary"
+            size="mini"
             @click="onSubmit"
           >立即提交
           </el-button>
@@ -134,7 +135,7 @@
             <el-form-item label="联系电话">
               <el-input v-model="form1.zjjgzhLxdh"></el-input>
             </el-form-item>
-            <el-form-item
+            <!-- <el-form-item
               label="住宅面积"
               class="area"
             >
@@ -151,7 +152,7 @@
             </el-form-item>
             <el-form-item label="非住宅套数">
               <el-input v-model="form1.zjjgzhFzzts"></el-input>
-            </el-form-item>
+            </el-form-item> -->
 
             <el-form-item label="拟设监管银行">
               <el-input v-model="form1.zjjgzhYhmc"></el-input>
@@ -585,15 +586,15 @@
         })
       },
       addData() {
-        let ywxlId = 0;
+        // let ywxlId = 0;
 
-        ywxlId = this.ywlx[1];
+        // ywxlId = this.ywlx[1];
         sqjgzhApi.addAccount({
           ...this.form,
           zjjgzhLdmc: this.ldName,
           zjjgzhYhmc: this.bankName,
           kfsId: this.$store.state.projectData.kfsId,
-          ywxlBh: ywxlId
+          ywxlBh: 8002001
         })
           .then(ret => {
             if (ret.code !== 200) {
@@ -605,14 +606,13 @@
           });
       },
       updateData() {  
-        let ywxlId = 0;
-        ywxlId = this.ywlx[1];
+       
         sqjgzhApi.updateAccount({
           ...this.form,
           zjjgzhLdmc: this.ldName,
           zjjgzhYhmc: this.bankName,
           kfsId: this.$store.state.projectData.kfsId,
-          ywxlBh:ywxlId
+          ywxlBh:8002001
         })
           .then(ret => {
             if (ret.code !== 200) {

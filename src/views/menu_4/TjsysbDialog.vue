@@ -111,14 +111,14 @@
         <el-form-item  label="本栋剩余金额">
           <el-input v-model="form.shiyongSyje"></el-input>
         </el-form-item>
-          <el-form-item label="业务类别">
+          <!-- <el-form-item label="业务类别">
           <el-cascader
             clearable
             v-model="ywlx"
             :options="options"
             :props="{ expandTrigger: 'hover' }"
           ></el-cascader>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item  label="用款事由说明">
           <el-input v-model="form.shiyongYksy" type="textarea" style="width:200px"></el-input>
         </el-form-item>
@@ -431,13 +431,8 @@
       },
      addData() {
          
-      let ywxlId = 0;
-        if (this.ywlx.length < 2) {
-          this.$message.error("请选择业务类型")
-          return
-        };
-      ywxlId = this.ywlx[1];
-          tjsysbApi.addSysb({...this.form,xxBh:ywxlId,kfsRwbh:this.$store.state.projectData.kfsRwbh,shiyongSqsyfs:0,ldLdbh:this.ldLdbh,
+   
+          tjsysbApi.addSysb({...this.form,xxBh:8005002,kfsRwbh:this.$store.state.projectData.kfsRwbh,shiyongSqsyfs:0,ldLdbh:this.ldLdbh,
       shiyongXmbh:this.shiyongXmbh,
       shiyongJgyhid:this.shiyongJgyhid}).then(ret => {
           if (ret.code !== 200) {

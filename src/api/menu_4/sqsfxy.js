@@ -157,8 +157,8 @@ let getSfxyByXmbh = function (page, size = 20,hetongXmbh,hetongShzt) {
  * 获取新增前信息
  * 
  */
-let fetchBeforeAdd = function(zjzgzhId){
-  return requests8083.get("data-presale-funds/ripartiteAgreement/queryParameters", {zjzgzhId})
+let fetchBeforeAdd = function(zjjgzhId){
+  return requests8083.get("data-presale-funds/ripartiteAgreement/queryParameters", {zjjgzhId})
 }
 
  /**

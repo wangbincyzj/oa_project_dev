@@ -81,14 +81,14 @@
         <el-form-item label="监管账户名称">
           <el-input v-model="form.hetongZhmc"></el-input>
         </el-form-item>
-         <el-form-item label="业务类别">
+         <!-- <el-form-item label="业务类别">
           <el-cascader
             clearable
             v-model="ywlx"
             :options="options"
             :props="{ expandTrigger: 'hover' }"
           ></el-cascader>
-        </el-form-item>   
+        </el-form-item>    -->
       </el-form>
       <div class="buttonGroup" style="margin:0 auto;width:100px;margin-top:20px">
       <el-button-group class="buttons">
@@ -539,13 +539,13 @@
         },
      addData() {
          
-      let ywxlId = 0;
-        if (this.ywlx.length < 2) {
-          this.$message.error("请选择业务类型")
-          return
-        };
-      ywxlId = this.ywlx[1];
-          sqsfxyApi.addContract({...this.form,kfsId:this.kfsId,ywxlBh:ywxlId,zjjgzhId:this.zjjgzhId,hetongJgzh:this.zjjgzhYhzh}).then(ret => {
+      // let ywxlId = 0;
+      //   if (this.ywlx.length < 2) {
+      //     this.$message.error("请选择业务类型")
+      //     return
+      //   };
+      // ywxlId = this.ywlx[1];
+          sqsfxyApi.addContract({...this.form,kfsId:this.kfsId,ywxlBh:8003001,zjjgzhId:this.zjjgzhId,hetongJgzh:this.zjjgzhYhzh}).then(ret => {
           if (ret.code !== 200) {
           this.$message.error(ret.message);
         } else {
@@ -556,16 +556,16 @@
     },
      updateData() {
        //let ywxlId = 0;
-        if (this.ywlx.length < 2) {
-          this.$message.error("请选择业务类型")
-          return
-        };
-     let ywxlId = this.ywlx[1];
-     console.log(this.form);
+    //     if (this.ywlx.length < 2) {
+    //       this.$message.error("请选择业务类型")
+    //       return
+    //     };
+    //  let ywxlId = this.ywlx[1];
+    //  console.log(this.form);
      
       sqsfxyApi.updateContract({
           ...this.form,
-         ywxlBh:ywxlId,
+         ywxlBh:8003001,
          hetongId:this.hetongId,
         })
         .then(ret => {
@@ -654,7 +654,7 @@
         //this.getBankInfo();
         sqsfxyApi.fetchBeforeAdd(id).then(ret => {
           this.form = ret.data;
-          this.form.hetongZhmc = ret.data.zjjgzhZhmc;
+          this.form.hetongZhmc = this.zjjgzhZhmc;
           //this.form.hetongKfsmc = ret.data.xmxxKfs;
           
         });

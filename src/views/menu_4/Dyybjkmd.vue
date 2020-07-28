@@ -28,14 +28,14 @@
         <el-table-column align="center" label="监管账号" prop="jiaocunJkzh"></el-table-column>
         <el-table-column align="center" label="添加日期" prop="jiaocunJkrq"></el-table-column>
       </el-table>
-      <el-pagination
+      <!-- <el-pagination
         background
         layout="prev, pager, next, total"
         @current-change="currentChange"
         :current-page="currentPage"
         :page-size="pageSize"
         :total="total"
-      ></el-pagination>
+      ></el-pagination> -->
     </TitleTable>
      <div id="printData" style="width:800px;margin:0 auto;display:none">
      

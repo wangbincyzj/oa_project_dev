@@ -50,12 +50,6 @@ let getContractInfoById = function(id){
     return requests.get("", {id})
   }
 
-/**
- * 新增退款申请
- */
-let addTksq = function (_form) {
-  return requests8083.post("data-presale-funds/shiyong/save", _form)
-}
 
 
 /**
@@ -76,7 +70,16 @@ let delSysb = function (id) {
   return requests8083.get("data-presale-funds/shiyong/del", {id})
 }
 
-
+/**
+ * 获取拨付单信息
+ * @param page
+ * @param size
+ * 
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+let getBfdDetail = function (shiyongId) {
+  return requests8083.get("data-presale-funds/shiyong/getPaymentNote", {shiyongId})
+}
 
 export const glsysbApi = {
     getAllSysb,
@@ -84,4 +87,6 @@ export const glsysbApi = {
     delSysb,
     updateSysb,
     getSysbById,
+    getBfdDetail,
+
 }

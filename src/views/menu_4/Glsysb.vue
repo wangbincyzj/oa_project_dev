@@ -45,16 +45,16 @@
           <el-table-column
             align="center"
             label="收件操作"
-            width="150"
+            width="200"
           >           
             <template slot-scope="scope">
               <el-button
                 size="mini"
-                @click="GetFile(scope.$index, scope.row)">收件
+                @click="GetFile(scope.$index, scope.row)">确认收件
               </el-button>
               <el-button
                 size="mini"
-                @click="DelFile(scope.$index, scope.row)">清除
+                @click="DelFile(scope.$index, scope.row)">管理收件
               </el-button>
               <el-button
                 size="mini"
@@ -71,27 +71,18 @@
               <el-button
                 size="mini"
                 @click="handleUpdate(scope.$index, scope.row)"
-                :disabled="scope.row.shiyongShzt!==0">编辑
+                :disabled="scope.row.shiyongShzt!==0&&scope.row.shiyongShzt!==3">编辑
               </el-button>
-              <el-button
-                size="mini"
-                @click="uploadPic(scope.$index, scope.row)"
-                :disabled="scope.row.shiyongShzt!==0">传图
-              </el-button>
-              <el-button
-                size="mini"
-                @click="managePic(scope.$index, scope.row)"
-                :disabled="scope.row.shiyongShzt!==0">管图
-              </el-button>
+             
               <el-button
                 size="mini"
                 @click="handleDelete(scope.$index, scope.row)"
-                :disabled="scope.row.shiyongShzt!==0">删除
+                :disabled="scope.row.shiyongShzt!==0&&scope.row.shiyongShzt!==3">删除
               </el-button>
                <el-button
                 size="mini"
                 @click="handleInform(scope.$index, scope.row)"
-                :disabled="scope.row.shiyongShzt!==0">上报
+                :disabled="scope.row.shiyongShzt!==0&&scope.row.shiyongShzt!==3">上报
               </el-button>
 
               <el-button
@@ -101,7 +92,7 @@
 
               <el-button
                 size="mini"
-                @click="printPaper(scope.$index, scope.row)">打印申请单
+                @click="handlePrint(scope.$index, scope.row)" @mouseover.native="fetchPrintData(scope.row)">打印申请单
               </el-button>
 
             </template>
@@ -132,7 +123,24 @@
           />
         </el-dialog>
       </TitleTable>
-  
+      <div style="width:700px;margin:0 auto;display:none;" id="printData">
+          
+         <table style="width:700px;table-layout:fixed;border-collapse: collapse;text-align:center;height:800px " border="2">
+           <tr><td colspan="4"><p style="font-size:20px;width:320px;margin:0 auto">商品房预售资金监管拨付审核确认单</p></td></tr>
+           <tr><td>开发企业</td><td>{{print.shiyongKfs}}</td><td>项目名称</td><td>{{print.shiyongXmmc}}</td></tr>
+          <tr><td>本栋缴存总额</td><td>{{print.jkze}}</td><td>本栋使用总额</td><td>{{print.sbze}}</td></tr>
+          <tr><td>本栋监管余额</td><td>{{print.syze}}</td><td>楼栋名称</td><td>{{print.shiyongLdmc}}</td></tr>
+           <tr><td>监管银行</td><td>{{print.shiyongJgyhmc}}</td><td>监管账户</td><td>{{print.shiyongJgzh}}</td></tr>
+           <tr><td>申请拨付方式</td><td>{{print.shiyongSqsyfsN}}</td><td>申请拨付金额</td><td>{{print.shiyongSbje}}</td></tr>
+           <tr><td>退款合同编号</td><td>{{print.shiyongHtbh}}</td><td>合同监管金额</td><td>{{print.jgje}}</td></tr>
+            <tr><td>申请拨付时间</td><td>{{print.shiyongSbsj}}</td><td>审核拨付时间</td><td>{{print.shiyongShsysj}}</td></tr>
+            <tr><td>拨付确认码</td><td>{{print.shiyongBfqrm}}</td><td colspan="2" rowspan="5"></td></tr>
+            <tr><td>划拨账户</td><td >{{print.shiyongHrzhmc}}</td></tr>
+            <tr><td>划拨账号</td><td>{{print.shiyongHrzhzh}}</td></tr>
+            <tr><td>开户银行</td><td>{{print.shiyongHrzhyh}}</td></tr>
+            <tr><td >打印时间</td><td>{{this.date}}</td></tr>
+         </table>
+          </div>
   </div>
 </template>
 
@@ -161,8 +169,9 @@
         pageSize:10,
         total:0,
         pages:1,
-        authList: [],
         selectedIndex: 0,
+        date:"",
+        print:{},
       }
     },
     created() {
@@ -263,10 +272,33 @@
           this.$refs.dialog.setMode(2,this.currentRow.shiyongId,row.logId)
         })
       },
+      fetchPrintData(row){
+       this.getDate();
+       glsysbApi.getBfdDetail(row.shiyongId).then(ret=>{
+          this.print=ret.data;
+          if(ret.data.shiyongSqsyfs===0){
+            this.print.shiyongSqsyfsN="正常使用"
+          }else if(ret.data.shiyongSqsyfs===1){
+            this.print.shiyongSqsyfsN="合同退款"
+          }
+       })
 
-      printPaper(index,row){},
-      managePic(index,row){},
-      uploadPic(index,row){},
+     },   
+      handlePrint(index,row){
+       let obj=document.getElementById('printData');
+        let newWindow=window.open("打印窗口","_blank");
+        let docStr = obj.innerHTML;
+        newWindow.document.write(docStr);
+        newWindow.document.close();
+        newWindow.print();
+    },
+    getDate(){
+        let myDate=new Date();
+        this.date=myDate.toLocaleDateString();
+        console.log(this.date);
+        
+    },
+     
 
       submitSuccess() {
          this.$nextTick(()=>{
