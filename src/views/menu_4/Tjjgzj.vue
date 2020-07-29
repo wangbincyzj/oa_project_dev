@@ -267,8 +267,8 @@
         pageSize: 10,
         total: 0,
         pages: 1,
-
-
+        row:[],
+        htbh:"",
         mergeSpanArr: [], // 空数组，记录每一行的合并数
         mergeSpanArrIndex: "", // mergeSpanArr的索引
         listQuery: {
@@ -282,6 +282,8 @@
     methods: {
       //获取下拉列表信息
       fetchRecord(row,htbh) {
+        this.row=row;
+        this.htbh=htbh;
         tjjgzjApi.fetchlist(htbh)
           .then(ret => {
             //this.recordTable = res.data.records;
@@ -323,13 +325,14 @@
           this.$refs.dialog.reset();
         });
         this.dialogVisible=false;
-        this.fetchData();
+        this.fetchRecord();
       },
       handleAdd(index, row) {
         this.dialogVisible = true;
         this.dialogTitle = "添加缴款记录";
         this.dialogType = 1;
         this.$nextTick(() => {
+          this.$refs.dialog.reset();
           this.$refs.dialog.setMode(1, row.jiaocunHtbh);
         });
       },

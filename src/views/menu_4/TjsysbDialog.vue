@@ -481,7 +481,7 @@
 
         this.form.shiyongKfs=this.$store.state.projectData.xmxxKfs;
         this.form.shiyongXmmc=this.$store.state.projectData.xmxxXmmc;
-        tjsysbApi.getSbInfo(id).then(ret => {
+        tjsysbApi.getSbInfo(id,this.jiaocunJkzh).then(ret => {
           console.log(ret);
           
          this.form.ldYsJe=ret.data.ldYsJe;

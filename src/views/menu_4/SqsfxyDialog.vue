@@ -78,8 +78,11 @@
         <el-form-item label="预计销售总额" class="count">
           <el-input v-model="form.hetongYsze"></el-input>
         </el-form-item>
-        <el-form-item label="监管账户名称">
+        <!-- <el-form-item label="监管账户名称">
           <el-input v-model="form.hetongZhmc"></el-input>
+        </el-form-item> -->
+         <el-form-item label="监管账号">
+          <el-input v-model="form.hetongJgzh"></el-input>
         </el-form-item>
          <!-- <el-form-item label="业务类别">
           <el-cascader
@@ -545,7 +548,7 @@
       //     return
       //   };
       // ywxlId = this.ywlx[1];
-          sqsfxyApi.addContract({...this.form,kfsId:this.kfsId,ywxlBh:8003001,zjjgzhId:this.zjjgzhId,hetongJgzh:this.zjjgzhYhzh}).then(ret => {
+          sqsfxyApi.addContract({...this.form,kfsId:this.kfsId,ywxlBh:8003001,zjjgzhId:this.zjjgzhId,hetongZhmc:this.zjjgzhZhmc}).then(ret => {
           if (ret.code !== 200) {
           this.$message.error(ret.message);
         } else {
@@ -628,34 +631,16 @@
         this.updateData();
       }
     },
-    getBankInfo(){
-        console.log("1111111111111111");
-        console.log(this.zjjgzhId);
-        console.log(this.zjjgzhZhmc);
-        this.form.zjjgzhId = this.zjjgzhId;
-        this.form.hetongZhmc = this.zjjgzhZhmc;
-        this.form.hetongKfsmc = this.$store.state.projectData.xmxxKfs;
-        console.log(this.$store.state.xmxxKfs);
-        
-        this.form.hetongYhmc = this.zjjgzhYhmc;
-        this.form.hetongXmmc=this.zjjgzhXmmc;
-        // sqsfxyApi.getProjectByName(this.zjjgzhXmmc).then(ret=>{
-        //     //this.form.hetongTdxz=
-        //     this.form.hetongGhmj=ret.data.xmxxGhxkmj;
-        //     this.form.hetongXmdz=ret.data.xmxxJtzl;
-        //     this.form.hetongSjgcxkzh=ret.data.kfsYyzh;
-        //     //this.form.hetongTdsymj=
-        // })
-    },
+   
     setMode(mode,id,logId){
       console.log("00000000000");
       
       if(mode===1){
-        //this.getBankInfo();
+       
         sqsfxyApi.fetchBeforeAdd(id).then(ret => {
           this.form = ret.data;
-          this.form.hetongZhmc = this.zjjgzhZhmc;
-          //this.form.hetongKfsmc = ret.data.xmxxKfs;
+          //this.form.hetongZhmc = this.zjjgzhZhmc;
+          this.form.hetongJgzh =this.zjjgzhYhzh;
           
         });
         this.getBussinessType();

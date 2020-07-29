@@ -36,8 +36,8 @@ let getAccountByLd = function(ldbh){
  * 
  */
 
-let getSbInfo = function(ldbh){
-  return requests8083.get("data-presale-funds/shiyong/getShenbaoForm", {ldbh})
+let getSbInfo = function(ldbh,jgzh){
+  return requests8083.get("data-presale-funds/shiyong/getShenbaoForm", {ldbh,jgzh})
 }
 
 /**
