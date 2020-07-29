@@ -60,6 +60,7 @@
         width="300"
       >
         <template slot-scope="scope">
+
           <el-button
             size="mini"
             @click="handleDetail(scope.$index, scope.row)">楼盘表生成房间
@@ -69,7 +70,7 @@
       </el-table-column>
     </el-table>
     <el-dialog
-      title="楼盘表生成房间"
+      :title="dialogTitle"
       center
       width="1200px"
       slot="dialog"
@@ -139,7 +140,13 @@
         }
       },
       handleDetail(index, item) {
+        if (!item.ldxxChzt) {
+          this.$message.warning("未测绘不能生成房间")
+          return
+        }
+        console.log(item)
         this.dialogVisible = true;
+        this.dialogTitle = `楼栋[${item.ldxxMc}]生成房间`
         this.$nextTick(()=>{
           this.$refs.dialog.setMode(0, item.ldxxId)
         })

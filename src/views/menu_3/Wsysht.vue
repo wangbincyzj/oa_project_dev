@@ -23,10 +23,15 @@
         <el-table-column label="单价" align="center" prop="roomDj" width="80"/>
         <el-table-column label="挂牌单价" align="center" prop="roomGpdj" />
         <el-table-column label="付款方式" align="center" prop="htFkfs" />
-        <el-table-column label="监管状态" align="center" prop="htZjjgzt" />
-        <el-table-column label="预售资金缴存情况" align="center" prop="htYsjkzt">
+        <el-table-column label="监管状态" align="center" prop="roomZjjgzt" >
           <template #default="{row}">
-            <i class="el-icon-check" v-if="row.htYsjkzt"/>
+            <i class="el-icon-check" v-if="row.roomZjjgzt"/>
+            <i class="el-icon-close" v-else/>
+          </template>
+        </el-table-column>
+        <el-table-column label="预售资金缴存" align="center" prop="htYsjkzt">
+          <template #default="{row}">
+            <i class="el-icon-check" v-if="row.htYsjkzt||row.ldxxZjjgzt===0"/>
             <i class="el-icon-close" v-else/>
           </template>
         </el-table-column>
@@ -47,7 +52,7 @@
               <el-button size="mini" @click="handleSubmit(row)">上报</el-button>
             </template>
             <el-button @click="handlePrint(row)" size="mini">草拟合同</el-button>
-            <el-button size="mini">打印备案表</el-button>
+            <el-button @click="handlePrint2(row)" size="mini">打印备案表</el-button>
             <el-button size="mini" @click="handleDetail(row)">详情</el-button>
           </template>
         </el-table-column>
@@ -113,16 +118,25 @@
         })
       },
       close() {
-        this.active = false
+        this.active = false;
+        this.fetchTableData()
       },
       fetchTableData() {
         this.loading = true;
-        yushouContractApi.getContractList({kfsRwbh: this.$store.state.rwbh, htBazt:1}).then(ret => {
+        yushouContractApi.getContractList({kfsRwbh: this.$store.state.rwbh, htBazt:0}).then(ret => {
           this.loading = false;
           this.tableData = ret.data.records;
         })
       },
       handleSubmit(item) {
+        if(!item.roomZjjgzt){
+          this.$message.warning("未设置合同监管状态,不能备案合同")
+          return
+        }
+        if(item.ldxxZjjgzt&&!item.htYsjkzt){
+          this.$message.warning("未缴存预售资金,不能备案合同")
+          return
+        }
         yushouContractApi.submitContract(item.htId).then(ret => {
           if (ret.code === 200) {
             this.$message.success("上报成功");
@@ -134,6 +148,9 @@
       },
       handlePrint(item){
         window.open(`#/printView/ysht?id=${item.htId}`)
+      },
+      handlePrint2(item){
+        window.open(`#/printView/bab?id=${item.htId}`)
       }
     }
   }

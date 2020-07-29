@@ -164,8 +164,9 @@
         })
       },
       handleDetail(mode, item) {
+        console.log(item)
         this.dialogVisible = true;
-        this.dialogTitle = "设置单价";
+        this.dialogTitle = `楼栋[${item.ldxxMc}]设置房价`;
         this.mode = mode;
         this.$nextTick(()=>{
           this.$refs.dialog.initRoomStructure(item.ldxxId);

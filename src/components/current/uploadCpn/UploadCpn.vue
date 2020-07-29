@@ -19,7 +19,10 @@
       list-type="picture-card"
       :on-preview="handlePictureCardPreview"
       :on-success="handleUpload"
-      :on-remove="handleRemove">
+      :on-error="handleError"
+      :on-remove="handleRemove"
+      :before-upload="beforeUpload"
+    >
       <i class="el-icon-plus"/>
     </el-upload>
     <el-dialog :visible.sync="dialogVisible" append-to-body>
@@ -74,6 +77,9 @@
         this.$emit("addFile", file)
       },
       handleRemove(file, fileList) {
+        if(!file.fujianId||!file.response){
+          return
+        }
         if(this.$listeners.delFile){
           this.$emit("delFile", file)
         }else{
@@ -84,6 +90,23 @@
           }
         }
       },
+      handleError(err, file, fileList){
+
+      },
+      beforeUpload(file) {
+        console.log(file)
+        const isImage = file.type.indexOf("image") !== -1;
+        if(!isImage) {
+          this.$message.error("只能上传图片类型")
+          return false
+        }
+        const sizeMb = file.size/1024/1024;
+        console.log(sizeMb)
+        if(sizeMb>5){
+          this.$message.error("文件大小不能大于5M")
+          return false
+        }
+      }
     }
   }
 </script>

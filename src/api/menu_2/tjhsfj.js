@@ -13,8 +13,8 @@ let addRoom = function (_form) {
 /**
  * 通过楼栋ID手动生成房间
  */
-let addRoom2 = function (_form) {
-  return requests.post("data_center/room/save", {..._form, addType:1})
+let addRoom2 = function (_form, type=1) {
+  return requests.post("data_center/room/save", {..._form, addType:type})
 }
 
 

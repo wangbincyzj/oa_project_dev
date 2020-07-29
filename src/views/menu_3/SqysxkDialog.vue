@@ -49,7 +49,7 @@
         <el-divider/>
         <el-form-item label="选择账户">
           <el-select v-model="bank" @change="handleBankChange">
-            <el-option :label="bank.zjjgzhZhmc" :value="index" v-for="(bank,index) in bankList" />
+            <el-option :label="bank.zjjgzhZhmc" :value="index" v-for="(bank,index) in bankList"/>
           </el-select>
         </el-form-item>
         <br>
@@ -68,7 +68,7 @@
     </div>
     <!--mode2收件-->
     <div v-if="mode===2">
-      <ConfirmReceive ref="ref1" @receive="receive"/>
+      <ConfirmReceive ref="ref" type="SPFHTBA_XKZ" :ywzh="ywzh" @complete="$emit('submitSuccess')"/>
     </div>
     <!--mode3修改-->
     <div v-if="mode===3">
@@ -127,16 +127,16 @@
             </el-form-item>
           </el-form>
         </el-tab-pane>
-        <el-tab-pane label="收件信息" name="second"></el-tab-pane>
-        <el-tab-pane label="图片管理" name="third">
-          <UploadCpn :data="{logId}" :file-list="fileList" @delFile="delFile"/>
+        <el-tab-pane label="收件信息" name="second">
+          <ReceiveList ref="rList"/>
         </el-tab-pane>
+
       </el-tabs>
     </div>
 
     <!--收件管图-->
     <div v-if="mode===4">
-      <ReceiveListPic/>
+      <ManageReceive :ywzh="ywzh" ref="manage"/>
     </div>
   </div>
 </template>
@@ -148,13 +148,14 @@
   import InfoList from "@/components/common/infoList/InfoList";
   import UploadCpn from "@/components/current/uploadCpn/UploadCpn";
   import {filesApi} from "@/api/files";
-  import ConfirmReceive from "@/components/current/confirmReceive/ConfirmReceive";
   import {config} from "@/api/baseConfig";
-  import ReceiveListPic from "@/components/current/receiveListPic/ReceiveListPic";
+  import ManageReceive from "@/components/current/manageReceive/ManageReceive";
+  import ConfirmReceive from "@/components/current/confirmReceive/ConfirmReceive";
+  import ReceiveList from "@/components/current/receiveList/ReceiveList";
 
   export default {
     name: "SqysxkDialog",
-    components: {ReceiveListPic, ConfirmReceive, UploadCpn, InfoList, CenterButton},
+    components: {ReceiveList, ConfirmReceive, ManageReceive, UploadCpn, InfoList, CenterButton},
     props: {
       readOnly: {
         default: false,
@@ -200,15 +201,11 @@
         },
         logId: "",
         bankList: [],
+        ywzh: ""
       }
     },
-    computed: {
-      ywzh/*业务宗号*/() {
-        return this.preSaleLicense ? this.preSaleLicense.xkzYwzh : null
-      },
-    },
     methods: {
-      receive(list){
+      receive(list) {
         console.log(list)
       },
       delFile(file) {
@@ -226,7 +223,7 @@
           }))
         })
       },
-      handleBankChange(value){
+      handleBankChange(value) {
         let bank = this.bankList[value];
         console.log(bank);
         this.form1.xkzJgzhmc = bank.zjjgzhZhmc;
@@ -238,29 +235,36 @@
       },
       setMode(mode, ...arg) {
         this.mode = mode;
-        console.log(mode, arg)
         if (mode === 1) {  // 增加
           this.fetchLdData()
         } else if (mode === 2) {  // 收件
-          this.fetchShouJian(arg[0])
+          //this.fetchShouJian(arg[0])
+          console.log(arg)
+          this.ywzh = arg[1]
+          this.$refs.ref.fetchDefault(arg[0])
         } else if (mode === 3) {  // 修改
           this.fetchLdData()
           this.fetchForUpdate(arg[0])
           this.logId = arg[1]
-          this.fetchImg()
-        } else if(mode===4){
-          this.fetchShouJian(arg[0])
+          this.$nextTick(()=>{
+            this.$refs.rList.fetchData(arg[2])
+          })
+        } else if (mode === 4) {
+          this.ywzh = arg[1]
+          this.$nextTick(()=>{
+            this.$refs.manage.fetchConfirm(this.ywzh)
+          })
         }
       },
       fetchLdData() {
         yushowApi.getReportBuildingsByProjectId(this.$store.state.projectData.xmxxId, 0).then(ret => {
           this.lds = ret.data;
           return this.lds
-        }).then(ret=>{
-          ret.forEach(item=>{
-            yushowApi.getBankList(item.ldxxLdbh).then(ret=>{
-              ret.data.forEach(item=>{
-                if(!this.bankList.includes(bank=>bank.logId===item.logId)){
+        }).then(ret => {
+          ret.forEach(item => {
+            yushowApi.getBankList(item.ldxxLdbh).then(ret => {
+              ret.data.forEach(item => {
+                if (!this.bankList.includes(bank => bank.logId === item.logId)) {
                   this.bankList.push(item)
                 }
               })
@@ -288,7 +292,7 @@
           this.businessAttachments = ret.data.businessAttachments;
           this.preSaleLicense = ret.data.preSaleLicense;
           this.businessReceives = ret.data.businessReceives;
-          this.$nextTick(()=>{
+          this.$nextTick(() => {
             this.$refs.ref1.setList(this.businessReceives)
           })
         })
@@ -303,9 +307,9 @@
       },
       _handleChange(val) {
         let title = "";
-        if(!val.length){
+        if (!val.length) {
           title = ""
-        }else{
+        } else {
           this.form1.xkzLdid = val.join(",")
           title = this.$store.state.projectData.xmxxXmmc + "-"
 

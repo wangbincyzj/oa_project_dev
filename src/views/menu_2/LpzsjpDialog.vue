@@ -6,6 +6,7 @@
       label-width="150px"
       size="mini"
       inline
+      :disabled="confirm"
       :model="form">
       <el-form-item label="房号">
         <el-input v-model="form.roomFh"></el-input>
@@ -100,8 +101,7 @@
     components: {CenterButton},
     props:{
       confirm:{
-        type: Boolean,
-        defalut: false
+        default: false
       }
     },
     data() {

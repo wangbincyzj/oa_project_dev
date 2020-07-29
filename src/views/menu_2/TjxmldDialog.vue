@@ -29,7 +29,7 @@
           <el-form-item label="房号含单元号">
             <el-select v-model="form.ldxxDyhzt" placeholder="请选择房号含单元号">
               <el-option label="是" :value="1"></el-option>
-              <el-option label="不是" :value="0"></el-option>
+              <el-option label="否" :value="0"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="施工单位">
@@ -116,14 +116,14 @@
           </el-form-item>
         </el-form>
       </el-tab-pane>
-      <el-tab-pane label="图片管理" name="second">
+      <!--<el-tab-pane label="图片管理" name="second">
         <UploadCpn
           :url="url"
           :data="{logId: form.logId}"
           :file-list="fileList"
           @delFile="delFile"
         />
-      </el-tab-pane>
+      </el-tab-pane>-->
     </el-tabs>
 
     <CenterButton v-if="mode!==2" @btnClick="btnClick" title="提交"/>

@@ -1,14 +1,10 @@
 <template>
   <div>
     <TitleTable title="销售承诺书管理">
-      <div slot="controls" class="controls">
-        <div @click="dialogVisible=true"><span>按楼栋名称搜索:</span>
-          <el-input size="mini"/>
-        </div>
-        <div><span>房间号搜索:</span>
-          <el-input size="mini"/>
-        </div>
-      </div>
+      <SearchBar>
+        <SearchBarItem prefix="房号"/>
+        <SearchBarItem prefix="楼栋名称"/>
+      </SearchBar>
       <el-table
         :data="tableData"
       >
@@ -38,6 +34,16 @@
 
         </el-table-column>
       </el-table>
+      <el-pagination
+        background
+        layout="prev, pager, next, total, sizes"
+        @current-change="mixinCurrentChange"
+        @size-change="mixinSizeChange"
+        :page-sizes="[10, 20, 30, 40]"
+        :current-page="currentPage"
+        :page-size="pageSize"
+        :total="total">
+      </el-pagination>
       <el-dialog
         :title="dialogTitle"
         center
@@ -62,16 +68,19 @@
   import {mixins} from "@/utils/mixins";
   import DyxscnsDialog from "@/views/menu_3/DyxscnsDialog";
   import {yushouContractApi} from "@/api/menu_3/yushowContract";
+  import SearchBar from "@/components/current/searchBar/SearchBar";
+  import SearchBarItem from "@/components/current/searchBar/SearchBarItem";
 
   export default {
     name: "Dyxscns",
-    mixins: [mixins.dialogMixin],
-    components: {DyxscnsDialog, TitleTable},
+    mixins: [mixins.dialogMixin, mixins.myPagerMixin],
+    components: {SearchBarItem, SearchBar, DyxscnsDialog, TitleTable},
     data() {
       return {
         tableData: [],
         id: null,
-        dialogWidth: "500px"
+        dialogWidth: "500px",
+        dialogTitle: ""
       }
     },
     created() {
@@ -112,7 +121,8 @@
 
 
       },
-      handlePrint() {
+      handlePrint(item) {
+        window.open(`/#/printView/xscns?id=${item.xsqrdId}`)
       }
       ,
       handleDel(item) {

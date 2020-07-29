@@ -21,8 +21,7 @@
       <el-table-column align="center" label="收件操作" width="250">
         <template #default="scope">
           <el-button @click="handleReceive(scope.row)" :disabled="!_enable(scope.row)" size="mini">收件</el-button>
-          <el-button @click="handleClear(scope.row)" :disabled="!_enable(scope.row)" size="mini">传图</el-button>
-          <el-button @click="handlePrint(scope.row)" :disabled="!_enable(scope.row)" size="mini">打印收件</el-button>
+          <el-button @click="handleManage(scope.row)" :disabled="!_enable(scope.row)" size="mini">收件管理</el-button>
         </template>
       </el-table-column>
       <el-table-column align="center" label="上报操作" width="350">
@@ -127,14 +126,14 @@
         this.dialogVisible = true;
         this.dialogTitle = "业务收件操作"
         this.$nextTick(()=>{
-          this.$refs.dialog.setMode(2, item.xkzId)
+          this.$refs.dialog.setMode(2, item.xkzId, item.xkzYwzh)
         })
       },
-      handleClear(item){
+      handleManage(item) {
         this.dialogVisible = true;
-        this.dialogTitle = "收件图片管理";
+        this.dialogTitle = "业务收件管理"
         this.$nextTick(()=>{
-          this.$refs.dialog.setMode(4, item.xkzId)
+          this.$refs.dialog.setMode(4, item.xkzId, item.xkzYwzh)
         })
       },
       handlePrint(){},
@@ -183,11 +182,12 @@
         })
       },
       handleDetail(item){
+        // console.log(item)
         this.dialogVisible = true;
         this.dialogTitle = "预售申报 信息修改"
         this.readOnly =true
         this.$nextTick(()=>{
-          this.$refs.dialog.setMode(3, item.xkzId, item.logId)
+          this.$refs.dialog.setMode(3, item.xkzId, item.logId, item.xkzYwzh)
         })
       },
     }

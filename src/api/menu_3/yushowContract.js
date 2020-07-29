@@ -196,6 +196,13 @@ let setPassword = function ({xsqrdId, xsqrdCrnxm, xsqrdPass, password}) {
 }
 
 
+/**
+ * 获取打印承诺书详情
+ */
+let getPrintData = function (xsqrdId) {
+  return requests.get("data-presale-license/salesConfirmation/print", {xsqrdId})
+};
+
 /*---------------------------------合同--------------------------------*/
 /**
  * 添加购买人
@@ -234,6 +241,13 @@ let submitContract = function (htId, type = 1) {
 }
 
 /**
+ * 撤回合同
+ */
+let rejectContract = function (htId, htBachyj) {
+  return requests.get("data-presale-license/contract/withdraw", {htId, htChyj:htBachyj})
+};
+
+/**
  * 合同列表查询
  * htBazt 0新建 1上报 2通过 3撤回
  */
@@ -269,6 +283,12 @@ let auditContract = function ({businessId, processName, processId, approveOpinio
   })
 }
 
+/**
+ * 打印备案表
+ */
+let printContractForm = function (htId) {
+  return requests.get("data-presale-license/contract/printRecordForm",{htId})
+};
 
 /*---------------------------------图片上传与获取--------------------------------*/
 /*arg:files*/
@@ -504,6 +524,7 @@ export const yushouContractApi = {
   delByIdHouseOwner,
   selectHouseOwnerList,
   submitContract,
+  rejectContract,
   getAllContract,
   revokeContract,
   revokeContractDetail,
@@ -538,5 +559,7 @@ export const yushouContractApi = {
   contractClosedList,
   delContractClose,
   housingRecordRooms,
-  getHousingRecordDetail
+  getHousingRecordDetail,
+  printContractForm,
+  getPrintData
 }

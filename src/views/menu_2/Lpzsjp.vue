@@ -46,8 +46,8 @@
           </div>
           <Rooms ref="rooms" enable-loading :delay="1000" enable-choose @roomClick="roomClick">
             <template #default="{room}">
-              <div>建筑面积:{{room.roomJzmj}}</div>
-              <div>套内面积:{{room.roomTnjzmj}}</div>
+              <div>建面:{{room.roomJzmj}}</div>
+              <div>套内:{{room.roomTnjzmj}}</div>
             </template>
           </Rooms>
         </div>
@@ -59,7 +59,7 @@
           :visible.sync="dialogVisible"
           @close="dialogVisible = false"
         >
-          <LpzsjpDialog ref="dialog" @submitSuccess="submitSuccess" :confirm="confirmStatus"/>
+          <LpzsjpDialog ref="dialog" @submitSuccess="submitSuccess"  :confirm="confirmStatus"/>
         </el-dialog>
       </TitleTable>
     </ContainerTwoType>
@@ -269,6 +269,8 @@
               this.$message.success("自审入库成功");
               this.$refs.rooms.fetchRooms(this.selectedBuilding.id);
               this.fetchBuildingDetail();
+              this.fetchData();
+
             } else {
               this.$message.error(ret.message);
             }

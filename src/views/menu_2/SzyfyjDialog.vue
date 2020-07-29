@@ -9,7 +9,7 @@
     <div style="text-align: center; color: red">
       <span>提示:点击房间即可选中或者取消房间</span>
     </div>
-    <Rooms ref="rooms" enable-choose>
+    <Rooms ref="rooms" enable-choose v-loading="loading">
       <template #default="{room}">
         <div>单价:{{room.roomGpdj}}</div>
       </template>
@@ -67,7 +67,6 @@
         }
       },
       setPrice() {
-        this.loading = true;
         let roomIds = [];
         this.$refs.rooms.rooms.forEach(item=>{
           item.v.forEach(item=>{
@@ -84,14 +83,21 @@
         }
         roomIds = roomIds.join(",")
         this.roomIds = roomIds
+        const loading = this.$loading({
+          lock: true,
+          text: 'Loading',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
+        });
         yfyjApi.setHousePrice(roomIds, this.price*1).then(ret=>{
-          this.loading = false;
           if(ret.code===200){
             this.$message.success("设置成功");
             this.initRoomStructure(this.ldxxId);
           }else{
             this.$message.error(ret.message)
           }
+        }).finally(()=>{
+          loading.close()
         })
       },
       checkAll() {

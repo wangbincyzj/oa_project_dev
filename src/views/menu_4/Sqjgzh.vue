@@ -56,7 +56,7 @@
         <el-table-column
           align="center"
           label="收件操作"
-          width="280"
+          width="200"
           prop="operation">
           <template slot-scope="scope">
             <el-button
@@ -70,12 +70,6 @@
               type="primary"
               :disabled="scope.row.zjjgzhShzt===1 ||scope.row.zjjgzhShzt===2"
               @click="handleManageFile(scope.$index, scope.row)">管理收件
-            </el-button>
-            <el-button
-              size="mini"
-              type="primary"
-              @click="handlePrintFile(scope.$index, scope.row)"
-              @mouseover.native="fetchPrint(scope.$index, scope.row)">打印收件
             </el-button>
           </template>
         </el-table-column>
@@ -255,8 +249,7 @@
         this.zjjgzhYwzh = this.currentRow.zjjgzhYwzh;
 
         this.$nextTick(() => {
-          this.$refs.dialog.setMode(2, this.currentRow.zjjgzhId, row.logId);
-          //this.$refs.dialog.reset();
+          this.$refs.dialog.setMode(2, this.currentRow.zjjgzhId, row.logId, row.zjjgzhYwzh);
         })
       },
     
@@ -321,22 +314,22 @@
           });
         });
       },
-      handleGetFile() {
+      handleGetFile(index, row) {
         this.dialogVisible = true;
         this.dialogTitle = "确认收件";
         this.zjjgzhYwzh = this.currentRow.zjjgzhYwzh;
         this.dialogType = 4;
         this.$nextTick(() => {
-          this.$refs.dialog.setMode(4, this.currentRow.zjjgzhId);
+          this.$refs.dialog.setMode(4, this.currentRow.zjjgzhId, row.zjjgzhYwzh);
         })
       },
-      handleManageFile(index, item) {
+      handleManageFile(index, row) {
         this.dialogVisible = true;
         this.dialogTitle = "管理收件";
         this.zjjgzhYwzh = this.currentRow.zjjgzhYwzh;
         this.dialogType = 9;
         this.$nextTick(() => {
-          this.$refs.dialog.setMode(9, this.currentRow.zjjgzhId);
+          this.$refs.dialog.setMode(9, this.currentRow.zjjgzhId, row.zjjgzhYwzh);
         })
       },
       handlePrintFile() {

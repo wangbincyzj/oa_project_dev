@@ -10,7 +10,7 @@
       <tr v-for="floor in rooms" :class="{noRoom: !floor.v.length}">
         <td class="title" @click="floorClick(floor)">{{floor.k}}</td>
         <td class="blank" ></td>
-        <td class="room" v-for="room in floor.v"  @click.ctrl.stop="ctrlClick(room)" @click="roomClick(room)" :class="{active: room.active&&enableChoose}">
+        <td class="room" v-for="room in floor.v"  @click="roomClick(room)" :class="{active: room.active&&enableChoose}">
           <div class="fh">{{room.roomFh}}</div>
           <slot :room="room"/>
         </td>
@@ -78,10 +78,9 @@
       },
       roomClick(room){
         this.$set(room, "active", !room.active)
-      },
-      ctrlClick(room){
-        this.$emit('roomClick', room)
-        this.$set(room, "active", !room.active)
+        if(!this.enableChoose){
+          this.$emit('roomClick', room)
+        }
       },
       floorClick(floor){
         floor.v.forEach(room=>{

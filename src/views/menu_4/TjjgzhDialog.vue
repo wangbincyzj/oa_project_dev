@@ -182,7 +182,7 @@
 
             </div>
           </div>
-
+          <ReceiveList ref="ref3"/>
         </el-tab-pane>
         <el-tab-pane label="3.审核意见" name="third">
           <div>
@@ -219,89 +219,10 @@
       </el-tabs>
     </div>
     <div v-if="dialogType===4">
-      <h3 class="title">
-        <el-button-group>
-          <el-button size="mini" @click="addFile" type="primary" icon="el-icon-plus">添加收件</el-button>
-          <el-button size="mini" @click="resetR" type="warning" icon="el-icon-warning-outline">重置默认</el-button>
-        </el-button-group>
-      </h3>
-
-      <el-table :data="tableData2" size="mini">
-        <el-table-column
-          type="index"
-          width="50"/>
-        <el-table-column align="left" label="收件名称" prop="shoujianTitle">
-          <!--v-model="scope.row.shoujianTitle"-->
-          <template #default="scope">
-            <div v-if="scope.row.add" style="display: flex">
-              <div style="flex: 3; padding-right: 20px;">
-                <el-input size="mini" v-model="scope.row.shoujianTitle"/>
-              </div>
-              <div style="flex: 1">
-                <el-select
-                  size="mini"
-                  value=""
-                  @change="change($event, scope.row)"
-                  placeholder="手动输入或选择收件"
-                >
-                  <el-option v-for="item in addList" :value="item.value">{{item.value}}</el-option>
-                </el-select>
-              </div>
-            </div>
-            <div v-else>
-              {{scope.row.shoujianTitle}}
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="份数" width="120">
-          <template #default="{row}">
-            <el-select v-model="row.shoujianFenshu" size="mini">
-              <el-option value="1">1</el-option>
-              <el-option value="2">2</el-option>
-              <el-option value="3">3</el-option>
-              <el-option value="4">4</el-option>
-              <el-option value="5">5</el-option>
-            </el-select>
-          </template>
-
-        </el-table-column>
-        <el-table-column align="center" label="资料类型" width="120">
-          <template #default="{row}">
-            <el-select v-model="row.shoujianSjxz" size="mini">
-              <el-option value="原件">原件</el-option>
-              <el-option value="复印件">复印件</el-option>
-              <el-option value="扫描件">扫描件</el-option>
-            </el-select>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="操作" width="200">
-          <template #default="scope">
-            <el-button size="mini" type="danger" @click="handleRemove(scope.$index)">删除收件</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-
-      <CenterButton @btnClick="handleShouJian" title="确认收件"/>
+      <ConfirmReceive ref="ref1" :ywzh="ywzh" type="YSZJJG_ZJJGZH"/>
     </div>
     <div v-if="dialogType===9">
-      <h3 class="title">
-        <el-button-group>
-          <el-button size="mini" @click="addFile2" type="primary" icon="el-icon-plus">添加收件</el-button>
-        </el-button-group>
-      </h3>
-      <WbTable :list-data.sync="businessReceives2">
-        <template #title="{item, index}">
-          <div class="item" >
-            <div class="s1">{{index+1}}</div>
-            <div class="s2">{{item.ywsjTitle}}</div>
-            <div class="s3">{{item.ywsjSjxz|typeFilter}}</div>
-            <div class="s4">{{item.ywsjFenshu}}份</div>
-          </div>
-        </template>
-        <template #add="{item}">
-          <UploadCpn :file-list="item.imgList" :data="{logId:item.logId}" @delFile="delFile"/>
-        </template>
-      </WbTable>
+      <ManageReceive ref="ref2"/>
     </div>
   </div>
 </template>
@@ -312,14 +233,17 @@
   import CenterButton from "@/components/common/centerButton/CenterButton";
   import UploadCpn from "@/components/current/uploadCpn/UploadCpn";
   import {filesApi} from "@/api/files";
-  import ReceiveListPic from "@/components/current/receiveListPic/ReceiveListPic";
+  import ReceiveListPic from "@/components/current/manageReceive/ManageReceive";
   import {config} from "@/api/baseConfig";
   import WbTable from "@/components/common/wb-table/WbTable";
+  import ConfirmReceive from "@/components/current/confirmReceive/ConfirmReceive";
+  import ManageReceive from "@/components/current/manageReceive/ManageReceive";
+  import ReceiveList from "@/components/current/receiveList/ReceiveList";
 
 
   export default {
     name: "TjjgzhDialog",
-    components: {WbTable, ReceiveListPic, UploadCpn, InfoList, CenterButton},
+    components: {ReceiveList, ManageReceive, ConfirmReceive, WbTable, ReceiveListPic, UploadCpn, InfoList, CenterButton},
     props: {
       zjjgzhId: {type: String}, //type: [String, Number]
       zjjgzhYwzh: {type: String},
@@ -375,7 +299,8 @@
         },
         tableData2: [],
         addList: [],
-        retId: ""
+        retId: "",
+        _ywzh: "",
       };
     },
     computed: {
@@ -661,22 +586,20 @@
       },
       setMode(mode, id, ...args) {
         if (mode === 1) {
-
           this.getLd();
           this.getBank();
           console.log(".....");
-
           this.form.xmxxXmbh = this.$store.state.projectData.xmxxXmbh;
           this.form.zjjgzhXmmc = this.$store.state.projectData.xmxxXmmc;
           this.form.zjjgzhGsmc = this.$store.state.projectData.xmxxKfs;
 
           this.getBussinessType();
         } else if (mode === 2) {
-
           this.DetailData(id);
           this.logId = args[0]
           this.fetchOpinion();
-          this.fetchShouJianByYwzh(this.zjjgzhYwzh);
+
+          this.$refs.ref3.fetchData(args[1])
         } else if (mode === 3) {
           this.getLd();
           this.getBank();
@@ -690,13 +613,11 @@
             this.ywlx = [dl, ret.data.ywxlBh]
           });
         } else if (mode === 4) {
-          this.fetchAddList();
           this.retId = id;
-          this.fetchShouJian(id);
+          this.ywzh = args[0]
+          this.$refs.ref1.fetchDefault(id);
         } else if (mode === 9) {
-          this.fetchAddList();
-          this.fetchShouJianByYwzh2(this.zjjgzhYwzh);
-          this.fetchShouJian(id);
+          this.$refs.ref2.fetchConfirm(args[0])
         }
       },
       handleRemoveFile(obj) {

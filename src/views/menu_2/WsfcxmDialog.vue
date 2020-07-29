@@ -1,5 +1,5 @@
 <template>
-  <div class="myDialog myForm-mb5">
+  <div class="myDialog myForm-mb5" v-loading="loading">
     <el-tabs value="first">
       <el-tab-pane label="一.项目信息" name="first">
         <el-form
@@ -174,7 +174,7 @@
           </el-form-item>
         </el-form>
       </el-tab-pane>
-      <el-tab-pane label="三.图片附件" name="third">
+      <!--<el-tab-pane label="三.图片附件" name="third">
         <UploadCpn
           :enable-upload="editMode===1"
           :url="url"
@@ -182,7 +182,7 @@
           :data="{logId: form.logId}"
           @delFile="delFile"
           @addFile="addFile"/>
-      </el-tab-pane>
+      </el-tab-pane>-->
     </el-tabs>
     <CenterButton v-if="editMode===1" @btnClick="handleUpdate" title="保存"/>
   </div>
@@ -222,7 +222,6 @@
       fetchDetail(id) {
         this.loading = true;
         wsfcxmApi.getProjectDetailById(id).then(ret => {
-          console.log(ret)
           this.loading = false;
           this.form = ret.data;
           this.fetchFileList()

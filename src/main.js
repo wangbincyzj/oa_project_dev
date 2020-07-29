@@ -12,7 +12,6 @@ import {filters} from "@/utils/filters";
 Vue.config.productionTip = false
 Vue.mixin(mixins.routerMixin)
 Vue.filter("shztFilter", filters.shztFilter)
-
 new Vue({
   router,
   store,

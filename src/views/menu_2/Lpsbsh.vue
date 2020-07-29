@@ -148,7 +148,7 @@
             size="mini"
             :disabled="!scope.row.ldxxLdjpzt"
             v-if="scope.row.ldxxShzt===0||scope.row.ldxxShzt===3"
-            @click="handleCheck(scope.$index, scope.row)">上传审核
+            @click="handleCheck(scope.$index, scope.row)">上报审核
           </el-button>
         </template>
       </el-table-column>
