@@ -74,7 +74,7 @@
         </el-form-item>
        
       </el-form>
-      <div class="buttonGroup" style="margin:0 auto;width:200px;margin-top:20px">
+      <div class="buttonGroup" style="margin:0 auto;width:70px;margin-top:20px">
         <el-button-group class="buttons">
           <el-button type="primary" @click="addData" size="mini">立即提交</el-button>
         </el-button-group>
@@ -111,14 +111,35 @@ export default {
      wtjje:0,
       form: {
         jiaocunXmmc:"",
-        jiaocunSfajk:1,
-        jiaocunJksy:"",
-       
+        jiaocunSfajk:2,
+        jiaocunJksy:"",       
+        jiaocunLdmc:"",
+        jiaocunHtbh:"",
+        fkfs:"",
+        gfze:"",
+        sfk:"",
+        jiaocunMsrxm:"",
+        jiaocunMsrzjhm:"",
+        jiaocunKhyh:"",
+        jiaocunZhmc:"",
+        jiaocunJkzh:"",
+        jiaocunJkje:"",   
       },
       formBlank:{
          jiaocunXmmc:"",
         jiaocunJksy:"",
-        jiaocunSfajk:1,
+        jiaocunSfajk:2,
+        jiaocunLdmc:"",
+        jiaocunHtbh:"",
+        fkfs:"",
+        gfze:"",
+        sfk:"",
+        jiaocunMsrxm:"",
+        jiaocunMsrzjhm:"",
+        jiaocunKhyh:"",
+        jiaocunZhmc:"",
+        jiaocunJkzh:"",
+        jiaocunJkje:"",   
       },
       jksyList:["首付款","预付款"],
       jksySelect:"",
@@ -205,6 +226,7 @@ export default {
            this.jiaocunLdbh=this.jiaocunFwbh.slice(0,7);
            this.fwjzmj=ret.data[0].fwjzmj;
            this.jiaocunYhid=ret.data[0].jiaocunYhid;
+           this.form.jiaocunJkje=this.form.sfk;
             //this.form.jiaocunJksy="";
            //this.form.jiaocunSfajk=1;
            

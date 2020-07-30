@@ -15,6 +15,7 @@
         style="width: 100%"
         ref="multipleTable"
         @selection-change="handleSelectionChange"
+        :header-cell-class-name="cellClass"
       >
         <el-table-column type="selection" width="55" align="center"></el-table-column>
         <el-table-column align="center" label="合同编号" prop="jiaocunHtbh"></el-table-column>
@@ -28,14 +29,14 @@
         <el-table-column align="center" label="监管账号" prop="jiaocunJkzh"></el-table-column>
         <el-table-column align="center" label="添加日期" prop="jiaocunJkrq"></el-table-column>
       </el-table>
-      <el-pagination
+      <!-- <el-pagination
         background
         layout="prev, pager, next, total"
         @current-change="currentChange"
         :current-page="currentPage"
         :page-size="pageSize"
         :total="total"
-      ></el-pagination>
+      ></el-pagination> -->
     </TitleTable>
      <div id="printData" style="width:800px;margin:0 auto;display:none">
      
@@ -143,14 +144,28 @@ export default {
      currentChange(num) {
       this.currentPage = num;
       this.fetchData();
-    }
+    },
+     cellClass(row){         
+    if (row.columnIndex === 0) {           
+     return 'disabledCheck'     
+    } 
+},
   }
 };
 </script>
 
 <style scoped lang="scss">
 @import "~@/assets/css/var.scss";
-.tjrwry {
-  padding: $pm;
+
+
+
+
+</style>
+<style>
+
+.disabledCheck .cell::before{
+    content: '全选';
+   
+   
 }
 </style>

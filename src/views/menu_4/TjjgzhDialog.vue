@@ -21,23 +21,8 @@
         <el-form-item label="联系电话">
           <el-input v-model="form.zjjgzhLxdh"></el-input>
         </el-form-item>
-        <el-form-item label="楼栋名称">
-          <el-select
-            style="width: 180px"
-            v-model="form.zjjgzhLdbh"
-            placeholder="请选择楼栋"
-          >
-            <el-option
-              v-for="(item,index) in zjjgzhLdbh"
-              :key="index"
-              :label="item.ldxxMc"
-              :value="item.ldxxLdbh"
-              @click.native="getLdName(item.ldxxMc,item.ldxxZzmj,item.ldxxZzts,item.ldxxFzzmj,item.ldxxFzzts)"
-            >
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item
+       
+        <!-- <el-form-item
           label="住宅面积"
           class="area"
         >
@@ -54,7 +39,7 @@
         </el-form-item>
         <el-form-item label="非住宅套数">
           <el-input v-model="form.zjjgzhFzzts"></el-input>
-        </el-form-item>
+        </el-form-item> -->
         
         <el-form-item label="银行名称">
           <el-select
@@ -72,15 +57,37 @@
             </el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="监管方式">
+                <template>
+                    <el-radio v-model="form.zjjgzhJglx" :label=0 @change="changeMode">一户多栋</el-radio>
+                    <el-radio v-model="form.zjjgzhJglx" :label=1 @change="changeMode">一户一栋</el-radio>
+                </template>
+       </el-form-item>
+         <el-form-item label="楼栋名称"  v-if="this.mode===1">
+          <el-select
+            style="width: 180px"
+            v-model="form.zjjgzhLdbh"
+            placeholder="请选择楼栋"
+          >
+            <el-option
+              v-for="(item,index) in zjjgzhLdbh"
+              :key="index"
+              :label="item.ldxxMc"
+              :value="item.ldxxLdbh"
+              @click.native="getLdName(item.ldxxMc,item.ldxxZzmj,item.ldxxZzts,item.ldxxFzzmj,item.ldxxFzzts)"
+            >
+            </el-option>
+          </el-select>
+        </el-form-item>
         
-        <el-form-item label="业务类别">
+        <!-- <el-form-item label="业务类别">
           <el-cascader
             clearable
             v-model="ywlx"
             :options="options"
             :props="{ expandTrigger: 'hover' }"
           ></el-cascader>
-        </el-form-item>
+        </el-form-item> -->
         <!-- <el-form-item label="监管账户名称">
           <el-input v-model="form.zjjgzhZhmc"></el-input>
         </el-form-item> -->
@@ -88,11 +95,12 @@
 
       <div
         class="buttonGroup"
-        style="margin:0 auto;width:100px;margin-top:20px"
+        style="margin:0 auto;width:80px;margin-top:20px"
       >
         <el-button-group class="buttons">
           <el-button
             type="primary"
+            size="mini"
             @click="onSubmit"
           >立即提交
           </el-button>
@@ -134,7 +142,7 @@
             <el-form-item label="联系电话">
               <el-input v-model="form1.zjjgzhLxdh"></el-input>
             </el-form-item>
-            <el-form-item
+            <!-- <el-form-item
               label="住宅面积"
               class="area"
             >
@@ -151,7 +159,7 @@
             </el-form-item>
             <el-form-item label="非住宅套数">
               <el-input v-model="form1.zjjgzhFzzts"></el-input>
-            </el-form-item>
+            </el-form-item> -->
 
             <el-form-item label="拟设监管银行">
               <el-input v-model="form1.zjjgzhYhmc"></el-input>
@@ -256,6 +264,7 @@
     data() {
       return {
         loading: false,
+        mode:0,
         opinionList: [],
         ywlx: [],
         options: [],
@@ -284,7 +293,8 @@
           zjjgzhZzts: "",
           zjjgzhFzzmj: "",
           zjjgzhFzzts: "",
-          zjjgzhLdmc: ""
+          zjjgzhLdmc: "",
+          zjjgzhJglx:0,
         },
         formBlank: {
           xmxxXmbh: "",
@@ -295,7 +305,8 @@
           zjjgzhZzts: "",
           zjjgzhFzzmj: "",
           zjjgzhFzzts: "",
-          zjjgzhLdmc: ""
+          zjjgzhLdmc: "",
+          zjjgzhJglx:0,
         },
         tableData2: [],
         addList: [],
@@ -458,15 +469,15 @@
         })
       },
       addData() {
-        let ywxlId = 0;
+        // let ywxlId = 0;
 
-        ywxlId = this.ywlx[1];
+        // ywxlId = this.ywlx[1];
         sqjgzhApi.addAccount({
           ...this.form,
           zjjgzhLdmc: this.ldName,
           zjjgzhYhmc: this.bankName,
           kfsId: this.$store.state.projectData.kfsId,
-          ywxlBh: ywxlId
+          ywxlBh: 8002001
         })
           .then(ret => {
             if (ret.code !== 200) {
@@ -478,14 +489,13 @@
           });
       },
       updateData() {  
-        let ywxlId = 0;
-        ywxlId = this.ywlx[1];
+       
         sqjgzhApi.updateAccount({
           ...this.form,
           zjjgzhLdmc: this.ldName,
           zjjgzhYhmc: this.bankName,
           kfsId: this.$store.state.projectData.kfsId,
-          ywxlBh:ywxlId
+          ywxlBh:8002001
         })
           .then(ret => {
             if (ret.code !== 200) {
@@ -668,7 +678,16 @@
       },
       handleCancel(index) {
         this.businessReceives2.splice(index, 1)
-      }
+      },
+      changeMode(val){
+        console.log("radio="+val);
+        if(val===0){
+          this.mode=0;
+        }else if(val===1){
+          this.mode=1;
+        }
+        
+      },
     }
   }
 </script>
