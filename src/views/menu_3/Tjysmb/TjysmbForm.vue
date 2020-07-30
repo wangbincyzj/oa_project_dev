@@ -1,5 +1,5 @@
 <template>
-  <div class="myForm-mb5 myForm-tjysmb">
+  <div class="myForm-mb5 myForm-tjysmb root">
     <el-form
       ref="form"
       label-position="right"
@@ -60,7 +60,7 @@
           htXslx: 0,  // 0 预售  1现售
           htMc: "",
           htLdmc: "",
-          htXmmc: "",
+          htXmmc: this.$store.state.projectData.xmxxXmmc,
           kfsRwbh: "",
           htMfwtdlr: "",
           htMfdllxdh: "",
@@ -75,6 +75,9 @@
         }
       }
     },
+    created() {
+      console.log( this.$store.state.projectData)
+    },
     methods:{
       setData(_form) {
         this.form = _form
@@ -83,6 +86,6 @@
   }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 
 </style>

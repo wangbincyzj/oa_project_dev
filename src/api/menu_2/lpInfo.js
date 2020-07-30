@@ -58,8 +58,8 @@ let submitForReview = function (ldxxId) {
 /**
  * 合并房间
  */
-let mergeRoom = function (roomId,roomIds, {roomZdts, roomZdcm}) {
-  return requests.post("data_center/room/mergeRoom")
+let mergeRoom = function (roomId,roomIds, roomZdts, roomZdcm) {
+  return requests.post("data_center/room/mergeRoom", {roomId,roomIds, roomZdts, roomZdcm})
 }
 
 

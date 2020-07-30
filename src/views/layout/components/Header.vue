@@ -1,6 +1,6 @@
 <template>
 	<div id="header">
-		<div class="logo">开发商系统</div>
+		<div class="logo" :title="$store.state.projectData.xmxxXmmc">开发商系统</div>
 		<div class="topBar">
 			<div class="home"><i class="iconfont icon-home" /> 首页</div>
 			<el-popover placement="top-start" width="420" trigger="hover">

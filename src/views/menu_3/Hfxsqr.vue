@@ -4,7 +4,6 @@
       <TitleTable title="合法销售确认-选择房间">
         <div>
           <RoomColor/>
-          <!--          <RoomStructure ref="roomStructure" @roomClick="roomClick"/>-->
           <BuildingStructure
             ref="roomStructure"
             :enable-color="true"

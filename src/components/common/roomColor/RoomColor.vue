@@ -8,52 +8,53 @@
   <ul class="roomColor">
     <li>
       <div class="c0"></div>
-      <div class="text">保留</div>
+      <div class="text">已售</div>
     </li>
     <li>
       <div class="c1"></div>
-      <div class="text">成品房</div>
+      <div class="text">成品</div>
     </li>
     <li>
       <div class="c2"></div>
       <div class="text">可售</div>
     </li>
     <li>
+      <div class="c12"></div>
+      <div class="text">承诺</div>
+    </li>
+    <li>
       <div class="c3"></div>
-      <div class="text">已预订</div>
+      <div class="text">预订</div>
     </li>
     <li>
       <div class="c4"></div>
-      <div class="text">已备案</div>
+      <div class="text">备案</div>
     </li>
     <li>
       <div class="c5"></div>
-      <div class="text">已预告</div>
+      <div class="text">预告</div>
     </li>
     <li>
       <div class="c6"></div>
-      <div class="text">已按揭</div>
-    </li>
-    <li>
-      <div class="c7"></div>
-      <div class="text">已限制</div>
+      <div class="text">按揭</div>
     </li>
     <li>
       <div class="c8"></div>
-      <div class="text">已转移</div>
+      <div class="text">登记</div>
     </li>
     <li>
       <div class="c9"></div>
-      <div class="text">已抵押</div>
+      <div class="text">抵押</div>
+    </li>
+    <li>
+      <div class="c7"></div>
+      <div class="text">限制</div>
     </li>
     <li>
       <div class="c10"></div>
-      <div class="text">已查封</div>
+      <div class="text">查封</div>
     </li>
-    <li>
-      <div class="c12"></div>
-      <div class="text">销售承诺</div>
-    </li>
+
   </ul>
 </template>
 

@@ -9,8 +9,9 @@
         :style="{width:fold?'':'200px'}"
         @navClick="navClick"
       />
+
       <div class="mainContent">
-        <wb-tabs>
+        <wb-tabs class="tabs">
           <wb-tabs-item
             v-for="item in $store.state.tabs"
             :tab="item"
@@ -21,7 +22,6 @@
       </div>
 
     </main>
-
   </div>
 </template>
 
@@ -61,28 +61,30 @@
 <style lang="scss">
   #baseLayout {
     height: 100vh;
-
     .header {
       height: 55px;
     }
-
     main {
       height: calc(100% - 55px);
-      overflow-y: hidden;
+      overflow: hidden;
       display: flex;
 
       .asideNav {
         height: 100%;
-
         overflow-y: auto;
         overflow-x: hidden;
         flex-shrink: 0;
       }
 
       .mainContent {
-        flex: 1;
-        overflow-x: auto;
+        height: 100%;
         overflow-y: hidden;
+        flex: 1;
+
+        .tabs{
+          height: 30px;
+          width: 100%;
+        }
       }
     }
   }

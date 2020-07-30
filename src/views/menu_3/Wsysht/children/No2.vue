@@ -252,6 +252,10 @@
     created() {
       this.mapData()
     },
+    watch:{
+      "ht07.ht07006"(){}
+
+    },
     methods:{
       handleSave() {
         let form =  this._formUtil(this._data)
@@ -264,6 +268,9 @@
             this.$message.success(ret.message||"未知错误")
           }
         })
+      },
+      handleSelect(...args) {
+        console.log(args)
       },
       mapData() {
         this._mapData(this._data, this.sectionData)
@@ -339,7 +346,7 @@
           this.$message.warning("单价不能超过一房一价审核价格")
           this.ht06.ht06003 = ""
         }
-        this.ht06.ht06004 = this.ht06.ht06002 * this.ht06.ht06003 + ""
+        this.ht06.ht06004 = (this.ht06.ht06002 * this.ht06.ht06003).toFixed(0) + ""
         this.ht06.ht06005 = this.digitUppercase(this.ht06.ht06004)
       }
     }

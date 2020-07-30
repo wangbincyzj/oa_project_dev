@@ -21,8 +21,7 @@
           <InfoListPlusItem name="营业执照注册号"><input v-model="form.htMfwtdljgzch" type="text"></InfoListPlusItem>
           <InfoListPlusItem name="法定代表人"><input v-model="form.htMfdljgfr" type="text"></InfoListPlusItem>
           <InfoListPlusItem name="联系电话"><input v-model="form.htMfdljgddh" type="text"></InfoListPlusItem>
-          <InfoListPlusItem name="合同密码"><input v-model="form.htPass" type="text"></InfoListPlusItem>
-          <InfoListPlusItem name=""></InfoListPlusItem>
+          <InfoListPlusItem name="合同密码" v-if="false"><input v-model="form.htPass" type="text"></InfoListPlusItem>
         </template>
       </InfoListPlus>
       <el-table
@@ -81,6 +80,7 @@
         ref="dialog"
         :htBh="sectionData.htBh"
         :htId="htId"
+        :htmm.sync="form.htPass"
         @submitSuccess="submitSuccess"
       />
     </el-dialog>

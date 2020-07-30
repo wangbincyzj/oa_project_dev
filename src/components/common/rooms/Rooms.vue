@@ -10,7 +10,10 @@
       <tr v-for="floor in rooms" :class="{noRoom: !floor.v.length}">
         <td class="title" @click="floorClick(floor)">{{floor.k}}</td>
         <td class="blank" ></td>
-        <td class="room" v-for="room in floor.v"  @click="roomClick(room)" :class="{active: room.active&&enableChoose}">
+        <td class="room"
+            :rowspan="room.roomZdcm==='-1'? 2:'1'"
+            :colspan="room"
+            v-for="room in floor.v"  @click="roomClick(room)" :class="{active: room.active&&enableChoose}">
           <div class="fh">{{room.roomFh}}</div>
           <slot :room="room"/>
         </td>

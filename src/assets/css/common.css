@@ -15,6 +15,22 @@
   line-height: 37px;
 }
 
+/*input*/
+.myClass input{
+  color: #606366!important;
+  /*outline: #0085EB!important;*/
+}
+.myClass input:focus{
+  outline: 1px solid #0085EB!important;
+}
+.myClass input:hover{
+  color: #339EEF!important;
+}
+
+.myClass input::placeholder{
+  color: #C0C6CC;
+}
+
 
 
 

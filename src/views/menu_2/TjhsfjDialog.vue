@@ -207,7 +207,7 @@
     </div>
     <TjhsfjRooms ref="ref" enable-loading @roomClick="roomClick">
       <template #default="{room}">
-        <div>面积:{{room.roomJzmj}}</div>
+        <div>建筑:{{room.roomJzmj}}</div>
         <div>套内:{{room.roomTnjzmj}}</div>
       </template>
     </TjhsfjRooms>

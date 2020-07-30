@@ -44,7 +44,7 @@
       <div class="item">
         <h4 class="title">第二条 预售依据</h4>
         <ul>
-          <li>该商品房已由[todo]潼关县房地产交易所批准预售,预售许可证号为
+          <li>该商品房已由XXXXXXX县房地产交易所批准预售,预售许可证号为
             <input v-model="ht02.ht02001" type="text" class="w100">
             。
           </li>

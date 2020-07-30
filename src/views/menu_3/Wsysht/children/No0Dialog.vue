@@ -3,7 +3,7 @@
     <div v-if="mode===0">
       <InfoListPlus>
         <template>
-          <InfoListPlusItem name="所有权人"><input v-model="form.fwsyqrSyqr" type="text"></InfoListPlusItem>
+          <InfoListPlusItem name="购买人"><input v-model="form.fwsyqrSyqr" type="text"></InfoListPlusItem>
           <InfoListPlusItem name="联系电话"><input v-model="form.fwsyqrLxdh" type="text"></InfoListPlusItem>
           <InfoListPlusItem name="家庭地址"><input v-model="form.fwsyqrJtdz" type="text"></InfoListPlusItem>
 
@@ -92,7 +92,7 @@
   export default {
     name: "No0Dialog",
     components: {WbTable, UploadCpn, InfoListPlusItem2, CenterButton, InfoListPlusItem, InfoListPlus},
-    props: ["htBh", "htId"],
+    props: ["htBh", "htId", "htmm"],
     data() {
       return {
         loading: false,
