@@ -130,7 +130,9 @@
         <el-tab-pane label="收件信息" name="second">
           <ReceiveList ref="rList"/>
         </el-tab-pane>
-
+        <el-tab-pane label="审核意见" name="third">
+          <OpinionList ref="opinionList"/>
+        </el-tab-pane>
       </el-tabs>
     </div>
 
@@ -152,10 +154,11 @@
   import ManageReceive from "@/components/current/manageReceive/ManageReceive";
   import ConfirmReceive from "@/components/current/confirmReceive/ConfirmReceive";
   import ReceiveList from "@/components/current/receiveList/ReceiveList";
+  import OpinionList from "@/components/current/opinionList/OpinionList";
 
   export default {
     name: "SqysxkDialog",
-    components: {ReceiveList, ConfirmReceive, ManageReceive, UploadCpn, InfoList, CenterButton},
+    components: {OpinionList, ReceiveList, ConfirmReceive, ManageReceive, UploadCpn, InfoList, CenterButton},
     props: {
       readOnly: {
         default: false,
@@ -248,6 +251,7 @@
           this.logId = arg[1]
           this.$nextTick(()=>{
             this.$refs.rList.fetchData(arg[2])
+            this.$refs.opinionList.fetchData(arg[1]);
           })
         } else if (mode === 4) {
           this.ywzh = arg[1]
