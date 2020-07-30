@@ -15,6 +15,7 @@
         style="width: 100%"
         ref="multipleTable"
         @selection-change="handleSelectionChange"
+        :header-cell-class-name="cellClass"
       >
         <el-table-column type="selection" width="55" align="center"></el-table-column>
         <el-table-column align="center" label="合同编号" prop="jiaocunHtbh"></el-table-column>
@@ -143,14 +144,28 @@ export default {
      currentChange(num) {
       this.currentPage = num;
       this.fetchData();
-    }
+    },
+     cellClass(row){         
+    if (row.columnIndex === 0) {           
+     return 'disabledCheck'     
+    } 
+},
   }
 };
 </script>
 
 <style scoped lang="scss">
 @import "~@/assets/css/var.scss";
-.tjrwry {
-  padding: $pm;
+
+
+
+
+</style>
+<style>
+
+.disabledCheck .cell::before{
+    content: '全选';
+   
+   
 }
 </style>
