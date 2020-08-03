@@ -7,19 +7,22 @@
     <DyXscns v-if="args==='xscns'"/>  <!--销售承诺书-->
     <DyBab v-if="args==='bab'"/>  <!--完善预售合同-打印备案表-->
     <DyReceiveList v-if="args==='receiveList'"/> <!--打印收件清单-->
+    <Dytkbfd v-if="args==='dytkbfd'"/>
+
   </div>
 </template>
 
 <script>
-  import Dyyshtmb from "@/views/printView/chilidren/Dyyshtmb";
-  import Dyjkmds from "@/views/printView/chilidren/Dyjkmds";
-  import Dymx from "@/views/printView/chilidren/Dymx";
-  import DyXscns from "@/views/printView/chilidren/DyXscns";
-  import DyBab from "@/views/printView/chilidren/DyBab";
-  import DyReceiveList from "@/views/printView/chilidren/DyReceiveList";
+  import Dyyshtmb from "@/views/printView/children/Dyyshtmb";
+  import Dyjkmds from "@/views/printView/children/Dyjkmds";
+  import Dymx from "@/views/printView/children/Dymx";
+  import DyXscns from "@/views/printView/children/DyXscns";
+  import DyBab from "@/views/printView/children/DyBab";
+  import DyReceiveList from "@/views/printView/children/DyReceiveList";
+  import Dytkbfd from "@/views/printView/children/Dytkbfd";
   export default {
     name: "PrintView",
-    components: {DyReceiveList, DyBab, DyXscns, Dyyshtmb,Dyjkmds,Dymx},
+    components: {DyReceiveList, DyBab, DyXscns, Dyyshtmb,Dyjkmds,Dymx,Dytkbfd},
     computed:{
       args() {
         return this.$route.params.args

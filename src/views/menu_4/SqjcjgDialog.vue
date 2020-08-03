@@ -33,15 +33,7 @@
         </el-form-item>
         <el-form-item  label="监管账号">
           <el-input v-model="form.jczjjgJgzh" ></el-input>
-        </el-form-item>
-        <el-form-item label="业务类别">
-          <el-cascader
-            clearable
-            v-model="ywlx"
-            :options="options"
-            :props="{ expandTrigger: 'hover' }"
-          ></el-cascader>
-        </el-form-item>
+        </el-form-item>       
         <el-form-item  label="首次登记证明号" >
           <el-input v-model="form.jczjjgDjzmh"></el-input>
         </el-form-item>       
@@ -214,19 +206,9 @@
                 <div>份数:<span>{{item.shoujianFenshu}}</span></div>
               </div>
             </div>
-            <div class="pics">
-              <el-image
-                style="width: 60px; height: 60px"
-                src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
-                :preview-src-list="srcList">
-              </el-image>
-              <div class="selectImg">
-                <i class="el-icon-plus"/>
-                <div>选择图片上传</div>
-              </div>
-            </div>
           </div>
         </div>
+        <ReceiveList ref="ref3"/>
       </el-tab-pane>
     </el-tabs>
     </div>
@@ -240,10 +222,11 @@
   import InfoList from "@/components/common/infoList/InfoList";
   import {tjsysbApi} from "@/api/menu_4/tjsysb";
   import {businessApi} from "@/api/menu_3/__Business";
-   import {sqjcjgApi} from "@/api/menu_4/sqjcjg";
+  import {sqjcjgApi} from "@/api/menu_4/sqjcjg";   
+  import ReceiveList from "@/components/current/receiveList/ReceiveList"; 
   export default {
-    name: "tjsysbDialog",
-    components: {CenterButton,InfoList,},
+    name: "sqjcjgDialog",
+    components: {CenterButton,InfoList,ReceiveList},
     props:{
       dialogType: {
       default: 1, // 添加
@@ -316,7 +299,7 @@
         }
     },
     created(){
-      this.getBussinessType();
+      //this.getBussinessType();
     },
     methods:{
       reset() {
@@ -344,13 +327,8 @@
       
      addData() {
          
-      let ywxlId = 0;
-        if (this.ywlx.length < 2) {
-          this.$message.error("请选择业务类型")
-          return
-        };
-      ywxlId = this.ywlx[1];
-          sqjcjgApi.addApplication({...this.form,xxBh:ywxlId,kfsRwbh:this.$store.state.projectData.kfsRwbh,ldLdbh:this.ldbh,ldxxId:this.ldxxId}).then(ret => {
+      
+          sqjcjgApi.addApplication({...this.form,xxBh:8013001,kfsRwbh:this.$store.state.projectData.kfsRwbh,ldLdbh:this.ldbh,ldxxId:this.ldxxId}).then(ret => {
           if (ret.code !== 200) {
           this.$message.error(ret.message);
         } else {
@@ -370,7 +348,7 @@
       }
     },
    
-    setMode(mode,id){
+    setMode(mode,id,ywzh){
       console.log("00000000000");
       
       if(mode===1){
@@ -415,28 +393,7 @@
               this.form1.ldxxSfydt="有"
             }
         });
-        //  szldjgzjApi.getSupervisionByLdid(id).then(ret => {
-        //   this.tableData=ret.data.buildingFundsSupervisions;
-        //   console.log(ret.data.buildingFundsSupervisions);
-          
-        //    this.tableData.map(function (val) {
-             
-        //        if (val.zjjgszjlZjjgzt == 0) {
-        //         val.zjjgszjlZjjgzt = '不启动'
-        //       } else if (val.zjjgszjlZjjgzt == 1) {
-        //         val.zjjgszjlZjjgzt = '启动'
-        //       } 
-        //        if (val.zjjgszjlZjjgfs == 1) {
-        //         val.zjjgszjlZjjgfs = '按固定金额监管'
-        //       } else if (val.zjjgszjlZjjgfs == 2) {
-        //         val.zjjgszjlZjjgfs = '按预售总价比例监管 '
-        //       } else if (val.zjjgszjlZjjgfs == 3) {
-        //         val.zjjgszjlZjjgfs = '按实时缴存房款比例监管'
-        //       } else if (val.zjjgszjlZjjgfs == 4) {
-        //         val.zjjgszjlZjjgfs = '按合同成交比例监管'
-        //       } 
-        //     });
-        // });
+        this.$refs.ref3.fetchData(ywzh);
       }
 
     },

@@ -60,6 +60,7 @@
         :data="tableData"
         style="width: 100%"
         @expand-change="openExpand"
+        @cell-mouse-enter="cellMouseEnter"
         ref="refTable"
       >
        <el-table-column type="expand">
@@ -104,50 +105,7 @@
           
       </template>
     </el-table-column>
-        <!-- <el-table-column type="expand">
-          <template>
-            <table>
-            <tr>
-              <td>  <template>
-                  <span>资金列表</span>
-                </template></td>
-                <td>
-            <el-table
-              :data="recordTable"
-              style="width: 100%"
-              border
-              :span-method="objectSpanMethod"
-            >
-          
-            
-              <el-table-column
-                prop="djDgrxm"
-                label="订购人"
-                align="center"
-              ></el-table-column>
-              <el-table-column
-                prop="djDgrzjhm"
-                label="证件号码"
-                align="center"
-              ></el-table-column>
-              
-              <el-table-column
-                prop="djJkje"
-                label="缴款金额"
-                align="center"
-              ></el-table-column>
-              <el-table-column
-                prop="djJkyh"
-                label="监管银行"
-                align="center"
-              ></el-table-column>
-             
-            </el-table>
-                </td>
-            </tr>
-            </table>
-          </template>
-        </el-table-column>-->
+       
         <el-table-column label="项目名称" prop="djsyXmmc"></el-table-column>
         <el-table-column label="监管账号" prop="djsyJgzh"></el-table-column>
         <el-table-column label="监管银行名称" prop="djsyJgyhmc"></el-table-column>
@@ -155,24 +113,22 @@
         <el-table-column label="汇入账户" prop="djsyHrzhzh"></el-table-column>
         <el-table-column label="汇入账户银行" prop="djsyHrzhyh"></el-table-column>
         <el-table-column align="center" label="申报金额" prop="djsySbje"></el-table-column>
-        <el-table-column align="center" label="添加时间" prop="djsyAddtime"></el-table-column>
+        <el-table-column align="center" label="添加时间" prop="djsyShztN"></el-table-column>
          <el-table-column
             align="center"
             label="收件操作"
             width="150"
           >           
             <template slot-scope="scope">
-              <el-button
+               <el-button
                 size="mini"
-                @click="GetFile(scope.$index, scope.row)">收件
+                type="primary"
+                @click="handleGetFile(scope.$index, scope.row)">确认收件
               </el-button>
               <el-button
                 size="mini"
-                @click="DelFile(scope.$index, scope.row)">清除
-              </el-button>
-              <el-button
-                size="mini"
-                @click="PrintFile(scope.$index, scope.row)">打印收件
+                type="primary"
+                @click="handleManageFile(scope.$index, scope.row)">管理收件
               </el-button>
             </template>
           </el-table-column>
@@ -190,38 +146,34 @@
             >定金明细</el-button>
            <el-button
                 size="mini"
+                type="primary"
                 @click="handleUpdate(scope.$index, scope.row)"
-                :disabled="scope.row.djsyShzt!==0">编辑
+                :disabled="scope.row.djsyShzt!==0&&scope.row.djsyShzt!==3">编辑
               </el-button>
+             
               <el-button
                 size="mini"
-                @click="uploadPic(scope.$index, scope.row)"
-                :disabled="scope.row.djsyShzt!==0">传图
-              </el-button>
-              <el-button
-                size="mini"
-                @click="managePic(scope.$index, scope.row)"
-                :disabled="scope.row.djsyShzt!==0">管图
-              </el-button>
-              <el-button
-                size="mini"
+                type="primary"
                 @click="handleDelete(scope.$index, scope.row)"
-                :disabled="scope.row.djsyShzt!==0">删除
+                :disabled="scope.row.djsyShzt!==0&&scope.row.djsyShzt!==3">删除
               </el-button>
                <el-button
                 size="mini"
+                type="primary"
                 @click="handleInform(scope.$index, scope.row)"
-                :disabled="scope.row.djsyShzt!==0">上报
+                :disabled="scope.row.djsyShzt!==0&&scope.row.djsyShzt!==3">上报
               </el-button>
 
               <el-button
                 size="mini"
+                type="primary"
                 @click="handleDetail(scope.$index, scope.row)">详情
               </el-button>
 
               <el-button
                 size="mini"
-                @click="printPaper(scope.$index, scope.row)">打印申请单
+                type="primary"
+                @click="handlePrint(scope.$index, scope.row)">打印申请单
               </el-button>
 
           </template>
@@ -241,13 +193,13 @@
         :title="dialogTitle"
         center
         width="800px"
-        :before-close="closeConfirm"
         slot="dialog"
         :visible.sync="dialogVisible"
         @close="dialogVisible = false"
       >
         <DjtkglDialog
           ref="dialog"
+          :djsyYwzh="djsyYwzh"
           :dialog-type="dialogType"
           @submitSuccess="submitSuccess"
         />
@@ -285,7 +237,7 @@ export default {
       pageSize: 10,
       total: 0,
       pages: 1,
-      
+      djsyYwzh:"",
 
       mergeSpanArr: [], // 空数组，记录每一行的合并数
       mergeSpanArrIndex: "", // mergeSpanArr的索引
@@ -315,9 +267,20 @@ export default {
           this.total=ret.data.total;
           this.pages=ret.data.pages;
           this.tableData = ret.data.records.map(item => ({
-            ...item,
+            ...item,            
             recordTable:{},
           }))
+         this.tableData.forEach(function(row,index){
+            if(row.djsyShzt===0){
+              row.djsyShztN="新建"
+            }else if(row.djsyShzt===1){
+              row.djsyShztN="审核中"
+            }else if(row.djsyShzt===2){
+              row.djsyShztN="审核通过"
+            }else if(row.djsyShzt===3){
+              row.djsyShztN="驳回"
+            }
+          })
       });
     },
     //打印合同
@@ -343,7 +306,25 @@ export default {
         this.dialogTitle = "详情";
         this.dialogType = 2;
         this.$nextTick(()=>{
-          this.$refs.dialog.setMode(2, row.djsyId,row.logId);
+          this.$refs.dialog.setMode(2, row.djsyId,row.logId,row.djsyYwzh);
+        })
+      },
+       handleGetFile(index, row){
+         this.dialogVisible = true;
+        this.dialogTitle = "确认收件";
+        this.djsyYwzh=this.currentRow.djsyYwzh;
+        this.dialogType = 4;
+        this.$nextTick(()=>{
+          this.$refs.dialog.setMode(4, this.currentRow.djsyId,0,this.currentRow.djsyYwzh);
+        })
+      },
+      handleManageFile(index, item) {
+        this.dialogVisible = true;
+        this.dialogTitle = "管理收件";
+         this.djsyYwzh=this.currentRow.djsyYwzh;
+        this.dialogType = 9;
+        this.$nextTick(() => {
+          this.$refs.dialog.setMode(9, this.currentRow.djsyId,0,this.currentRow.djsyYwzh);
         })
       },
        handleDelete(index,row){
@@ -386,6 +367,9 @@ export default {
           });
         });
       },
+      handlePrint(index,row){
+        window.open(`/#/printView/dytkbfd?djsyId=${row.djsyId}`) 
+    },
     handleSearchList() {
       //搜索功能
       this.getlist();
@@ -402,8 +386,12 @@ export default {
       this.fetchRecord(row,row.djsyId);
     },
      objectSpanMethod(){},
-   
+    cellMouseEnter(row) {
+        this.currentRow = row;
+      },
+      
   },
+  
   created() {
     //列表信息
     this.getlist();

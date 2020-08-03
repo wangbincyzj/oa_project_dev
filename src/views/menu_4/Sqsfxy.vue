@@ -73,11 +73,7 @@
               type="primary"
               @click="handleManageFile(scope.$index, scope.row)">管理收件
             </el-button>
-               <el-button
-                size="mini"
-                type="primary"
-                @click="handlePrintFile(scope.$index, scope.row)">打印收件
-              </el-button>
+               
             </template>    
           </el-table-column>
           <el-table-column
@@ -354,7 +350,6 @@
         this.dialogVisible = true;
         this.dialogTitle = "添加合同";
         this.dialogType = 1;
-        //this.zjjgzhId=this.currentRow.zjjgzhId;
         this.$nextTick(()=>{
           this.$refs.dialog.setMode(1,this.zjjgzhId);
         })
@@ -373,7 +368,7 @@
         this.dialogType = 3;
         this.hetongYwzh=this.currentRow.hetongYwzh;
         this.$nextTick(()=>{
-          this.$refs.dialog.setMode(3, this.currentRow.hetongId,row.logId);
+          this.$refs.dialog.setMode(3, this.currentRow.hetongId,row.logId,row.hetongYwzh);
           this.$refs.dialog.reset();
         })
       },
@@ -403,21 +398,14 @@
             })
           }
       },
-      handleGetFile() {
-        this.dialogVisible = true;
-        this.dialogTitle = "确认收件";
-        this.dialogType = 4;
-        this.$nextTick(() => {
-          this.$refs.dialog.setMode(4, this.currentRow.zjjgzhId);
-        })
-      },
+      
       handleManageFile(index, item) {
         this.dialogVisible = true;
         this.dialogTitle = "管理收件";
-        this.zjjgzhYwzh = this.currentRow.zjjgzhYwzh;
+         this.hetongYwzh=this.currentRow.hetongYwzh;
         this.dialogType = 9;
         this.$nextTick(() => {
-          this.$refs.dialog.setMode(9, this.currentRow.zjjgzhId);
+          this.$refs.dialog.setMode(9, this.currentRow.hetongId,0,this.currentRow.hetongYwzh);
         })
       },
       handlePrint(index, row){         
@@ -430,11 +418,11 @@
       },
       handleGetFile(index, row){
          this.dialogVisible = true;
-        this.dialogTitle = "业务收件操作";
+        this.dialogTitle = "确认收件";
         this.hetongYwzh=this.currentRow.hetongYwzh;
         this.dialogType = 4;
         this.$nextTick(()=>{
-          this.$refs.dialog.setMode(4, this.currentRow.hetongId);
+          this.$refs.dialog.setMode(4, this.currentRow.hetongId,0,this.currentRow.hetongYwzh);
         })
       },
       handleDelFile(){
