@@ -2,9 +2,22 @@
   <div class="myTable-p0">
     <TitleTable title="待上报合同">
       <el-alert :closable='false' center>注意：合同签订后首先要通过“完善合同”将其他条款进行完善，确认无误后“上报”合同,点“打印合同”！</el-alert>
+      <WbButtonsArea :is-show="!!row">
+        <el-button icon="el-icon-caret-left" size="mini" @click="setCurrent()">取消</el-button>
+        <template v-if="row&&(row.htBazt===0||row.htBazt===3)">
+          <el-button size="mini" @click="handleContract(row)">完善合同</el-button>
+          <el-button size="mini" @click="handleSubmit(row)">上报</el-button>
+        </template>
+        <el-button @click="handlePrint(row)" size="mini">打印草拟合同</el-button>
+        <el-button @click="handlePrint2(row)" size="mini">打印备案申请表</el-button>
+        <el-button size="mini" @click="handleDetail(row)">详情</el-button>
+      </WbButtonsArea>
       <el-table
         v-loading="loading"
         style="width: 100%"
+        highlight-current-row
+        ref="singleTable"
+        @current-change="handleCurrentChange"
         :data="tableData">
         <el-table-column label="合同备案号" align="center" prop="htBah" width="70"/>
         <el-table-column label="买受人" #default="{row}" align="center" prop="htMc" width="80">
@@ -41,39 +54,42 @@
             <i class="el-icon-close" v-else/>
           </template>
         </el-table-column>
-        <el-table-column label="签订时间" align="center" prop="htQdsj"/>
+        <el-table-column label="签订时间" align="center" prop="htQdsj" width="200"/>
         <el-table-column label="状态" align="center" #default="{row}">
           {{row.htBazt|shztFilter}}
         </el-table-column>
+        <!--
         <el-table-column label="操作" align="center" width="300px">
           <template #default="{row}">
             <template v-if="row.htBazt===0||row.htBazt===3">
               <el-button size="mini" @click="handleContract(row)">完善合同</el-button>
               <el-button size="mini" @click="handleSubmit(row)">上报</el-button>
             </template>
-            <el-button @click="handlePrint(row)" size="mini">草拟合同</el-button>
-            <el-button @click="handlePrint2(row)" size="mini">打印备案表</el-button>
+            <el-button @click="handlePrint(row)" size="mini">打印草拟合同</el-button>
+            <el-button @click="handlePrint2(row)" size="mini">打印备案申请表</el-button>
             <el-button size="mini" @click="handleDetail(row)">详情</el-button>
           </template>
-        </el-table-column>
+        </el-table-column>-->
       </el-table>
-      <el-dialog
-        :title="dialogTitle"
-        center
-        width="1200px"
-        :before-close="closeConfirm"
-        slot="dialog"
-        :visible.sync="dialogVisible"
-        @close="dialogVisible = false"
-      >
-
-      </el-dialog>
+      <el-pagination
+          background
+          layout="prev, pager, next, total, sizes"
+          @current-change="mixinCurrentChange"
+          @size-change="mixinSizeChange"
+          :page-sizes="[10, 20, 30, 40]"
+          :current-page="currentPage"
+          :page-size="pageSize"
+          :total="total">
+      </el-pagination>
     </TitleTable>
     <transition name="bd">
       <div class="main-bd" v-if="active">
         <WsyshtLayout ref="ref1" :htId="htId" @close="close" :read-only="readOnly"/>
       </div>
     </transition>
+    <el-dialog @opened="drag" :visible.sync="dialogVisible" width="1200px" title="合同上报确认" center>
+      <WsyshtDialog :htId="htId"/>
+    </el-dialog>
   </div>
 </template>
 
@@ -82,11 +98,13 @@
   import {mixins} from "@/utils/mixins";
   import WsyshtLayout from "@/views/menu_3/Wsysht/WsyshtLayout";
   import {yushouContractApi} from "@/api/menu_3/yushowContract";
+  import WbButtonsArea from "@/components/common/wb-buttonsArea/WbButtonsArea";
+  import WsyshtDialog from "@/views/menu_3/WsyshtDialog";
 
   export default {
     name: "Wsysht",
-    mixins: [mixins.dialogMixin],
-    components: {WsyshtLayout, TitleTable},
+    mixins: [mixins.dialogMixin, mixins.myPagerMixin],
+    components: {WsyshtDialog, WbButtonsArea, WsyshtLayout, TitleTable},
     data() {
       return {
         loading: false,
@@ -94,7 +112,8 @@
         active: false,
         htId: null,
         readOnly: false,
-        dialogTitle: ""
+        dialogTitle: "",
+        row: null,
       }
     },
     created() {
@@ -108,6 +127,12 @@
         this.$nextTick(() => {
           this.$refs.ref1.fetchData();
         })
+      },
+      handleCurrentChange(row) {
+        this.row = row
+      },
+      setCurrent(row) {
+        this.$refs.singleTable.setCurrentRow(row);
       },
       handleDetail(row) {
         this.active = true;
@@ -123,9 +148,10 @@
       },
       fetchTableData() {
         this.loading = true;
-        yushouContractApi.getContractList({kfsRwbh: this.$store.state.rwbh, htBazt:0}).then(ret => {
+        yushouContractApi.getContractList({kfsRwbh: this.$store.state.rwbh, htBazt:0, current: this.currentPage, size: this.pageSize}).then(ret => {
           this.loading = false;
           this.tableData = ret.data.records;
+          this.total = ret.data.total
         })
       },
       handleSubmit(item) {
@@ -137,14 +163,16 @@
           this.$message.warning("未缴存预售资金,不能备案合同")
           return
         }
-        yushouContractApi.submitContract(item.htId).then(ret => {
+        this.htId = item.htId;
+        this.dialogVisible = true
+        /*yushouContractApi.submitContract(item.htId).then(ret => {
           if (ret.code === 200) {
             this.$message.success("上报成功");
             this.fetchTableData()
           } else {
             this.$message.error(ret.message || "未知错误")
           }
-        })
+        })*/
       },
       handlePrint(item){
         window.open(`#/printView/ysht?id=${item.htId}`)

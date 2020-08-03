@@ -1,10 +1,10 @@
 /*样式变量*/
 
 // 文字样式
-$text-normal: #606266;
-$text-weight: #303133;
-$text-info: #909399;
-$text-info-light: #C0C4CC;
+$text-normal: #606366;  // 普通文字
+$text-weight: #303233;  // 主要文字
+$text-info: #909599;  // 次要文字
+$text-info-light: #C0C6CC;  // 占位符
 $font-large: 20px;
 $font-normal-x: 18px;
 $font-normal: 16px;
@@ -37,10 +37,17 @@ $success: #67C23A;
 $warning: #E6A23C;
 $danger: #F56C6C;
 $info: #909399;
-$brand: #409EFF;
+$brand: #0085EB;
+$brand-hover: #4DAAF1;
+$brand-disable: #A1D6FE;
 $brand-light: #7387c2;
 $brand-weight: #0471c1;
 $brand-table: #FDF6EC;
+
+// 背景色
+$bgc-lv1: #FFFFFF;
+$bgc-lv2: #F8F8F8;
+$bgc-lv3: #F0F2F5;
 
 // 辅助样式
 $hover-color: #fdf6ec;

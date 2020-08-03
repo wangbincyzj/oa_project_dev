@@ -2,12 +2,11 @@
   <div id="login" class="myClass">
     <div class="hide">
       <div class="logoArea">
-        <div class="logo"></div>
-        <div class="name">江西才气</div>
+        <img class="logo" src="../../assets/images/login/logo.png" alt="">
       </div>
       <transition name="login">
         <div class="loginForm" v-if="flag" @keyup.enter="login">
-          <h3 class="title">智慧房产综合管理信息系统登录</h3>
+          <h3 class="title">开发企业申报系统</h3>
           <div class="inputItem">
             <i class="iconfont icon-lujing1"/>
             <input class="input" :disabled="loading" v-model="username" placeholder="请输入账户名称">
@@ -17,7 +16,7 @@
             <input class="input" :disabled="loading" v-model="password" type="password" placeholder="请输入账户密码">
           </div>
           <!--<CenterButton :loading="loading" @btnClick="login" style="margin-top: 30px" title="登录"/>-->
-          <el-button type="primary" class="loginButton" :loading="loading" @click="login" style="margin-top: 20px">登录
+          <el-button type="primary" class="loginButton" :loading="loading" @click="login" style="margin-top: 1.85%; margin-bottom: 12.35%">登录
           </el-button>
         </div>
       </transition>
@@ -108,10 +107,33 @@
   padding-top: 31.8vh;
 }
 
+.logoArea {
+  user-select: none;
+  .logo {
+    width: 10.89%;
+    position: fixed;
+    top: 6.2%;
+    left: 4.69%;
+  }
+
+  .name {
+    position: fixed;
+    top: 60px;
+    left: 171px;
+    width: 128px;
+    height: 42px;
+    font-size: 32px;
+    font-family: Microsoft YaHei;
+    font-weight: 400;
+    line-height: 42px;
+    color: rgba(255, 255, 255, 1);
+    opacity: 1;
+  }
+}
+
 .loginForm {
-  width: 480px;
-  height: 324px;
-  padding: 0 40px;
+  width: 25vw;
+  padding: 0 2.08%;
   background: rgba(255, 255, 255, 1);
   opacity: 1;
   border-radius: 10px;
@@ -123,25 +145,23 @@
   transition: all 1.2s;
 
   .title {
-    height: 104px;
+    height: 9.63vh;
     font-size: 18px;
     font-family: Microsoft YaHei;
     font-weight: 400;
-    line-height: 104px;
+    line-height: 9.63vh;
     color: rgba(48, 49, 51, 1);
     text-align: center;
     opacity: 1;
   }
 
   .inputItem {
-    width: 400px;
+    width: 100%;
     height: 40px;
     background: rgba(255, 255, 255, 1);
-    border: 1px solid rgba(192, 196, 204, 1);
     opacity: 1;
-    border-radius: 4px;
     margin: 0 auto;
-    margin-bottom: 20px;
+    margin-bottom: 1.85vh;
     position: relative;
 
     i {
@@ -149,7 +169,8 @@
       text-align: center;
       color: $text-info;
       position: absolute;
-      top: 9px;
+      top: 50%;
+      transform: translateY(-50%);
     }
 
     input {
@@ -192,28 +213,5 @@
   opacity: 1;
 }
 
-.logoArea {
-  .logo {
-    width: 63px;
-    height: 28px;
-    background: url("~@/assets/images/login/logo.png");
-    position: fixed;
-    top: 69px;
-    left: 90px;
-  }
 
-  .name {
-    position: fixed;
-    top: 60px;
-    left: 171px;
-    width: 128px;
-    height: 42px;
-    font-size: 32px;
-    font-family: Microsoft YaHei;
-    font-weight: 400;
-    line-height: 42px;
-    color: rgba(255, 255, 255, 1);
-    opacity: 1;
-  }
-}
 </style>

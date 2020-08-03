@@ -290,7 +290,7 @@
         let ret =  this.limit.startUnit.map(item=>({
           value:item, label:item
         }))
-        ret.push({value:-1, label:"不定单元"})
+        ret.push({value:0, label:"不定单元"})
         return ret
       },
       roomLimit() {

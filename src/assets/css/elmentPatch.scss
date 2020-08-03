@@ -1,3 +1,58 @@
+/*规范样式*/
+
+/*-----------button-------------*/
+.el-button--primary{
+  background:rgba(0,133,235,1)!important;
+}
+
+.el-button--primary:hover{
+  background: rgba(51,158,239,1) !important;
+}
+
+.el-button--primary.is-disabled{
+  background:rgba(161,214,254,1)!important;
+}
+
+
+/*-----------dialog-------------*/
+
+.el-dialog__header{
+  height: 78px;
+  padding: 0 30px;
+  line-height: 78px;
+}
+.el-dialog__title{
+  font-size:18px;
+  font-weight:400;
+  line-height:24px;
+  color:rgba(48,49,51,1);
+  opacity:1;
+}
+.el-dialog__headerbtn{
+  font-size: 18px;
+}
+
+.el-dialog__body{
+  padding: 30px!important;
+}
+
+/*-----------tabs-------------*/
+.el-tabs__item{
+  height: 50px;
+  line-height: 50px;
+  padding: 0 30px !important;
+}
+.el-tabs__header{
+  margin-bottom: 0;
+}
+.el-tabs__content{
+  overflow: auto;
+  height: 217px;
+}
+
+
+
+
 /*左侧菜单栏相关样式*/
 /*.is-active {
   background-color: #0f4155 !important;
@@ -85,9 +140,7 @@ ul.menu li:hover {
 
 
 /*button样式  .el-button + .el-button 改掉*/
-.el-button {
-  margin: 2px 3px !important;
-}
+
 
 
 /*myCheckBox 的checkbox样式穿透*/
@@ -131,6 +184,19 @@ ul.menu li:hover {
 }
 
 
+
+/*dialog拖动样式调整*/
+.el-dialog{
+  position: absolute;
+  margin: 0!important;
+  left: 50%;
+  top: 94px;
+  transform: translateX(-50%);
+}
+
+.el-dialog__header{
+  cursor: move;
+}
 
 
 

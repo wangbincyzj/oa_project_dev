@@ -89,11 +89,37 @@ const myPagerMixin = {
   }
 }
 
+const dragMixin = {
+  methods:{
+    drag() {
+      function handleChange(e) {
+        let deltaX = e.x - this.x0;
+        let deltaY = e.y - this.y0;
+        this.style.left =  this.offsetLeft + deltaX + "px"
+        this.style.top = this.offsetTop + deltaY + "px"
+        this.x0 = e.x;
+        this.y0 = e.y
+      }
+      let movable_list = document.querySelectorAll(".el-dialog");
+      movable_list.forEach(box=>{
+        box.addEventListener("mousedown", function (e) {
+          this.x0 = e.x;
+          this.y0 = e.y;
+          this.addEventListener("mousemove", handleChange)
+          window.addEventListener("mouseup", ()=>{
+            this.removeEventListener("mousemove", handleChange)
+          })
+        })
+      })
+    }
+  }
+}
 
 
 
 export const mixins = {
   routerMixin,
   dialogMixin,
-  myPagerMixin
+  myPagerMixin,
+  dragMixin
 }

@@ -11,8 +11,8 @@
         <td class="title" @click="floorClick(floor)">{{floor.k}}</td>
         <td class="blank" ></td>
         <td class="room"
-            :rowspan="room.roomZdcm==='-1'? 2:'1'"
-            :colspan="room"
+            :rowspan="room.addx + 1"
+            :colspan="room.addy + 1"
             v-for="room in floor.v"  @click="roomClick(room)" :class="{active: room.active&&enableChoose}">
           <div class="fh">{{room.roomFh}}</div>
           <slot :room="room"/>
@@ -74,6 +74,8 @@
           // [{k:123,v:[]}]
           this.rooms.forEach(item=>{
             item.v.forEach((room,index)=>{
+              room.addx = parseInt(room.roomZdcm) ? parseInt(room.roomZdcm) : 0;
+              room.addy = parseInt(room.roomZdts) ? parseInt(room.roomZdts) : 0;
               room.index = index
             })
           })

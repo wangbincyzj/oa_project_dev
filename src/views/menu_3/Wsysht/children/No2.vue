@@ -7,7 +7,7 @@
       <!--第六条-->
       <div class="item">
         <h4 class="title">第六条  计价方式与价款</h4>
-        <ul>
+        <ul class="priceArea">
           <li> 出卖人与买受人约定合同按
             <select v-model="ht06.ht06001">
               <option value="【建筑面积】" selected>【建筑面积】</option>
@@ -39,7 +39,7 @@
       <div class="item">
         <h4 class="title">第七条  付款方式及期限</h4>
         <ul>
-          <li>（一）签订本合同前，买受人已向出卖人支付定金
+          <li class="priceArea">（一）签订本合同前，买受人已向出卖人支付定金
             <input v-model="ht07.ht07001" type="text" class="w50">
             （币种）
             <input @input="handleBlur($event, 'this.ht07.ht07002b')" v-model="ht07.ht07002" type="text" class="w100">
@@ -54,89 +54,93 @@
             时【<input v-model="ht07.ht07036" type="radio" value="抵作" class="w50">抵作】<br/>
             【<input v-model="ht07.ht07005" type="text" class="w200">
             】商品房价款。</li>
-          <li>（二）买受人采取下列
-            选择
-            <select v-model="ht07.ht07006">
-              <option value="一次性付款">一次性付款</option>
-              <option value="分期付款">分期付款</option>
-              <option value="按揭贷款">按揭贷款</option>
-              <option value="其他方式">其他方式</option>
-            </select>
-            方式按期付款。</li>
-          <li>1.一次性付款。买受人应当在
-            <input v-model="ht07.ht07007" type="text" class="w50">
-            年
-            <input v-model="ht07.ht07008" type="text" class="w50">
-            月
-            <input v-model="ht07.ht07009" type="text" class="w50">
-            日前支付该商品房全部价款。</li>
           <li>
-            2.分期付款。买受人应当在
-            <input v-model="ht07.ht07010" type="text" class="w50">
-            年
-            <input v-model="ht07.ht07011" type="text" class="w50">
-            月
-            <input v-model="ht07.ht07012" type="text" class="w50">
-            日前分
-            <input v-model="ht07.ht07013" type="text" class="w50">
-            期支付该商品房全部价款，首期房价款
-            <input v-model="ht07.ht07014" type="text" class="w50">
-            （币种）
-            <input @input="handleBlur($event, 'this.ht07.ht07016')" v-model="ht07.ht07015" type="text" class="w100">
-            元（大写：
-            <input  v-model="ht07.ht07016" type="text" class="w300">
-            元整），应当于
-            <input v-model="ht07.ht07017" type="text" class="w50">
-            年
-            <input v-model="ht07.ht07018" type="text" class="w50">
-            月
-            <input v-model="ht07.ht07019" type="text" class="w50">
-            日前支付。
+            <ul class="priceArea">
+              <li>（二）买受人采取下列
+                选择
+                <select v-model="ht07.ht07006">
+                  <option value="一次性付款">一次性付款</option>
+                  <option value="分期付款">分期付款</option>
+                  <option value="按揭贷款">按揭贷款</option>
+                  <option value="其他方式">其他方式</option>
+                </select>
+                方式按期付款。</li>
+              <li v-if="ht07.ht07006==='一次性付款'">1.一次性付款。买受人应当在
+                <input v-model="ht07.ht07007" type="text" class="w50">
+                年
+                <input v-model="ht07.ht07008" type="text" class="w50">
+                月
+                <input v-model="ht07.ht07009" type="text" class="w50">
+                日前支付该商品房全部价款。</li>
+              <li v-if="ht07.ht07006==='分期付款'">
+                2.分期付款。买受人应当在
+                <input v-model="ht07.ht07010" type="text" class="w50">
+                年
+                <input v-model="ht07.ht07011" type="text" class="w50">
+                月
+                <input v-model="ht07.ht07012" type="text" class="w50">
+                日前分
+                <input v-model="ht07.ht07013" type="text" class="w50">
+                期支付该商品房全部价款，首期房价款
+                <input v-model="ht07.ht07014" type="text" class="w50">
+                （币种）
+                <input @input="handleBlur($event, 'this.ht07.ht07016')" v-model="ht07.ht07015" type="text" class="w100">
+                元（大写：
+                <input  v-model="ht07.ht07016" type="text" class="w300">
+                元整），应当于
+                <input v-model="ht07.ht07017" type="text" class="w50">
+                年
+                <input v-model="ht07.ht07018" type="text" class="w50">
+                月
+                <input v-model="ht07.ht07019" type="text" class="w50">
+                日前支付。
+              </li>
+              <li v-if="ht07.ht07006==='按揭贷款'">
+                3.贷款方式付款：
+                <select v-model="ht07.ht07020">
+                  <option value="公积金贷款">公积金贷款</option>
+                  <option value="商业贷款">商业贷款</option>
+                  <option value="组合贷款">组合贷款</option>
+                  <option value="无">无</option>
+                </select>
+                【<input v-model="ht07.ht07021" type="text" class="w200">】。买受人应当于
+                <input v-model="ht07.ht07022" type="text" class="w50">
+                年
+                <input v-model="ht07.ht07023" type="text" class="w50">
+                月
+                <input v-model="ht07.ht07024" type="text" class="w50">
+                日前支付首期房价款
+                <input v-model="ht07.ht07025" type="text" class="w50">
+                （币种）
+                <input @input="handleBlur($event, 'this.ht07.ht07027')" v-model="ht07.ht07026" type="text" class="w100">
+                元（大写
+                <input  v-model="ht07.ht07027" type="text" class="w300">
+                元整），占全部房价款的
+                <input v-model="ht07.ht07028" type="text" class="w50">
+                ％。余款（币种）
+                <input @input="handleBlur($event, 'this.ht07.ht07030')" v-model="ht07.ht07029" type="text" class="w100">
+                元（大写
+                <input  v-model="ht07.ht07030" type="text" class="w300">
+                元整）申请贷款支付，其中公积金贷款
+                <input v-model="ht07.ht07037" type="text" class="w50">
+                元整），商业贷款
+                <input v-model="ht07.ht07038" type="text" class="w50">
+                元整）。
+              </li>
+              <li v-if="ht07.ht07006==='其他方式'">
+                4.其他方式：
+                <input v-model="ht07.ht07032" type="text" class="w800">。
+              </li>
+            </ul>
           </li>
-          <li>
-            3.贷款方式付款：
-            <select v-model="ht07.ht07020">
-              <option value="公积金贷款">公积金贷款</option>
-              <option value="商业贷款">商业贷款</option>
-              <option value="组合贷款">组合贷款</option>
-              <option value="无">无</option>
-            </select>
-            【<input v-model="ht07.ht07021" type="text" class="w200">】。买受人应当于
-            <input v-model="ht07.ht07022" type="text" class="w50">
-            年
-            <input v-model="ht07.ht07023" type="text" class="w50">
-            月
-            <input v-model="ht07.ht07024" type="text" class="w50">
-            日前支付首期房价款
-            <input v-model="ht07.ht07025" type="text" class="w50">
-            （币种）
-            <input @input="handleBlur($event, 'this.ht07.ht07027')" v-model="ht07.ht07026" type="text" class="w100">
-            元（大写
-            <input  v-model="ht07.ht07027" type="text" class="w300">
-            元整），占全部房价款的
-            <input v-model="ht07.ht07028" type="text" class="w50">
-            ％。余款（币种）
-            <input @input="handleBlur($event, 'this.ht07.ht07030')" v-model="ht07.ht07029" type="text" class="w100">
-            元（大写
-            <input  v-model="ht07.ht07030" type="text" class="w300">
-            元整）申请贷款支付，其中公积金贷款
-            <input v-model="ht07.ht07037" type="text" class="w50">
-            元整），商业贷款
-            <input v-model="ht07.ht07038" type="text" class="w50">
-            元整）。
-          </li>
-          <li>
-            4.其他方式：
-            <input v-model="ht07.ht07032" type="text" class="w800">。
-          </li>
-          <li>（三）出售该商品房的全部房价款应当存入预售资金监管账户，用于本工程建设。该商品房的预售资金监管机构为
+          <li class="priceArea">（三）出售该商品房的全部房价款应当存入预售资金监管账户，用于本工程建设。该商品房的预售资金监管机构为
             <input v-model="ht07.ht07033" type="text" class="w400">
             ，预售资金监管银行名称为
             <input v-model="ht07.ht07034" type="text" class="w400">
             ，监管账号为
             <input v-model="ht07.ht07035" type="text" class="w200">
             。</li>
-          <li>该商品房价款的计价方式、总价款、付款方式及期限的具体约定见附件四。</li>
+          <li class="priceArea">该商品房价款的计价方式、总价款、付款方式及期限的具体约定见附件四。</li>
         </ul>
       </div>
 
@@ -432,5 +436,13 @@
         margin-bottom: 8px;
       }
     }
+  }
+
+  .priceArea{
+    color: $text-weight;
+    padding: 10px;
+    margin: 20px 0;
+    margin-right: 10px;
+    background-color: rgba(100, 100, 100, 0.08);
   }
 </style>

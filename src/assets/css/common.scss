@@ -1,0 +1,85 @@
+/*包含全局通用样式*/
+
+
+/*完善预售合同*/
+.wsysht-item {
+  overflow-y: auto;
+}
+
+.wsysht-item .hd {
+  font-weight: 600;
+  font-size: 24px;
+  font-family: 黑体;
+  background-color: rgb(52, 62, 118);
+  color: white;
+  text-align: center;
+  line-height: 37px;
+}
+
+
+/*input*/
+.myClass input {
+  border: 1px solid rgba(192, 196, 204, 1);
+  border-radius: 4px;
+  color: #606366 !important;
+  outline: none;
+  transition: all 0.2s;
+  padding: 0 12px;
+}
+
+.myClass input:focus {
+  border: 1px solid #3a8ee6;
+}
+
+.myClass input::placeholder {
+  color: #C0C6CC;
+}
+
+// dialog里面的一些样式
+.formContainer {
+  width: 100%;
+  height: 280px;
+  background: rgba(255, 255, 255, 1);
+  border: 1px solid rgba(192, 196, 204, 1);
+  opacity: 1;
+  border-radius: 4px;
+}
+
+.dialog-title {
+  width: 126px;
+  height: 24px;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 24px;
+  color: rgba(96, 98, 102, 1);
+  opacity: 1;
+  margin: 30px 0 24px 12px;
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: -12px;
+    top: 0;
+    width: 2px;
+    height: 100%;
+    background-color: #3a8ee6;
+  }
+}
+
+.dialog-input {
+  margin-bottom: 16px;
+
+  span {
+    margin-right: 12px;
+    font-size: 12px;
+  }
+
+  input {
+    font-size: 12px;
+  }
+}
+
+
+
+

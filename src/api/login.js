@@ -2,6 +2,7 @@
 import axios from "axios"
 import store from "@/store";
 import {config} from "@/api/baseConfig";
+import Vue from 'vue'
 
 
 // 基础设置
@@ -21,6 +22,10 @@ _.interceptors.response.use(resp => {
     store.dispatch("logout")
     return {code: -1, data:{}}
   }else{
+    if(config.errMsg && resp.data.code===400){
+      Vue.prototype.$message.error(resp.data.message||"访问出错,请尝试刷新页面或者联系软件客服")
+      return
+    }
     return resp.data
   }
 }, reason => {

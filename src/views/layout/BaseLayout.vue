@@ -80,11 +80,6 @@
         height: 100%;
         overflow-y: hidden;
         flex: 1;
-
-        .tabs{
-          height: 30px;
-          width: 100%;
-        }
       }
     }
   }

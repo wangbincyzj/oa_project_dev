@@ -62,6 +62,12 @@ let mergeRoom = function (roomId,roomIds, roomZdts, roomZdcm) {
   return requests.post("data_center/room/mergeRoom", {roomId,roomIds, roomZdts, roomZdcm})
 }
 
+/**
+ * 拆分房间
+ */
+let splitRoom = function (roomId, count){
+  return requests.post("data_center/room/splitRoom", {roomId, count})
+}
 
 
 export const lpInfoApi = {
@@ -71,5 +77,6 @@ export const lpInfoApi = {
   delRoom,
   submitForReview,
   delRooms,
-  mergeRoom
+  mergeRoom,
+  splitRoom,
 }

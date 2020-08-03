@@ -1,16 +1,17 @@
 <template>
-	<el-menu
-		class="el-menu"
-		@open="handleOpen"
-		@close="handleClose"
-		background-color="#2c3037"
-		:collapse-transition="false"
-		:default-active="$route.path"
-		text-color="#eee"
-		:unique-opened="true"
-		:router="true"
-		:collapse="fold"
-		active-text-color="#67C23A">
+  <el-menu
+      class="el-menu"
+      @open="handleOpen"
+      @close="handleClose"
+      background-color="#003878"
+      active-text-color="#A1D6FE"
+      :collapse-transition="false"
+      :default-active="$route.path"
+      text-color="#eee"
+      :unique-opened="true"
+      :router="true"
+      :collapse="fold"
+  >
 		<el-submenu :index="`${index}`" v-for="(item,index) in routes">
 			<template slot="title">
 				<i class="iconfont" :class="item.class"/>

@@ -1,8 +1,8 @@
 <template>
   <div class="layout">
     <div class="title">
-      <span>合同条款填写 合同编号:9098001024520200611143834</span>
-      <el-button @click="$emit('close')" size="mini" type="info">关闭页面</el-button>
+      <span>合同条款填写</span>
+      <el-button style="margin-left: 30px" @click="$emit('close')" size="mini" >关闭页面</el-button>
     </div>
     <div class="hd">
       <div class="nav">
@@ -145,11 +145,11 @@
       }
     }
     .hd {
-      padding: 0 100px;
+      padding: 0 50px;
       display: flex;
       height: 95%;
       .nav{
-        width: 300px;
+        width: 200px;
       }
       .bd{
         flex: 1;

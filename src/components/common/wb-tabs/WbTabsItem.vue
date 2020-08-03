@@ -1,6 +1,7 @@
 <template>
   <div class="item" :class="{active}" @click="itemClick" @click.middle="handleClose">
-    <span>{{tab.title}}</span><i class="el-icon-close" @click.stop="handleClose"/>
+    <div class="ball"></div>
+    <span>{{tab.title}}</span><i v-if="tab.title!=='系统首页'" class="el-icon-close" @click.stop="handleClose"/>
   </div>
 </template>
 
@@ -42,18 +43,20 @@
 
   .item {
     flex-shrink: 0;
-    font-size: 13px;
-    padding: 4px 7px;
-    border: 1px solid $border-1;
+    font-size: 14px;
+    padding: 6px 16px;
+    border:1px solid rgba(0,133,235,1);
     color: #333;
-    margin: 3px;
-    border-radius: $border-radius;
+    display: flex;
+    align-items: center;
+    margin-left: 12px;
+    border-radius: 4px;
     cursor: pointer;
-
+    transition: all 0.2s;
+    color:rgba(96,98,102,1);
     &:hover {
-      border-color: white;
-      background-color: orange;
-      color: white;
+      background:rgba(226,245,253,1);;
+      color:rgba(96,98,102,1);
     }
 
     span {
@@ -61,19 +64,43 @@
     }
 
     i {
-      color: #333;
+      color: #fff;
       border-radius: 50%;
-      padding: 2px;
-
+      color:rgba(96,98,102,1);
       &:hover {
-        color: white;
-        background-color: red;
+        background: rgb(245, 109, 109)
       }
     }
   }
 
   .active{
-    background-color: #007fff;
+    background-color: #0085EB;
     color: white;
+    position: relative;
+    .ball{
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: white;
+      margin-right: 6px;
+    }
+    i{
+      color: white;
+    }
+    &:hover{
+      background-color: #0085EB;
+      color: white;
+      position: relative;
+      .ball{
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background-color: white;
+        margin-right: 6px;
+      }
+      i{
+        color: white;
+      }
+    }
   }
 </style>

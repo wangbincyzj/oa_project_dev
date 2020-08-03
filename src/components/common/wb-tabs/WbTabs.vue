@@ -29,12 +29,10 @@
   .tabs{
     box-shadow: $box-shadow;
     width: 100%;
-    height: 30px;
-    margin-top: 2px;
-    margin-bottom: 3px;
+    height: 40px;
     display: flex;
     align-items: center;
-    padding-left: 10px;
+    padding-left: 18px;
     .items{
       flex: 1;
       height: 100%;
@@ -49,15 +47,20 @@
       align-items: center;
       margin-right: 15px;
       .box{
+        flex-shrink: 0;
         font-size: 14px;
-        padding: 5px 10px;
+        padding: 6px 16px;
+        border:1px solid rgba(0,133,235,1);
         color: white;
-        background: #409eff;
-        margin-right: 10px;
+        display: flex;
+        align-items: center;
+        margin-left: 12px;
+        border-radius: 4px;
         cursor: pointer;
-        border-radius: $border-radius;
+        transition: all 0.2s;
+        background-color: rgba(0,133,235,1);
         &:hover{
-          background-color: red;
+          background-color: #339EEF;
           color: white;
         }
       }

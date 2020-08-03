@@ -29,7 +29,7 @@
             <div class="btns">
               <template v-if="!confirmStatus">
                 <el-button size="mini" icon="el-icon-s-help" @click="handleMerge" type="">合并</el-button>
-
+                <el-button size="mini" icon="el-icon-s-help" @click="handleSplit" type="">拆分</el-button>
                 <el-button size="mini" icon="el-icon-finished" @click="selectAll" type="">全选</el-button>
                 <el-button size="mini" icon="el-icon-turn-off" @click="antiSelect" type="">反选</el-button>
 
@@ -44,12 +44,12 @@
               </template>
             </div>
           </div>
-          <Rooms ref="rooms" enable-loading :delay="1000" enable-choose @roomClick="roomClick">
+          <RoomsUnit ref="rooms" enable-loading :delay="1000" enable-choose @roomClick="roomClick">
             <template #default="{room}">
               <div>建面:{{ room.roomJzmj }}</div>
               <div>套内:{{ room.roomTnjzmj }}</div>
             </template>
-          </Rooms>
+          </RoomsUnit>
         </div>
         <el-dialog
             title="房间详情"
@@ -76,11 +76,12 @@ import {mixins} from "@/utils/mixins";
 import LpzsjpDialog from "@/views/menu_2/LpzsjpDialog";
 import CenterButton from "@/components/common/centerButton/CenterButton";
 import Rooms from "@/components/common/rooms/Rooms";
+import RoomsUnit from "@/components/common/rooms/RoomsUnit";
 
 export default {
   name: "Lpzsjp",
   mixins: [mixins.dialogMixin],
-  components: {Rooms, CenterButton, LpzsjpDialog, TitleTable, ContainerTwoType},
+  components: {RoomsUnit, Rooms, CenterButton, LpzsjpDialog, TitleTable, ContainerTwoType},
   data() {
     return {
       loading: false,
@@ -123,24 +124,30 @@ export default {
   },
   methods: {
     handleMerge() {
-      let rooms = this.$refs.rooms.rooms;
+      /*let rooms = this.$refs.rooms.rooms;
       let selectedRooms = [];
       rooms.forEach(floor => floor.v.forEach(room => {
         if (room.active) {
           selectedRooms.push(room)
         }
-      }))
+      }))*/
+      let selectedRooms = this.$refs.rooms.selectedRooms;
+      console.log(selectedRooms)
       if (selectedRooms.length !== 2) {
         this.$message.warning("只允许合并两个房间")
-      }
-      else {
+      } else {
         let room1 = selectedRooms[0];
         let room2 = selectedRooms[1];
-        if(room1.roomSzdy !== room2.roomSzdy){
+        if (room1.roomSzdy !== room2.roomSzdy) {
           this.$message.error("合并必须单元号相同")
           return
         }
-        if (room1.roomZdcm || room1.roomZdts || room2.roomZdcm || room2.roomZdts) {
+        console.log(room1.roomZdcm, room1.roomZdts, room2.roomZdcm, room2.roomZdts)
+        let c1 = parseInt(room1.roomZdcm)
+        let c2 = parseInt(room1.roomZdts)
+        let c3 = parseInt(room2.roomZdcm)
+        let c4 = parseInt(room2.roomZdts)
+        if (c1 || c2 || c3 || c4) {
           this.$message.error("不满足合并条件")
           return
         }
@@ -149,37 +156,74 @@ export default {
         room2.x = room2.roomZbx * 1;
         room2.y = room2.roomZby * 1;
         let ret = Math.pow((room1.x - room2.x), 2) + Math.pow((room1.y - room2.y), 2)
-        if(ret!==1){
+        if (ret !== 1) {
           this.$message.error("合并必须房间相邻")
-        }else{
-          let id,ids,roomZdts, roomZdcm;
-          if(room1.x< room2.x || room1.y > room2.y){
-            id=room1;
-            ids=room2;
-          }else{
-            id=room2;
-            ids=room1;
+        } else {
+          let id, ids, roomZdts, roomZdcm;
+          if (room1.x < room2.x || room1.y > room2.y) {
+            id = room1;
+            ids = room2;
+          } else {
+            id = room2;
+            ids = room1;
           }
-          if(room1.x===room2.x){
-            roomZdcm = -1;
+          if (room1.x === room2.x) {
+            roomZdcm = 1;
             roomZdts = 0
-          }else{
+          } else {
             roomZdcm = 0;
             roomZdts = 1
           }
-          console.log(id.roomId,ids.roomId)
-          lpInfoApi.mergeRoom(/*基准id和删除id*/id.roomId,ids.roomId, roomZdts, roomZdcm).then(ret=>{
-            if(ret.code===200){
+          lpInfoApi.mergeRoom(/*基准id和删除id*/id.roomId, ids.roomId, roomZdts, roomZdcm).then(ret => {
+            if (ret.code === 200) {
               this.$message.success("合并成功")
               this.fetchBuildingDetail();
               this.$refs.rooms.fetchRooms(this.selectedBuilding.id)
-            }else{
-              this.$message.error(ret.message||"合并失败")
+            } else {
+              this.$message.error(ret.message || "合并失败")
             }
           })
-
         }
-
+      }
+    },
+    handleSplit() {
+      let selectedRooms = this.$refs.rooms.selectedRooms;
+      if (selectedRooms.length !== 1) {
+        this.$message.error("请选择一个房间进行拆分")
+      } else {
+        let room = selectedRooms[0];
+        if (room.x || room.y) {  // 合并过的大房间
+          this.$confirm('确定要拆分此房间吗, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning',
+            center: true
+          }).then(() => {
+            let count = room.y ? 2 : null
+            lpInfoApi.splitRoom(room.roomId, count).then(ret => {
+              this.$message.success("拆分成功")
+              this.fetchBuildingDetail();
+              this.$refs.rooms.fetchRooms(this.selectedBuilding.id)
+            })
+          })
+        } else {
+          this.$prompt('请输入要拆分的个数(只能为2或者3)', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+          }).then(({value}) => {
+            value = parseInt(value)
+            console.log(value)
+            if (value !== 2 && value !== 3) {
+              this.$message.error("只能拆分两间或者三间")
+              return
+            }
+            lpInfoApi.splitRoom(room.roomId, value).then(ret => {
+              this.$message.success("拆分成功")
+              this.fetchBuildingDetail();
+              this.$refs.rooms.fetchRooms(this.selectedBuilding.id)
+            })
+          })
+        }
       }
     },
     fetchData() {
@@ -232,13 +276,7 @@ export default {
       });
     },
     delRooms() {
-      let rooms = this.$refs.rooms.rooms;
-      let selectedRooms = [];
-      rooms.forEach(floor => floor.v.forEach(room => {
-        if (room.active) {
-          selectedRooms.push(room)
-        }
-      }))
+      let selectedRooms = this.$refs.rooms.selectedRooms;
       if (!selectedRooms.length) {
         this.$message.warning("请先选择房间")
         return
@@ -269,18 +307,10 @@ export default {
       });
     },
     selectAll() {
-      this.$refs.rooms.rooms.forEach(floor => {
-        floor.v.forEach(room => {
-          this.$set(room, "active", true)
-        })
-      })
+      this.$refs.rooms.selectAll();
     },
     antiSelect() {
-      this.$refs.rooms.rooms.forEach(floor => {
-        floor.v.forEach(room => {
-          this.$set(room, "active", !room.active)
-        })
-      })
+      this.$refs.rooms.antiSelect();
     },
     btnClick() {
       this.$confirm("你确定要自审入库吗?,一旦入库则无法修改信息", "提示", {

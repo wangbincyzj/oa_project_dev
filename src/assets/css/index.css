@@ -1,6 +1,6 @@
 /*样式入口文件*/
 @import "reset.css";
-@import "common.css";
-/*@import "variable.css";  IE兼容有一些问题,给为SCSS变量 */
+@import "common.scss";
 @import "elmentPatch.scss";
+@import "elePatchUi.scss";
 
