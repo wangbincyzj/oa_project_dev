@@ -170,19 +170,9 @@
                   <div>份数:<span>{{item.shoujianFenshu}}</span></div>
                 </div>
               </div>
-              <div class="pics">
-                <el-image
-                  style="width: 60px; height: 60px"
-                  src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
-                  :preview-src-list="srcList">
-                </el-image>
-                <div class="selectImg">
-                  <i class="el-icon-plus"/>
-                  <div>选择图片上传</div>
-                </div>
-              </div>
             </div>
           </div>
+           <ReceiveList ref="ref3"/>
         </el-tab-pane>
          <el-tab-pane label="3.审核意见" name="third">
         <div>
@@ -218,64 +208,11 @@
       </el-tab-pane>
       </el-tabs>
     </div>
-    <div v-if="dialogType===4">
-      <!-- <info-list :title="业务宗号:" /> -->
-
-      <h3 class="title">添加新收件</h3>
-
-      <el-form
-        label-position="right"
-        label-width="150px"
-        size="mini"
-        inline
-        style="float:left"
-        :model="addForm"
-      >
-        <el-form-item label="收件名称">
-          <el-input v-model="addForm.name"></el-input>
-        </el-form-item>
-        <el-form-item label="收件性质">
-          <el-radio v-model="addForm.attr" label="原件">原件</el-radio>
-          <el-radio v-model="addForm.attr" label="复印件">复印件</el-radio>
-        </el-form-item>
-        <el-form-item label="收件份数">
-          <el-input v-model="addForm.count"></el-input>
-        </el-form-item>
-      </el-form>
-      <div style="width:80px;margin:0 auto">
-        <el-button
-          type="primary"
-          size="mini"
-          icon="el-icon-plus"
-
-        >添加
-        </el-button>
-      </div>
-      <div class="receiveList">
-        <div
-          class="item"
-          v-for="(item,index) in businessReceives"
-        >
-          <div class="no">
-            <span>{{index+1}}</span>
-          </div>
-          <div class="info">
-            <div class="name">{{item.shoujianTitle}}</div>
-            <div class="attr">
-              <div>性质:<span>{{item.shoujianSjxz}}</span></div>
-              <div>份数:<span>{{item.shoujianFenshu}}</span></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div style="width:80px;margin:0 auto">
-        <el-button
-          @click="handleShouJian"
-          type="primary"
-          size="mini"
-        >确认收件
-        </el-button>
-      </div>
+   <div v-if="dialogType===4">
+      <ConfirmReceive ref="ref1" :ywzh="shiyongYwzh" type="YSZJJG_SHIYONG"/>
+    </div>
+    <div v-if="dialogType===9">
+      <ManageReceive ref="ref2"/>
     </div>
 
   </div>
@@ -286,18 +223,21 @@
   import InfoList from "@/components/common/infoList/InfoList";
   import {glsysbApi} from "@/api/menu_4/glsysb";   
   import {authApi} from "@/api/menu_4/auth";
-  import AccountDialog from "@/views/menu_4/TjsysbDialog2";
+  import AccountDialog from "@/views/menu_4/TjsysbDialog2";  
+  import ConfirmReceive from "@/components/current/confirmReceive/ConfirmReceive";
+  import ManageReceive from "@/components/current/manageReceive/ManageReceive";
+  import ReceiveList from "@/components/current/receiveList/ReceiveList";
 
   export default {
     name: "GlsysbDialog",
-    components: {CenterButton, InfoList, AccountDialog},
+    components: {CenterButton, InfoList, AccountDialog,ConfirmReceive,ManageReceive,ReceiveList},
     props: {
       dialogType: {
         default: 1, // 添加
         enum: [1, 2 /*详情*/]
 
       },
-
+      shiyongYwzh:"",
 
     },
     data() {
@@ -315,13 +255,14 @@
         ldxxId: 0,
         form: {},
         formBlank: {},
-        form1: {},
+        form1: {shiyongKfs:""},
         form2: {},
         addForm: {},
         flag: "",
         loading: false,
         zjjgzhYhid: [],
         dialogVisible1: false,
+        retId:0,
 
       }
     },
@@ -331,6 +272,7 @@
     methods: {
       reset() {
         this.form = {...this.formBlank};
+        Object.assign(this.$data, this.$options.data());
       },
       selectAccount(arg) {
         this.dialogVisible1 = false;
@@ -402,7 +344,7 @@
         } 
       },
 
-      setMode(mode, id,logId) {
+      setMode(mode, id,logId,ywzh) {
         if (mode === 1 ) {
           this.shiyongId = id;
           glsysbApi.getSysbById(id).then(ret => {
@@ -417,13 +359,19 @@
         }else if(mode===2){
            this.shiyongId = id;
           glsysbApi.getSysbById(id).then(ret => {
-            this.form1 = ret.data.presaleFundsUse;
+            this.form1 = ret.data.presaleFundsUse;  //presaleFundsUse
             this.form1.shiyongZsyje = ret.data.building.shiyongZsyje;
             this.form1.zdzjjgje = ret.data.building.zdzjjgje;
             this.form1.shiyongKfs = ret.data.building.shiyongKfs;
             this.form1.ksyje = ret.data.building.ksyje;
           });
           this.fetchOpinion(logId);
+          this.$refs.ref3.fetchData(ywzh);
+        }else if (mode === 4) {
+          this.retId = id;
+          this.$refs.ref1.fetchDefault(id);
+        } else if (mode === 9) {
+          this.$refs.ref2.fetchConfirm(ywzh)
         }
 
       },

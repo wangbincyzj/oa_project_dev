@@ -208,20 +208,10 @@
                   <div>份数:<span>{{item.shoujianFenshu}}</span></div>
                 </div>
               </div>
-              <div class="pics">
-                <el-image
-                    style="width: 60px; height: 60px"
-                    src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
-                    :preview-src-list="srcList">
-                </el-image>
-                <div class="selectImg">
-                  <i class="el-icon-plus"/>
-                  <div>选择图片上传</div>
-                </div>
-              </div>
+             
             </div>
           </div>
-
+          <ReceiveList ref="ref3"/>
         </el-tab-pane>
         <el-tab-pane label="3.审核意见" name="third">
           <div>
@@ -257,180 +247,13 @@
         </el-tab-pane>
       </el-tabs>
     </div>
-
-    <div v-if="dialogType===4">
-      <!-- <info-list :title="业务宗号:" /> -->
-      <h3 class="title">
-        <el-button-group>
-          <el-button size="mini" @click="addFile" type="primary" icon="el-icon-plus">添加收件</el-button>
-          <el-button size="mini" @click="resetR" type="warning" icon="el-icon-warning-outline">重置默认</el-button>
-        </el-button-group>
-      </h3>
-      <!--
-      <div class="receiveList">
-        <div
-          class="item"
-          v-for="(item,index) in businessReceives"
-        >
-          <div class="no">
-            <span>{{index+1}}</span>
-          </div>
-          <div class="info">
-            <div class="name">{{item.shoujianTitle}}</div>
-            <div class="attr">
-              <div>性质:<span>{{item.shoujianSjxz}}</span></div>
-              <div>份数:<span>{{item.shoujianFenshu}}</span></div>
-            </div>
-          </div>
-        </div>
-      </div>-->
-
-      <div class="controls">
-
-      </div>
-
-      <el-table :data="tableData2">
-        <el-table-column type="selection" width="50" align="center"/>
-        <el-table-column align="left" label="收件名称" prop="shoujianTitle">
-          <!--v-model="scope.row.shoujianTitle"-->
-          <template #default="scope">
-            <div v-if="scope.row.add" style="display: flex">
-              <div style="flex: 3; padding-right: 20px;">
-                <el-input size="mini" v-model="scope.row.shoujianTitle"/>
-              </div>
-              <div style="flex: 1">
-                <el-select
-                    size="mini"
-                    value=""
-                    @change="change($event, scope.row)"
-                    placeholder="手动输入或选择收件"
-                >
-                  <el-option v-for="item in addList" :value="item.value">{{item.value}}</el-option>
-                </el-select>
-
-              </div>
-            </div>
-            <div v-else>
-              {{scope.row.shoujianTitle}}
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="份数" width="120">
-          <template #default="{row}">
-            <el-select v-model="row.shoujianFenshu" size="mini">
-              <el-option value="1">1</el-option>
-              <el-option value="2">2</el-option>
-              <el-option value="3">3</el-option>
-              <el-option value="4">4</el-option>
-              <el-option value="5">5</el-option>
-            </el-select>
-          </template>
-
-        </el-table-column>
-        <el-table-column align="center" label="资料类型" width="120">
-          <template #default="{row}">
-            <el-select v-model="row.shoujianSjxz" size="mini">
-              <el-option value="原件">原件</el-option>
-              <el-option value="复印件">复印件</el-option>
-              <el-option value="扫描件">扫描件</el-option>
-            </el-select>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="操作" width="200">
-          <template #default="scope">
-            <el-button size="mini" type="danger" @click="handleRemove(scope.$index)">删除收件</el-button>
-          </template>
-        </el-table-column>
-
-      </el-table>
-
-      <CenterButton @btnClick="handleShouJian" title="确认收件"/>
+     <div v-if="dialogType===4">
+      <ConfirmReceive ref="ref1" :ywzh="hetongYwzh" type="YSZJJG_HETONG"/>
     </div>
     <div v-if="dialogType===9">
-      <h3 class="title">
-        <el-button-group>
-          <el-button size="mini" @click="addFile2" type="primary" icon="el-icon-plus">添加收件</el-button>
-        </el-button-group>
-      </h3>
-      <el-table :data="businessReceives2" >
-        <el-table-column type="expand" width="50">
-          <template #default="{row}">
-            <UploadCpn
-                :file-list="row.imgList"
-                :url="url"
-                :data="{logId: row.logId}"
-                @addFile="handleUploadFile"
-                @delFile="handleRemoveFile"
-            />
-          </template>
-        </el-table-column>
-        <el-table-column align="left" label="收件名称" prop="ywsjTitle">
-          <!--v-model="scope.row.shoujianTitle"-->
-          <template #default="scope">
-            <div v-if="scope.row.add" style="display: flex">
-              <div style="flex: 3; padding-right: 20px;">
-                <el-input size="mini" v-model="scope.row.ywsjTitle"/>
-              </div>
-              <div style="flex: 1">
-                <el-select
-                    size="mini"
-                    value=""
-                    @change="change2($event, scope.row)"
-                    placeholder="手动输入或选择收件"
-                >
-                  <el-option v-for="item in addList" :value="item.value">{{item.value}}</el-option>
-                </el-select>
-              </div>
-            </div>
-            <div v-else>
-              {{scope.row.ywsjTitle}}
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="份数" width="120">
-          <template #default="{row}">
-            <div v-if="row.add">
-              <el-select v-model="row.ywsjFenshu" size="mini">
-                <el-option value="1">1</el-option>
-                <el-option value="2">2</el-option>
-                <el-option value="3">3</el-option>
-                <el-option value="4">4</el-option>
-                <el-option value="5">5</el-option>
-              </el-select>
-            </div>
-            <div v-else>
-              {{row.ywsjFenshu}}
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="资料类型" width="120">
-          <template #default="{row}">
-            <div v-if="row.add">
-              <el-select v-model="row.ywsjSjxz" size="mini" :disabled="!row.add">
-                <el-option :value="0" label="原件">原件</el-option>
-                <el-option :value="1" label="复印件">复印件</el-option>
-                <el-option :value="2" label="扫描件">扫描件</el-option>
-              </el-select>
-            </div>
-            <div v-else>
-              {{row.ywsjSjxz|sjxzFilter}}
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="操作" width="200">
-          <template #default="scope">
-            <div v-if="scope.row.add">
-              <el-button size="mini" type="primary" @click="handleEnsure(scope.$index)">确认</el-button>
-              <el-button size="mini" type="primary" @click="handleCancel(scope.$index)">取消</el-button>
-            </div>
-            <div v-else>
-              <el-button size="mini" type="danger" @click="handleRemove2(scope.$index)">删除</el-button>
-            </div>
-          </template>
-        </el-table-column>
-      </el-table>
+      <ManageReceive ref="ref2"/>
     </div>
-
+    
 
   </div>
 </template>
@@ -443,9 +266,13 @@ import {businessApi} from "@/api/menu_3/__Business";
 import {sqsfxyApi} from "@/api/menu_4/sqsfxy";
 import {sqjgzhApi} from "@/api/menu_4/sqjgzh";
 import {authApi} from "@/api/menu_4/auth";
+import ConfirmReceive from "@/components/current/confirmReceive/ConfirmReceive";
+import ManageReceive from "@/components/current/manageReceive/ManageReceive";
+import ReceiveList from "@/components/current/receiveList/ReceiveList";
+
 export default {
   name: "SqsfxyDialog",
-  components: {CenterButton,InfoList},
+  components: {CenterButton,InfoList,ConfirmReceive,ManageReceive,ReceiveList},
   props:{
     dialogType: {
       default: 1, // 添加
@@ -495,7 +322,7 @@ export default {
   },
   methods:{
     reset() {
-      this.form = {...formBlank};
+    Object.assign(this.$data, this.$options.data())
     },
     getBussinessType(){
       businessApi.getBusinessType().then(ret => {
@@ -632,7 +459,7 @@ export default {
       }
     },
 
-    setMode(mode,id,logId){
+    setMode(mode,id,logId,ywzh){
       console.log("00000000000");
 
       if(mode===1){
@@ -643,33 +470,24 @@ export default {
           this.form.hetongJgzh =this.zjjgzhYhzh;
 
         });
-        this.getBussinessType();
+        
       }else if(mode===2){
         this.hetongId=id;
         this.fetchDetail(id);
-        this.getBussinessType();
 
       }else if(mode===3){
         this.fetchDetail(id);
         this.fetchOpinion(logId);
-        this.fetchShouJianByYwzh(this.hetongYwzh);
-      }else if(mode===4){
-        this.fetchShouJian(id);
-        this.fetchCertificate();
-      }
+       this.$refs.ref3.fetchData(ywzh)
+      }else if (mode === 4) {
+          this.retId = id;
+          this.$refs.ref1.fetchDefault(id);
+        } else if (mode === 9) {
+          this.$refs.ref2.fetchConfirm(ywzh)
+        }
 
     },
-    addFile() {
-      this.tableData2.push({
-        add: true,
-        shoujianXuhao: "",
-        shoujianTitle: "",
-        shoujianFenshu: 1,
-        shoujianYema: "",
-        shoujianSjxz: "",
-        zhengjianId: "",
-      })
-    },
+    
 
   }
 }

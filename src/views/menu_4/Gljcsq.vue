@@ -7,6 +7,7 @@
         <el-table
           :data="tableData"
            @cell-mouse-enter="cellMouseEnter"
+           
           style="width: 100%">
           <el-table-column
             label="项目名称"
@@ -39,21 +40,17 @@
             width="300px"
           >           
             <template slot-scope="scope">
-              <el-button
+               <el-button
                 size="mini"
                 type="primary"
-                @click="GetFile(scope.$index, scope.row)">收件
+                @click="handleGetFile(scope.$index, scope.row)">确认收件
               </el-button>
               <el-button
                 size="mini"
                 type="primary"
-                @click="DelFile(scope.$index, scope.row)">清除
+                @click="handleManageFile(scope.$index, scope.row)">管理收件
               </el-button>
-              <el-button
-                size="mini"
-                type="primary"
-                @click="PrintFile(scope.$index, scope.row)">打印收件
-              </el-button>
+             
             </template>
           </el-table-column>
           <el-table-column
@@ -66,31 +63,19 @@
                 size="mini"
                 type="primary"
                 @click="handleUpdate(scope.$index, scope.row)"
-                :disabled="scope.row.jczjjgShzt!==0">编辑
-              </el-button>
-              <el-button
-                size="mini"                
-                type="primary"
-                @click="uploadPic(scope.$index, scope.row)"
-                :disabled="scope.row.jczjjgShzt!==0">传图
-              </el-button>
-              <el-button
-                size="mini"                
-                type="primary"
-                @click="managePic(scope.$index, scope.row)"
-                :disabled="scope.row.jczjjgShzt!==0">管图
+                :disabled="scope.row.jczjjgShzt!==0&&scope.row.jczjjgShzt!==3">编辑
               </el-button>
               <el-button
                 size="mini"                
                 type="primary"
                 @click="handleDelete(scope.$index, scope.row)"
-                :disabled="scope.row.jczjjgShzt!==0">删除
+                :disabled="scope.row.jczjjgShzt!==0&&scope.row.jczjjgShzt!==3">删除
               </el-button>
                <el-button
                 size="mini"
                 type="primary"
                 @click="handleInform(scope.$index, scope.row)"
-                :disabled="scope.row.jczjjgShzt!==0">上报
+                :disabled="scope.row.jczjjgShzt!==0&&scope.row.jczjjgShzt!==3">上报
               </el-button>
 
               <el-button
@@ -117,7 +102,6 @@
           :title="dialogTitle"
           center
           width="800px"
-          :before-close="closeConfirm"
           slot="dialog"
           :visible.sync="dialogVisible"
           @close="dialogVisible = false"
@@ -125,7 +109,7 @@
           <GljcsqDialog
             ref="dialog"
             :dialog-type="dialogType"
-           
+            :jcjzjgYwzh="jcjzjgYwzh"
             @submitSuccess="submitSuccess"
 
           />
@@ -161,6 +145,7 @@
         pageSize:10,
         total:0,
         pages:1,
+        jcjzjgYwzh:"",
       }
     },
     created() {
@@ -242,7 +227,27 @@
         this.dialogTitle = "解除监管申请详情";
         this.dialogType = 2;
         this.$nextTick(()=>{
-          this.$refs.dialog.setMode(2,this.currentRow.jczjjgId,row.logId)
+          this.$refs.dialog.setMode(2,this.currentRow.jczjjgId,row.logId,this.currentRow.jcjzjgYwzh)
+        })
+      },
+      handleGetFile(index, row){
+         this.dialogVisible = true;
+        this.dialogTitle = "确认收件";
+        this.jcjzjgYwzh=this.currentRow.jcjzjgYwzh;
+        console.log("jcjzjgYwzh="+this.jcjzjgYwzh);
+        
+        this.dialogType = 4;
+        this.$nextTick(()=>{
+          this.$refs.dialog.setMode(4, this.currentRow.jczjjgId,0,this.currentRow.jcjzjgYwzh);
+        })
+      },
+      handleManageFile(index, item) {
+        this.dialogVisible = true;
+        this.dialogTitle = "管理收件";
+         this.jcjzjgYwzh=this.currentRow.jcjzjgYwzh;
+        this.dialogType = 9;
+        this.$nextTick(() => {
+          this.$refs.dialog.setMode(9, this.currentRow.jczjjgId,0,this.currentRow.jcjzjgYwzh);
         })
       },
      submitSuccess() {
@@ -259,7 +264,6 @@
       },
        cellMouseEnter(row) {
         this.currentRow = row;
-        
       },
          currentChange(num) {
          this.currentPage = num;

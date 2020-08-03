@@ -38,14 +38,14 @@
         <el-form-item label="联系方式">
           <el-input v-model="form.djsySqrlxdh"></el-input>
         </el-form-item>
-         <el-form-item label="业务类别">
+         <!-- <el-form-item label="业务类别">
           <el-cascader
             clearable
             v-model="ywlx"
             :options="options"
             :props="{ expandTrigger: 'hover' }"
           ></el-cascader>
-        </el-form-item>   
+        </el-form-item>    -->
         <el-form-item label="用款事由">
           <el-input type="textarea" v-model="form.djsyYksy"></el-input>
         </el-form-item>
@@ -87,7 +87,7 @@ export default {
     };
   },
   created(){
-    this.getBussinessType();
+    //this.getBussinessType();
   },
   methods: {
     reset(){
@@ -112,16 +112,11 @@ export default {
       
     },
     onSubmit() {
-      let ywxlId = 0;
-        if (this.ywlx.length < 2) {
-          this.$message.error("请选择业务类型")
-          return
-        };
-      ywxlId = this.ywlx[1];
+     
         djtkApi.addfundUse({ ...this.form,djsyDjid:this.djsyDjid,djsyJgyhid:this.djsyJgyhid,
         djsyXmbh:this.$store.state.projectData.xmxxXmbh,
         kfsRwbh:this.$store.state.rwbh,
-        ywxlBh:ywxlId}).then(ret => {
+        ywxlBh:8026001}).then(ret => {
           if(ret.code===200){
             this.$message.success("操作成功");
             this.$emit("submitSuccess");

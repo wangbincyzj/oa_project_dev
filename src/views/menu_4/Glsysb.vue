@@ -50,16 +50,15 @@
             <template slot-scope="scope">
               <el-button
                 size="mini"
-                @click="GetFile(scope.$index, scope.row)">确认收件
+                type="primary"
+                @click="handleGetFile(scope.$index, scope.row)">确认收件
               </el-button>
               <el-button
                 size="mini"
-                @click="DelFile(scope.$index, scope.row)">管理收件
+                type="primary"
+                @click="handleManageFile(scope.$index, scope.row)">管理收件
               </el-button>
-              <el-button
-                size="mini"
-                @click="PrintFile(scope.$index, scope.row)">打印收件
-              </el-button>
+              
             </template>
           </el-table-column>
           <el-table-column
@@ -70,28 +69,33 @@
             <template slot-scope="scope">
               <el-button
                 size="mini"
+                type="primary"
                 @click="handleUpdate(scope.$index, scope.row)"
                 :disabled="scope.row.shiyongShzt!==0&&scope.row.shiyongShzt!==3">编辑
               </el-button>
              
               <el-button
                 size="mini"
+                type="primary"
                 @click="handleDelete(scope.$index, scope.row)"
                 :disabled="scope.row.shiyongShzt!==0&&scope.row.shiyongShzt!==3">删除
               </el-button>
                <el-button
                 size="mini"
+                type="primary"
                 @click="handleInform(scope.$index, scope.row)"
                 :disabled="scope.row.shiyongShzt!==0&&scope.row.shiyongShzt!==3">上报
               </el-button>
 
               <el-button
                 size="mini"
+                type="primary"
                 @click="handleDetail(scope.$index, scope.row)">详情
               </el-button>
 
               <el-button
                 size="mini"
+                type="primary"
                 @click="handlePrint(scope.$index, scope.row)" @mouseover.native="fetchPrintData(scope.row)">打印申请单
               </el-button>
 
@@ -118,6 +122,7 @@
         >
           <GlsysbDialog
             ref="dialog"
+            :shiyongYwzh="shiyongYwzh"
             :dialog-type="dialogType"
             @submitSuccess="submitSuccess"
           />
@@ -172,6 +177,7 @@
         selectedIndex: 0,
         date:"",
         print:{},
+        shiyongYwzh:"",
       }
     },
     created() {
@@ -203,17 +209,24 @@
 
           });
       },
-      GetFile(index,row){
-        this.dialogVisible = true;
-        this.dialogTitle = "业务收件操作";
-        this.zjjgzhYwzh=this.currentRow.zjjgzhYwzh;
+     handleGetFile(index, row){
+         this.dialogVisible = true;
+        this.dialogTitle = "确认收件";
+        this.shiyongYwzh=this.currentRow.shiyongYwzh;
         this.dialogType = 4;
         this.$nextTick(()=>{
-          this.$refs.dialog.setMode(4, this.currentRow.zjjgzhId);
+          this.$refs.dialog.setMode(4, this.currentRow.shiyongId,0,this.currentRow.shiyongYwzh);
         })
       },
-      DelFile(index,row){},
-      PrintFile(index,row){},
+      handleManageFile(index, item) {
+        this.dialogVisible = true;
+        this.dialogTitle = "管理收件";
+         this.shiyongYwzh=this.currentRow.shiyongYwzh;
+        this.dialogType = 9;
+        this.$nextTick(() => {
+          this.$refs.dialog.setMode(9, this.currentRow.shiyongId,0,this.currentRow.shiyongYwzh);
+        })
+      },
 
       handleUpdate(index,row){
         this.dialogTitle="编辑申报使用";
@@ -269,7 +282,7 @@
         this.dialogType=2;
         this.dialogVisible=true;
         this.$nextTick(()=>{
-          this.$refs.dialog.setMode(2,this.currentRow.shiyongId,row.logId)
+          this.$refs.dialog.setMode(2,this.currentRow.shiyongId,row.logId,row.shiyongYwzh)
         })
       },
       fetchPrintData(row){

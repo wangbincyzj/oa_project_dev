@@ -56,6 +56,12 @@ let deleteFundUse = function (id) {
   return requests8083.get("data-presale-funds/fundUse/delete",{id})
 }
 
+/**
+ * 根据定金退款Id查询拨付单信息
+ */
+let getBfdDetail = function (djsyId) {
+  return requests8083.get("data-presale-funds/fundUse/getPaymentNote", {djsyId})
+}
 
 
 export const djtkglApi = {
@@ -64,4 +70,5 @@ export const djtkglApi = {
   updatefundUse,
   confirmFundUse,
   deleteFundUse,
+  getBfdDetail,
 };

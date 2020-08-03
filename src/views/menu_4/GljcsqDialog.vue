@@ -147,20 +147,9 @@
                 <div>份数:<span>{{item.shoujianFenshu}}</span></div>
               </div>
             </div>
-            <div class="pics">
-              <el-image
-                style="width: 60px; height: 60px"
-                src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
-                :preview-src-list="srcList">
-              </el-image>
-              <div class="selectImg">
-                <i class="el-icon-plus"/>
-                <div>选择图片上传</div>
-              </div>
-            </div>
           </div>
         </div>
-       
+        <ReceiveList ref="ref3"/>
       </el-tab-pane>
       <el-tab-pane label="3.审核意见" name="third"> 
         <div>
@@ -196,66 +185,13 @@
       </el-tab-pane>
     </el-tabs>
     </div>
-    <div>
-      <div v-if="dialogType===4">
-        <!-- <info-list :title="业务宗号:" /> -->
-        
-          <h3 class="title">添加新收件</h3>
-          
-      <el-form
-        label-position="right"
-        label-width="150px"
-        size="mini"
-        inline
-        style="float:left"
-        :model="addForm"
-      >
-       <el-form-item label="收件名称">
-          <el-input v-model="addForm.name"></el-input>
-        </el-form-item>
-         <el-form-item label="收件性质">
-          <el-radio v-model="addForm.attr" label="原件">原件</el-radio>
-          <el-radio v-model="addForm.attr" label="复印件">复印件</el-radio>
-        </el-form-item>
-         <el-form-item label="收件份数">
-          <el-input v-model="addForm.count"></el-input>
-        </el-form-item>
-      </el-form>
-      <div  style="width:80px;margin:0 auto">
-          <el-button
-            type="primary"
-            size="mini"
-            icon="el-icon-plus"
-           
-          >添加</el-button></div>
-        <div class="receiveList">
-          <div
-            class="item"
-            v-for="(item,index) in businessReceives"
-          >
-            <div class="no">
-              <span>{{index+1}}</span>
-            </div>
-            <div class="info">
-              <div class="name">{{item.shoujianTitle}}</div>
-              <div class="attr">
-                <div>性质:<span>{{item.shoujianSjxz}}</span></div>
-                <div>份数:<span>{{item.shoujianFenshu}}</span></div>
-              </div>
-            </div>
-          </div>
-          </div>
-           <div  style="width:80px;margin:0 auto">
-        <el-button
-          @click="handleShouJian"
-          type="primary"
-          size="mini"
-        >确认收件
-        </el-button></div>
-        </div>
-        
-      </div>
-  </div>
+    <div v-if="dialogType===4">
+      <ConfirmReceive ref="ref1" :ywzh="jcjzjgYwzh" type="YSZJJG_JCZJJG"/>
+    </div>
+    <div v-if="dialogType===9">
+      <ManageReceive ref="ref2"/>
+    </div>
+
   </div>
 </template>
 <script>
@@ -264,12 +200,16 @@ import InfoList from "@/components/common/infoList/InfoList";
 import {businessApi} from "@/api/menu_3/__Business"; 
 import {authApi} from "@/api/menu_4/auth";
 import CenterButton from "@/components/common/centerButton/CenterButton";
+import ConfirmReceive from "@/components/current/confirmReceive/ConfirmReceive";
+import ManageReceive from "@/components/current/manageReceive/ManageReceive";
+import ReceiveList from "@/components/current/receiveList/ReceiveList";
+
 export default {
   name: "GljcsqDialog",
-  components: {InfoList, CenterButton},
+  components: {InfoList, CenterButton,ConfirmReceive,ManageReceive,ReceiveList},
   props: {
     zjjgzhId: { type: String }, //type: [String, Number]
-    zjjgzhYwzh:{String},
+    jcjzjgYwzh:{String},
     xmxxXmbh: { type: String },
     dialogType: {
       default: 1, // 
@@ -310,7 +250,7 @@ export default {
   methods: {
     reset() {
       this.form = { ...this.formBlank };
-       this.ywlx = [];
+      
     },
     getYwsj() {
       sqjgzhApi.getAllYwsj().then(ret=>{
@@ -350,61 +290,18 @@ export default {
       });
     },
 
-    // DetailData(id) {
-    //   sqjgzhApi.getAccountInfoById(id).then(ret => {
-    //     //console.log(ret);
-    //     this.form1 = ret.data.supervisedAccount;
-    //   });
-    // },
      fetchOpinion(id){
          authApi.getAuditInfo(id).then(ret => {
           this.opinionList = ret.data;
         })
        },
-    //    fetchShouJian(id) {
-    //     sqjgzhApi.queryReceiving(id).then(ret => {
-    //       this.businessAttachments = ret.data.businessAttachments;
-    //       this.businessReceives = ret.data.businessReceives;
-    //     })
-    //   },
-   
-    //  handleShouJian() {
-    //     // 组装一个List
-    //     console.log("taetae");
-        
-    //     console.log(this.businessReceives)
-    //     let list = this.businessReceives.map(item => ({
-    //       zhengjianId: item.shoujianId,
-    //       ywsjTitle: item.shoujianTitle,
-    //       ywsjFenshu: item.shoujianFenshu,
-    //       ywsjSjxz: item.shoujianSjxz === "原件" ? 0 : 1,
-    //       ywsjYwzh: this.zjjgzhYwzh,
-    //       ywsjXh: item.shoujianXuhao
-    //     }))
-    //     sqjgzhApi.submitShouJian(list).then(ret=>{
-    //       if (ret.code===200){
-    //         this.$message.success("收件成功")
-    //         this.$emit("submitSuccess")
-    //       }else{
-    //         this.$message.error(ret.message)
-    //       }
-    //     })
-    //   },
-    //  fetchShouJianByYwzh(id){
-    //      sqjgzhApi.selectByYwzh(id).then(ret => {
-    //       this.businessReceives = ret.data.map(item => ({
-    //         shoujianTitle: item.ywsjTitle,
-    //         shoujianSjxz: item.ywsjSjxz === 0 ? "原件" : "复印件",
-    //         shoujianFenshu: item.ywsjFenshu
-    //       }))
-    //     })
-    //   }, 
+    
     onSubmit() {
       if (this.dialogType === 1) {
         this.updateData();
       }
     },
-    setMode(mode, id,logId) {
+    setMode(mode, id,logId,ywzh) {
      if (mode === 1) {
           this.getBussinessType();
         gljcsqApi.getSqDetail(id).then(ret => {
@@ -419,9 +316,13 @@ export default {
           this.form1 = ret.data;
         });
         this.fetchOpinion(logId);
-      }else if(mode===4){
-        this.fetchShouJian(id);
-      }
+       this.$refs.ref3.fetchData(ywzh);
+        }else if (mode === 4) {
+          this.retId = id;
+          this.$refs.ref1.fetchDefault(id);
+        } else if (mode === 9) {
+          this.$refs.ref2.fetchConfirm(ywzh)
+        }
     },
   }
 }

@@ -254,8 +254,10 @@
         this.dialogTitle = "详情";
         this.dialogType = 2;
         this.$nextTick(()=>{
-          this.$refs.dialog.setMode(2, this.currentRow.ldId);
+          this.$refs.dialog.setMode(2, this.currentRow.ldId,row.jcjzjgYwzh);
         })
+        console.log("ywzh="+row.jcjzjgYwzh);
+        
       },
       submitSuccess() {
          this.$nextTick(()=>{
