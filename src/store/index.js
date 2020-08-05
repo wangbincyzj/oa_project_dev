@@ -49,7 +49,7 @@ export default new Vuex.Store({
       state.loginInfo.rwdqrqzt = rwdqrqzt;
     },
     openTab(state, tab, index) {
-      if(state.tabs.length > 6){
+      if(state.tabs.length > 5){
         state.tabs.splice(1,1)
       }
       if(index)

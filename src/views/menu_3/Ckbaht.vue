@@ -1,9 +1,16 @@
 <template>
   <div class="myTable-p0">
     <TitleTable title="已完成备案合同">
+      <ButtonsArea :row="row" @cancel="setCurrent">
+        <el-button @click="handlePrint(row)" size="mini">打印合同</el-button>
+        <el-button size="mini">打印备案表</el-button>
+        <el-button size="mini" @click="handleDetail(row)">详情</el-button>
+      </ButtonsArea>
       <el-table
         v-loading="loading"
+        ref="table"
         style="width: 100%"
+        @current-change="handleCurrentChange"
         :data="tableData">
         <el-table-column label="合同备案号" align="center" prop="htBah" width="70"/>
         <el-table-column label="买受人" #default="{row}" align="center" prop="htMc" width="80">
@@ -11,7 +18,7 @@
             <li v-for="item in row.houseOwners">{{item.fwsyqrSyqr}}</li>
           </ul>
         </el-table-column>
-        <el-table-column label="证件号码" #default="{row}" align="center" prop="htMc" width="180">
+        <el-table-column label="证件号码" #default="{row}" align="center" prop="htMc" >
           <ul>
             <li v-for="item in row.houseOwners">{{item.fwsyqrZjhm}}</li>
           </ul>
@@ -19,30 +26,32 @@
         <el-table-column label="楼栋名称" align="center" prop="ldMc" width="80"/>
         <el-table-column label="房号" align="center" prop="roomFh" width="60"/>
         <el-table-column label="面积" align="center" prop="roomMj" width="80"/>
-        <el-table-column label="单价" align="center" prop="" width="80"/>
+        <el-table-column label="单价" align="center" prop="roomDj" width="80"/>
         <el-table-column label="挂牌单价" align="center" prop="roomGpdj" width="100"/>
         <el-table-column label="付款方式" align="center" prop="htFkfs" width="50"/>
-        <el-table-column label="监管状态" align="center" prop="htZjjgzt" width="100"/>
-        <el-table-column label="预售资金缴存情况" align="center" prop="htYsjkzt" width="60"/>
-        <el-table-column label="维修资金缴存" align="center" prop="roomWxzjjczt" width="100"/>
-        <el-table-column label="签订时间" align="center" prop="htQdsj" width="100"/>
+        <el-table-column label="监管状态" align="center" prop="roomZjjgzt" width="100">
+          <template #default="{row}">
+            <i class="el-icon-check" v-if="row.roomZjjgzt"/>
+            <i class="el-icon-close" v-else/>
+          </template>
+        </el-table-column>
+        <el-table-column label="签订时间" align="center" prop="htQdsj" width="130"/>
         <el-table-column label="状态" align="center" #default="{row}" width="100">
           {{row.htBazt|shztFilter}}
         </el-table-column>
-        <el-table-column label="操作" align="center">
-          <template #default="{row}">
-            <template v-if="row.htBazt===0||row.htBazt===3">
-              <el-button size="mini" @click="handleContract(row)">完善合同</el-button>
-              <el-button size="mini" @click="handleSubmit(row)">上报</el-button>
-            </template>
-            <el-button @click="handlePrint(row)" size="mini">草拟合同</el-button>
-            <el-button size="mini">打印备案表</el-button>
-            <el-button size="mini" @click="handleDetail(row)">详情</el-button>
-          </template>
-        </el-table-column>
       </el-table>
+      <el-pagination
+          background
+          layout="prev, pager, next, total, sizes"
+          @current-change="mixinCurrentChange"
+          @size-change="mixinSizeChange"
+          :page-sizes="[10, 20, 30, 40]"
+          :current-page="currentPage"
+          :page-size="pageSize"
+          :total="total">
+      </el-pagination>
       <el-dialog
-        :title="dialogTitle"
+        title="合同详细"
         center
         width="1200px"
         :before-close="closeConfirm"
@@ -66,11 +75,12 @@
   import {mixins} from "@/utils/mixins";
   import WsyshtLayout from "@/views/menu_3/Wsysht/WsyshtLayout";
   import {yushouContractApi} from "@/api/menu_3/yushowContract";
+  import ButtonsArea from "@/components/common/buttonsArea/ButtonsArea";
 
   export default {
     name: "Ckbaht",
-    mixins: [mixins.dialogMixin],
-    components: {WsyshtLayout, TitleTable},
+    mixins: [mixins.dialogMixin, mixins.myPagerMixin, mixins.tableMixin],
+    components: {ButtonsArea, WsyshtLayout, TitleTable},
     data() {
       return {
         loading: false,
@@ -105,7 +115,7 @@
       },
       fetchTableData() {
         this.loading = true;
-        yushouContractApi.getContractList({kfsRwbh: this.$store.state.rwbh, htBazt:2}).then(ret => {
+        yushouContractApi.getContractList({kfsRwbh: this.$store.state.rwbh, htBazt:2, current:this.currentPage, size: this.pageSize}).then(ret => {
           this.loading = false;
           this.tableData = ret.data.records;
         })

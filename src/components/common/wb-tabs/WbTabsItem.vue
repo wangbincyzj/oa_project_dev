@@ -1,7 +1,8 @@
 <template>
   <div class="item" :class="{active}" @click="itemClick" @click.middle="handleClose">
     <div class="ball"></div>
-    <span>{{tab.title}}</span><i v-if="tab.title!=='系统首页'" class="el-icon-close" @click.stop="handleClose"/>
+    <span>{{tab.title}}</span>
+    <i v-if="tab.title!=='系统首页'" class="el-icon-close" @click.stop="handleClose"/>
   </div>
 </template>
 
@@ -42,10 +43,12 @@
   @import "~@/assets/css/var.scss";
 
   .item {
+    user-select: none;
     flex-shrink: 0;
     font-size: 14px;
-    padding: 6px 16px;
-    border:1px solid rgba(0,133,235,1);
+    padding: 0 8px;
+    height: 26px;
+    border:1px solid #909399;
     color: #333;
     display: flex;
     align-items: center;
@@ -57,24 +60,28 @@
     &:hover {
       background:rgba(226,245,253,1);;
       color:rgba(96,98,102,1);
+      border:1px solid #0085EB
     }
 
     span {
-      margin-right: 3px;
+      margin-right: 8px;
     }
 
     i {
       color: #fff;
       border-radius: 50%;
       color:rgba(96,98,102,1);
+      padding: 2px;
       &:hover {
-        background: rgb(245, 109, 109)
+        background: rgb(245, 109, 109);
+        color: #fff;
       }
     }
   }
 
   .active{
     background-color: #0085EB;
+    border:1px solid #0085EB;
     color: white;
     position: relative;
     .ball{

@@ -4,7 +4,7 @@
       <slot/>
     </div>
     <div class="control">
-      <div class="box" @click="closeAll">关闭所有</div>
+      <div class="box" @click="closeAll" :class="{inActive: $store.state.tabs.length===1}">关闭所有</div>
     </div>
   </div>
 </template>
@@ -27,7 +27,6 @@
 <style scoped lang="scss">
   @import "~@/assets/css/var.scss";
   .tabs{
-    box-shadow: $box-shadow;
     width: 100%;
     height: 40px;
     display: flex;
@@ -62,6 +61,11 @@
         &:hover{
           background-color: #339EEF;
           color: white;
+        }
+        &.inActive{
+          background-color: #A1D6FE;
+          border: none;
+          cursor: not-allowed;
         }
       }
     }

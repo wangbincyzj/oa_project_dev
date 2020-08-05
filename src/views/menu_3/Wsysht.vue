@@ -2,8 +2,7 @@
   <div class="myTable-p0">
     <TitleTable title="待上报合同">
       <el-alert :closable='false' center>注意：合同签订后首先要通过“完善合同”将其他条款进行完善，确认无误后“上报”合同,点“打印合同”！</el-alert>
-      <WbButtonsArea :is-show="!!row">
-        <el-button icon="el-icon-caret-left" size="mini" @click="setCurrent()">取消</el-button>
+      <ButtonsArea  :row.sync="row" @cancel="setCurrent">
         <template v-if="row&&(row.htBazt===0||row.htBazt===3)">
           <el-button size="mini" @click="handleContract(row)">完善合同</el-button>
           <el-button size="mini" @click="handleSubmit(row)">上报</el-button>
@@ -11,7 +10,7 @@
         <el-button @click="handlePrint(row)" size="mini">打印草拟合同</el-button>
         <el-button @click="handlePrint2(row)" size="mini">打印备案申请表</el-button>
         <el-button size="mini" @click="handleDetail(row)">详情</el-button>
-      </WbButtonsArea>
+      </ButtonsArea>
       <el-table
         v-loading="loading"
         style="width: 100%"
@@ -88,7 +87,7 @@
       </div>
     </transition>
     <el-dialog @opened="drag" :visible.sync="dialogVisible" width="1200px" title="合同上报确认" center>
-      <WsyshtDialog :htId="htId"/>
+      <WsyshtDialog :htId="htId" @submitSuccess="submitSuccess" ref="dialog"/>
     </el-dialog>
   </div>
 </template>
@@ -98,22 +97,22 @@
   import {mixins} from "@/utils/mixins";
   import WsyshtLayout from "@/views/menu_3/Wsysht/WsyshtLayout";
   import {yushouContractApi} from "@/api/menu_3/yushowContract";
-  import WbButtonsArea from "@/components/common/wb-buttonsArea/WbButtonsArea";
   import WsyshtDialog from "@/views/menu_3/WsyshtDialog";
+  import ButtonsArea from "@/components/common/buttonsArea/ButtonsArea";
 
   export default {
     name: "Wsysht",
-    mixins: [mixins.dialogMixin, mixins.myPagerMixin],
-    components: {WsyshtDialog, WbButtonsArea, WsyshtLayout, TitleTable},
+    mixins: [mixins.dialogMixin, mixins.myPagerMixin, mixins.tableMixin],
+    components: {ButtonsArea, WsyshtDialog, WsyshtLayout, TitleTable},
     data() {
       return {
         loading: false,
-        tableData: [{}],
+        tableData: [],
         active: false,
         htId: null,
         readOnly: false,
         dialogTitle: "",
-        row: null,
+        row: {},
       }
     },
     created() {
@@ -127,12 +126,6 @@
         this.$nextTick(() => {
           this.$refs.ref1.fetchData();
         })
-      },
-      handleCurrentChange(row) {
-        this.row = row
-      },
-      setCurrent(row) {
-        this.$refs.singleTable.setCurrentRow(row);
       },
       handleDetail(row) {
         this.active = true;
@@ -164,21 +157,20 @@
           return
         }
         this.htId = item.htId;
-        this.dialogVisible = true
-        /*yushouContractApi.submitContract(item.htId).then(ret => {
-          if (ret.code === 200) {
-            this.$message.success("上报成功");
-            this.fetchTableData()
-          } else {
-            this.$message.error(ret.message || "未知错误")
-          }
-        })*/
+        this.dialogVisible = true;
+        this.$nextTick(()=>{
+          this.$refs.dialog.fetchDetail()
+        })
       },
       handlePrint(item){
         window.open(`#/printView/ysht?id=${item.htId}`)
       },
       handlePrint2(item){
         window.open(`#/printView/bab?id=${item.htId}`)
+      },
+      submitSuccess() {
+        this.dialogVisible = false;
+        this.fetchTableData()
       }
     }
   }

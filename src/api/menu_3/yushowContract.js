@@ -12,7 +12,7 @@ let getContractBuildingTree = function ({ldxxFwlx, rwbh}) {
 
 /**
  * 合同管理分页查询
- * @param htXslx 类型 0预售 1现售
+ * htXslx 类型 0预售 1现售
  */
 let getContractList = function ({kfsRwbh, htBazt, HtCxzt, HtBgzt, current = 1, size = 20, htXslx = 0}) {
   return requests.get("data-presale-license/contract/selectPage", {
@@ -236,8 +236,8 @@ let selectHouseOwnerList = function (fwsyqrHtbh) {
  * 完善合同后上报合同
  * type: 1备案上报   2撤销上报
  */
-let submitContract = function (htId, type = 1) {
-  return requests.get("data-presale-license/contract/submit", {htId, type})
+let submitContract = function (htId, type = 1, password=null) {
+  return requests.get("data-presale-license/contract/submit", {htId, type, password})
 }
 
 /**

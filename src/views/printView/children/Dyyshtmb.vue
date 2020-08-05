@@ -199,33 +199,33 @@
         </ul>
         <h4 class="title">第二条 预售依据</h4>
         <ul>
-          <li>该商品房已由 <span class="w500"></span>批准预售 ,预售许可证号为 <span class="w300"></span>。</li>
+          <li>该商品房已由 <span class="w500" >XXXXXXXXXX写死</span>批准预售 ,预售许可证号为 <span class="w300" :class="{inline:d.ht02001}">{{d.ht02001}}</span>。</li>
         </ul>
         <h4 class="title">第三条 商品房基本情况</h4>
         <ul>
-          <li>1.该商品房的规划用途为 【住宅】【办公】【商业】<span class="w100"></span>。</li>
-          <li>2.该商品房所在建筑物的主体结构为<span class="w100"></span>，建筑总层数为<span class="w50"></span>，其中地上层数为<span
-            class="w50"></span>层，地下<span class="w50"></span>层。
+          <li>1.该商品房的规划用途为 【住宅】【办公】【商业】<span :class="{inline:d.ht03001}" class="w100">{{d.ht03001}}</span>。</li>
+          <li>2.该商品房所在建筑物的主体结构为<span :class="{inline:d.ht03002}" class="w100">{{d.ht03002}}</span>，建筑总层数为<span :class="{inline:d.ht03003}" class="w50">{{d.ht03003}}</span>，其中地上层数为<span :class="{inline:d.ht03016}"
+            class="w50">{{d.ht03016}}</span>层，地下<span :class="{inline:d.ht03017}" class="w50">{{d.ht03017}}</span>层。
           </li>
-          <li>3.该商品房为第一条规定项目中的<span class="w50"></span>【幢】【座】<span class="w50"></span>单元<span class="w50"></span>层<span
-            class="w50"></span>号。房屋竣工后，如房号发生改变，不影响该商品房的特定位置。该商品房的平面图见附件一。
+          <li>3.该商品房为第一条规定项目中的<span :class="{inline:d.ht03004}" class="w50">{{d.ht03004}}</span>【幢】【座】<span :class="{inline:d.ht03005}" class="w50">{{d.ht03005}}</span>单元<span :class="{inline:d.ht03006}" class="w50">{{d.ht03006}}</span>层<span :class="{inline:d.ht03007}"
+            class="w50">{{d.ht03007}}</span>号。房屋竣工后，如房号发生改变，不影响该商品房的特定位置。该商品房的平面图见附件一。
           </li>
-          <li>4.该商品房的房产测绘机构为余干县住房和城乡建设局，其预测建筑面积共<span class="w50"></span>平方米，其中套内建筑面积<span class="w50"></span>平方米，分摊共有建筑面积<span
-            class="w50"></span>平方米。该商品房共用部位见附件二。
+          <li>4.该商品房的房产测绘机构为<span :class="{inline:d.ht03008}" class="w50">{{d.ht03008}}</span>，其预测建筑面积共<span :class="{inline:d.ht03009}" class="w50">{{d.ht03009}}</span>平方米，其中套内建筑面积<span :class="{inline:d.ht03010}" class="w50">{{d.ht03010}}</span>平方米，分摊共有建筑面积<span :class="{inline:d.ht03011}"
+            class="w50">{{d.ht03011}}</span>平方米。该商品房共用部位见附件二。
           </li>
-          <li>该商品房层高为<span class="w50"></span>米，有<span class="w50"></span>个阳台，其中<span class="w50"></span>个阳台为封闭式，<span
-            class="w50"></span>个阳台为非封闭式，阳台是否封闭以规划设计文件为准。
+          <li>该商品房层高为<span :class="{inline:d.ht03012}" class="w50">{{d.ht03012}}</span>米，有<span :class="{inline:d.ht03013}" class="w50">{{d.ht03013}}</span>个阳台，其中<span :class="{inline:d.ht03014}" class="w50">{{d.ht03014}}</span>个阳台为封闭式，<span :class="{inline:d.ht03015}"
+            class="w50">{{d.ht03015}}</span>个阳台为非封闭式，阳台是否封闭以规划设计文件为准。
           </li>
         </ul>
         <h4 class="title">第四条 抵押情况</h4>
         <div>
-          <div>与该商品房有关的抵押情况为【抵押】【未抵押】</div>
-          <div>抵押类型:<span class="w200"></span>，抵押人：<span class="w200"></span>，</div>
-          <div>抵押权人:<span class="w200"></span>，抵押登记机构：<span class="w200"></span>，</div>
-          <div>抵押登记日期:<span class="w200"></span>，债务履行期限：<span class="w200"></span>，</div>
-          <div>抵押类型:<span class="w200"></span>，抵押人：<span class="w200"></span>，</div>
-          <div>抵押权人:<span class="w200"></span>，抵押登记机构：<span class="w200"></span>，</div>
-          <div>抵押登记日期:<span class="w200"></span>，债务履行期限：<span class="w200"></span>，</div>
+          <div>与该商品房有关的抵押情况为<span :class="{inline:d.ht04001}" class="w200">{{d.ht04001}}</span></div>
+          <div>抵押类型:<span :class="{inline:d.ht04002}" class="w200">{{d.ht04002}}</span>，抵押人：<span :class="{inline:d.ht04003}" class="w200">{{d.ht04003}}</span>，</div>
+          <div>抵押权人:<span :class="{inline:d.ht04004}" class="w200">{{d.ht04004}}</span>，抵押登记机构：<span :class="{inline:d.ht04005}" class="w200">{{d.ht04005}}</span>，</div>
+          <div>抵押登记日期:<span :class="{inline:d.ht04006}" class="w200">{{d.ht04006}}</span>，债务履行期限：<span :class="{inline:d.ht04007}" class="w200">{{d.ht04007}}</span>，</div>
+          <div>抵押类型:<span :class="{inline:d.ht04008}" class="w200">{{d.ht04008}}</span>，抵押人：<span :class="{inline:d.ht04009}" class="w200">{{d.ht04009}}</span>，</div>
+          <div>抵押权人:<span :class="{inline:d.ht04010}" class="w200">{{d.ht04010}}</span>，抵押登记机构：<span :class="{inline:d.ht04011}" class="w200">{{d.ht04011}}</span>，</div>
+          <div>抵押登记日期:<span :class="{inline:d.ht04012}" class="w200">{{d.ht04012}}</span>，债务履行期限：<span :class="{inline:d.ht04013}" class="w200">{{d.ht04013}}</span>，</div>
           <div>抵押权人同意该商品房转让的证明及关于抵押的相关约定见附件三。</div>
         </div>
         <h4 class="title">第五条 房屋权利状况承诺</h4>
@@ -1025,11 +1025,12 @@
               this.$set(this.d, item2, ret.data[item1][item2])
             })
           })
+          this.fetchBaseData()
+
         })
-        this.fetchBaseData()
       },
       fetchBaseData() {
-        contractAbout.getRwqyBaseInfo((this.$store.state.rwbh + "").slice(0, 4)).then(ret => {
+        contractAbout.getRwqyBaseInfo(this.d.kfsRwbh.slice(0, 4)).then(ret => {
           this.baseData = ret.data.enterprises;
         })
       },

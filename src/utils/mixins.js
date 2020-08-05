@@ -2,7 +2,7 @@ import fa from "element-ui/src/locale/lang/fa";
 
 // 全局页面跳转mixin
 const routerMixin = {
-  methods:{
+  methods: {
     go(path) {
       this.$router.push(path)
     }
@@ -17,9 +17,9 @@ const dialogMixin = {
       dialogVisible: false,
     }
   },
-  methods:{
+  methods: {
     dialogReset() {
-      if(this.$refs.dialog && this.$refs.dialog.reset){
+      if (this.$refs.dialog && this.$refs.dialog.reset) {
         this.$refs.dialog.reset()
       }
       this.dialogVisible = false
@@ -61,27 +61,27 @@ const myPagerMixin = {
       total: 1,
     }
   },
-  methods:{
+  methods: {
     mixinCurrentChange(num) {
       this.currentPage = num;
-      if(this.pagerChange){
+      if (this.pagerChange) {
         this.pagerChange()
-      }else{
-        if(this.fetchTableData && this.fetchTableData.length===0){
+      } else {
+        if (this.fetchTableData && this.fetchTableData.length === 0) {
           this.fetchTableData();
-        }else{
+        } else {
           throw Error("必须实现pagerChange方法");
         }
       }
     },
-    mixinSizeChange(num){
+    mixinSizeChange(num) {
       this.pageSize = num
-      if(this.sizeChange){
+      if (this.sizeChange) {
         this.sizeChange()
-      }else{
-        if(this.fetchTableData && this.fetchTableData.length===0){
+      } else {
+        if (this.fetchTableData && this.fetchTableData.length === 0) {
           this.fetchTableData();
-        }else{
+        } else {
           throw Error("必须实现sizeChange方法");
         }
       }
@@ -90,23 +90,24 @@ const myPagerMixin = {
 }
 
 const dragMixin = {
-  methods:{
+  methods: {
     drag() {
       function handleChange(e) {
         let deltaX = e.x - this.x0;
         let deltaY = e.y - this.y0;
-        this.style.left =  this.offsetLeft + deltaX + "px"
+        this.style.left = this.offsetLeft + deltaX + "px"
         this.style.top = this.offsetTop + deltaY + "px"
         this.x0 = e.x;
         this.y0 = e.y
       }
+
       let movable_list = document.querySelectorAll(".el-dialog");
-      movable_list.forEach(box=>{
+      movable_list.forEach(box => {
         box.addEventListener("mousedown", function (e) {
           this.x0 = e.x;
           this.y0 = e.y;
           this.addEventListener("mousemove", handleChange)
-          window.addEventListener("mouseup", ()=>{
+          window.addEventListener("mouseup", () => {
             this.removeEventListener("mousemove", handleChange)
           })
         })
@@ -115,11 +116,31 @@ const dragMixin = {
   }
 }
 
+const tableMixin = {
+  data() {
+    return {
+      row: {}
+    }
+  },
+  methods: {
+    setCurrent(row) {
+      row = row || {}
+      if (this.$refs.table)
+        this.$refs.table.setCurrentRow(row);
+      if (this.$refs.singleTable)
+        this.$refs.singleTable.setCurrentRow(row);
+    },
+    handleCurrentChange(row) {
+      this.row = row
+    },
+  }
+}
 
 
 export const mixins = {
   routerMixin,
   dialogMixin,
   myPagerMixin,
-  dragMixin
+  dragMixin,
+  tableMixin
 }

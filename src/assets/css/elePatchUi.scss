@@ -1,12 +1,142 @@
-.el-submenu__title:hover{
-  background-color: #4e75a2!important;
+/*-----左侧菜单样式-----*/
+@import "~@/assets/css/var.scss";
+
+/*-----大的AsideNav调整-----*/
+.leftMenu{
+  border-right: none!important;
+  .el-submenu__title:hover{
+    background-color: #4e75a2!important;
+  }
+  .el-menu-item{
+    background-color: #022955!important;
+    font-size: 13px!important;
+  }
+  .el-menu-item:hover{
+    background-color: #4e6989!important;
+  }
 }
 
-.el-menu-item{
-  background-color: #022955!important;
-  font-size: 13px!important;
+/*-----主体内容的二级菜单-----*/
+.leftBar{
+  .el-menu{
+    background-color: white!important;
+  }
+  .el-submenu{
+    padding-left: 0!important;
+    background-color: white!important;
+  }
+  .el-menu-item{
+    min-width: 0!important;
+  }
+  .is-active{
+    background-color: #0085EB!important;
+    color: white!important;
+  }
+  .el-submenu__title{
+    background-color: white!important;
+  }
 }
 
-.el-menu-item:hover{
-  background-color: #4e6989!important;
+/*-----el-menu滚动条样式-----*/
+.el-menu{
+  &::-webkit-scrollbar{
+    width: 8px;
+    height: 8px;
+    //background-color: #D7DBE4;
+  }
+  &::-webkit-scrollbar-track{
+    //box-shadow: inset 0 0 5px rgba(0,0,0,.3);
+    background-color: #283a49;
+  }
+  &::-webkit-scrollbar-thumb{
+    border-radius: 10px;
+    background: #546370;
+    //box-shadow: inset 0 0 5px #000;
+  }
+  &::-webkit-scrollbar-thumb:hover{
+    background: #7B8E9E;
+  }
+  &::-webkit-scrollbar-thumb:active{
+    background: #7B8E9E;
+  }
 }
+
+
+/*-----首页input-----*/
+.myClass{
+  input {
+    border: 1px solid rgba(192, 196, 204, 1);
+    border-radius: 4px;
+    color: #606366 !important;
+    outline: none;
+    transition: all 0.2s;
+    padding: 0 12px;
+    &:focus {
+      border: 1px solid #3a8ee6;
+    }
+    &::placeholder {
+      color: #C0C6CC;
+    }
+  }
+}
+
+
+/*-----dialog里面内容规范-----*/
+.formContainer {
+  width: 100%;
+  height: 280px;
+  background: rgba(255, 255, 255, 1);
+  border: 1px solid rgba(192, 196, 204, 1);
+  opacity: 1;
+  border-radius: 4px;
+}
+
+.dialog-title {
+  width: 126px;
+  height: 24px;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 24px;
+  color: rgba(96, 98, 102, 1);
+  opacity: 1;
+  margin: 30px 0 24px 12px;
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: -12px;
+    top: 0;
+    width: 2px;
+    height: 100%;
+    background-color: #3a8ee6;
+  }
+}
+
+.dialog-input {
+  margin-bottom: 16px;
+
+  span {
+    margin-right: 12px;
+    font-size: 12px;
+  }
+
+  input {
+    font-size: 12px;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

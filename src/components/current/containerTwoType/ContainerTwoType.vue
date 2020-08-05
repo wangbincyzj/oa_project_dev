@@ -14,27 +14,30 @@
   <div class="root" :style="{height: this.height}">
     <div class="left" v-if="!leftSlot">
       <el-input
-        size="mini"
-        style="margin-bottom: 10px"
-        :placeholder="navInfo.title"
-        v-model="searchValue"
-        clearable
-        @input="searchChange"
+          v-if="search || $listeners.searchChange"
+          size="mini"
+          style="margin-bottom: 10px"
+          :placeholder="navInfo.title"
+          v-model="searchValue"
+          clearable
+          @input="searchChange"
       />
       <ul v-loading="loading">
         <li
-          v-for="(item,index) in navInfo.list"
-          :key="index"
-          :class="{active: index===currentIndex}"
-          @click="liClick(index)"
-        >{{item.name}}</li>
+            v-for="(item,index) in navInfo.list"
+            :key="index"
+            :class="{active: index===currentIndex}"
+            :title="item.name"
+            @click="liClick(index)"
+        >{{item.name}}
+        </li>
       </ul>
     </div>
     <div class="left" v-else>
       <slot name="leftSlot"></slot>
     </div>
     <div class="right">
-      <slot />
+      <slot/>
     </div>
   </div>
 </template>
@@ -43,25 +46,32 @@
 export default {
   name: "ContainerTwoType",
   props: {
-    leftSlot: {
+    leftSlot:{
       type: Boolean,
       default: false
     },
-    navInfo: {}, //
+    navInfo: {
+
+    },
+    search:{
+      type:Boolean,
+      default: false
+    },
     height: {
       type: String,
       default: "100%"
     },
-    loading: {
+    loading:{
       type: Boolean,
       default: false
     }
+
   },
   data() {
     return {
       currentIndex: 0,
       searchValue: ""
-    };
+    }
   },
   methods: {
     liClick(index) {
@@ -71,11 +81,11 @@ export default {
     // loading(){
 
     // },
-    searchChange() {
-      this.$emit("searchChange", this.searchValue);
+    searchChange(){
+      this.$emit("searchChange", this.searchValue)
     }
   }
-};
+}
 </script>
 
 <style scoped lang="scss">
@@ -88,16 +98,33 @@ export default {
     width: 200px;
     flex-shrink: 0;
     height: 100%;
-    padding: $ps;
-    background-color: #eee;
+    background-color: #fff;
     box-shadow: $box-shadow;
     overflow: auto;
+    &::-webkit-scrollbar{
+      width: 8px;
+      height: 8px;
+    }
+    &::-webkit-scrollbar-track{
+      //box-shadow: inset 0 0 5px rgba(0,0,0,.3);
+      background-color: transparent;
+    }
+    &::-webkit-scrollbar-thumb{
+      border-radius: 10px;
+      background: #CBD2DD;
+      //box-shadow: inset 0 0 5px #000;
+    }
+    &::-webkit-scrollbar-thumb:hover{
+      background: #D9DFEA;
+    }
+    &::-webkit-scrollbar-thumb:active{
+      background: #D9DFEA;
+    }
 
     .title {
       text-align: center;
       color: white;
       font-size: 14px;
-      font-weight: 600;
       line-height: 1.5;
       margin: $ps-f $ps-f 10px;
       background-color: $brand-light;
@@ -112,15 +139,21 @@ export default {
     ul {
       li {
         cursor: pointer;
-        color: $text-info;
+        color: $text-normal;
         font-size: 14px;
-        font-weight: 600;
-        padding: 10px 10px;
-        border-radius: $border-radius;
+        padding: 0 30px;
+        height: 35px;
+        line-height: 35px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        &:first-child{
+          margin-top: 30px;
+        }
 
         &:hover {
-          color: $hover-color;
-          background-color: #ccc;
+          color:rgba(96,98,102,1);
+          background:rgba(226,245,253,1);
         }
 
         &.active {
@@ -131,12 +164,21 @@ export default {
     }
   }
 
-  .right {
+  > .right {
     overflow: auto;
+    margin: $pm;
     flex: 1;
-    margin-left: $pm;
-    background-color: #eee;
+    background-color: white;
     box-shadow: $box-shadow;
+  }
+}
+
+@media all and (max-width: 1367px){
+  .left{
+    width: 150px!important;
+    li{
+      padding: 0 10px 0 12px!important;
+    }
   }
 }
 </style>

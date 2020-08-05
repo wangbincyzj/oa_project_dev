@@ -7,7 +7,7 @@
     <DyXscns v-if="args==='xscns'"/>  <!--销售承诺书-->
     <DyBab v-if="args==='bab'"/>  <!--完善预售合同-打印备案表-->
     <DyReceiveList v-if="args==='receiveList'"/> <!--打印收件清单-->
-    <Dytkbfd v-if="args==='dytkbfd'"/>
+    <Dytkbfd v-if="args==='dytkbfd'"/> <!--打印退款拨付单-->
 
   </div>
 </template>

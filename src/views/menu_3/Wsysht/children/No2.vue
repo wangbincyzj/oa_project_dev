@@ -134,9 +134,14 @@
             </ul>
           </li>
           <li class="priceArea">（三）出售该商品房的全部房价款应当存入预售资金监管账户，用于本工程建设。该商品房的预售资金监管机构为
-            <input v-model="ht07.ht07033" type="text" class="w400">
-            ，预售资金监管银行名称为
-            <input v-model="ht07.ht07034" type="text" class="w400">
+
+            <input v-model="ht07.ht07033" type="text" class="w300">
+            ，预售资金监管银行为
+            <select v-model="account">
+              <option disabled value="选择监管账户">选择监管账户</option>
+              <option :value="index" v-for="(item,index) in accountsList">{{item.zjjgszjlZjjgyhmc}}-{{item.zjjgszjlZjjgzhmc}}</option>
+            </select>
+            <input v-model="ht07.ht07034" type="text" class="w300">
             ，监管账号为
             <input v-model="ht07.ht07035" type="text" class="w200">
             。</li>
@@ -245,20 +250,26 @@
           ht08007: "",
           ht08008: "",
         },
-        sectionName: "contractHousePrice"
+        sectionName: "contractHousePrice",
+        account: "选择监管账户"
       }
     },
     computed: {
       sectionData() {
         return this.oriData[this.sectionName]
+      },
+      accountsList() {
+        return this.oriData["buildingFundsSupervisions"]
+      }
+    },
+    watch:{
+      account(index) {
+        this.ht07.ht07034 = this.accountsList[index].zjjgszjlZjjgyhmc
+        this.ht07.ht07035 = this.accountsList[index].zjjgszjlZjjgzh
       }
     },
     created() {
       this.mapData()
-    },
-    watch:{
-      "ht07.ht07006"(){}
-
     },
     methods:{
       handleSave() {
@@ -335,6 +346,9 @@
           .replace(/(零.)+/g, '零')
           .replace(/^整$/, '零元整');
         return ret.replace("元整", "")
+      },
+      handleSetAccount(...args) {
+        console.log(args)
       },
       handleBlur(e, model){
         let value = e.target.value;

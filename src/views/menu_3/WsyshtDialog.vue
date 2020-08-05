@@ -174,7 +174,18 @@ export default {
       })
     },
     handleClick() {
-      console.log(this.pwd)
+      if(!this.pwd){
+        this.$message.error("请填写合同密码")
+      }else{
+        yushouContractApi.submitContract(this.htId, 1, this.pwd).then(ret=>{
+          if(ret.code===200){
+            this.$message.success("上报成功")
+            this.$emit("submitSuccess")
+          }else{
+            this.$message.error(ret.message||"上报失败")
+          }
+        })
+      }
     }
   }
 }
