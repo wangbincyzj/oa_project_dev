@@ -9,16 +9,16 @@
           :model="form">
         <!-- 0添加 1编辑 2查看-->
         <el-form-item label="甲方(工程监理企业)" >
-          <el-input v-model="form.hetongJgjgmc"></el-input>
+          <el-input v-model="form.hetongJgjgmc" disabled></el-input>
         </el-form-item>
         <el-form-item  label="甲方地址">
-          <el-input v-model="form.hetongJgjgdz"></el-input>
+          <el-input v-model="form.hetongJgjgdz" disabled></el-input>
         </el-form-item>
         <el-form-item  label="甲方法定代表人">
-          <el-input v-model="form.hetongJgjgfr"></el-input>
+          <el-input v-model="form.hetongJgjgfr" disabled></el-input>
         </el-form-item>
         <el-form-item  label="甲方联系方式">
-          <el-input v-model="form.hetongJgjglxdh"></el-input>
+          <el-input v-model="form.hetongJgjglxdh" disabled></el-input>
         </el-form-item>
         <el-form-item label="乙方(银行名称)">
           <el-select style="width: 180px" v-model="form.hetongYhmc" placeholder="请选择监管银行">
@@ -31,28 +31,28 @@
           </el-select>
         </el-form-item>
         <el-form-item  label="银行地址">
-          <el-input v-model="form.hetongYhdz"></el-input>
+          <el-input v-model="form.hetongYhdz" disabled></el-input>
         </el-form-item>
         <el-form-item  label="乙方法定代表人">
-          <el-input v-model="form.hetongYhdlr"></el-input>
+          <el-input v-model="form.hetongYhdlr" disabled></el-input>
         </el-form-item>
         <el-form-item  label="乙方联系方式">
-          <el-input v-model="form.hetongYhdlrlxdh"></el-input>
+          <el-input v-model="form.hetongYhdlrlxdh" disabled></el-input>
         </el-form-item>
         <el-form-item  label="丙方(企业名称)">
-          <el-input v-model="form.hetongKfsmc"></el-input>
+          <el-input v-model="form.hetongKfsmc" disabled></el-input>
         </el-form-item>
         <el-form-item  label="企业地址">
-          <el-input v-model="form.hetongKfsdz"></el-input>
+          <el-input v-model="form.hetongKfsdz" disabled></el-input>
         </el-form-item>
         <el-form-item  label="丙方法定代表人">
-          <el-input v-model="form.hetongKfxm"></el-input>
+          <el-input v-model="form.hetongKfxm" disabled></el-input>
         </el-form-item>
         <el-form-item  label="丙方联系方式">
-          <el-input v-model="form.hetongKflxdh"></el-input>
+          <el-input v-model="form.hetongKflxdh" disabled></el-input>
         </el-form-item>
         <el-form-item label="项目名称" >
-          <el-input v-model="form.hetongXmmc"></el-input>
+          <el-input v-model="form.hetongXmmc" disabled></el-input>
         </el-form-item>
         <el-form-item label="项目坐落">
           <el-input v-model="form.hetongXmdz"></el-input>
@@ -82,7 +82,7 @@
           <el-input v-model="form.hetongZhmc"></el-input>
         </el-form-item> -->
         <el-form-item label="监管账号">
-          <el-input v-model="form.hetongJgzh"></el-input>
+          <el-input v-model="form.hetongJgzh" disabled></el-input>
         </el-form-item>
         <!-- <el-form-item label="业务类别">
          <el-cascader
@@ -120,73 +120,73 @@
               :model="form"
           >
             <el-form-item label="甲方(工程监理企业)" >
-              <el-input v-model="form.hetongJgjgmc"></el-input>
+              <el-input v-model="form.hetongJgjgmc" disabled></el-input>
             </el-form-item>
             <el-form-item  label="甲方地址">
-              <el-input v-model="form.hetongJgjgdz"></el-input>
+              <el-input v-model="form.hetongJgjgdz" disabled></el-input>
             </el-form-item>
             <el-form-item  label="甲方法定代表人">
-              <el-input v-model="form.hetongJgjgfr"></el-input>
+              <el-input v-model="form.hetongJgjgfr" disabled></el-input>
             </el-form-item>
             <el-form-item  label="甲方联系方式">
-              <el-input v-model="form.hetongJgjglxdh"></el-input>
+              <el-input v-model="form.hetongJgjglxdh" disabled></el-input>
             </el-form-item>
             <el-form-item label="乙方(银行名称)">
-              <el-input v-model="form.hetongYhmc"></el-input>
+              <el-input v-model="form.hetongYhmc" disabled></el-input>
             </el-form-item>
             <el-form-item  label="银行地址">
-              <el-input v-model="form.hetongYhdz"></el-input>
+              <el-input v-model="form.hetongYhdz" disabled></el-input>
             </el-form-item>
             <el-form-item  label="乙方法定代表人">
-              <el-input v-model="form.hetongYhdlr"></el-input>
+              <el-input v-model="form.hetongYhdlr" disabled></el-input>
             </el-form-item>
             <el-form-item  label="乙方联系方式">
-              <el-input v-model="form.hetongYhdlrlxdh"></el-input>
+              <el-input v-model="form.hetongYhdlrlxdh" disabled></el-input>
             </el-form-item>
             <el-form-item  label="丙方(企业名称)">
-              <el-input v-model="form.hetongKfsmc"></el-input>
+              <el-input v-model="form.hetongKfsmc" disabled></el-input>
             </el-form-item>
             <el-form-item  label="企业地址">
-              <el-input v-model="form.hetongKfsdz"></el-input>
+              <el-input v-model="form.hetongKfsdz" disabled></el-input>
             </el-form-item>
             <el-form-item  label="丙方法定代表人">
-              <el-input v-model="form.hetongKfxm"></el-input>
+              <el-input v-model="form.hetongKfxm" disabled></el-input>
             </el-form-item>
             <el-form-item  label="丙方联系方式">
-              <el-input v-model="form.hetongKflxdh"></el-input>
+              <el-input v-model="form.hetongKflxdh" disabled></el-input>
             </el-form-item>
             <el-form-item label="项目名称" >
-              <el-input v-model="form.hetongXmmc"></el-input>
+              <el-input v-model="form.hetongXmmc" disabled></el-input>
             </el-form-item>
             <el-form-item label="项目坐落">
-              <el-input v-model="form.hetongXmdz"></el-input>
+              <el-input v-model="form.hetongXmdz" disabled></el-input>
             </el-form-item>
             <el-form-item label="国有土地所有权证" >
-              <el-input v-model="form.hetongTdsyqz"></el-input>
+              <el-input v-model="form.hetongTdsyqz" disabled></el-input>
             </el-form-item>
             <el-form-item label="国有土地使用面积" class="area">
-              <el-input v-model="form.hetongTdsymj"></el-input>
+              <el-input v-model="form.hetongTdsymj" disabled></el-input>
             </el-form-item>
             <el-form-item label="建设工程规划许可证" >
-              <el-input v-model="form.hetongSjgcxkzh"></el-input>
+              <el-input v-model="form.hetongSjgcxkzh" disabled></el-input>
             </el-form-item>
             <el-form-item label="总建筑面积" class="area">
-              <el-input v-model="form.hetongGhzjzmj"></el-input>
+              <el-input v-model="form.hetongGhzjzmj" disabled></el-input>
             </el-form-item>
             <el-form-item label="预售建筑面积" class="area">
-              <el-input v-model="form.hetongYsxkmj"></el-input>
+              <el-input v-model="form.hetongYsxkmj" disabled></el-input>
             </el-form-item>
             <el-form-item label="预算清册总额" class="count">
-              <el-input v-model="form.hetongXsysze"></el-input>
+              <el-input v-model="form.hetongXsysze" disabled></el-input>
             </el-form-item>
             <el-form-item label="预计销售总额" class="count">
-              <el-input v-model="form.hetongYsze"></el-input>
+              <el-input v-model="form.hetongYsze" disabled></el-input>
             </el-form-item>
             <el-form-item label="监管账户名称">
-              <el-input v-model="form.hetongZhmc"></el-input>
+              <el-input v-model="form.hetongZhmc" disabled></el-input>
             </el-form-item>
             <el-form-item label="监管账号">
-              <el-input v-model="form.hetongJgzh"></el-input>
+              <el-input v-model="form.hetongJgzh" disabled></el-input>
             </el-form-item>
           </el-form>
         </el-tab-pane>
@@ -306,7 +306,30 @@ export default {
         attr: "原件",
         count: 1
       },
-      form:{},
+      form:{
+        hetongJgjgmc:"",
+        hetongJgjgdz:"",
+        hetongJgjgfr:"",
+        hetongJgjglxdh:"",
+        hetongYhmc:"",
+        hetongYhdz:"",
+        hetongYhdlr:"",
+        hetongYhdlrlxdh:"",
+        hetongKfsmc:"",
+        hetongKfsdz:"",
+        hetongKfxm:"",
+        hetongKflxdh:"",
+        hetongXmmc:"",
+        hetongXmdz:"",
+        hetongTdsyqz:"",
+        hetongTdsymj:"",
+        hetongSjgcxkzh:"",
+        hetongGhzjzmj:"",
+        hetongYsxkmj:"",
+        hetongXsysze:"",
+        hetongYsze:"",
+        hetongJgzh:"",
+      },
       form1:{},
       form2:{},
       tableData:[],

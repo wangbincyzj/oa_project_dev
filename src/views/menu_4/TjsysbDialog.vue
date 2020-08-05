@@ -269,7 +269,7 @@
       </el-form>
        </el-tab-pane>
 
-      <el-tab-pane label="2.收件情况" name="second"> 
+      <!-- <el-tab-pane label="2.收件情况" name="second"> 
         <div class="receiveList">
           <div class="dialogItem">
             <div class="itemIndex">2</div>
@@ -299,7 +299,7 @@
             </div>
           </div>
         </div>
-      </el-tab-pane>
+      </el-tab-pane> -->
     </el-tabs>
     </div>
     

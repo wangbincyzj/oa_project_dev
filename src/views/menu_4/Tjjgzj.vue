@@ -325,7 +325,7 @@
           this.$refs.dialog.reset();
         });
         this.dialogVisible=false;
-        this.fetchRecord();
+        this.fetchRecord(this.row,this.htbh=htbh);
       },
       handleAdd(index, row) {
         this.dialogVisible = true;

@@ -56,7 +56,7 @@
         <el-form-item label="是否按揭款">
           <template>
             <el-radio v-model="form.jiaocunSfajk" :label=1>是</el-radio>
-            <el-radio v-model="form.jiaocunSfajk" :label=2>否</el-radio>
+            <el-radio v-model="form.jiaocunSfajk" :label=0>否</el-radio>
           </template>
         </el-form-item>
         <el-form-item label="缴款事由">
