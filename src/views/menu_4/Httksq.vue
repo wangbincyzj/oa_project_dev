@@ -95,7 +95,6 @@
           :title="dialogTitle"
           center
           width="800px"
-          :before-close="closeConfirm"
           slot="dialog"
           :visible.sync="dialogVisible"
           @close="dialogVisible = false"
@@ -113,7 +112,7 @@
             :gfze="gfze"
             :jiaocunYhzh="jiaocunYhzh"
             :jiaocunKhyy="jiaocunKhyy"
-            :jiaocunYyid="jiaocunYyid"
+            :jiaocunYhid="jiaocunYhid"
             :jiaocunZhmc="jiaocunZhmc"
             :ldbh="ldbh"
             @submitSuccess="submitSuccess"
@@ -161,7 +160,7 @@
         gfze:0,
         jiaocunYhzh:"",
         jiaocunKhyy:"",
-        jiaocunYyid:0,
+        jiaocunYhid:0,
         jiaocunZhmc:"",
         ldbh:"",
       }
@@ -196,7 +195,7 @@
         this.gfze=this.currentRow.gfze;
         this.jiaocunYhzh=this.currentRow.jiaocunYhzh;
         this.jiaocunKhyy=this.currentRow.jiaocunKhyy;
-        this.jiaocunYyid=this.currentRow.jiaocunYyid;
+        this.jiaocunYhid=this.currentRow.jiaocunYhid;
         this.jiaocunZhmc=this.currentRow.jiaocunZhmc;
         this.ldbh=this.currentRow.ldbh;
         this.$nextTick(()=>{

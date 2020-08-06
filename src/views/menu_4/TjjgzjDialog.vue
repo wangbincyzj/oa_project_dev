@@ -91,9 +91,8 @@ import CenterButton from "@/components/common/centerButton/CenterButton";
 export default {
   name: "TjjgzjDialog",
   props: {
-    // zjjgzhId: { type: String }, //type: [String, Number]
-    // zjjgzhYwzh: { String },
-    // xmxxXmbh: { type: String },
+    htZdjgzjbl:{},
+    htZjjgfs:{},
     dialogType: {
       default: 1, // 添加
       enum: [1, 2 /*详情*/]
@@ -191,6 +190,9 @@ export default {
       jiaocunFwmj:this.fwjzmj,
       jiaocunYhid:this.jiaocunYhid,
       kfsRwbh:this.$store.state.projectData.kfsRwbh,
+      jiaocunJgfs:this.htZjjgfs,
+      jiaocunJgbl:this.htZdjgzjbl,
+
       }).then(res => {
           if (res.code == 200) {
             this.$message.success("添加成功");

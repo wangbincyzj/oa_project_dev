@@ -8,7 +8,7 @@
         inline
         :model="form">
         <el-form-item  label="公司名称">
-          <el-input v-model="form.kfsMc" disabled></el-input>
+          <el-input v-model="form.shiyongKfs" disabled></el-input>
         </el-form-item>
         <el-form-item  label="项目名称">
           <el-input v-model="form.shiyongXmmc" disabled></el-input>
@@ -28,9 +28,9 @@
         <el-form-item  label="购房总额" > <!--unknown-->
           <el-input v-model="form.ldxxYsze" disabled class="count"></el-input>
         </el-form-item>       
-        <!-- <el-form-item label="本合同监管金额" >
+        <el-form-item label="本合同监管金额" >
           <el-input v-model="form.shiyongJgze" disabled class="count"></el-input>
-        </el-form-item> -->
+        </el-form-item>
         <el-form-item  label="可使用资金">  <!--unknown-->
           <el-input v-model="form.zjjgszjlSdszdye" disabled class="count"></el-input>
         </el-form-item>
@@ -278,7 +278,7 @@
         gfze:{},
         jiaocunYhzh:{},
         jiaocunKhyy:{},
-        jiaocunYyid:{},
+        jiaocunYhid:{},
         jiaocunZhmc:{},
         ldbh:{},
     },
@@ -296,7 +296,7 @@
       ywzh:"",
       ldxxId:0,
         form:{
-        kfsMc:"",
+        shiyongKfs:"",
         shiyongXmmc:"",
         shiyongHtbh:"",
         shiyongHtbah:"",
@@ -309,9 +309,23 @@
         shiyongJgyhmc:"",
         shiyongJgzh:"",
         shiyongJgzhmc:"",
+        shiyongJgze:"",
         },
          formBlank:{
-          
+          shiyongKfs:"",
+        shiyongXmmc:"",
+        shiyongHtbh:"",
+        shiyongHtbah:"",
+        shiyongTkr:"",
+        shiyongTkrzjhm:"",
+        ldxxYsze:"",
+        zjjgszjlSdszdye:"",
+        shiyongSqrxm:"",
+        shiyongLdmc:"",
+        shiyongJgyhmc:"",
+        shiyongJgzh:"",
+        shiyongJgzhmc:"",
+        shiyongJgze:"",
         },
         
         title:"",
@@ -343,7 +357,12 @@
             //
             console.log(this.ldbh);
             
-          httksqApi.addTksq({...this.form,kfsRwbh:this.$store.state.projectData.kfsRwbh,shiyongSqsyfs:1,ldLdbh:this.ldbh}).then(ret => {
+          httksqApi.addTksq({...this.form,
+          kfsRwbh:this.$store.state.projectData.kfsRwbh,
+          shiyongXmbh:this.$store.state.projectData.xmxxXmbh,
+          shiyongSqsyfs:1,
+          shiyongJgyhid:this.jiaocunYhid,
+          ldLdbh:this.ldbh}).then(ret => {
           if (ret.code !== 200) {
           this.$message.error(ret.message);
         } else {
@@ -363,9 +382,9 @@
     setMode(mode,id){
       console.log("00000000000");
       if(mode===1){
-        console.log("taetae");
+        console.log(this.jiaocunYhid);
         
-        this.form.kfsMc=this.$store.state.projectData.xmxxKfs;
+        this.form.shiyongKfs=this.$store.state.projectData.xmxxKfs;
         this.form.shiyongXmmc=this.$store.state.projectData.xmxxXmmc;
         this.form.shiyongHtbh=this.jiaocunHtbh;
         this.form.shiyongHtbah=this.jiaocunHtbah;
@@ -375,7 +394,9 @@
         this.form.zjjgszjlSdszdye=this.jkje;
         this.form.shiyongLdmc=this.jiaocunLdmc;
         this.form.shiyongJgyhmc=this.jiaocunKhyy;
+        this.form.shiyongJgze=this.form.zjjgszjlSdszdye;
         console.log(this.form.shiyongJgyhmc);
+
         
         this.form.shiyongJgzh=this.jiaocunYhzh;
         this.form.shiyongJgzhmc=this.jiaocunZhmc;
