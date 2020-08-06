@@ -231,6 +231,8 @@
         <TjjgzjDialog
           ref="dialog"
           :dialog-type="dialogType"
+          :htZjjgfs="htZjjgfs"
+          :htZdjgzjbl="htZdjgzjbl"
           @submitSuccess="submitSuccess"
         />
       </el-dialog>
@@ -275,7 +277,9 @@
           jiaocunMsrxm: null,
           Msrzjhm: null,
           Htbh: null
-        }
+        },
+        htZdjgzjbl:null,
+        htZjjgfs:null,
       };
     },
 
@@ -331,6 +335,8 @@
         this.dialogVisible = true;
         this.dialogTitle = "添加缴款记录";
         this.dialogType = 1;
+        this.htZjjgfs=row.htZjjgfs;
+        this.htZdjgzjbl=row.htZdjgzjbl;
         this.$nextTick(() => {
           this.$refs.dialog.reset();
           this.$refs.dialog.setMode(1, row.jiaocunHtbh);
