@@ -46,8 +46,9 @@
   margin-bottom: 0;
 }
 .el-tabs__content{
+  padding-top: 10px!important;
   overflow: auto;
-  height: 217px;
+  min-height: 217px;
 }
 
 
@@ -199,6 +200,10 @@ ul.menu li:hover {
 }
 
 
+/*-----表格不要padding-----*/
+.el-table .cell{
+  padding: 0!important;
+}
 
 
 

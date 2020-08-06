@@ -325,7 +325,7 @@
           </li>
           <li>4.其他方式：<span :class="{inline:d.ht07032}" class="w500">{{d.ht07032}}</span>。</li>
           <li>（三）出售该商品房的全部房价款应当存入预售资金监管账户，用于本工程建设。该商品房的预售资金监管机构为<span :class="{inline:d.ht07033}" class="w200">{{d.ht07033}}</span>，预售资金监管账户名称为<span
-            :class="{inline:d.ht07034}" class="w200">{{d.ht07034}}</span> ，账号为<span :class="{inline:d.ht07035}" class="w300">{{d.ht07034}}</span></li>
+            :class="{inline:d.ht07034}" class="w200">{{d.ht07034}}</span> ，账号为<span :class="{inline:d.ht07035}" class="w300">{{d.ht07035}}</span></li>
           <li>该商品房价款的计价方式、总价款、付款方式及期限的具体约定见附件四。</li>
         </ul>
         <h4 class="title">第八条 逾期付款责任</h4>
