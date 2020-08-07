@@ -90,14 +90,20 @@ export default {
 
 <style scoped lang="scss">
 @import "~@/assets/css/var.scss";
-
+::v-deep{
+  .left .el-input{
+    padding: 5px;
+    margin-bottom: 2px;
+  }
+}
 .root {
   display: flex;
 
   .left {
     width: 200px;
     flex-shrink: 0;
-    height: 100%;
+    //height: 100%;
+    margin: $pm 0 $pm $pm;
     background-color: #fff;
     box-shadow: $box-shadow;
     overflow: auto;
