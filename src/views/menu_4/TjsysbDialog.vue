@@ -471,7 +471,8 @@
         });
         this.form.shiyongSbje="";
      }else{
-       this.form.shiyongSyje=this.form.shiyongZhye-this.form.shiyongSbje;
+       let num=this.form.shiyongZhye-this.form.shiyongSbje;
+       this.form.shiyongSyje=num.toFixed(2);
      }
    },
     setMode(mode,id){

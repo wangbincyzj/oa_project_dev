@@ -362,7 +362,8 @@
           shiyongXmbh:this.$store.state.projectData.xmxxXmbh,
           shiyongSqsyfs:1,
           shiyongJgyhid:this.jiaocunYhid,
-          ldLdbh:this.ldbh}).then(ret => {
+          ldLdbh:this.ldbh,
+          xxBh:8005001}).then(ret => {
           if (ret.code !== 200) {
           this.$message.error(ret.message);
         } else {
