@@ -8,7 +8,50 @@
    
       <TitleTable
         title="账户对应监管协议列表">
-        <div slot="controls">
+         <template #controls>
+          <ButtonsArea :row="row" @cancel="setCurrent">
+            <el-button
+              size="mini"
+              type="primary"
+              @click="handleGetFile(0, row)"
+             >确认收件
+            </el-button>
+            <el-button
+              size="mini"
+              type="primary"
+              @click="handleManageFile(0, row)">管理收件
+            </el-button>
+            <el-button
+                size="mini"
+                type="primary"
+                @click="handleUpdate(0,row)"
+                 :disabled="row.hetongShzt!==0&&row.hetongShzt!==3">修改
+              </el-button>
+               <el-button
+                size="mini"
+                type="primary"
+                @click="handleInform(0, row)"
+                :disabled="row.hetongShzt!==0&&row.hetongShzt!==3">上报
+              </el-button>
+              <el-button
+                size="mini"
+                type="primary"
+                @click="handleDelete(0, scope.row)"
+                :disabled="row.hetongShzt!==0&&row.hetongShzt!==3">删除
+              </el-button>
+              <el-button
+                size="mini"
+                type="primary"
+                @click="handlePrint(0,row)">查看合同
+              </el-button>
+              <el-button
+                size="mini"
+                type="primary"
+                @click="handleDetail(0, row)">详情
+              </el-button>
+          </ButtonsArea>
+        </template>
+        <!-- <div slot="controls">
           <el-alert
             type="warning"
             center
@@ -25,11 +68,15 @@
             :closable="false">
             <span class="warning" style="color: red">注意：资金监管账户审核通过才能申请“资金监管三方协议”</span>
           </el-alert>
-        </div>
+        </div> -->
         <el-table
           :data="tableData"
           style="width: 100%"
-          @cell-mouse-enter="cellMouseEnter">
+          size="mini"
+          ref="table"
+          highlight-current-row
+           @current-change="handleCurrentChange"
+           @cell-mouse-enter="cellMouseEnter">
           <el-table-column
             label="序号"
             width=50
@@ -56,7 +103,7 @@
             label="状态"
             prop="hetongShztN">           
           </el-table-column>
-          <el-table-column
+          <!-- <el-table-column
             align="center"
             label="收件操作"
             width="200px"
@@ -88,7 +135,6 @@
                 type="primary"
                 @click="handleUpdate(scope.$index, scope.row)"
                  :disabled="scope.row.hetongShzt!==0&&scope.row.hetongShzt!==3">修改
-                <!-- :disabled="scope.row.hetongShzt>0" -->
               </el-button>
                <el-button
                 size="mini"
@@ -114,16 +160,25 @@
               </el-button>
              
             </template>
-          </el-table-column>
+          </el-table-column> -->
         </el-table>
-        <el-pagination
-          background
-          layout="prev, pager, next, total"
-          @current-change="currentChange"
-          :current-page="currentPage"
-          :page-size="pageSize"
-          :total="total">
-        </el-pagination>
+        <template #addButton>
+          <Why>注意：资金监管账户审核通过才能申请“资金监管三方协议”</Why>
+           <el-button :disabled="selectedIndex===0" @click="addClick" icon="el-icon-plus" size="mini" type="primary">添加合同</el-button>
+        </template>
+       
+         <template #pager>
+          <el-pagination
+            background
+            layout="prev, pager, next, total, sizes"
+            @current-change="currentChange"
+            @size-change="handleSizeChange"
+            :page-sizes="[10, 20, 30, 40]"
+            :current-page="currentPage"
+            :page-size="pageSize"
+            :total="total">
+          </el-pagination>
+        </template>
         <el-dialog
           :title="dialogTitle"
           center
@@ -232,14 +287,17 @@
   import ContainerTwoType from "@/components/current/containerTwoType/ContainerTwoType";
   import TitleTable from "@/components/current/titleTable/TitleTable";
   import SqsfxyDialog from "@/views/menu_4/SqsfxyDialog";
- import {sqsfxyApi} from "@/api/menu_4/sqsfxy";
+  import {sqsfxyApi} from "@/api/menu_4/sqsfxy";
   import {sqjgzhApi} from "@/api/menu_4/sqjgzh";
   import {mixins} from "@/utils/mixins";
 
+  import ButtonsArea from "@/components/common/buttonsArea/ButtonsArea";
+  import Why from "@/components/common/why/Why";
+
   export default {
     name: "sqsfxy",
-    mixins: [mixins.dialogMixin],
-    components: {SqsfxyDialog, TitleTable, ContainerTwoType},
+    mixins: [mixins.dialogMixin,mixins.myPagerMixin, mixins.tableMixin],
+    components: {SqsfxyDialog, TitleTable, ContainerTwoType,ButtonsArea,Why},
     data() {
       return{
         navInfo:{
@@ -359,22 +417,22 @@
         this.dialogTitle = "修改合同";
         this.dialogType = 2;
         this.$nextTick(()=>{
-          this.$refs.dialog.setMode(2,this.currentRow.hetongId);
+          this.$refs.dialog.setMode(2,row.hetongId);
         })
       },
       handleDetail(index, row){
         this.dialogVisible = true;
         this.dialogTitle = "三方协议申请信息";
         this.dialogType = 3;
-        this.hetongYwzh=this.currentRow.hetongYwzh;
+        this.hetongYwzh=row.hetongYwzh;
         this.$nextTick(()=>{
-          this.$refs.dialog.setMode(3, this.currentRow.hetongId,row.logId,row.hetongYwzh);
+          this.$refs.dialog.setMode(3, row.hetongId,row.logId,row.hetongYwzh);
           this.$refs.dialog.reset();
         })
       },
       handleInform(index, row){
           if(window.confirm("确定要上报该三方协议吗?")){
-            sqsfxyApi.informContract(this.currentRow.hetongId).then(ret => {
+            sqsfxyApi.informContract(row.hetongId).then(ret => {
               if (ret.code === 200) {
                 this.$message.success("上报成功");
                this.fetchDataByAccountId(this.zjjgzhYhzh);
@@ -387,7 +445,7 @@
       },
       handleDelete(index, row){
           if(window.confirm("确定要删除该三方协议吗?")){
-            sqsfxyApi.deleteContract(this.currentRow.hetongId).then(ret => {
+            sqsfxyApi.deleteContract(row.hetongId).then(ret => {
               if (ret.code === 200) {
                 this.$message.success("删除成功");
                 this.fetchDataByAccountId(this.zjjgzhYhzh);
@@ -399,13 +457,13 @@
           }
       },
       
-      handleManageFile(index, item) {
+      handleManageFile(index, row) {
         this.dialogVisible = true;
         this.dialogTitle = "管理收件";
-         this.hetongYwzh=this.currentRow.hetongYwzh;
+         this.hetongYwzh=row.hetongYwzh;
         this.dialogType = 9;
         this.$nextTick(() => {
-          this.$refs.dialog.setMode(9, this.currentRow.hetongId,0,this.currentRow.hetongYwzh);
+          this.$refs.dialog.setMode(9, row.hetongId,0,row.hetongYwzh);
         })
       },
       handlePrint(index, row){         
@@ -419,15 +477,15 @@
       handleGetFile(index, row){
          this.dialogVisible = true;
         this.dialogTitle = "确认收件";
-        this.hetongYwzh=this.currentRow.hetongYwzh;
+        this.hetongYwzh=row.hetongYwzh;
         this.dialogType = 4;
         this.$nextTick(()=>{
-          this.$refs.dialog.setMode(4, this.currentRow.hetongId,0,this.currentRow.hetongYwzh);
+          this.$refs.dialog.setMode(4, row.hetongId,0,row.hetongYwzh);
         })
       },
       handleDelFile(){
         if(window.confirm("确定要清除收件吗?")){
-            sqsfxyApi.deleteSj(this.currentRow.hetongYwzh).then(ret => {
+            sqsfxyApi.deleteSj(row.hetongYwzh).then(ret => {
               if (ret.code === 200) {
                 this.$message.success("删除成功");
                 this.fetchDataByAccountId(this.zjjgzhYhzh);
@@ -467,6 +525,11 @@
       currentChange(num) {
          this.currentPage = num;         
            this.fetchDataByAccountId(this.zjjgzhYhzh)
+      },
+       handleSizeChange(val){
+        console.log(val);
+        this.pageSize=val;
+        this.fetchDataByAccountId(this.zjjgzhYhzh)
       },
     }
   }

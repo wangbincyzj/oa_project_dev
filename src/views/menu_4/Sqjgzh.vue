@@ -1,48 +1,77 @@
 <template>
   <div class="sqjgzh">
     <TitleTable
-      title="项目对应监管资金列表" style="overflow-y:scroll">
-      <div slot="controls">
-        <el-alert
-          type="warning"
-          center
-          :closable="false">
-          <div class="controls">
-            <span class="warning">【{{this.$store.state.projectData.xmxxXmmc}}】</span>
+      title="项目对应监管资金列表">
+      <template #controls>
+          <ButtonsArea :row="row" @cancel="setCurrent">
+              <el-button
+              size="mini"
+              type="primary"
+              @click="handleGetFile(0, row)"
+              :disabled="row.zjjgzhShzt===1 ||row.zjjgzhShzt===2">确认收件
+            </el-button>
+            <el-button
+              size="mini"
+              type="primary"
+              :disabled="row.zjjgzhShzt===1 ||row.zjjgzhShzt===2"
+              @click="handleManageFile(0, row)">管理收件
+            </el-button>
+             <el-button
+              size="mini"
+              type="primary"
+              @click="handleDetail(0, row)">详情
+            </el-button>
+            <el-button
+              size="mini"
+              type="primary"
+              @click="handleUpdate(0, row)"
+              :disabled="row.zjjgzhShzt===1 ||row.zjjgzhShzt===2">修改
+            </el-button>
+            <el-button
+              size="mini"
+              type="primary"
+              @click="handleInform(0, row)"
+              :disabled="row.zjjgzhShzt===1 ||row.zjjgzhShzt===2">上报
+            </el-button>
+            <el-button
+              size="mini"
+              type="primary"
+              @click="handleDelete(0, row)"
+              :disabled="row.zjjgzhShzt===1 ||row.zjjgzhShzt===2">删除
+            </el-button>
+          </ButtonsArea>
+        </template>
 
-            <el-button @click="addClick" icon="el-icon-plus" size="mini" type="primary">添加账户</el-button>
-          </div>
-        </el-alert>
-        <el-alert
-          type="warning"
-          center
-          :closable="false">
-          <span class="warning" style="color: red">注意：将相关材料收件上传，确认完整后再上报！</span>
-        </el-alert>
-      </div>
       <el-table
         :data="tableData"
         style="width: 100%"
-        @cell-mouse-enter="cellMouseEnter">
+        size="mini"
+        ref="table"
+        highlight-current-row
+        @current-change="handleCurrentChange">
         <el-table-column
           label="序号"
-          width=50
+          align="center"
           prop="zjjgzhId">
         </el-table-column>
         <el-table-column
           label="公司名称"
+          align="center"
           prop="zjjgzhGsmc">
         </el-table-column>
         <el-table-column
           label="项目名称"
+          align="center"
           prop="zjjgzhXmmc">
         </el-table-column>
         <el-table-column
           label="楼栋名称"
+          align="center"
           prop="zjjgzhLdmc">
         </el-table-column>
         <el-table-column
           label="联系电话"
+          align="center"
           prop="zjjgzhLxdh">
         </el-table-column>
         <el-table-column
@@ -53,69 +82,25 @@
             {{row.zjjgzhShzt|shztFilter}}
           </template>
         </el-table-column>
-        <el-table-column
-          align="center"
-          label="收件操作"
-          width="200"
-          prop="operation">
-          <template slot-scope="scope">
-            <el-button
-              size="mini"
-              type="primary"
-              @click="handleGetFile(scope.$index, scope.row)"
-              :disabled="scope.row.zjjgzhShzt===1 ||scope.row.zjjgzhShzt===2">确认收件
-            </el-button>
-            <el-button
-              size="mini"
-              type="primary"
-              :disabled="scope.row.zjjgzhShzt===1 ||scope.row.zjjgzhShzt===2"
-              @click="handleManageFile(scope.$index, scope.row)">管理收件
-            </el-button>
-          </template>
-        </el-table-column>
-
-        <el-table-column
-          align="center"
-          label="操作"
-          width="300"
-        >
-          <template slot-scope="scope">
-            <el-button
-              size="mini"
-              type="primary"
-              @click="handleDetail(scope.$index, scope.row)">详情
-            </el-button>
-            <el-button
-              size="mini"
-              type="primary"
-              @click="handleUpdate(scope.$index, scope.row)"
-              :disabled="scope.row.zjjgzhShzt===1 ||scope.row.zjjgzhShzt===2">修改
-            </el-button>
-            <el-button
-              size="mini"
-              type="primary"
-              @click="handleInform(scope.$index, scope.row)"
-              :disabled="scope.row.zjjgzhShzt===1 ||scope.row.zjjgzhShzt===2">上报
-            </el-button>
-            <el-button
-              size="mini"
-              type="primary"
-              @click="handleDelete(scope.$index, scope.row)"
-              :disabled="scope.row.zjjgzhShzt===1 ||scope.row.zjjgzhShzt===2">删除
-            </el-button>
-          </template>
-        </el-table-column>
       </el-table>
+       <template #addButton>
+          <Why>注意：将相关材料收件上传，确认完整后再上报！</Why>
+          <el-button @click="addClick" icon="el-icon-plus" size="mini" type="primary">添加账户</el-button>
+        </template>
+        <template #pager>
+          <el-pagination
+            background
+            layout="prev, pager, next, total, sizes"
+            @current-change="currentChange"
+            @size-change="handleSizeChange"
+            :page-sizes="[10, 20, 30, 40]"
+            :current-page="currentPage"
+            :page-size="pageSize"
+            :total="total">
+          </el-pagination>
 
-      <el-pagination
-        background
-        layout="prev, pager, next, total"
-        @current-change="currentChange"
-        :current-page="currentPage"
-        :page-size="pageSize"
-        :total="total">
-      </el-pagination>
-
+        </template>
+      
       <el-dialog
         :title="dialogTitle"
         center
@@ -169,11 +154,14 @@
 
   import {sqjgzhApi} from "@/api/menu_4/sqjgzh";
   import {mixins} from "@/utils/mixins";
+  
+  import ButtonsArea from "@/components/common/buttonsArea/ButtonsArea";
+  import Why from "@/components/common/why/Why";
 
   export default {
     name: "sqjgzh",
-    mixins: [mixins.dialogMixin],
-    components: {TjjgzhDialog, TitleTable, ContainerTwoType},
+    mixins: [mixins.dialogMixin, mixins.myPagerMixin, mixins.tableMixin],
+    components: {TjjgzhDialog, TitleTable, ContainerTwoType,ButtonsArea,Why},
     data() {
       return {
         navInfo: {
@@ -206,7 +194,7 @@
     },
     methods: {
       fetchPrintData(){
-        this.zjjgzhYwzh=this.currentRow.zjjgzhYwzh;
+        this.zjjgzhYwzh=row.zjjgzhYwzh;
         sqjgzhApi.selectByYwzh(this.zjjgzhYwzh).then(ret => {
           this.printTable = ret.data.map(item => ({
             shoujianTitle: item.ywsjTitle,
@@ -237,7 +225,7 @@
         this.dialogTitle = "修改监管账户";
         this.dialogType = 3;
         this.$nextTick(() => {
-          this.$refs.dialog.setMode(3, this.currentRow.zjjgzhId);
+          this.$refs.dialog.setMode(3, row.zjjgzhId);
 
           //this.$refs.dialog.reset();
         })
@@ -246,10 +234,10 @@
         this.dialogVisible = true;
         this.dialogTitle = "监管账户详情";
         this.dialogType = 2;
-        this.zjjgzhYwzh = this.currentRow.zjjgzhYwzh;
+        this.zjjgzhYwzh = row.zjjgzhYwzh;
 
         this.$nextTick(() => {
-          this.$refs.dialog.setMode(2, this.currentRow.zjjgzhId, row.logId, row.zjjgzhYwzh);
+          this.$refs.dialog.setMode(2, row.zjjgzhId, row.logId, row.zjjgzhYwzh);
         })
       },
     
@@ -259,7 +247,7 @@
           confirmButtonText: '确定',
           cancelButtonText: '取消',
         }).then(()=>{
-         sqjgzhApi.deleteSj(this.currentRow.zjjgzhYwzh).then(ret=>{
+         sqjgzhApi.deleteSj(row.zjjgzhYwzh).then(ret=>{
             if(ret.code===200){
               this.$message.success("操作成功");
                 this.fetchData();
@@ -317,19 +305,19 @@
       handleGetFile(index, row) {
         this.dialogVisible = true;
         this.dialogTitle = "确认收件";
-        this.zjjgzhYwzh = this.currentRow.zjjgzhYwzh;
+        this.zjjgzhYwzh = row.zjjgzhYwzh;
         this.dialogType = 4;
         this.$nextTick(() => {
-          this.$refs.dialog.setMode(4, this.currentRow.zjjgzhId, row.zjjgzhYwzh);
+          this.$refs.dialog.setMode(4, row.zjjgzhId, row.zjjgzhYwzh);
         })
       },
       handleManageFile(index, row) {
         this.dialogVisible = true;
         this.dialogTitle = "管理收件";
-        this.zjjgzhYwzh = this.currentRow.zjjgzhYwzh;
+        this.zjjgzhYwzh = row.zjjgzhYwzh;
         this.dialogType = 9;
         this.$nextTick(() => {
-          this.$refs.dialog.setMode(9, this.currentRow.zjjgzhId, row.zjjgzhYwzh);
+          this.$refs.dialog.setMode(9, row.zjjgzhId, row.zjjgzhYwzh);
         })
       },
       handlePrintFile() {
@@ -350,19 +338,25 @@
         this.fetchData();
       },
       fetchPrint() {
-        this.zjjgzhYwzh = this.currentRow.zjjgzhYwzh;
+        this.zjjgzhYwzh = row.zjjgzhYwzh;
         this.fetchPrintData(this.zjjgzhYwzh);
       },
       cellMouseEnter(row) {
-        this.currentRow = row;
-        // this.zjjgzhYwzh=this.currentRow.zjjgzhYwzh;
+        row = row;
+        // this.zjjgzhYwzh=row.zjjgzhYwzh;
         // this.fetchPrintData(this.zjjgzhYwzh);
       },
       currentChange(num) {
         this.currentPage = num;
-        this.zjjgzhYwzh = this.currentRow.zjjgzhYwzh;
+        this.zjjgzhYwzh = row.zjjgzhYwzh;
         this.fetchData();
       },
+      handleSizeChange(val){
+        console.log(val);
+        this.pageSize=val;
+        this.fetchData();
+      },
+        
     }
   }
 </script>
