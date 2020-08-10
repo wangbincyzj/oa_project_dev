@@ -3,11 +3,29 @@
    
       <TitleTable
         title="项目对应监管账户列表">
-        
+         <template #controls>
+          <ButtonsArea :row="row" @cancel="setCurrent">
+               <el-button
+                size="mini"
+                @click="handlePrint(0, row)">打印通知书
+              </el-button>
+              <el-button
+                size="mini"
+                type="primary"
+                @click="handleDetail(0,row)">详情
+              </el-button>
+          </ButtonsArea>
+        </template>
+
         <el-table
           :data="tableData"
           style="width: 100%"
-          @cell-mouse-enter="cellMouseEnter">
+          size="mini"
+          ref="table"
+          highlight-current-row
+          @current-change="handleCurrentChange"
+          @cell-mouse-enter="cellMouseEnter"
+         >
           <el-table-column
             label="序号"
             type="index">
@@ -39,23 +57,7 @@
             prop="zjjgzhShzt">           
           </el-table-column>
          
-          <el-table-column
-            align="center"
-            label="操作"
-            width="200px"
-          >
-            <template slot-scope="scope">
-              <el-button
-                size="mini"
-                @click="handlePrint(scope.$index, scope.row)">打印通知书
-              </el-button>
-              <el-button
-                size="mini"
-                type="primary"
-                @click="handleDetail(scope.$index, scope.row)">详情
-              </el-button>
-              
-            </template>
+         
           </el-table-column>
         </el-table>
         <el-pagination
@@ -70,7 +72,6 @@
           :title="dialogTitle"
           center
           width="800px"
-          :before-close="closeConfirm"
           slot="dialog"
           :visible.sync="dialogVisible"
           @close="dialogVisible = false"
@@ -111,10 +112,14 @@
    import {sqjgzhApi} from "@/api/menu_4/sqjgzh";
   import {mixins} from "@/utils/mixins";
 
+  import ButtonsArea from "@/components/common/buttonsArea/ButtonsArea";
+  import Why from "@/components/common/why/Why";
+
+
   export default {
     name: "sqjgzh",
-    mixins: [mixins.dialogMixin],
-    components: {DykhtzdDialog, TitleTable, ContainerTwoType},
+    mixins: [mixins.dialogMixin,mixins.myPagerMixin, mixins.tableMixin],
+    components: {DykhtzdDialog, TitleTable, ContainerTwoType,ButtonsArea,Why},
     data() {
       return{
         navInfo:{
@@ -201,21 +206,19 @@
     
       
       handleDetail(index, row){
-        console.log(this.currentRow.zjjgzhId);
-        
         this.dialogVisible = true;
         this.dialogTitle = "开户详情";
         this.dialogType = 2;
-        this.zjjgzhYwzh=this.currentRow.zjjgzhYwzh;
-        this.zjjgzhYwzh = this.currentRow.zjjgzhYwzh;
-        this.zjjgzhZhmc = this.currentRow.zjjgzhZhmc;
-        this.zjjgzhYhzh = this.currentRow.zjjgzhYhzh;
-        this.zjjgzhWdmc = this.currentRow.zjjgzhWdmc;
-        this.zjjgzhWddz = this.currentRow.zjjgzhWddz;
-        this.zjjgzhKhrxm = this.currentRow.zjjgzhKhrxm;
-        this.zjjgzhKhtime = this.currentRow.zjjgzhKhtime;
+        this.zjjgzhYwzh=row.zjjgzhYwzh;
+        this.zjjgzhYwzh = row.zjjgzhYwzh;
+        this.zjjgzhZhmc = row.zjjgzhZhmc;
+        this.zjjgzhYhzh = row.zjjgzhYhzh;
+        this.zjjgzhWdmc = row.zjjgzhWdmc;
+        this.zjjgzhWddz = row.zjjgzhWddz;
+        this.zjjgzhKhrxm = row.zjjgzhKhrxm;
+        this.zjjgzhKhtime = row.zjjgzhKhtime;
         this.$nextTick(()=>{
-          this.$refs.dialog.setMode(2, this.currentRow.zjjgzhId);
+          this.$refs.dialog.setMode(2, row.zjjgzhId);
           this.$refs.dialog.reset();
         })
       },
@@ -234,15 +237,14 @@
         this.dialogVisible = false;
       },
       cellMouseEnter(row) {
-        this.currentRow = row;
-         this.zjjgzhGsmc=this.currentRow.zjjgzhGsmc;
-      this.zjjgzhYhmc=this.currentRow.zjjgzhYhmc;
-      this.zjjgzhXmmc=this.currentRow.zjjgzhXmmc;
-      this.zjjgzhYhzh=this.currentRow.zjjgzhYhzh;
-      this.zjjgzhZhmc=this.currentRow.zjjgzhZhmc;
-      this.zjjgzhYwzh=this.currentRow.zjjgzhYwzh;
-      this.zjjgzhJgbh=this.currentRow.zjjgzhJgbh;
-      this.zjjgzhKhtime=(this.currentRow.zjjgzhKhtime).slice(0,10);
+         this.zjjgzhGsmc=row.zjjgzhGsmc;
+      this.zjjgzhYhmc=row.zjjgzhYhmc;
+      this.zjjgzhXmmc=row.zjjgzhXmmc;
+      this.zjjgzhYhzh=row.zjjgzhYhzh;
+      this.zjjgzhZhmc=row.zjjgzhZhmc;
+      this.zjjgzhYwzh=row.zjjgzhYwzh;
+      this.zjjgzhJgbh=row.zjjgzhJgbh;
+      this.zjjgzhKhtime=(row.zjjgzhKhtime).slice(0,10);
       let myDate = new Date();
       this.date=myDate.toLocaleDateString(); 
       },

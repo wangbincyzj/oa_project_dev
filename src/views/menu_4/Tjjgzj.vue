@@ -1,60 +1,19 @@
 <template>
   <div class="tjjgzj" id="tjjgzjs">
     <TitleTable title="商品房买卖合同列表"  style="overflow-y:scroll">
-      <div  slot="controls"
-            style="background-color:#fdf6ec"
-      >
-        <!-- <el-alert
-          type="success"
-          :closable="false"
-        > -->
-          <div
-            class="controls"
-            id="search"
-          >
-            <div class="searchbox">
-              <span>买受人:</span>
-              <el-input
-                size="mini"
-                placeholder="按买受人搜索"
-                v-model="listQuery.jiaocunMsrxm"
-                style="width:200px;"
-              />
-            </div>
-            <div class="searchbox">
-              <span>证件号码:</span>
-              <el-input
-                size="mini"
-                placeholder="按证件号码搜索"
-                v-model="listQuery.Msrzjhm"
-                style="width:200px;"
-              />
-            </div>
-
-            <div class="searchbox">
-              <span>备案号:</span>
-              <el-input
-                size="mini"
-                placeholder="按备案号搜索"
-                v-model="listQuery.Htbh"
-                style="width:200px;"
-              />
-            </div>
-
-            <div class="searchbox">
-              <el-button
-                size="mini"
-                type="success"
-                @click="handleSearchList()">搜索</el-button>
-            </div>
-          </div>
-        <!-- </el-alert> -->
-        <el-alert
-          type="warning"
-          center
-          :closable="false"
-        ></el-alert>
-      </div>
+      <template #controls>
+         <SearchBar
+          mode="comb"
+          each-btn-type="danger"
+          prefix-color="green"
+          @combSearch="handleSearchList"
+          @combClear="searchReset">
+          <SearchBarItem placeholder="根据买受人搜索" prefix="买受人"/>
+          <SearchBarItem placeholder="根据证件号码搜索" prefix="证件号码" />
+          <SearchBarItem placeholder="根据备案号搜索" prefix="备案号"/>
+        </SearchBar>
+        </template>
+     
 
       <el-table
         :data="tableData"
@@ -223,7 +182,6 @@
         :title="dialogTitle"
         center
         width="800px"
-        :before-close="closeConfirm"
         slot="dialog"
         :visible.sync="dialogVisible"
         @close="dialogVisible = false"
@@ -246,15 +204,14 @@
   import TjjgzjDialog from "@/views/menu_4/TjjgzjDialog";
   import { mixins } from "@/utils/mixins";
   import { tjjgzjApi } from "@/api/menu_4/tjjgzj";
+  import SearchBar from "@/components/current/searchBar/SearchBar";
+  import SearchBarItem from "@/components/current/searchBar/SearchBarItem";
 
   export default {
     name: "tjjgzj",
     mixins: [mixins.dialogMixin],
     components: {
-      TitleTable,
-      ContainerTwoType,
-      TjjgzjDialog
-    },
+      TitleTable,ContainerTwoType,TjjgzjDialog,SearchBar,SearchBarItem},
     data() {
       return {
         tableData: [],
