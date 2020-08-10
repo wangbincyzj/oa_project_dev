@@ -11,62 +11,82 @@
 -->
 <template>
   <div class="searchBar">
-    <slot/>
-    <el-button v-if="mode==='comb'" size="mini" :type="searchBtnType" @click="combSearch">搜索</el-button>
-    <el-button v-if="mode==='comb'" size="mini" :type="clearBtnType" @click="combClear">清空</el-button>
+    <div class="searchInput">
+      <slot/>
+    </div>
+    <div class="searchControls">
+      <el-button icon="el-icon-search" v-if="mode==='comb'" size="mini" :type="searchBtnType" @click="combSearch">查找</el-button>
+      <el-button icon="el-icon-refresh-right" size="mini" :type="clearBtnType" @click="combClear">重置</el-button>
+    </div>
   </div>
 </template>
 
 <script>
-  export default {
-    name: "SearchBar",
-    props:{
-      mode: {
-        type: String,
-        default: "comb"  // 'each'
-      },
-      searchBtnType:{
-        type: String,
-        default: "primary"
-      },
-      clearBtnType:{
-        type: String,
-        default: "default"
-      },
-      prefixBgc:{
-        type: String,
-        default: "#eee"
-      },
-      prefixColor:{
-        type: String,
-        default: "#aaa"
-      },
-      eachBtnType:{
-        type: String,
-        default: "default"
-      }
+export default {
+  name: "SearchBar",
+  props: {
+    mode: {
+      type: String,
+      default: "comb"  // 'each'
     },
-    computed:{
-      items() {
-        return this.$slots.default.map(item=>item.child)
-      }
+    searchBtnType: {
+      type: String,
+      default: "primary"
     },
-    methods:{
-      combSearch() {
-        this.$emit("combSearch", this.items.map(item=>item.value||null))
-      },
-      combClear() {
-        this.items.forEach(item=>item.value="")
-        this.$emit("combClear")
-      }
+    clearBtnType: {
+      type: String,
+      default: "default"
+    },
+    prefixBgc: {
+      type: String,
+      default: "#eee"
+    },
+    prefixColor: {
+      type: String,
+      default: "#aaa"
+    },
+    eachBtnType: {
+      type: String,
+      default: "default"
+    },
+    padding: {
+      type: String,
+      default: "5px"
+    }
+  },
+  computed: {
+    items() {
+      return this.$slots.default.map(item => item.child)
+    },
+  },
+  methods: {
+    combSearch() {
+      console.log(this.items)
+      this.$emit("combSearch", this.items.map(item => item.value || null))
+    },
+    combClear() {
+      this.items.forEach(item => item.value = "")
+      this.$emit("combClear")
     }
   }
+}
 </script>
 
 <style scoped lang="scss">
-  .searchBar{
+.searchBar {
+  height: 74px;
+  background-color: white;
+  align-items: center;
+  width: 100%;
+  display: flex;
+  padding: 0 30px;
+  justify-content: space-between;
+
+  .searchInput{
     display: flex;
-    justify-content: center;
-    padding: 10px 0 ;
   }
+  .searchControls{
+    display: flex;
+  }
+}
 </style>

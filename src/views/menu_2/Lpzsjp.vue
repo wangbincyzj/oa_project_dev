@@ -32,11 +32,7 @@
                 <el-button size="mini" icon="el-icon-s-help" @click="handleSplit" type="">拆分</el-button>
                 <el-button size="mini" icon="el-icon-finished" @click="selectAll" type="">全选</el-button>
                 <el-button size="mini" icon="el-icon-turn-off" @click="antiSelect" type="">反选</el-button>
-
                 <el-button size="mini" icon="el-icon-close" @click="delRooms" type="danger">删除选中房间</el-button>
-                <!--
-                <el-button size="mini" icon="el-icon-plus">自动生成房间</el-button>
-                <el-button size="mini" icon="el-icon-circle-plus-outline">手动输入房间</el-button>-->
                 <el-button size="mini" icon="el-icon-success" @click="btnClick" type="warning">自审入库</el-button>
               </template>
               <template v-else>
@@ -124,13 +120,7 @@ export default {
   },
   methods: {
     handleMerge() {
-      /*let rooms = this.$refs.rooms.rooms;
-      let selectedRooms = [];
-      rooms.forEach(floor => floor.v.forEach(room => {
-        if (room.active) {
-          selectedRooms.push(room)
-        }
-      }))*/
+      console.log(111)
       let selectedRooms = this.$refs.rooms.selectedRooms;
       console.log(selectedRooms)
       if (selectedRooms.length !== 2) {

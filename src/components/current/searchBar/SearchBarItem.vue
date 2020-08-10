@@ -8,112 +8,90 @@
 -->
 <template>
   <div class="searchItem">
-    <div class="prefix"
-         :style="prefixStyle"
-         v-if="prefix">{{prefix}}</div>
-    <template v-if="mode==='input'">
-      <input v-model="value" :placeholder="placeholder" type="text">
-    </template>
-    <template v-if="mode==='select'">
-      <select  v-model="value">
-        <option :value="item.value" v-for="item in selectData">{{item.key}}</option>
-      </select>
-    </template>
+    <div class="prefix" v-if="prefix">{{ prefix }}</div>
+    <div class="button">
+      <template v-if="mode==='input'">
+        <el-input size="mini" :placeholder="placeholder" v-model="value"/>
+      </template>
+      <template v-if="mode==='select'">
+        <el-select v-model="value" size="mini">
+          <el-option :value="item.value" v-for="item in selectData" :label="item.key"></el-option>
+        </el-select>
+      </template>
+    </div>
     <el-button
       v-if="$parent.mode==='each'"
       size="mini"
       :type="$parent.eachBtnType"
-      @click="$emit('search', value)">{{suffix}}</el-button>
+      @click="$emit('search', value)">{{ suffix }}
+    </el-button>
   </div>
 </template>
 
 <script>
-  export default {
-    name: "SearchBarItem",
-    props:{
-      prefix:{
-        type: String,
-        default: ""
-      },
-      placeholder:{
-        type: String,
-        default: ""
-      },
-      suffix:{
-        type: String,
-        default: "搜索"
-      },
-      mode:{
-        type: String,
-        default: "input",
-      },
-      selectData:{
-        type: Array, // [{key:xxx,value:yyyy}]
-        default() {
-          return  [{key: "请选择", value: null}]
-        }
-      }
+export default {
+  name: "SearchBarItem",
+  props: {
+    prefix: {
+      type: String,
+      default: ""
     },
-    data() {
-      return{
-        value: ""
-      }
+    placeholder: {
+      type: String,
+      default: ""
     },
-    computed:{
-      prefixStyle(){
-        return{
-          color: this.$parent.prefixColor,
-          backgroundColor: this.$parent.prefixBgc,
-        }
-      }
+    suffix: {
+      type: String,
+      default: "搜索"
     },
-    methods:{
-
+    mode: {
+      type: String,
+      default: "input",
+    },
+    selectData: {
+      type: Array, // [{key:xxx,value:yyyy}]
+      default() {
+        return [{key: "请选择", value: null}]
+      }
     }
-  }
+  },
+  data() {
+    return {
+      value: ""
+    }
+  },
+  computed: {
+    prefixStyle() {
+      return {
+        color: this.$parent.prefixColor,
+        backgroundColor: this.$parent.prefixBgc,
+      }
+    }
+  },
+  methods: {}
+}
 </script>
 
 <style scoped lang="scss">
-  .searchItem{
-    height: 32px;
-    margin: 0 10px;
-    display: flex;
-    .prefix{
-      line-height: 28px;
-      margin: 2px 0;
-      height: 28px;
-      padding: 0 15px;
-      font-size: 13px;
-    }
-    input {
-      box-sizing: border-box;
-      height: 28px;
-      margin: 2px 0;
-      margin-right: -5px;
-      outline: none;
-      color: #333;
-      font-size: 14px;
-      padding: 0 3px;
-      border: 1px solid #cccccc;
-    }
-    select{
-      box-sizing: border-box;
-      height: 28px;
-      margin: 2px 0;
-      width: 175px;
-      margin-right: -2px;
-      color: #333;
-      font-size: 14px;
-      padding-left: 5px;
-      outline: none;
-      border: 1px solid #fff;
-      option{
-        height: 28px;
-        line-height: 28px;
-      }
-    }
-    button{
-      border-radius: 0;
-    }
+@import "~@/assets/css/var.scss";
+
+.searchItem {
+  height: 32px;
+  margin-right: 40px;
+  display: flex;
+  align-items: center;
+
+  .prefix {
+    color: $text-normal;
+    font-size: 14px;
+    margin-right: 10px;
   }
+  .button{
+    flex: 1;
+  }
+
+  button {
+    border-radius: 0;
+  }
+}
 </style>

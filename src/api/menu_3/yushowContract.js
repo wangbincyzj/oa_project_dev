@@ -33,9 +33,10 @@ let contractComplete = function (type, _form) {
 
 /**
  * 新建合同
+ * 0预售 1现售
  */
 let addContract = function ({roomId, htId}) {
-  return requests.post("data-presale-license/contract/save", {roomId, htId})
+  return requests.post("data-presale-license/contract/save", {roomId, htId, htXslx:0})
 }
 
 

@@ -1,18 +1,41 @@
 <template>
   <div class="root">
-    <table class="table" v-for="rooms in roomData">
-      <tr v-for="floor in rooms" :class="{noRoom: !floor.v.length}">
-        <!--<td class="title" @click="floorClick(floor)">{{ floor.k }}</td>-->
-        <td class="blank"></td>
-        <td class="room"
-            :rowspan="room.addx + 1"
-            :colspan="room.addy + 1"
-            v-for="room in floor.v" @click="roomClick(room)" :class="{active: room.active&&enableChoose}">
-          <div class="fh">{{ room.roomFh }}</div>
-          <slot :room="room"/>
-        </td>
-      </tr>
-    </table>
+    <template v-if="floorData.length">
+      <table class="table" style="order: 0">
+        <thead>
+        <tr style="height: 20px">
+          <th>楼层</th>
+        </tr>
+        </thead>
+        <tr v-for="floor in floorData">
+          <!--          <tr v-for="floor in rooms" :class="{noRoom: floor.isEmpty}">-->
+          <td class="room">
+            {{ floor.floor }}
+          </td>
+        </tr>
+      </table>
+    </template>
+
+    <template v-for="(rooms, unit) in roomData">
+      <table class="table" style="order: 1">
+        <thead>
+        <tr style="height: 20px">
+          <th>{{ unit }}单元</th>
+        </tr>
+        </thead>
+        <tr v-for="floor in rooms">
+          <!--          <tr v-for="floor in rooms" :class="{noRoom: !floor.v.length}">-->
+          <!--<td class="title" @click="floorClick(floor)">{{ floor.k }}</td>-->
+          <td class="room"
+              :rowspan="room.addx + 1"
+              :colspan="room.addy + 1"
+              v-for="room in floor.v" @click="roomClick(room)" :class="{active: room.active&&enableChoose}">
+            <div class="fh">{{ room.roomFh }}</div>
+            <slot :room="room"/>
+          </td>
+        </tr>
+      </table>
+    </template>
   </div>
 </template>
 
@@ -39,13 +62,14 @@ export default {
   data() {
     return {
       rooms: [],
-      roomData: []
+      roomData: [],
+      floorData: [],
     }
   },
-  computed:{
+  computed: {
     selectedRooms() {
       let selectedRooms = [];
-      Object.entries(this.roomData).forEach(([k, v])=>{
+      Object.entries(this.roomData).forEach(([k, v]) => {
         v.forEach(floor => floor.v.forEach(room => {
           if (room.active) {
             selectedRooms.push(room)
@@ -66,15 +90,16 @@ export default {
         });
       }
       buildingsApi.getRoomsUnit(ldId).then(ret => {
-        this.loading.close()
+        if(this.loading)
+          this.loading.close()
         this.roomData = ret.data // {"1":{}, "2":{}}
-        Object.entries(this.roomData).forEach(([u, d])=>{
+        Object.entries(this.roomData).forEach(([u, d]) => {
           let r = []   // r是排序后的结果
           Object.entries(this.roomData[u]).forEach(([k, v]) => {
             r.push({k, v})
           })
           r.sort((a, b) => a.k - b.k)
-          this.roomData[u]= r.reverse();
+          this.roomData[u] = r.reverse();
           // [{k:123,v:[]}]
           this.roomData[u].forEach(item => {
             item.v.forEach((room, index) => {
@@ -84,27 +109,14 @@ export default {
             })
           })
         })
-       /* console.log(ret)
-        return
-        if (this.loading) {
-          setTimeout(() => {
-            this.loading.close()
-          }, this.delay)
+        console.log(this.roomData)
+        // 生成一组楼层数据
+        let unitKeys = Object.keys(this.roomData)
+        if (unitKeys.length) {
+          let template = this.roomData[unitKeys[0]]
+          let floor = template.map(item => ({floor: item.k, isEmpty: !item.v.length}))
+          this.floorData = floor
         }
-        let r = []   // r是排序后的结果
-        Object.entries(ret.data).forEach(([k, v]) => {
-          r.push({k, v})
-        })
-        r.sort((a, b) => a.k - b.k)
-        this.rooms = r.reverse();
-        // [{k:123,v:[]}]
-        this.rooms.forEach(item => {
-          item.v.forEach((room, index) => {
-            room.addx = parseInt(room.roomZdcm) ? parseInt(room.roomZdcm) : 0;
-            room.addy = parseInt(room.roomZdts) ? parseInt(room.roomZdts) : 0;
-            room.index = index
-          })
-        })*/
       })
     },
     roomClick(room) {
@@ -119,18 +131,18 @@ export default {
       })
     },
     selectAll() {
-      Object.values(this.roomData).forEach(unit=>{
-        Object.values(unit).forEach(floor=>{
-          floor.v.forEach(room=>{
+      Object.values(this.roomData).forEach(unit => {
+        Object.values(unit).forEach(floor => {
+          floor.v.forEach(room => {
             this.$set(room, "active", true)
           })
         })
       })
     },
     antiSelect() {
-      Object.values(this.roomData).forEach(unit=>{
-        Object.values(unit).forEach(floor=>{
-          floor.v.forEach(room=>{
+      Object.values(this.roomData).forEach(unit => {
+        Object.values(unit).forEach(floor => {
+          floor.v.forEach(room => {
             this.$set(room, "active", !room.active)
           })
         })
@@ -153,6 +165,24 @@ export default {
 
 .table {
   border-collapse: collapse;
+  margin: 0 5px;
+}
+
+.floor {
+  box-sizing: border-box;
+  width: 80px;
+  height: 80px;
+  border: 2px solid black;
+  text-align: center;
+  transition: all 0.2s;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+tr {
+  width: 80px;
+  height: 80px;
 }
 
 .room {

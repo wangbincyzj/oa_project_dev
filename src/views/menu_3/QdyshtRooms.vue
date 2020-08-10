@@ -78,7 +78,7 @@
           this.rooms = r.reverse();
         })
       },
-      mapStatusToClass(status, roomBazt) {
+      mapStatusToClass(status/*房屋状态*/, roomBazt) {
         if(roomBazt===1){
           return this.enableColor ? "c" + 3 : null
         }else{

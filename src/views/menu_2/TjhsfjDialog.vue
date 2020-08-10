@@ -205,12 +205,12 @@
         </div>
       </transition>
     </div>
-    <TjhsfjRooms ref="ref" enable-loading @roomClick="roomClick">
+    <RoomsUnit ref="ref" enable-loading @roomClick="roomClick">
       <template #default="{room}">
         <div>建筑:{{room.roomJzmj}}</div>
         <div>套内:{{room.roomTnjzmj}}</div>
       </template>
-    </TjhsfjRooms>
+    </RoomsUnit>
     <el-dialog
       title="房间详情"
       center
@@ -233,10 +233,11 @@
   import Rooms from "@/components/common/rooms/Rooms";
   import LpzsjpDialog from "@/views/menu_2/LpzsjpDialog";
   import TjhsfjRooms from "@/views/menu_2/TjhsfjRooms";
+  import RoomsUnit from "@/components/common/rooms/RoomsUnit";
 
   export default {
     name: "TjhsfjDialog",
-    components: {TjhsfjRooms, LpzsjpDialog, Rooms, CenterButton, RoomStructure},
+    components: {RoomsUnit, TjhsfjRooms, LpzsjpDialog, Rooms, CenterButton, RoomStructure},
 
     data() {
       return {

@@ -1,6 +1,6 @@
 <template>
   <div class="myDialog myForm-mb5">
-    <RoomStructure ref="ref" v-if="mode===1" />
+    <RoomsUnit ref="ref" v-if="mode===1" />
     <el-form
       v-if="mode===2"
       v-loading="loading"
@@ -136,9 +136,10 @@
 <script>
   import RoomStructure from "@/views/menu_2/RoomStructure";
   import {tjldxmApi} from "@/api/menu_2/tjldxm";
+  import RoomsUnit from "@/components/common/rooms/RoomsUnit";
   export default {
     name: "LpsbshDialog",
-    components: {RoomStructure},
+    components: {RoomsUnit, RoomStructure},
     props:{
       mode:{
         required: true  // 1,楼盘表  2,楼栋详情
@@ -161,7 +162,7 @@
     methods:{
       initRoomStructure(id) {
         this.$nextTick(()=>{
-          this.$refs.ref.fetchData(id)
+          this.$refs.ref.fetchRooms(id)
         })
       },
       fetchData(){
