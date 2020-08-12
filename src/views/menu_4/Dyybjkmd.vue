@@ -2,14 +2,18 @@
   <!-- 打印预备缴款名单 -->
   <div class="Dyybjkmd">
     <TitleTable title="打印预备缴款名单">
-      <div slot="controls">
+       <template #addButton>
+         
+          <el-button @click="handlePrint"  size="mini" type="primary">打印缴款名单</el-button>
+        </template>
+      <!-- <div slot="controls">
         <el-alert type="warning" center :closable="false">
           <div class="controls">
-            <!-- <span class="warning">【{{this.$store.state.projectData.xmxxXmmc}}】</span> -->
+             <span class="warning">【{{this.$store.state.projectData.xmxxXmmc}}】</span> 
             <el-button @click="handlePrint" size="mini" type="primary">打印缴款名单</el-button>
           </div>
         </el-alert>
-      </div>
+      </div> -->
       <el-table
         :data="tableData"
         style="width: 100%"

@@ -7,8 +7,8 @@ import { requests8083 } from "../jianguan";
  * 根据楼栋查询信息
  * 
  */
-let getInfo = function(){
-    return requests8083.get("data-presale-funds/jiaocun/accountFundCount", )
+let getInfo = function(xmbh){
+    return requests8083.get("data-presale-funds/jiaocun/accountFundCount",{xmbh} )
   }
 
 /**

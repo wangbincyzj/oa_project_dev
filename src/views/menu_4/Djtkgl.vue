@@ -1,67 +1,72 @@
 <template>
   <div class="djtkgl" id="djtkgl">
     <TitleTable title="定金退款管理" style="overflow-y:scroll">
-      <div  slot="controls"
-        style="background-color:#fdf6ec"
-      >
-        <el-alert
-          type="success"
-          :closable="false"
-        >
-          <div
-            class="controls"
-            id="search"
-          >
-            <div class="searchbox">
-              <span>买受人:</span>
-              <el-input
-                size="mini"
-                placeholder="按买受人搜索"
-                v-model="listQuery.jiaocunMsrxm"
-                style="width:200px;"
-              />
-            </div>
-            <div class="searchbox">
-              <span>证件号码:</span>
-              <el-input
-                size="mini"
-                placeholder="按证件号码搜索"
-                v-model="listQuery.Msrzjhm"
-                style="width:200px;"
-              />
-            </div>
+    
+      <template #controls>
+        <SearchBar
+          mode="comb"
+          each-btn-type="danger"
+          prefix-color="green"
+          @combSearch="handleSearchList"
+          @combClear="searchReset">
+          <SearchBarItem placeholder="按买受人搜索" prefix="买受人"/>
+          <SearchBarItem placeholder="按证件号码搜索" prefix="证件号码" />
+          <SearchBarItem placeholder="按备案号搜索" prefix="备案号"/>
+        </SearchBar>
 
-            <div class="searchbox">
-              <span>备案号:</span>
-              <el-input
-                size="mini"
-                placeholder="按备案号搜索"
-                v-model="listQuery.Htbh"
-                style="width:200px;"
-              />
-            </div>
-
-            <div class="searchbox">
+          <ButtonsArea :row="row" @cancel="setCurrent">
               <el-button
                 size="mini"
-                type="success"
-                @click="handleSearchList()">搜索</el-button>
-            </div>
-          </div>
-        </el-alert>
-        <el-alert
-          type="warning"
-          center
-          :closable="false"
-        ></el-alert>
-      </div>
+                type="primary"
+                @click="handleGetFile(0, row)">确认收件
+              </el-button>
+              <el-button
+                size="mini"
+                type="primary"
+                @click="handleManageFile(0, row)">管理收件
+              </el-button>
+              <el-button
+                size="mini"
+                type="primary"
+                @click="handleUpdate(0, row)"
+                :disabled="row.djsyShzt!==0&&row.djsyShzt!==3">编辑
+              </el-button>
+             
+              <el-button
+                size="mini"
+                type="primary"
+                @click="handleDelete(0, row)"
+                :disabled="row.djsyShzt!==0&&row.djsyShzt!==3">删除
+              </el-button>
+               <el-button
+                size="mini"
+                type="primary"
+                @click="handleInform(0,row)"
+                :disabled="row.djsyShzt!==0&&row.djsyShzt!==3">上报
+              </el-button>
 
+              <el-button
+                size="mini"
+                type="primary"
+                @click="handleDetail(0, scope.row)">详情
+              </el-button>
+
+              <el-button
+                size="mini"
+                type="primary"
+                @click="handlePrint(0,row)">打印申请单
+              </el-button>
+
+          </ButtonsArea>
+        </template>
       <el-table
         :data="tableData"
         style="width: 100%"
+        size="mini"
+        highlight-current-row
+        ref="table"
+        @current-change="handleCurrentChange"
         @expand-change="openExpand"
-        @cell-mouse-enter="cellMouseEnter"
-        ref="refTable"
       >
        <el-table-column type="expand">
         <template slot-scope="props">
@@ -114,7 +119,7 @@
         <el-table-column label="汇入账户银行" prop="djsyHrzhyh"></el-table-column>
         <el-table-column align="center" label="申报金额" prop="djsySbje"></el-table-column>
         <el-table-column align="center" label="添加时间" prop="djsyShztN"></el-table-column>
-         <el-table-column
+         <!-- <el-table-column
             align="center"
             label="收件操作"
             width="150"
@@ -131,11 +136,10 @@
                 @click="handleManageFile(scope.$index, scope.row)">管理收件
               </el-button>
             </template>
-          </el-table-column>
+          </el-table-column> -->
         <el-table-column
           label="操作"
           prop="desc"
-          width="200px"
           align="center"
         >
           <template slot-scope="scope">
@@ -144,7 +148,7 @@
               type="text"
               size="small"
             >定金明细</el-button>
-           <el-button
+           <!-- <el-button
                 size="mini"
                 type="primary"
                 @click="handleUpdate(scope.$index, scope.row)"
@@ -174,20 +178,24 @@
                 size="mini"
                 type="primary"
                 @click="handlePrint(scope.$index, scope.row)">打印申请单
-              </el-button>
+              </el-button> -->
 
           </template>
         </el-table-column>
       </el-table>
 
-      <el-pagination
-        background
-        layout="prev, pager, next, total"
-        @current-change="currentChange"
-        :current-page="currentPage"
-        :page-size="pageSize"
-        :total="total"
-      ></el-pagination>
+      <template #pager>
+          <el-pagination
+            background
+            layout="prev, pager, next, total, sizes"
+            @current-change="currentChange"
+            @size-change="handleSizeChange"
+            :page-sizes="[10, 20, 30, 40]"
+            :current-page="currentPage"
+            :page-size="pageSize"
+            :total="total">
+          </el-pagination>
+        </template>
 
       <el-dialog
         :title="dialogTitle"
@@ -214,15 +222,16 @@ import TitleTable from "@/components/current/titleTable/TitleTable";
 import DjtkglDialog from "@/views/menu_4/DjtkglDialog";
 import { mixins } from "@/utils/mixins";
 import { djtkglApi } from "@/api/menu_4/djtkgl";
+import ButtonsArea from "@/components/common/buttonsArea/ButtonsArea";
+import Why from "@/components/common/why/Why";
+import SearchBar from "@/components/current/searchBar/SearchBar";
+import SearchBarItem from "@/components/current/searchBar/SearchBarItem";
 
 export default {
   name: "djtkgl",
-  mixins: [mixins.dialogMixin],
+  mixins: [mixins.dialogMixin,mixins.myPagerMixin, mixins.tableMixin],
   components: {
-    TitleTable,
-    ContainerTwoType,
-    DjtkglDialog
-  },
+    TitleTable,ContainerTwoType,DjtkglDialog,ButtonsArea,Why,SearchBar,SearchBarItem},
   data() {
     return {
       tableData: [],
@@ -312,19 +321,19 @@ export default {
        handleGetFile(index, row){
          this.dialogVisible = true;
         this.dialogTitle = "确认收件";
-        this.djsyYwzh=this.currentRow.djsyYwzh;
+        this.djsyYwzh=row.djsyYwzh;
         this.dialogType = 4;
         this.$nextTick(()=>{
-          this.$refs.dialog.setMode(4, this.currentRow.djsyId,0,this.currentRow.djsyYwzh);
+          this.$refs.dialog.setMode(4, row.djsyId,0,row.djsyYwzh);
         })
       },
       handleManageFile(index, item) {
         this.dialogVisible = true;
         this.dialogTitle = "管理收件";
-         this.djsyYwzh=this.currentRow.djsyYwzh;
+         this.djsyYwzh=row.djsyYwzh;
         this.dialogType = 9;
         this.$nextTick(() => {
-          this.$refs.dialog.setMode(9, this.currentRow.djsyId,0,this.currentRow.djsyYwzh);
+          this.$refs.dialog.setMode(9, row.djsyId,0,row.djsyYwzh);
         })
       },
        handleDelete(index,row){
@@ -374,22 +383,27 @@ export default {
       //搜索功能
       this.getlist();
     },
+    searchReset(){
+      
+    },
     currentChange(num) {
       this.currentPage = num;
-      this.getlist(num);
+      this.getlist();
     },
+    handleSizeChange(val){
+        console.log(val);
+        this.pageSize=val;
+        this.getlist();
+      },
     open(row) {
-      this.$refs.refTable.toggleRowExpansion(row);
+      this.$refs.table.toggleRowExpansion(row);
     },
     openExpand(row) {
       //下拉列表信息
       this.fetchRecord(row,row.djsyId);
     },
      objectSpanMethod(){},
-    cellMouseEnter(row) {
-        this.currentRow = row;
-      },
-      
+    
   },
   
   created() {

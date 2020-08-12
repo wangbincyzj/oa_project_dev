@@ -3,13 +3,10 @@
   <div class="FwdDjtk">
     <ContainerTwoType :nav-info="navInfo" @liClick="liClick">
       <TitleTable title="定金退款">
-          <div slot="controls">
-          <el-alert type="warning" center :closable="false">
-        <div class="controls">
-              <el-button @click="multiWithdraw()" size="mini" type="primary">批量退款</el-button>
-            </div>
-          </el-alert>
-        </div>
+        <template #addButton>
+           <el-button @click="multiWithdraw()" size="mini" type="primary" :disabled="selectedIndex===0">批量退款</el-button>
+        </template>
+          
         <el-table :data="tableData" style="width: 100%"  @selection-change="handleSelectionChange" >
           <el-table-column type="selection" width="55" align="center"></el-table-column>
           <!--<el-table-column align="center" label="申请人姓名" prop="djsySqrxm"></el-table-column> -->
@@ -34,14 +31,7 @@
           </el-table-column>
         </el-table>
 
-        <el-pagination
-          background
-          layout="prev, pager, next, total"
-          @current-change="currentChange"
-          :current-page="currentPage"
-          :page-size="pageSize"
-          :total="total"
-        ></el-pagination>
+        c
 
           <el-dialog
           :title="dialogTitle"
@@ -73,12 +63,14 @@ import DjtkDialog from "@/views/menu_4/DjtkDialog";
 import { mixins } from "@/utils/mixins";
 import { djtkApi } from "@/api/menu_4/djtk";
 import { djglApi } from "@/api/menu_4/djgl";
+import ButtonsArea from "@/components/common/buttonsArea/ButtonsArea";
+import Why from "@/components/common/why/Why";
 
 
 export default {
    name: "FwdDjtk",
-  components: { TitleTable, ContainerTwoType,DjtkDialog},
-  mixins: [mixins.dialogMixin],
+  components: { TitleTable, ContainerTwoType,DjtkDialog,ButtonsArea,Why},
+  mixins: [mixins.dialogMixin,mixins.myPagerMixin, mixins.tableMixin],
   data() {
     return {
       currentPage: 1, //分页
@@ -169,7 +161,11 @@ export default {
       this.currentPage = num;
       this.fetchData(this.djsyJgzh);
     },
-   
+   handleSizeChange(val){
+        console.log(val);
+        this.pageSize=val;
+        this.fetchData(this.djsyJgzh);
+      },
     submitSuccess() {
       this.dialogVisible = false;
        this.$nextTick(() => {

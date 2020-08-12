@@ -3,11 +3,52 @@
    
       <TitleTable
         title="资金监管解除管理">
+         <template #controls>
+          <ButtonsArea :row="row" @cancel="setCurrent">
+             <el-button
+                size="mini"
+                type="primary"
+                @click="handleGetFile(row)">确认收件
+              </el-button>
+              <el-button
+                size="mini"
+                type="primary"
+                @click="handleManageFile(row)">管理收件
+              </el-button>
+              <el-button
+                size="mini"
+                type="primary"
+                @click="handleUpdate(row)"
+                :disabled="row.jczjjgShzt!==0&&row.jczjjgShzt!==3">编辑
+              </el-button>
+              <el-button
+                size="mini"                
+                type="primary"
+                @click="handleDelete(row)"
+                :disabled="row.jczjjgShzt!==0&&row.jczjjgShzt!==3">删除
+              </el-button>
+               <el-button
+                size="mini"
+                type="primary"
+                @click="handleInform(row)"
+                :disabled="row.jczjjgShzt!==0&&row.jczjjgShzt!==3">上报
+              </el-button>
+
+              <el-button
+                size="mini"
+                type="primary"
+                @click="handleDetail(row)">详情
+              </el-button>
+
+          </ButtonsArea>
+        </template>
         
         <el-table
           :data="tableData"
-           @cell-mouse-enter="cellMouseEnter"
-           
+          size="mini"
+          ref="table"
+          highlight-current-row
+           @current-change="handleCurrentChange"
           style="width: 100%">
           <el-table-column
             label="项目名称"
@@ -34,7 +75,7 @@
             prop="jczjjgShztN">
           </el-table-column>
           
-          <el-table-column
+          <!-- <el-table-column
             align="center"
             label="收件操作"
             width="300px"
@@ -86,18 +127,21 @@
 
 
             </template>
-          </el-table-column>
+          </el-table-column> -->
         </el-table>
-       <el-pagination
-          background
-          layout="sizes,prev, pager, next, total"
-          @current-change="currentChange"
-          @size-change="handleSizeChange"
-          :current-page="currentPage"
-          :page-size="pageSize"
-          :page-sizes="[10, 20]"
-          :total="total">
-        </el-pagination>
+      <template #pager>
+          <el-pagination
+            background
+            layout="prev, pager, next, total, sizes"
+            @current-change="currentChange"
+            @size-change="handleSizeChange"
+            :page-sizes="[10, 20, 30, 40]"
+            :current-page="currentPage"
+            :page-size="pageSize"
+            :total="total">
+          </el-pagination>
+
+        </template>
         <el-dialog
           :title="dialogTitle"
           center
@@ -126,11 +170,13 @@
  
   import {gljcsqApi} from "@/api/menu_4/gljcsq";
   import {mixins} from "@/utils/mixins";
+  import ButtonsArea from "@/components/common/buttonsArea/ButtonsArea";
+  import Why from "@/components/common/why/Why";
 
   export default {
     name: "gljcsq",
-    mixins: [mixins.dialogMixin],
-    components: { TitleTable, ContainerTwoType,GljcsqDialog},
+    mixins: [mixins.dialogMixin,mixins.myPagerMixin, mixins.tableMixin],
+    components: { TitleTable, ContainerTwoType,GljcsqDialog,ButtonsArea,Why},
     data() {
       return{
        
@@ -156,8 +202,8 @@
        fetchData(){
          gljcsqApi.getAllApplication(this.currentPage,this.pageSize,this.$store.state.projectData.kfsRwbh).then(ret=>{
            this.tableData=ret.data.records;
-          //  this.total=ret.records.total;
-          //  this.pages=ret.records.pages;
+           this.total=ret.data.total;
+          this.pages=ret.data.pages;
           this.tableData.forEach(function(val){
             if(val.jczjjgShzt===0){
               val.jczjjgShztN="新建"
@@ -173,21 +219,21 @@
 
        },
      
-     handleUpdate(){
+     handleUpdate(row){
         this.dialogVisible = true;
         this.dialogTitle = "修改解除监管申请";
         this.dialogType = 1;
         this.$nextTick(()=>{
-          this.$refs.dialog.setMode(1,this.currentRow.jczjjgId)
+          this.$refs.dialog.setMode(1,rRow.jczjjgId)
         })
      },
      
-    handleDelete(){
+    handleDelete(row){
         this.$confirm('确定要删除该解除监管申请吗?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
         }).then(()=>{
-            gljcsqApi.deleteSq(this.currentRow.jczjjgId).then(ret=>{
+            gljcsqApi.deleteSq(row.jczjjgId).then(ret=>{
             if(ret.code===200){
               this.$message.success("操作成功");
                 this.fetchData();
@@ -202,12 +248,12 @@
           });
         });
       },
-       handleInform(){
+       handleInform(row){
         this.$confirm('确定要上报该解除监管申请吗?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
         }).then(()=>{
-             gljcsqApi.informSq(this.currentRow.jczjjgId).then(ret=>{
+             gljcsqApi.informSq(row.jczjjgId).then(ret=>{
             if(ret.code===200){
               this.$message.success("操作成功");
                 this.fetchData();
@@ -222,32 +268,32 @@
           });
         });
       },
-      handleDetail(index,row){
+      handleDetail(row){
         this.dialogVisible = true;
         this.dialogTitle = "解除监管申请详情";
         this.dialogType = 2;
         this.$nextTick(()=>{
-          this.$refs.dialog.setMode(2,this.currentRow.jczjjgId,row.logId,this.currentRow.jcjzjgYwzh)
+          this.$refs.dialog.setMode(2,row.jczjjgId,row.logId,row.jcjzjgYwzh)
         })
       },
-      handleGetFile(index, row){
+      handleGetFile( row){
          this.dialogVisible = true;
         this.dialogTitle = "确认收件";
-        this.jcjzjgYwzh=this.currentRow.jcjzjgYwzh;
+        this.jcjzjgYwzh=row.jcjzjgYwzh;
         console.log("jcjzjgYwzh="+this.jcjzjgYwzh);
         
         this.dialogType = 4;
         this.$nextTick(()=>{
-          this.$refs.dialog.setMode(4, this.currentRow.jczjjgId,0,this.currentRow.jcjzjgYwzh);
+          this.$refs.dialog.setMode(4, row.jczjjgId,0,row.jcjzjgYwzh);
         })
       },
-      handleManageFile(index, item) {
+      handleManageFile( row) {
         this.dialogVisible = true;
         this.dialogTitle = "管理收件";
-         this.jcjzjgYwzh=this.currentRow.jcjzjgYwzh;
+         this.jcjzjgYwzh=row.jcjzjgYwzh;
         this.dialogType = 9;
         this.$nextTick(() => {
-          this.$refs.dialog.setMode(9, this.currentRow.jczjjgId,0,this.currentRow.jcjzjgYwzh);
+          this.$refs.dialog.setMode(9, row.jczjjgId,0,row.jcjzjgYwzh);
         })
       },
      submitSuccess() {
@@ -262,9 +308,7 @@
         this.pageSize=val;
         this.fetchData();
       },
-       cellMouseEnter(row) {
-        this.currentRow = row;
-      },
+     
          currentChange(num) {
          this.currentPage = num;
          this.fetchData()

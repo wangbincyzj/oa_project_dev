@@ -3,19 +3,10 @@
    
       <TitleTable
         :title="`【${this.$store.state.projectData.xmxxKfs}】监管资金汇总`" >
-        <div slot="controls">
-          <el-alert
-            type="warning"
-            center
-            :closable="false">
-         <div class="controls" style="background-color:#fdf6ec">
-        <!-- <span style="margin-left:200px">开始时间:</span> <el-date-picker v-model="startTime" type="date" placeholder="选择开始时间" size="mini"></el-date-picker>
-        <span>结束时间:</span><el-date-picker v-model="endTime" type="date" placeholder="选择结束时间" size="mini"></el-date-picker>
-        <el-button size="mini" type="success" @click="search">查找</el-button> -->
-        <el-button size="mini" type="success" @click="handlePrint" @mouseover.native = "getDate">打印明细</el-button>
-        </div>
-          </el-alert>
-      </div>
+        <template #addButton>
+         
+          <el-button class="title-btn"  size="mini" type="primary"  @click="handlePrint" @mouseover.native = "getDate">打印明细</el-button>
+        </template>
         <el-table
           :data="tableData"
           show-summary
@@ -120,7 +111,7 @@
     },
     methods:{
       fetchData() {
-        zhzjxxApi.getInfo().then(ret => {
+        zhzjxxApi.getInfo(this.$store.state.projectData.xmxxXmbh).then(ret => {
          console.log(ret);
          console.log("where is my ...");
           this.tableData = ret.data;    

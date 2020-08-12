@@ -3,27 +3,21 @@
    
       <TitleTable
         title="已撤备案未解除监管的合同列表">
-        <div slot="controls">
-         <div class="controls" style="background-color:#fdf6ec">
-           <el-alert
-            type="warning"
-            center
-            :closable="false">
-        <span style="margin-left:100px">买受人:</span><el-input size="mini" v-model="person" placeholder="按买受人搜索" style="width:200px;margin-right:100px;" />
-        <span>证件号码:</span><el-input size="mini" v-model="certificate" placeholder="按证件号码搜索" style="width:200px;margin-right:100px"/>
-        <span>备案号:</span><el-input size="mini" v-model="code" placeholder="按备案号搜索" style="width:200px;margin-right:100px"/>
-        <el-button size="mini" type="success" @click="search">搜索</el-button>
-           </el-alert>
-        <div class="controls">
-            <el-alert
-            type="warning"
-            center
-            :closable="false">
-            <span class="warning" style="color: red">注意：已经备案的房间必须是撤销完合同后才能退款！</span>
-          </el-alert>
-        </div>
-        </div>
-      </div>
+         <template #addButton>
+          <Why>注意：已经备案的房间必须是撤销完合同后才能退款！</Why>
+        </template>
+         <template #controls>
+        <SearchBar
+          mode="comb"
+          each-btn-type="danger"
+          prefix-color="green"
+          @combSearch="search"
+          @combClear="searchReset">
+          <SearchBarItem placeholder="按买受人搜索" prefix="买受人"/>
+          <SearchBarItem placeholder="按证件号码搜索" prefix="证件号码"/>
+          <SearchBarItem placeholder="按备案号搜索" prefix="备案号" />
+        </SearchBar>
+         </template>
         <el-table
           :data="tableData"
           style="width: 100%"
@@ -129,11 +123,15 @@
   import HttksqDialog from "@/views/menu_4/HttksqDialog";
   import {httksqApi} from "@/api/menu_4/httksq";
   import {mixins} from "@/utils/mixins";
+  import ButtonsArea from "@/components/common/buttonsArea/ButtonsArea";
+  import Why from "@/components/common/why/Why";
+  import SearchBar from "@/components/current/searchBar/SearchBar";
+  import SearchBarItem from "@/components/current/searchBar/SearchBarItem";
 
   export default {
     name: "httksq",
-    mixins: [mixins.dialogMixin],
-    components: { TitleTable, ContainerTwoType,HttksqDialog},
+    mixins: [mixins.dialogMixin, mixins.myPagerMixin, mixins.tableMixin],
+    components: { TitleTable, ContainerTwoType,HttksqDialog,ButtonsArea,Why,SearchBar,SearchBarItem},
     data() {
       return{
        
@@ -180,6 +178,9 @@
       
      search(){
 
+     },
+     searchReset(){
+       
      },
       handleWithdraw(){
         this.dialogVisible=true;
