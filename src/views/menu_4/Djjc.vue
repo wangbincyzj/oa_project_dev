@@ -3,14 +3,22 @@
     <!-- 定金缴存1049906948-->
     <ContainerTwoType :nav-info="navInfo" @liClick="liClick">
       <TitleTable title="定金缴款">
-        <div slot="controls">
-          <el-alert type="warning" center :closable="false">
-            <div class="controls">
-              <el-button @click="addClick()" size="mini" type="primary">新增记录</el-button>
-            </div>
-          </el-alert>
-        </div>
-        <el-table :data="tableData" style="width: 100%" @cell-mouse-enter="cellMouseEnter">
+         <template #addButton>
+          <el-button @click="addClick" icon="el-icon-plus" size="mini" type="primary" :disabled="selectedIndex===0">新增记录</el-button>
+        </template>
+         <template #controls>
+          <ButtonsArea :row="row" @cancel="setCurrent">
+              <el-button size="mini" type="primary" @click="handleUpdate(0, row)">修改</el-button>
+              <el-button size="mini" type="primary" @click="handleInform(0,row)">上报</el-button>
+              <el-button size="mini" type="primary" @click="handleDetail(0, row)">详情</el-button>
+              <el-button size="mini" type="danger" @click="handleDelete(0, row)">删除</el-button>
+          </ButtonsArea>
+        </template>
+        <el-table :data="tableData" style="width: 100%" 
+         size="mini"
+        ref="table"
+        highlight-current-row
+        @current-change="handleCurrentChange">
           <el-table-column align="center" label="订购人" prop="djDgrxm"></el-table-column>
           <el-table-column align="center" label="证件号码" prop="djDgrzjhm"></el-table-column>
           <el-table-column align="center" label="缴款金额" prop="djJkje"></el-table-column>
@@ -18,37 +26,41 @@
           <el-table-column align="center" label="银行id" prop="djJkyhid"></el-table-column>
           <el-table-column align="center" label="缴款日期" prop="djJksj"></el-table-column>
           <el-table-column align="center" label="缴款说明" prop="djJksy"></el-table-column>
-          <el-table-column align="center" label="操作" width="400px">
+          <!-- <el-table-column align="center" label="操作" width="400px">
             <template slot-scope="scope">
               <!-- <el-button
                 size="mini"
                 :type="StatusColor(scope.row)"
                 :disabled="!_enable(scope.row)"
                 @click="report(scope.$index, scope.row)"
-              >{{ scope.row.djJkzt | formStatus }}</el-button> -->
+              >{{ scope.row.djJkzt | formStatus }}</el-button> 
               <el-button size="mini"  @click="handleUpdate(scope.$index, scope.row)">修改</el-button>
               <el-button size="mini" @click="handleInform(scope.$index, scope.row)">上报</el-button>
               <el-button size="mini"  @click="handleDetail(scope.$index, scope.row)">详情</el-button>
               <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-              <!-- <el-button size="mini" type="danger" @click="deletes(scope.$index, scope.row)">关联</el-button> -->
+              <el-button size="mini" type="danger" @click="deletes(scope.$index, scope.row)">关联</el-button> 
             </template>
-          </el-table-column>
+          </el-table-column> -->
         </el-table>
 
-        <el-pagination
-          background
-          layout="prev, pager, next, total"
-          @current-change="currentChange"
-          :current-page="currentPage"
-          :page-size="pageSize"
-          :total="total"
-        ></el-pagination>
+        <template #pager>
+          <el-pagination
+            background
+            layout="prev, pager, next, total, sizes"
+            @current-change="currentChange"
+            @size-change="handleSizeChange"
+            :page-sizes="[10, 20, 30, 40]"
+            :current-page="currentPage"
+            :page-size="pageSize"
+            :total="total">
+          </el-pagination>
+
+        </template>
 
         <el-dialog
           :title="dialogTitle"
           center
           width="800px"
-          :before-close="closeConfirm"
           slot="dialog"
           :visible.sync="dialogVisible"
           @close="dialogVisible = false"
@@ -68,11 +80,14 @@ import { mixins } from "@/utils/mixins";
 
 import axios from "axios";
 import { djjcApi } from "@/api/menu_4/djjc";
+import ButtonsArea from "@/components/common/buttonsArea/ButtonsArea";
+import Why from "@/components/common/why/Why";
+
 
 export default {
   name: "FwdDjjc",
-  components: {TitleTable, ContainerTwoType, DjjcDialog},
-  mixins: [mixins.dialogMixin],
+  components: {TitleTable, ContainerTwoType, DjjcDialog,ButtonsArea,Why},
+  mixins: [mixins.dialogMixin, mixins.myPagerMixin, mixins.tableMixin],
   data() {
     return {
       currentPage: 1, //分页
@@ -88,8 +103,8 @@ export default {
        
         list: []
       },
-       selectedIndex: 0,
-     djJkyhzh:"",
+       selectedIndex:0,
+     djJkyhzh:null,
      zjjgzhId:0,
     };
   },
@@ -102,6 +117,8 @@ export default {
       this.djJkyhzh=this.navInfo.list[index].name;
       this.zjjgzhId=this.navInfo.list[index].id;
       this.fetchData(this.djJkyhzh);
+      console.log(this.selectedIndex);
+      
     },
     getNavInfo() {
       djjcApi.getAccount(this.$store.state.projectData.xmxxXmbh).then(ret => {
@@ -195,9 +212,13 @@ export default {
       this.currentPage = num;
      this.fetchData(this.djJkyhzh);
     },
-    cellMouseEnter(row) {
-        this.currentRow = row;
+    
+      handleSizeChange(val){
+        console.log(val);
+        this.pageSize=val;
+        this.fetchData(this.djJkyhzh);
       },
+    
     submitSuccess() {
       this.dialogVisible = false;
       this.$nextTick(() => {

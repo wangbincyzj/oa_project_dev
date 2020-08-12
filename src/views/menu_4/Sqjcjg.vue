@@ -5,16 +5,12 @@
       :nav-info="navInfo"
       @liClick="liClick"> -->
     <!-- > :loading="navInfo.loading" -->
+   
       <TitleTable
         :title="`项目【${this.$store.state.projectData.xmxxXmmc}】对应楼栋列表`">
-        <div slot="controls">
-          <el-alert
-            type="warning"
-            center
-            :closable="false">
-            <span class="warning" style="color: red">备注：商品房预售资金监管账户撤销条件，除该商品房取得房地产初始登记外，还必须取得房屋物业承接查验备案证明相关文件！</span>
-          </el-alert>
-        </div>
+         <template #addButton>
+          <Why>备注：商品房预售资金监管账户撤销条件，除该商品房取得房地产初始登记外，还必须取得房屋物业承接查验备案证明相关文件！</Why>
+         </template>
         <el-table
           :data="tableData"
           style="width: 100%"
@@ -160,11 +156,13 @@
  
   import {sqjcjgApi} from "@/api/menu_4/sqjcjg";
   import {mixins} from "@/utils/mixins";
+  import ButtonsArea from "@/components/common/buttonsArea/ButtonsArea";
+  import Why from "@/components/common/why/Why";
 
   export default {
     name: "sqjcjg",
-    mixins: [mixins.dialogMixin],
-    components: {SqjcjgDialog, TitleTable, ContainerTwoType},
+    mixins: [mixins.dialogMixin,mixins.myPagerMixin, mixins.tableMixin],
+    components: {SqjcjgDialog, TitleTable, ContainerTwoType,Why,ButtonsArea},
     data() {
       return{
        

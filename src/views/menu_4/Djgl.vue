@@ -2,13 +2,10 @@
   <div class="fwdDjgl">
     <ContainerTwoType :nav-info="navInfo" @liClick="liClick">
       <TitleTable title="定金关联">
-        <div slot="controls">
-          <el-alert type="warning" center :closable="false">
-        <div class="controls">
-              <el-button @click="multiRelate()" size="mini" type="primary">批量关联</el-button>
-            </div>
-          </el-alert>
-        </div>
+         <template #addButton>
+           <el-button @click="multiRelate()" size="mini" type="primary" :disabled="selectedIndex===0">批量关联</el-button>
+        </template>
+       
         <el-table :data="tableData" style="width: 100%" @cell-mouse-enter="cellMouseEnter"
         @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55"></el-table-column>
@@ -25,21 +22,23 @@
             </template>
           </el-table-column>
         </el-table>
-        <el-pagination
-          background
-          layout="prev, pager, next, total"
-          @current-change="currentChange"
-          :current-page="currentPage"
-          :page-size="pageSize"
-          :total="total"
-        ></el-pagination>
+        <template #pager>
+          <el-pagination
+            background
+            layout="prev, pager, next, total, sizes"
+            @current-change="currentChange"
+            @size-change="handleSizeChange"
+            :page-sizes="[10, 20, 30, 40]"
+            :current-page="currentPage"
+            :page-size="pageSize"
+            :total="total">
+          </el-pagination>
+        </template>
         <el-dialog
           :title="dialogTitle"
           center
           width="1500px"
-          :before-close="closeConfirm"
           slot="dialog"
-          
           :visible.sync="dialogVisible"
           @close="dialogVisible = false"
         >
@@ -60,11 +59,13 @@ import TitleTable from "@/components/current/titleTable/TitleTable";
 import DjglDialog from "@/views/menu_4/DjglDialog";
 import { mixins } from "@/utils/mixins";
 import { djglApi } from "@/api/menu_4/djgl";
+import ButtonsArea from "@/components/common/buttonsArea/ButtonsArea";
+import Why from "@/components/common/why/Why";
 
 export default {
   name: "fwdDjgl",
-  components: { TitleTable, ContainerTwoType, DjglDialog },
-  mixins: [mixins.dialogMixin],
+  components: { TitleTable, ContainerTwoType, DjglDialog ,ButtonsArea,Why},
+  mixins: [mixins.dialogMixin,mixins.myPagerMixin, mixins.tableMixin],
   data() {
     return {
       currentPage: 1, //分页
@@ -156,6 +157,11 @@ export default {
       this.currentPage = num;
      this.fetchData(this.djJkyhzh);
     },
+    handleSizeChange(val){
+        console.log(val);
+        this.pageSize=val;
+        this.fetchData(this.djJkyhzh);
+      },
     cellMouseEnter(row) {
         this.currentRow = row;
       },

@@ -1,8 +1,21 @@
 <template>
-  <!-- 管理监管资金1049906948 -->
   <div class="gljgzj">
     <TitleTable title="待上报监管资金列表">
-      <el-table :data="tableData" style="width: 100%"  @cell-mouse-enter="cellMouseEnter">
+       <template #controls>
+          <ButtonsArea :row="row" @cancel="setCurrent">
+             <el-button size="mini" type="primary" @click="handleUpdate(0, row)"
+            :disabled="row.jiaocunJkzt!==0">修改</el-button>
+            <el-button size="mini"  type="primary"  @click="handleInform(0, row)"
+            :disabled="row.jiaocunJkzt!==0">上报</el-button>
+            <el-button size="mini" type="danger"  @click="handleDel(0, row)"
+            :disabled="row.jiaocunJkzt!==0">删除</el-button>
+          </ButtonsArea>
+        </template>
+      <el-table :data="tableData" style="width: 100%"  @cell-mouse-enter="cellMouseEnter"
+      size="mini"
+        ref="table"
+        highlight-current-row
+        @current-change="handleCurrentChange">
         <el-table-column align="center" label="合同编号" prop="jiaocunHtbh"></el-table-column>
         <el-table-column align="center" label="买受人" prop="jiaocunMsrxm"></el-table-column>
         <el-table-column align="center" label="证件号码" prop="jiaocunMsrzjhm"></el-table-column>
@@ -13,15 +26,15 @@
         <el-table-column align="center" label="监管银行" prop="jiaocunKhyh"></el-table-column>
         <el-table-column align="center" label="监管账号" prop="jiaocunJkzh"></el-table-column>
         <el-table-column align="center" label="缴款说明" prop="jiaocunJksy"></el-table-column>
-        <el-table-column align="center" label="操作" width="250px">
-          <template slot-scope="scope">
-            <!-- <el-button size="mini" @click="handlePrint(scope.$index, scope.row)">打印合同</el-button> -->
+        <!--<el-table-column align="center" label="操作" width="250px">
+            <template slot-scope="scope">
+           <el-button size="mini" @click="handlePrint(scope.$index, scope.row)">打印合同</el-button> -->
             <!-- <el-button
               size="mini"
               :type="StatusColor(scope.row)"
               :disabled="!_enable(scope.row)"
               @click="report(scope.$index, scope.row)"
-            >{{ scope.row.jiaocunJkzt | formStatus }}</el-button> -->
+            >{{ scope.row.jiaocunJkzt | formStatus }}</el-button> 
             <el-button size="mini"  @click="handleUpdate(scope.$index, scope.row)"
             :disabled="scope.row.jiaocunJkzt!==0">修改</el-button>
             <el-button size="mini"  @click="handleInform(scope.$index, scope.row)"
@@ -30,16 +43,21 @@
             :disabled="scope.row.jiaocunJkzt!==0">删除</el-button>
             
           </template>
-        </el-table-column>
+        </el-table-column>-->
       </el-table>
-      <el-pagination
-        background
-        layout="prev, pager, next, total"
-        @current-change="currentChange"
-        :current-page="currentPage"
-        :page-size="pageSize"
-        :total="total"
-      ></el-pagination>
+      <template #pager>
+          <el-pagination
+            background
+            layout="prev, pager, next, total, sizes"
+            @current-change="currentChange"
+            @size-change="handleSizeChange"
+            :page-sizes="[10, 20, 30, 40]"
+            :current-page="currentPage"
+            :page-size="pageSize"
+            :total="total">
+          </el-pagination>
+
+        </template>
        <el-dialog
         :title="dialogTitle"
         center
@@ -64,14 +82,16 @@ import ContainerTwoType from "@/components/current/containerTwoType/ContainerTwo
 import TitleTable from "@/components/current/titleTable/TitleTable";
 import GljgzjDialog from "@/views/menu_4/GljgzjDialog";
 import { gljgzjApi } from "@/api/menu_4/gljgzj";
-import { mixins } from "@/utils/mixins";
+import { mixins } from "@/utils/mixins"; 
+import ButtonsArea from "@/components/common/buttonsArea/ButtonsArea";
+import Why from "@/components/common/why/Why";
 
 
 
 export default {
   name: "gljgzj",
-  mixins: [mixins.dialogMixin],
-  components: { TitleTable, ContainerTwoType,GljgzjDialog },
+  mixins: [mixins.dialogMixin,mixins.myPagerMixin, mixins.tableMixin],
+  components: { TitleTable, ContainerTwoType,GljgzjDialog,ButtonsArea,Why },
   data() {
     return {
       tableData: [],
@@ -183,6 +203,11 @@ export default {
          this.currentPage = num;
          this.fetchData()
        },
+       handleSizeChange(val){
+        console.log(val);
+        this.pageSize=val;
+        this.fetchData();
+      },
     _enable(row) {
       return row.jiaocunJkzt === 0;
     },

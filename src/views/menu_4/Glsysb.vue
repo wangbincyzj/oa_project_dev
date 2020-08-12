@@ -3,10 +3,59 @@
    
       <TitleTable
         title="资金申报管理">
+        <template #controls>
+          <ButtonsArea :row="row" @cancel="setCurrent">
+            <el-button
+                size="mini"
+                type="primary"
+                @click="handleGetFile(0, row)">确认收件
+              </el-button>
+              <el-button
+                size="mini"
+                type="primary"
+                @click="handleManageFile(0, row)">管理收件
+              </el-button>
+               <el-button
+                size="mini"
+                type="primary"
+                @click="handleUpdate(0,row)"
+                :disabled="row.shiyongShzt!==0&&row.shiyongShzt!==3">编辑
+              </el-button>
+             
+              <el-button
+                size="mini"
+                type="primary"
+                @click="handleDelete(0, row)"
+                :disabled="row.shiyongShzt!==0&&row.shiyongShzt!==3">删除
+              </el-button>
+               <el-button
+                size="mini"
+                type="primary"
+                @click="handleInform(0, row)"
+                :disabled="row.shiyongShzt!==0&&row.shiyongShzt!==3">上报
+              </el-button>
+
+              <el-button
+                size="mini"
+                type="primary"
+                @click="handleDetail(0, row)">详情
+              </el-button>
+
+              <el-button
+                size="mini"
+                type="primary"
+                @click="handlePrint(0, row)" @mouseover.native="fetchPrintData(row)">打印申请单
+              </el-button>
+          </ButtonsArea>
+        </template>
         
         <el-table
           :data="tableData"
           style="width: 100%"
+          size="mini"
+          ref="table"
+          highlight-current-row
+          @current-change="handleCurrentChange"
           @cell-mouse-enter="cellMouseEnter">
           <el-table-column
             label="项目名称"
@@ -42,7 +91,7 @@
             label="审核状态"
             prop="shiyongShztN">           
           </el-table-column>
-          <el-table-column
+          <!-- <el-table-column
             align="center"
             label="收件操作"
             width="200"
@@ -100,7 +149,7 @@
               </el-button>
 
             </template>
-          </el-table-column>
+          </el-table-column> -->
 
         </el-table>
         <el-pagination
@@ -115,7 +164,6 @@
           :title="dialogTitle"
           center
           width="800px"
-          :before-close="closeConfirm"
           slot="dialog"
           :visible.sync="dialogVisible"
           @close="dialogVisible = false"
@@ -155,11 +203,13 @@
   import GlsysbDialog from "@/views/menu_4/GlsysbDialog";
   import {glsysbApi} from "@/api/menu_4/glsysb";
   import {mixins} from "@/utils/mixins";
+  import ButtonsArea from "@/components/common/buttonsArea/ButtonsArea";
+  import Why from "@/components/common/why/Why";
 
   export default {
     name: "glsysb",
-    mixins: [mixins.dialogMixin],
-    components: {GlsysbDialog, TitleTable, ContainerTwoType},
+    mixins: [mixins.dialogMixin,mixins.myPagerMixin, mixins.tableMixin],
+    components: {GlsysbDialog, TitleTable, ContainerTwoType,ButtonsArea,Why},
     data() {
       return{
        
@@ -212,19 +262,19 @@
      handleGetFile(index, row){
          this.dialogVisible = true;
         this.dialogTitle = "确认收件";
-        this.shiyongYwzh=this.currentRow.shiyongYwzh;
+        this.shiyongYwzh=row.shiyongYwzh;
         this.dialogType = 4;
         this.$nextTick(()=>{
-          this.$refs.dialog.setMode(4, this.currentRow.shiyongId,0,this.currentRow.shiyongYwzh);
+          this.$refs.dialog.setMode(4, row.shiyongId,0,row.shiyongYwzh);
         })
       },
-      handleManageFile(index, item) {
+      handleManageFile(index, row) {
         this.dialogVisible = true;
         this.dialogTitle = "管理收件";
-         this.shiyongYwzh=this.currentRow.shiyongYwzh;
+         this.shiyongYwzh=row.shiyongYwzh;
         this.dialogType = 9;
         this.$nextTick(() => {
-          this.$refs.dialog.setMode(9, this.currentRow.shiyongId,0,this.currentRow.shiyongYwzh);
+          this.$refs.dialog.setMode(9, row.shiyongId,0,row.shiyongYwzh);
         })
       },
 
@@ -233,15 +283,15 @@
         this.dialogType=1;
         this.dialogVisible=true;
         this.$nextTick(()=>{
-          this.$refs.dialog.setMode(1,this.currentRow.shiyongId)
+          this.$refs.dialog.setMode(1,row.shiyongId)
         })
       },
-       handleDelete(){
+       handleDelete(index,row){
         this.$confirm('确定要删除该使用申报吗?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
         }).then(()=>{
-           glsysbApi.delSysb(this.currentRow.shiyongId).then(ret=>{
+           glsysbApi.delSysb(row.shiyongId).then(ret=>{
             if(ret.code===200){
               this.$message.success("操作成功");
                 this.fetchData();
@@ -257,12 +307,12 @@
         });
       },
 
-      handleInform(){
+      handleInform(index,row){
         this.$confirm('确定要上报该使用申报吗?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
         }).then(()=>{
-           glsysbApi.informSysb(this.currentRow.shiyongId).then(ret=>{
+           glsysbApi.informSysb(row.shiyongId).then(ret=>{
             if(ret.code===200){
               this.$message.success("操作成功");
                 this.fetchData();
@@ -282,7 +332,7 @@
         this.dialogType=2;
         this.dialogVisible=true;
         this.$nextTick(()=>{
-          this.$refs.dialog.setMode(2,this.currentRow.shiyongId,row.logId,row.shiyongYwzh)
+          this.$refs.dialog.setMode(2,row.shiyongId,row.logId,row.shiyongYwzh)
         })
       },
       fetchPrintData(row){
