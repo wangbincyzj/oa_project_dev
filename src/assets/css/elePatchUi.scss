@@ -149,6 +149,16 @@ html{
   }
 }
 
+.form-2{
+  .el-form--inline{
+    padding: 0 20px;
+    > div.el-form-item{
+      margin-right: 0!important;
+      width: 50%;
+    }
+  }
+}
+
 
 /*-----表格选中颜色-----*/
 .el-table__body tr.current-row>td, {
@@ -156,7 +166,9 @@ html{
   color: $brand!important;
 }
 
-
+.el-table--enable-row-hover .el-table__body tr:hover>td{
+  background-color: #E2F5FD!important;
+}
 
 
 

@@ -76,6 +76,7 @@ export default new Vuex.Store({
       loginApi.getOwnProjectByRwId(rwbh).then(ret => {
         if(!ret.data.records.length){
           dispatch("logout")
+          Vue.prototype.$message.warning("项目未创建,已退出系统")
           return
         }
         commit("setProjectData", ret.data.records[0]);  // 项目信息获取

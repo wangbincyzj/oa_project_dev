@@ -1,7 +1,7 @@
 <template>
   <span class="title-shadow">
           <span class="title">{{title}}</span>
-          <span class="shadow"></span>
+<!--          <span class="shadow"></span>-->
         </span>
 </template>
 
@@ -18,12 +18,14 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import "~@/assets/css/var.scss";
 .title-shadow{
   position: relative;
   .title{
     position: relative;
     z-index: 2;
     font-weight: 600;
+    color: $brand;
   };
   .shadow{
     position: absolute;

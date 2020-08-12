@@ -63,7 +63,6 @@
         align="center">
         <template slot-scope="scope">
           <template v-if="scope.row.ldxxYfyjzt===2">
-            <el-link disabled>已通过审核</el-link>
           </template>
           <template v-else>
             <el-button

@@ -1,7 +1,7 @@
 import MainContent from "@/views/layout/MainContent";
 
 export default {
-  title: "质量保修金",
+  title: "专项资金",
   path: "/menu_8",
   class: "icon-zijin",
   routes:[

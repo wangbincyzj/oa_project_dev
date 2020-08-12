@@ -1,7 +1,7 @@
 import MainContent from "@/views/layout/MainContent";
 
 export default {
-  title: "维修资金",
+  title: "抵押确权",
   path: "/menu_7",
   class: "icon-zijinliushui",
   routes:[

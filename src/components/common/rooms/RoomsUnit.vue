@@ -116,6 +116,8 @@ export default {
           let template = this.roomData[unitKeys[0]]
           let floor = template.map(item => ({floor: item.k, isEmpty: !item.v.length}))
           this.floorData = floor
+        }else{
+          this.floorData = []
         }
       })
     },

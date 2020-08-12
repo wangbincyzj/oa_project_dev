@@ -67,11 +67,16 @@ router.beforeEach((to, from, next) => {
     next()
     return
   }
-  let tab = {title: to.meta.breadcrumb[2], path: to.path, meta:{}}
-  let index = store.state.tabs.findIndex(item=>item.title===tab.title)
-  if(index===-1)
-    store.commit("openTab", tab)
-  next()
+  try{
+    let tab = {title: to.meta.breadcrumb[2], path: to.path, meta:{}}
+    let index = store.state.tabs.findIndex(item=>item.title===tab.title)
+    if(index===-1)
+      store.commit("openTab", tab)
+    next()
+  } catch (e) {
+    Vue.prototype.$message.warning("当前页面不存在,跳转至首页")
+    next("/menu_1/home")
+  }
 })
 
 export default router

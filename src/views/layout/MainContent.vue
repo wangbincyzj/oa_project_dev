@@ -17,7 +17,8 @@
     width: 100%;
     height: 100%;
     .mainContent{
-      height: calc(100% - 34px);
+      margin: $ps;
+      height: $ps-h;
     }
   }
 </style>

@@ -1,7 +1,7 @@
 import MainContent from "@/views/layout/MainContent";
 
 export default {
-  title: "权属确权",
+  title: "预告确认",
   path: "/menu_5",
   class: "icon-quanxian",
   routes:[

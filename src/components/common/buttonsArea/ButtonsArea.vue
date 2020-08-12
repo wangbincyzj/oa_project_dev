@@ -46,7 +46,7 @@ export default {
   display: flex;
   align-items: center;
   height: 40px;
-  background-color: rgba(248, 248, 248, 1);
+  background-color: #f5f5f5;
 
   span.cancel{
     flex-shrink: 0;

@@ -103,7 +103,7 @@ export default {
     width: 200px;
     flex-shrink: 0;
     //height: 100%;
-    margin: $pm 0 $pm $pm;
+    //margin: $pm 0 $pm $pm;
     background-color: #fff;
     box-shadow: $box-shadow;
     overflow: auto;
@@ -172,7 +172,7 @@ export default {
 
   > .right {
     overflow: auto;
-    margin: $pm;
+    margin-left: $pm;
     flex: 1;
     background-color: white;
     box-shadow: $box-shadow;

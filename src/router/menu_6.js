@@ -1,7 +1,7 @@
 import MainContent from "@/views/layout/MainContent";
 
 export default {
-  title: "抵押及租赁",
+  title: "所有权确权",
   path: "/menu_6",
   class: "icon-22",
   routes:[
