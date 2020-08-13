@@ -8,9 +8,9 @@ import { requests8083 } from "../jianguan";
  * 查询所有使用申报
  * 
  */
-let getAllSysb = function(page, size = 20){
+let getAllSysb = function(page, size = 20,kfsRwbh){
   return requests8083.get("data-presale-funds/shiyong/selectPage", { 
-      current: page, size})
+      current: page, size,kfsRwbh})
 }
 
 /**
