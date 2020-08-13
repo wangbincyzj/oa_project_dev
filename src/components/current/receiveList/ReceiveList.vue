@@ -54,7 +54,7 @@ export default {
           shoujianFenshu: item.ywsjFenshu
         }))
         this.businessReceives.forEach(item => {
-          this.$set(item, "fileList", item.enclosures.map(item => filesApi.preview + item.fujianId))
+          this.$set(item, "fileList", item.enclosures.map(item => `${location.protocol}//${location.hostname}${item.fujianPath}`))
         })
       })
     }

@@ -100,6 +100,7 @@
       fetchConfirm(ywzh) {
         this.ywzh = ywzh;
         filesApi.queryConfirm(ywzh).then(ret => {
+          console.log(window.location)
           this.receiveList = ret.data.businessAttachments;
           this.addList = ret.data.certificateSettings.map(item => ({
             ...item,
@@ -109,7 +110,8 @@
             filesApi.getFiles(item.logId).then(ret => {
               let temp = ret.data.map(item => ({
                 title: item.fujianName,
-                url: config.productMode ? item.fujianPath : filesApi.preview + item.fujianId,
+                // url: config.productMode ? item.fujianPath : filesApi.preview + item.fujianId,
+                url: `${location.protocol}//${location.hostname}${item.fujianPath}`,
                 fujianId: item.fujianId
               }))
               this.$set(item, "fileList", temp)

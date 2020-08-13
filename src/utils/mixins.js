@@ -91,7 +91,7 @@ const myPagerMixin = {
 
 const dragMixin = {
   methods: {
-    drag() {
+    _drag() {
       function handleChange(e) {
         let deltaX = e.x - this.x0;
         let deltaY = e.y - this.y0;

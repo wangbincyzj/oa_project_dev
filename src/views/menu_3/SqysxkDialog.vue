@@ -47,21 +47,24 @@
           <el-input disabled v-model="form1.xkzZts"/>
         </el-form-item>
         <el-divider/>
-        <el-form-item label="选择账户">
-          <el-select v-model="bank" @change="handleBankChange">
-            <el-option :label="bank.zjjgzhZhmc" :value="index" v-for="(bank,index) in bankList"/>
-          </el-select>
-        </el-form-item>
-        <br>
-        <el-form-item label="监管账户名称">
-          <el-input v-model="form1.xkzJgzhmc" style="width: 180px" type="textarea"/>
-        </el-form-item>
-        <el-form-item label="监管账户">
-          <el-input v-model="form1.xkzJgzh" style="width: 180px" type="textarea"/>
-        </el-form-item>
-        <el-form-item label="监管银行">
-          <el-input v-model="form1.xkzJgyh" style="width: 180px" type="textarea"/>
-        </el-form-item>
+        <template v-if="false">
+          <el-form-item label="选择账户">
+            <el-select v-model="bank" @change="handleBankChange">
+              <el-option :label="bank.zjjgzhZhmc" :value="index" v-for="(bank,index) in bankList"/>
+            </el-select>
+          </el-form-item>
+          <br>
+          <el-form-item label="监管账户名称">
+            <el-input v-model="form1.xkzJgzhmc" style="width: 180px" type="textarea"/>
+          </el-form-item>
+          <el-form-item label="监管账户">
+            <el-input v-model="form1.xkzJgzh" style="width: 180px" type="textarea"/>
+          </el-form-item>
+          <el-form-item label="监管银行">
+            <el-input v-model="form1.xkzJgyh" style="width: 180px" type="textarea"/>
+          </el-form-item>
+        </template>
+
       </el-form>
       <CenterButton v-if="!readOnly" :disabled="!form1.ldxxIds.length" @btnClick="handleAdd"
                     :title="mode===1?'新增':'修改' "/>

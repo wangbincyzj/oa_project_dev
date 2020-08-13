@@ -29,7 +29,8 @@ _.interceptors.response.use(resp => {
     return resp.data
   }
 }, reason => {
-  return {code: 555, message: "系统错误,请联系软件公司"}
+  Vue.prototype.$message.error(`错误的http状态码,详情:${reason}`)
+  return {code: 400, message: "系统错误,请联系软件公司"}
 });
 
 // get请求
