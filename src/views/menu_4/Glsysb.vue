@@ -235,7 +235,7 @@
     },
     methods:{
      fetchData(){
-         glsysbApi.getAllSysb(this.currentPage,this.pageSize).then(ret=>{
+         glsysbApi.getAllSysb(this.currentPage,this.pageSize,this.$store.state.rwbh).then(ret=>{
            this.tableData = ret.data.records;
            this.total=ret.total;
            this.pages=ret.data.pages;
