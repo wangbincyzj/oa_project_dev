@@ -163,7 +163,7 @@
        <el-dialog
           :title="dialogTitle"
           center
-          width="800px"
+          width="1200px"
           slot="dialog"
           :visible.sync="dialogVisible"
           @close="dialogVisible = false"
