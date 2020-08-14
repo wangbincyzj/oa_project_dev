@@ -66,7 +66,7 @@
         width="1200px"
         :before-close="dialogReset"
         slot="dialog"
-        @opened="drag"
+        @opened="_drag"
         :visible.sync="dialogVisible"
         @close="dialogVisible = false"
       >

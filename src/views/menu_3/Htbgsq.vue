@@ -55,19 +55,19 @@
         <el-table-column label="房号" align="center" prop="roomFh" width="60"/>
         <el-table-column label="面积" align="center" prop="roomMj" width="80"/>
         <el-table-column label="预告状态" align="center" #default="{row}"  width="80">
-          {{row.roomYgzt}}
+          {{row.roomYgzt === 1? "是" : "否"}}
         </el-table-column>
         <el-table-column label="按揭状态" align="center" #default="{row}" width="80">
-          {{row.roomAjzt}}
+          {{row.roomAjzt === 1? "是" : "否"}}
         </el-table-column>
         <el-table-column label="查封状态" align="center" #default="{row}"  width="80">
-          {{row.htCfzt}}
+          {{row.htCfzt === 1? "是" : "否"}}
         </el-table-column>
         <el-table-column label="撤销状态" align="center" #default="{row}"  width="80">
-          {{row.htCxzt}}
+          {{row.htCxzt === 1? "是" : "否"}}
         </el-table-column>
         <el-table-column label="变更状态" align="center" #default="{row}"  width="80">
-          {{row.htBgzt}}
+          {{row.htBgzt === 1? "是" : "否"}}
         </el-table-column>
         <el-table-column label="操作" align="center" width="300">
           <template #default="{row}">

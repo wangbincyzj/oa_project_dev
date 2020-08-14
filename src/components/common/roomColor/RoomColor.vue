@@ -7,53 +7,55 @@
 <template>
   <ul class="roomColor">
     <li>
-      <div class="c0"></div>
-      <div class="text">已售</div>
-    </li>
-    <li>
       <div class="c1"></div>
       <div class="text">成品</div>
     </li>
+
     <li>
       <div class="c2"></div>
       <div class="text">可售</div>
     </li>
     <li>
-      <div class="c12"></div>
+      <div class="c3"></div>
       <div class="text">承诺</div>
     </li>
     <li>
-      <div class="c3"></div>
-      <div class="text">预订</div>
-    </li>
-    <li>
       <div class="c4"></div>
-      <div class="text">备案</div>
+      <div class="text">签约</div>
     </li>
     <li>
       <div class="c5"></div>
-      <div class="text">预告</div>
+      <div class="text">备案</div>
     </li>
     <li>
       <div class="c6"></div>
+      <div class="text">预告</div>
+    </li>
+    <li>
+      <div class="c7"></div>
       <div class="text">按揭</div>
     </li>
     <li>
       <div class="c8"></div>
-      <div class="text">登记</div>
+      <div class="text">首次</div>
     </li>
     <li>
       <div class="c9"></div>
-      <div class="text">抵押</div>
-    </li>
-    <li>
-      <div class="c7"></div>
-      <div class="text">限制</div>
+      <div class="text">转移</div>
     </li>
     <li>
       <div class="c10"></div>
+      <div class="text">抵押</div>
+    </li>
+    <li>
+      <div class="c11"></div>
       <div class="text">查封</div>
     </li>
+    <li>
+      <div class="c12"></div>
+      <div class="text">限制</div>
+    </li>
+
 
   </ul>
 </template>
@@ -65,6 +67,7 @@
 </script>
 
 <style scoped lang="scss">
+@import "~@/assets/css/var.scss";
   ul{
     display: flex;
     li{
@@ -88,17 +91,16 @@
       }
     }
   }
-  .c0{background-color: LightGrey;}
-  .c1{background-color: white;}
-  .c2{background-color: green;}
-  .c3{background-color: purple;}
-  .c4{background-color: yellow;}
-  .c5{background-color: SkyBlue;}
-  .c6{background-color: Crimson;}
-  .c7{background-color: gray;}
-  .c8{background-color: #9999cc;}
-  .c9{background-color: #0099ff;}
-  .c10{background-color: #FF7300;}
-  .c12{
-    background-color: #3496af;}
+  .c1{background-color: $lp-cp;}
+  .c2{background-color: $lp-ks;}
+  .c3{background-color: $lp-cn;}
+  .c4{background-color: $lp-qy;}
+  .c5{background-color: $lp-ba;}
+  .c6{background-color: $lp-yg;}
+  .c7{background-color: $lp-aj;}
+  .c8{background-color: $lp-sc;}
+  .c9{background-color: $lp-zy;}
+  .c10{background-color: $lp-dy;}
+  .c11{background-color: $lp-cf;}
+  .c12{background-color: $lp-xz;}
 </style>

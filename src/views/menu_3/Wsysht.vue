@@ -86,7 +86,7 @@
         <WsyshtLayout ref="ref1" :htId="htId" @close="close" :read-only="readOnly"/>
       </div>
     </transition>
-    <el-dialog @opened="drag" :visible.sync="dialogVisible" width="1200px" title="合同上报确认" center>
+    <el-dialog @opened="_drag" :visible.sync="dialogVisible" width="1200px" title="合同上报确认" center>
       <WsyshtDialog :htId="htId" @submitSuccess="submitSuccess" ref="dialog"/>
     </el-dialog>
   </div>

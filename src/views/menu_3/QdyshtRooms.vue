@@ -135,17 +135,16 @@
     }
   }
 
-  .c0{background-color: LightGrey;}
-  .c1{background-color: white;}
-  .c2{background-color: green;}
-  .c3{background-color: purple;}
-  .c4{background-color: yellow;}
-  .c5{background-color: SkyBlue;}
-  .c6{background-color: Crimson;}
-  .c7{background-color: gray;}
-  .c8{background-color: #9999cc;}
-  .c9{background-color: #0099ff;}
-  .c10{background-color: #FF7300;}
-  .c12{
-    background-color: #3496af;}
+  .c1{background-color: $lp-cp;}
+  .c2{background-color: $lp-ks;}
+  .c3{background-color: $lp-cn;}
+  .c4{background-color: $lp-qy;}
+  .c5{background-color: $lp-ba;}
+  .c6{background-color: $lp-yg;}
+  .c7{background-color: $lp-aj;}
+  .c8{background-color: $lp-sc;}
+  .c9{background-color: $lp-zy;}
+  .c10{background-color: $lp-dy;}
+  .c11{background-color: $lp-cf;}
+  .c12{background-color: $lp-xz;}
 </style>

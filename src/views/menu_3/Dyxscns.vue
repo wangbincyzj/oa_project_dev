@@ -88,7 +88,8 @@
     },
     methods: {
       fetchTableData() {
-        yushouContractApi.getSalesConfirmationByKfsRwbh(this.$store.state.rwbh).then(ret => {
+        yushouContractApi.getSalesConfirmationByKfsRwbh(this.$store.state.rwbh, this.currentPage, this.pageSize).then(ret => {
+          this.total = ret.data.total
           this.tableData = ret.data.records.map(item => ({
             ...item,
             createTime: new Date(item.xsqrdAddtime).toLocaleString(),

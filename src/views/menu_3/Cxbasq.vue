@@ -2,16 +2,27 @@
   <div class="myTable-p0">
     <TitleTable title="撤销备案合同" bgc="#848DF9" color="white">
       <div class="controls" slot="controls" style="background-color:white;">
-        <InfoListPlus :count="3">
-          <InfoListPlusItem name="买受人"><el-input size="mini" class="border__bottom"/></InfoListPlusItem>
-          <InfoListPlusItem name="证件号码"><el-input size="mini" class="border__bottom"/></InfoListPlusItem>
-          <InfoListPlusItem name="备案号"><el-input size="mini" class="border__bottom"/></InfoListPlusItem>
-        </InfoListPlus>
-        <div style="height: 15px; background-color:#E4EDF9;"></div>
+        <SearchBar @combSearch="combSearch" @combClear="combClear">
+          <SearchBarItem prefix="买受人"/>
+          <SearchBarItem prefix="证件号码"/>
+          <SearchBarItem prefix="备案号"/>
+        </SearchBar>
+        <ButtonsArea :row="row" @cancel="setCurrent">
+          <template v-if="(row.htCxzt===0||row.htCxzt)&&row.htCxzt!==1&&row.htCxzt!==2">
+            <el-button  size="mini">传图</el-button>
+            <el-button  size="mini">管图</el-button>
+            <el-button @click="handleSubmit(row)" size="mini">上报</el-button>
+          </template>
+          <el-button v-if="row.htCxzt!==null" @click="handleChangeDetail(row)" size="mini">变更详情</el-button>
+          <el-button @click="handleChange(row)" size="mini" v-if="row.htCxzt!==0&&!row.htCxzt">变更退房申请</el-button>
+          <el-button @click="handleDetail(row)" size="mini">合同详情</el-button>
+        </ButtonsArea>
       </div>
       <el-table
         v-loading="loading"
         style="width: 100%"
+        size="mini"
+        ref="table" highlight-current-row @current-change="handleCurrentChange"  @cancel="setCurrent"
         :data="tableData">
         <el-table-column label="合同备案号" align="center" prop="htBah" width="70"/>
         <el-table-column label="买受人" #default="{row}" align="center" prop="htMc" width="180">
@@ -24,33 +35,21 @@
             <li v-for="item in row.houseOwners">{{item.fwsyqrZjhm}}</li>
           </ul>
         </el-table-column>
-        <el-table-column label="项目名称" align="center" prop="xmMc" width="80"/>
-        <el-table-column label="楼栋名称" align="center" prop="ldMc" width="80"/>
+        <el-table-column label="项目名称" align="center" prop="xmMc" />
+        <el-table-column label="楼栋名称" align="center" prop="ldMc" />
         <el-table-column label="房号" align="center" prop="roomFh" width="60"/>
         <el-table-column label="面积" align="center" prop="roomMj" width="80"/>
         <el-table-column label="预告状态" align="center" #default="{row}"  width="80">
-          {{row.roomYgzt}}
+          {{row.roomYgzt === 1 ? "是" : "否"}}
         </el-table-column>
         <el-table-column label="按揭状态" align="center" #default="{row}" width="80">
-          {{row.roomAjzt}}
+          {{row.roomAjzt === 1 ? "是" : "否"}}
         </el-table-column>
         <el-table-column label="查封状态" align="center" #default="{row}"  width="80">
-          {{row.htCfzt}}
+          {{row.htCfzt === 1 ? "是" : "否"}}
         </el-table-column>
         <el-table-column label="撤销状态" align="center" #default="{row}"  width="80">
-          {{row.htCxzt}}
-        </el-table-column>
-        <el-table-column label="操作" align="center">
-          <template #default="{row}">
-            <template v-if="(row.htCxzt===0||row.htCxzt)&&row.htCxzt!==1&&row.htCxzt!==2">
-              <el-button  size="mini">传图</el-button>
-              <el-button  size="mini">管图</el-button>
-              <el-button @click="handleSubmit(row)" size="mini">上报</el-button>
-            </template>
-            <el-button v-if="row.htCxzt!==null" @click="handleChangeDetail(row)" size="mini">变更详情</el-button>
-            <el-button @click="handleChange(row)" size="mini" v-if="row.htCxzt!==0&&!row.htCxzt">变更退房申请</el-button>
-            <el-button @click="handleDetail(row)" size="mini">合同详情</el-button>
-          </template>
+          {{row.htCxzt === 1 ? "是" : "否"}}
         </el-table-column>
       </el-table>
       <el-dialog
@@ -67,6 +66,18 @@
           :visible.sync="dialogVisible"
           @submitSuccess="submitSuccess"/>
       </el-dialog>
+      <template #pager>
+        <el-pagination
+            background
+            layout="prev, pager, next, total, sizes"
+            @current-change="mixinCurrentChange"
+            @size-change="mixinSizeChange"
+            :page-sizes="[10, 20, 30, 40]"
+            :current-page="currentPage"
+            :page-size="pageSize"
+            :total="total">
+        </el-pagination>
+      </template>
     </TitleTable>
     <transition name="bd">
       <div class="main-bd" v-if="active">
@@ -84,11 +95,16 @@
   import WsyshtLayout from "@/views/menu_3/Wsysht/WsyshtLayout";
   import {mixins} from "@/utils/mixins";
   import CxbasqDialog from "@/views/menu_3/CxbasqDialog";
+  import ButtonsArea from "@/components/common/buttonsArea/ButtonsArea";
+  import SearchBar from "@/components/current/searchBar/SearchBar";
+  import SearchBarItem from "@/components/current/searchBar/SearchBarItem";
 
   export default {
     name: "Cxbasq",
-    mixins: [mixins.dialogMixin],
-    components: {CxbasqDialog, WsyshtLayout, InfoListPlusItem, InfoListPlus, TitleTable},
+    mixins: [mixins.dialogMixin, mixins.myPagerMixin, mixins.tableMixin],
+    components: {
+      SearchBarItem,
+      SearchBar, ButtonsArea, CxbasqDialog, WsyshtLayout, InfoListPlusItem, InfoListPlus, TitleTable},
     data() {
       return{
         tableData: [],
@@ -96,7 +112,10 @@
         active: false,
         htId: null,
         dialogWidth: "600px",
-        dialogTitle: ""
+        dialogTitle: "",
+        msr: null,
+        zjh: null,
+        bah: null,
       }
     },
     created(){
@@ -104,9 +123,22 @@
     },
     methods:{
       fetchTableData() {
-        yushouContractApi.getAllContract({htBazt:2}).then(ret=>{
+        yushouContractApi.getAllContract({htBazt:2, kfsRwbh: this.$store.state.rwbh, htMsrxm: this.msr, htMsrzjhm: this.zjh, htBah:this.bah}).then(ret=>{
+          this.total = ret.data.total
           this.tableData = ret.data.records;
         })
+      },
+      combSearch([msr, zjh, bah]) {
+        this.msr = msr
+        this.zjh = zjh
+        this.bah = bah
+        this.fetchTableData()
+      },
+      combClear() {
+        this.msr = null
+        this.zjh = null
+        this.bah = null
+        this.fetchTableData()
       },
       handleChange(item){
         this.dialogVisible = true;

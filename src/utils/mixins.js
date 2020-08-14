@@ -15,6 +15,7 @@ const dialogMixin = {
   data() {
     return {
       dialogVisible: false,
+      dialogTitle: ""
     }
   },
   methods: {
@@ -142,5 +143,5 @@ export const mixins = {
   dialogMixin,
   myPagerMixin,
   dragMixin,
-  tableMixin
+  tableMixin  // ref="table" highlight-current-row @current-change="handleCurrentChange"  @cancel="setCurrent"
 }

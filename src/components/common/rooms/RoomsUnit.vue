@@ -4,11 +4,10 @@
       <table class="table" style="order: 0">
         <thead>
         <tr style="height: 20px">
-          <th>楼层</th>
+          <th class="t-title">楼层</th>
         </tr>
         </thead>
         <tr v-for="floor in floorData">
-          <!--          <tr v-for="floor in rooms" :class="{noRoom: floor.isEmpty}">-->
           <td class="room">
             {{ floor.floor }}
           </td>
@@ -20,16 +19,17 @@
       <table class="table" style="order: 1">
         <thead>
         <tr style="height: 20px">
-          <th>{{ unit }}单元</th>
+          <th class="t-title">{{ unit }}单元</th>
         </tr>
         </thead>
         <tr v-for="floor in rooms">
           <!--          <tr v-for="floor in rooms" :class="{noRoom: !floor.v.length}">-->
           <!--<td class="title" @click="floorClick(floor)">{{ floor.k }}</td>-->
           <td class="room"
+              :class="{active: room.active&&enableChoose, [ 'c' + room.roomFwzt]: true}"
               :rowspan="room.addx + 1"
               :colspan="room.addy + 1"
-              v-for="room in floor.v" @click="roomClick(room)" :class="{active: room.active&&enableChoose}">
+              v-for="room in floor.v" @click="roomClick(room)">
             <div class="fh">{{ room.roomFh }}</div>
             <slot :room="room"/>
           </td>
@@ -51,6 +51,10 @@ export default {
       default: false
     },
     enableChoose: {
+      type: Boolean,
+      default: false
+    },
+    enableHover:{
       type: Boolean,
       default: false
     },
@@ -155,6 +159,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import "~@/assets/css/var.scss";
 .box {
   background-color: rgba(106, 90, 205, 0.28);
   position: absolute;
@@ -186,7 +191,9 @@ tr {
   width: 80px;
   height: 80px;
 }
-
+.t-title{
+  height: 40px;
+}
 .room {
   box-sizing: border-box;
   width: 80px;
@@ -207,10 +214,11 @@ tr {
     background-color: slateblue;
     color: white;
   }
-
-  &:hover {
-    background-color: slateblue;
-    color: white;
+  &-hover{
+    :hover {
+      background-color: slateblue;
+      color: white;
+    }
   }
 }
 
@@ -239,4 +247,17 @@ tr {
     height: 20px;
   }
 }
+
+.c1{background-color: $lp-cp;}
+.c2{background-color: $lp-ks;}
+.c3{background-color: $lp-cn;}
+.c4{background-color: $lp-qy;}
+.c5{background-color: $lp-ba;}
+.c6{background-color: $lp-yg;}
+.c7{background-color: $lp-aj;}
+.c8{background-color: $lp-sc;}
+.c9{background-color: $lp-zy;}
+.c10{background-color: $lp-dy;}
+.c11{background-color: $lp-cf;}
+.c12{background-color: $lp-xz;}
 </style>

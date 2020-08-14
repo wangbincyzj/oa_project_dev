@@ -147,8 +147,8 @@ let saveSalesConfirmation = function ({xsqrdXmmc, xsqrdLdmc, xsqrdFh, xsqrdFwbh,
  * 分页查询
  * @param kfsRwbh
  */
-let getSalesConfirmationByKfsRwbh = function (kfsRwbh) {
-  return requests.get("data-presale-license/salesConfirmation/selectPage", {kfsRwbh})
+let getSalesConfirmationByKfsRwbh = function (kfsRwbh, current ,size) {
+  return requests.get("data-presale-license/salesConfirmation/selectPage", {kfsRwbh, current, size})
 }
 
 
@@ -252,8 +252,8 @@ let rejectContract = function (htId, htBachyj) {
  * 合同列表查询
  * htBazt 0新建 1上报 2通过 3撤回
  */
-let getAllContract = function ({htMsrxm, htBazt, htCxlc}, current = 1, size = 20, htXslx = 0) {
-  return requests.get("data-presale-license/contract/selectPage", {htMsrxm, htCxlc, htBazt, current, size, htXslx})
+let getAllContract = function ({htMsrxm, htBazt, htCxlc, kfsRwbh, htMsrzjhm, htBah}, current = 1, size = 20, htXslx = 0) {
+  return requests.get("data-presale-license/contract/selectPage", {htMsrxm, htCxlc, htBazt, current, size, htXslx, kfsRwbh, htMsrzjhm, htBah})
 }
 
 /**

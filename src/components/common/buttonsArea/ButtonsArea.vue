@@ -4,7 +4,7 @@
       <div class="buttons" v-if="canShow">
         <span class="cancel" @click="handleCancel">
           <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-lujing131"></use>
+            <use xlink:href="#iconlujing131"></use>
           </svg>
           <span>取消</span>
         </span>
