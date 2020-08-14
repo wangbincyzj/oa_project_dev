@@ -8,11 +8,11 @@
         <div class="loginForm" v-if="flag" @keyup.enter="login">
           <h3 class="title">开发企业申报系统</h3>
           <div class="inputItem">
-            <i class="iconfont icon-lujing1"/>
+            <i class="iconfont iconlujing1"/>
             <input class="input" :disabled="loading" v-model="username" placeholder="请输入账户名称">
           </div>
           <div class="inputItem">
-            <i class="iconfont icon-lujing3"/>
+            <i class="iconfont iconlujing3"/>
             <input class="input" :disabled="loading" v-model="password" type="password" placeholder="请输入账户密码">
           </div>
           <!--<CenterButton :loading="loading" @btnClick="login" style="margin-top: 30px" title="登录"/>-->
