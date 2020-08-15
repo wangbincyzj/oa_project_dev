@@ -34,7 +34,7 @@ let getDepositByAccount = function (page, size = 20,djJkyhzh,djDjglzt=0,djJkzt=2
   * @param {*} jiaocunHtbh   合同备案
   */
  let getContract = function(kfsRwbh,htShzt ){
-  return requests8083.get("data-presale-funds/jiaocun/selectPage", {kfsRwbh,htShzt})
+  return requests8083.get("data-presale-funds/jiaocun/selectPage", {kfsRwbh,htBazt})
 }
 
 /**

@@ -5,9 +5,7 @@
       label-width="150px"
       size="mini"
       inline
-      :model="form">
-      
-      
+      :model="form" v-if="dialogType===1||dialogType===2">
      <el-form-item label="公司名称" >
         <el-input v-model="form.zizhiGsmc" ></el-input>
       </el-form-item>
@@ -87,20 +85,109 @@
       </el-form-item>
  </el-form>
 
-    <div  class="buttonGroup" style="margin:0 auto;width:100px;margin-top:20px">
+    <div  class="buttonGroup" style="margin:0 auto;width:100px;margin-top:20px" v-if="dialogType===1||dialogType===2">
       <el-button-group class="buttons">
         <el-button type="primary" @click="onSubmit" >立即提交</el-button>
       </el-button-group>
     </div>
+     <div v-if="dialogType===4">
+      <ConfirmReceive ref="ref1" :ywzh="zizhiYwzh" type="CYZT_ZIZHI"/>
+    </div>
+    <div v-if="dialogType===9">
+      <ManageReceive ref="ref2"/>
+    </div>
+    <div v-if="dialogType===3" >
+    <el-tabs
+      type="border-card"
+      value="first"
+    >
+      <el-tab-pane label="1.开发资质申请信息" name="first">
+       
+      <el-form
+            disabled
+            v-loading="loading"
+            label-position="right"
+            label-width="150px"
+            size="mini"
+            inline
+            :model="form">
+            <el-form-item label="公司名称" >
+        <el-input v-model="form.zizhiGsmc" ></el-input>
+      </el-form-item>
+      <el-form-item label="公司法人">
+        <el-input v-model="form.zizhiFrxm" ></el-input>
+      </el-form-item>
+       <el-form-item label="联系人">
+        <el-input v-model="form.zizhiLxrxm"></el-input>
+      </el-form-item>
+      <el-form-item label="联系电话" >
+        <el-input v-model="form.zizhiLxdh" ></el-input>
+      </el-form-item>
+      <el-form-item label="注册地址">
+        <el-input v-model="form.zizhiZcdz" ></el-input>
+      </el-form-item>
+       <el-form-item label="注册资金">
+        <el-input v-model="form.zizhiZczj" class="count"></el-input>
+      </el-form-item>
+      <el-form-item label="营业证号" >
+        <el-input v-model="form.zizhiYyzh" ></el-input>
+      </el-form-item>
+      <el-form-item label="注册日期">
+        <el-input v-model="form.zizhiZcrq" ></el-input>
+      </el-form-item>
+       <el-form-item label="开户银行">
+        <el-input v-model="form.zizhiKhyh"></el-input>
+      </el-form-item>
+       <el-form-item label="银行账户">
+        <el-input v-model="form.zizhiYhzh"></el-input>
+      </el-form-item>
+       <el-form-item label="资质等级">
+        <el-input v-model="form.zizhiZzdj"></el-input>
+      </el-form-item>
+       <el-form-item label="资质证号">
+        <el-input v-model="form.zizhiZzzh"></el-input>
+      </el-form-item>
+       <el-form-item label="截止日期">
+         <el-input v-model="form.zizhiJzrq" ></el-input>  
+      </el-form-item>
+       <el-form-item label="申报等级">
+        <el-input v-model="form.zizhiSbzzdj" ></el-input>        
+      </el-form-item>
+       <el-form-item label="申报类型">
+        <el-input v-model="form.zizhiSbsx" ></el-input>
+      </el-form-item>
+      <el-form-item label="申报意见">
+        <el-input v-model="form.zizhiSbyjxx" type="textarea"></el-input>
+      </el-form-item>
+      <el-form-item label="备注信息">
+        <el-input v-model="form.zizhiBzxx" type="textarea"></el-input>
+      </el-form-item>
+    </el-form>
+      
+      </el-tab-pane>      
+      <el-tab-pane label="2.收件列表" name="second">
+        <ReceiveList ref="receiveList"/>
+      </el-tab-pane>
+      <el-tab-pane label="3.审核意见" name="third">
+        <OpinionList ref="opinionList"/>
+      </el-tab-pane>
+    </el-tabs>
+    </div>
 </div>
+
 </template>
 <script>
 import {kfzzglApi} from "@/api/menu_1/kfzzgl";
 import {businessApi} from "@/api/menu_3/__Business";
+import ConfirmReceive from "@/components/current/confirmReceive/ConfirmReceive";
+import ManageReceive from "@/components/current/manageReceive/ManageReceive";
+import ReceiveList from "@/components/current/receiveList/ReceiveList";
+import OpinionList from "@/components/current/opinionList/OpinionList";
 export default {
     name:"KfzzglDialog",
+     components: {ConfirmReceive,ManageReceive,ReceiveList,OpinionList},
     props:{
-        cqxzId: {type:Number},//type: [String, Number]
+        zizhiId: {type:Number},//type: [String, Number]
         dialogType: {
             default: 1,  // 添加
             enum: [1, 2/*更正*/]
@@ -110,6 +197,7 @@ export default {
         return{
             ywxl:[],
             options:[],
+            zizhiYwzh:"",
             sbdjList:["一级","二级","三级","暂定级"],
             sblxList:["开发资质申请","暂定资质申请"],
             form:{
@@ -226,7 +314,8 @@ export default {
           this.updateData();
         }
         },
-        setMode(mode,id){
+        setMode(mode,id,logId,ywzh){
+          this.zizhiYwzh=ywzh;
           if(mode===1){
           kfzzglApi.getkfsDetail(this.$store.state.projectData.kfsId).then(ret => {
               console.log(ret);
@@ -243,11 +332,18 @@ export default {
               console.log(this.form.zizhiZcrq);
               
           } ) 
-          //this.getBussinessType();
          
-          }else if(mode===2||mode===3){
+          }else if(mode===2){
                 this.fetchDetail(id);
-                
+        }else if(mode===3){
+                this.fetchDetail(id);
+                this.$refs.receiveList.fetchData(ywzh);
+                this.$refs.opinionList.fetchData(logId);
+        }else if (mode === 4) {
+          this.retId = id;
+          this.$refs.ref1.fetchDefault(id);
+        } else if (mode === 9) {
+          this.$refs.ref2.fetchConfirm(ywzh)
         }
         },
     }
