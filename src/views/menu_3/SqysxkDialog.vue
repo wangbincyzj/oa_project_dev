@@ -133,7 +133,7 @@
         <el-tab-pane label="收件信息" name="second">
           <ReceiveList ref="rList"/>
         </el-tab-pane>
-        <el-tab-pane label="审核意见" name="third">
+        <el-tab-pane label="审核流程" name="third">
           <OpinionList ref="opinionList"/>
         </el-tab-pane>
       </el-tabs>

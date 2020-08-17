@@ -76,7 +76,7 @@
         </el-table-column>
         <el-table-column
             align="center"
-            label="状态"
+            label="流程"
             prop="zjjgzhShzt">
           <template #default="{row}">
             {{ row.zjjgzhShzt|shztFilter }}

@@ -1,14 +1,7 @@
 <template>
   <div>
     <TitleTable title="项目管理">
-      <div slot="controls">
-        <el-alert
-          type="warning"
-          center
-          :closable="false">
-          <span class="warning" style="color: red">注意：可以将项目有关的材料扫描上传</span>
-        </el-alert>
-      </div>
+
       <el-table
         v-loading="loading"
         :data="tableData"

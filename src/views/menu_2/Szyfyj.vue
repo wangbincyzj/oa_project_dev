@@ -60,10 +60,12 @@
         <template slot-scope="scope">
           <el-button
             size="mini"
+            type="primary"
             @click="handleDetail(1, scope.row)">设置单价
           </el-button>
           <el-button
             size="mini"
+            type="primary"
             @click="handleDetail(2, scope.row)">查看单价
           </el-button>
         </template>

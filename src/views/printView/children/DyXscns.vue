@@ -9,7 +9,7 @@
           <td class="field">开发企业</td>
           <td >{{d.kfqy}}</td>
           <td class="field">证件号码</td>
-          <td>{{d.kfqy}}</td>
+          <td>{{d.kfsYyzh}}</td>
         </tr>
         <tr>
           <td class="field">项目名称</td>
@@ -21,7 +21,7 @@
           <td class="field">土地证号</td>
           <td >{{d.xmxxTdzh}}</td>
           <td class="field">预售许可证号</td>
-          <td>{{d.xkzbh}}</td>
+          <td>{{d.xkzh}}</td>
         </tr>
         <tr>
           <td class="field">楼栋名称</td>

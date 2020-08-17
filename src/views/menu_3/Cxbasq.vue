@@ -9,13 +9,13 @@
         </SearchBar>
         <ButtonsArea :row="row" @cancel="setCurrent">
           <template v-if="(row.htCxzt===0||row.htCxzt)&&row.htCxzt!==1&&row.htCxzt!==2">
-            <el-button  size="mini">传图</el-button>
-            <el-button  size="mini">管图</el-button>
-            <el-button @click="handleSubmit(row)" size="mini">上报</el-button>
+            <el-button type="primary"  size="mini">传图</el-button>
+            <el-button type="primary"  size="mini">管图</el-button>
+            <el-button type="primary" @click="handleSubmit(row)" size="mini">上报</el-button>
           </template>
-          <el-button v-if="row.htCxzt!==null" @click="handleChangeDetail(row)" size="mini">变更详情</el-button>
-          <el-button @click="handleChange(row)" size="mini" v-if="row.htCxzt!==0&&!row.htCxzt">变更退房申请</el-button>
-          <el-button @click="handleDetail(row)" size="mini">合同详情</el-button>
+          <el-button type="primary" v-if="row.htCxzt!==null" @click="handleChangeDetail(row)" size="mini">变更详情</el-button>
+          <el-button type="primary" @click="handleChange(row)" size="mini" v-if="row.htCxzt!==0&&!row.htCxzt">变更退房申请</el-button>
+          <el-button type="primary" @click="handleDetail(row)" size="mini">合同详情</el-button>
         </ButtonsArea>
       </div>
       <el-table

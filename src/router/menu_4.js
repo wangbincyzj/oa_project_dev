@@ -28,7 +28,7 @@ export default {
       group:[
         {title: "添加监管资金", path: "tjjgzj"},
         {title: "管理监管资金", path: "gljgzj"},
-        {title: "打印预备缴款名单", path: "dyybjkmd"},
+        {title: "打印缴款清单", path: "dyybjkmd"},
       ]
     },
     {

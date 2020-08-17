@@ -13,7 +13,7 @@
 export default {
   name: "ConfirmBtn",
   props: {
-    title: {default: "确认提交"},
+    title: {default: "保存"},
     type: {default: "primary"},
     size: {default: "small"},
     marginTop: {default: "14px"}

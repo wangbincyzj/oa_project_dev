@@ -118,7 +118,7 @@
       </el-form-item>
     </el-form>
     <div style="display: flex; justify-content: center; margin-top: 10px">
-      <el-button @click="handleSave" size="mini">签订承诺书</el-button>
+      <el-button @click="handleSave" size="mini" type="primary">签订承诺书</el-button>
     </div>
   </div>
 </template>

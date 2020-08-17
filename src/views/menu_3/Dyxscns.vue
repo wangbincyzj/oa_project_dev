@@ -21,14 +21,14 @@
               <el-link>已注销</el-link>
             </div>
             <div v-else-if="scope.row.xsqrdMmqrzt===1">
-              <el-button size="mini" @click="handleSetSign(scope.row)">签名</el-button>
-              <el-button size="mini" @click="handleViewSign(scope.row)">查看签名</el-button>
-              <el-button size="mini" @click="handleLogoff(scope.row)">注销</el-button>
-              <el-button size="mini" @click="handlePrint(scope.row)">打印承诺书</el-button>
+              <el-button type="primary" size="mini" @click="handleSetSign(scope.row)">签名</el-button>
+              <el-button type="primary" size="mini" @click="handleViewSign(scope.row)">查看签名</el-button>
+              <el-button type="primary" size="mini" @click="handleLogoff(scope.row)">注销</el-button>
+              <el-button type="primary" size="mini" @click="handlePrint(scope.row)">打印承诺书</el-button>
             </div>
             <div v-else>
-              <el-button size="mini" @click="handleDel(scope.row)">删除</el-button>
-              <el-button size="mini" @click="handleSetPwd(scope.row)">设置密码</el-button>
+              <el-button type="primary" size="mini" @click="handleDel(scope.row)">删除</el-button>
+              <el-button type="primary" size="mini" @click="handleSetPwd(scope.row)">设置密码</el-button>
             </div>
           </template>
 

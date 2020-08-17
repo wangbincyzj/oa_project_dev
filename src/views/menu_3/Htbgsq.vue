@@ -31,9 +31,9 @@
               </el-table-column>
               <el-table-column label="操作" align="center" width="300">
                 <template #default="scope">
-                  <el-button @click="handleSubmit(scope.row, scope.$index)" size="mini" :disabled="scope.row.status===1||scope.row.status===2">提交审核</el-button>
-                  <el-button @click="handleUpdate(scope.row)" size="mini" :disabled="scope.row.status===1||scope.row.status===2">内容修改</el-button>
-                  <el-button @click="handleChangeDetail(scope.row)" size="mini" >变更详情</el-button>
+                  <el-button type="primary" @click="handleSubmit(scope.row, scope.$index)" size="mini" :disabled="scope.row.status===1||scope.row.status===2">提交审核</el-button>
+                  <el-button type="primary" @click="handleUpdate(scope.row)" size="mini" :disabled="scope.row.status===1||scope.row.status===2">内容修改</el-button>
+                  <el-button type="primary" @click="handleChangeDetail(scope.row)" size="mini" >变更详情</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -71,9 +71,9 @@
         </el-table-column>
         <el-table-column label="操作" align="center" width="300">
           <template #default="{row}">
-            <el-button :disabled="row.htBgzt!==0" @click="handleChange(row)" size="mini" >变更买受人</el-button>
-            <el-button :disabled="row.htBgzt!==0" @click="handleChangeContent(row)" size="mini" >变更条款</el-button>
-            <el-button @click="handleDetail(row)" size="mini">合同详情</el-button>
+            <el-button type="primary" :disabled="row.htBgzt!==0" @click="handleChange(row)" size="mini" >变更买受人</el-button>
+            <el-button type="primary" :disabled="row.htBgzt!==0" @click="handleChangeContent(row)" size="mini" >变更条款</el-button>
+            <el-button type="primary" @click="handleDetail(row)" size="mini">合同详情</el-button>
           </template>
         </el-table-column>
       </el-table>

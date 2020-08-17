@@ -5,21 +5,21 @@
         v-loading="loading"
         style="width: 100%"
         :data="tableData">
-        <el-table-column label="模板ID" align="center" prop="htId" width="150"/>
-        <el-table-column label="模板名称" align="center" prop="htMc" width="400"/>
-        <el-table-column label="楼栋名称" align="center" prop="htLdmc" width="150"/>
+        <el-table-column label="模板ID" align="center" prop="htId" width="80"/>
+        <el-table-column label="模板名称" align="left" prop="htMc" />
+        <el-table-column label="楼栋名称" align="left" prop="htLdmc" />
         <el-table-column label="添加时间" align="center" prop="htAddtime" width="150"/>
-        <el-table-column label="状态" align="center"  v-slot="scope">
+        <el-table-column label="流程" align="center"  v-slot="scope">
           {{scope.row.htShzt|shztFilter}}
         </el-table-column>
-        <el-table-column label="操作" align="center">
+        <el-table-column label="操作" align="center" width="400">
           <template #default="{row}">
             <template v-if="row.htShzt===0||row.htShzt===3">
-              <el-button @click="handleUpdate(row)" size="mini">修改</el-button>
+              <el-button @click="handleUpdate(row)" type="primary" size="mini">修改</el-button>
               <el-button @click="handleSubmit(row)" type="primary" size="mini">上报</el-button>
               <el-button @click="handleDelete(row)" type="danger" size="mini">删除</el-button>
             </template>
-            <el-button @click="print(row)" type="info" size="mini">打印合同模板</el-button>
+            <el-button @click="print(row)" type="primary"  size="mini">打印合同模板</el-button>
           </template>
         </el-table-column>
       </el-table>

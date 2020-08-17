@@ -102,7 +102,7 @@
             type="primary"
             size="mini"
             @click="onSubmit"
-          >立即提交
+          >保存
           </el-button>
         </el-button-group>
       </div>

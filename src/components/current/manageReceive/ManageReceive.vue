@@ -6,7 +6,7 @@
     <h3 class="title_">
       <el-button size="mini" @click="handleAdd" type="primary" icon="el-icon-plus">新增收件</el-button>
       <el-button size="mini" @click="handlePrint" type="primary" icon="el-icon-printer">打印收件</el-button>
-      <el-link :underline="false">点击收件项可进行收件图片管理类</el-link>
+      <el-link :underline="false" style="margin-left: 5px">点击收件项可进行收件图片管理</el-link>
     </h3>
 
     <el-collapse accordion @change="handleChange">

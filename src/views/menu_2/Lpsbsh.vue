@@ -104,7 +104,7 @@
           prop="lpzt"
           align="center"
           width="60"
-          label="楼盘状态">
+          label="结盘状态">
         </el-table-column>
         <el-table-column
           prop="yfyj"
@@ -251,7 +251,7 @@
       },
       handleBuildingDetail(index, item){
         this.dialogVisible = true;
-        this.dialogTitle = "楼盘图例";
+        this.dialogTitle = "楼栋详情";
         this.mode = 2;
         this.$nextTick(()=>{
           this.$refs.dialog.fetchData(item.ldxxId);

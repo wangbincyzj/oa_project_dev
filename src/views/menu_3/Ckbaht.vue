@@ -2,28 +2,29 @@
   <div class="myTable-p0">
     <TitleTable title="已完成备案合同">
       <ButtonsArea :row="row" @cancel="setCurrent">
-        <el-button @click="handlePrint(row)" size="mini">打印合同</el-button>
-        <el-button size="mini">打印备案表</el-button>
-        <el-button size="mini" @click="handleDetail(row)">详情</el-button>
+        <el-button type="primary" @click="handlePrint(row)" size="mini">打印合同</el-button>
+        <el-button type="primary" size="mini">打印备案表</el-button>
+        <el-button type="primary" size="mini" @click="handleDetail(row)">详情</el-button>
       </ButtonsArea>
       <el-table
         v-loading="loading"
         ref="table"
         style="width: 100%"
+        highlight-current-row
         @current-change="handleCurrentChange"
         :data="tableData">
         <el-table-column label="合同备案号" align="center" prop="htBah" width="70"/>
-        <el-table-column label="买受人" #default="{row}" align="center" prop="htMc" width="80">
+        <el-table-column label="买受人" #default="{row}" align="center" prop="htMc" width="150">
           <ul>
             <li v-for="item in row.houseOwners">{{item.fwsyqrSyqr}}</li>
           </ul>
         </el-table-column>
-        <el-table-column label="证件号码" #default="{row}" align="center" prop="htMc" >
+        <el-table-column label="证件号码" #default="{row}" align="left" prop="htMc" >
           <ul>
             <li v-for="item in row.houseOwners">{{item.fwsyqrZjhm}}</li>
           </ul>
         </el-table-column>
-        <el-table-column label="楼栋名称" align="center" prop="ldMc" width="80"/>
+        <el-table-column label="楼栋名称" align="left" prop="ldMc" />
         <el-table-column label="房号" align="center" prop="roomFh" width="60"/>
         <el-table-column label="面积" align="center" prop="roomMj" width="80"/>
         <el-table-column label="单价" align="center" prop="roomDj" width="80"/>
@@ -35,10 +36,7 @@
             <i class="el-icon-close" v-else/>
           </template>
         </el-table-column>
-        <el-table-column label="签订时间" align="center" prop="htQdsj" width="130"/>
-        <el-table-column label="状态" align="center" #default="{row}" width="100">
-          {{row.htBazt|shztFilter}}
-        </el-table-column>
+        <el-table-column label="备案时间" align="center" prop="htBasj" width="150"/>
       </el-table>
       <el-pagination
           background

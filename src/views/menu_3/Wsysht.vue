@@ -4,22 +4,23 @@
       <el-alert :closable='false' center>注意：合同签订后首先要通过“完善合同”将其他条款进行完善，确认无误后“上报”合同,点“打印合同”！</el-alert>
       <ButtonsArea  :row.sync="row" @cancel="setCurrent">
         <template v-if="row&&(row.htBazt===0||row.htBazt===3)">
-          <el-button size="mini" @click="handleContract(row)">完善合同</el-button>
-          <el-button size="mini" @click="handleSubmit(row)">上报</el-button>
+          <el-button size="mini" type="primary" @click="handleContract(row)">完善合同</el-button>
+          <el-button size="mini" type="primary" @click="handleSubmit(row)">上报</el-button>
         </template>
-        <el-button @click="handlePrint(row)" size="mini">打印草拟合同</el-button>
-        <el-button @click="handlePrint2(row)" size="mini">打印备案申请表</el-button>
-        <el-button size="mini" @click="handleDetail(row)">详情</el-button>
+        <el-button @click="handlePrint(row)" type="primary" size="mini">打印草拟合同</el-button>
+        <el-button @click="handlePrint2(row)" type="primary" size="mini">打印备案申请表</el-button>
+        <el-button size="mini" type="primary" @click="handleDetail(row)">详情</el-button>
       </ButtonsArea>
       <el-table
         v-loading="loading"
+        size="mini"
         style="width: 100%"
         highlight-current-row
         ref="singleTable"
         @current-change="handleCurrentChange"
         :data="tableData">
         <el-table-column label="合同备案号" align="center" prop="htBah" width="70"/>
-        <el-table-column label="买受人" #default="{row}" align="center" prop="htMc" width="80">
+        <el-table-column label="买受人" #default="{row}" align="left" prop="htMc" width="80">
           <ul>
             <li v-for="item in row.houseOwners">{{item.fwsyqrSyqr}}</li>
           </ul>
@@ -41,20 +42,23 @@
             <i class="el-icon-close" v-else/>
           </template>
         </el-table-column>
-        <el-table-column label="预售资金缴存" align="center" prop="htYsjkzt">
-          <template #default="{row}">
-            <i class="el-icon-check" v-if="row.htYsjkzt||row.ldxxZjjgzt===0"/>
-            <i class="el-icon-close" v-else/>
-          </template>
+        <el-table-column label="缴存情况" align="center" prop="htFkfs" >
+          <el-table-column label="预售资金" align="center" prop="htYsjkzt">
+            <template #default="{row}">
+              <i class="el-icon-check" v-if="row.htYsjkzt||row.ldxxZjjgzt===0"/>
+              <i class="el-icon-close" v-else/>
+            </template>
+          </el-table-column>
+          <el-table-column label="维修资金" align="center" prop="roomWxzjjczt" >
+            <template #default="{row}">
+              <i class="el-icon-check" v-if="row.roomWxzjjczt"/>
+              <i class="el-icon-close" v-else/>
+            </template>
+          </el-table-column>
         </el-table-column>
-        <el-table-column label="维修资金缴存" align="center" prop="roomWxzjjczt" >
-          <template #default="{row}">
-            <i class="el-icon-check" v-if="row.roomWxzjjczt"/>
-            <i class="el-icon-close" v-else/>
-          </template>
-        </el-table-column>
+
         <el-table-column label="签订时间" align="center" prop="htQdsj" width="200"/>
-        <el-table-column label="状态" align="center" #default="{row}">
+        <el-table-column label="流程" align="center" #default="{row}">
           {{row.htBazt|shztFilter}}
         </el-table-column>
         <!--

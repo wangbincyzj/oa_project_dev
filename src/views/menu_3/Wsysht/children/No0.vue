@@ -48,8 +48,8 @@
           <template v-if="!$parent.readOnly">
             <InfoListPlusItem name="买 受 人">
               <div>
-                <el-button @click="add" size="mini">添加</el-button>
-                <el-button @click="manage" size="mini">管理</el-button>
+                <el-button type="primary" @click="add" size="mini">添加</el-button>
+                <el-button type="primary" @click="manage" size="mini">管理</el-button>
               </div>
             </InfoListPlusItem>
             <InfoListPlusItem name=""></InfoListPlusItem>

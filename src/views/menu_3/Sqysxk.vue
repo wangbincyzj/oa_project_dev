@@ -17,19 +17,19 @@
       <el-table-column align="center" label="非住宅面积" prop="xkzFzzmj" />
       <el-table-column align="center" label="非住宅套数" prop="xkzFzzts"  />
       <el-table-column align="center" label="上报时间" prop="xkzSbsj"  />
-      <el-table-column align="center" label="审核状态" prop="shzt"  />
+      <el-table-column align="center" label="当前流程" prop="xkzLiucheng"  />
       <el-table-column align="center" label="收件操作" width="250">
         <template #default="scope">
-          <el-button @click="handleReceive(scope.row)" :disabled="!_enable(scope.row)" size="mini">收件</el-button>
-          <el-button @click="handleManage(scope.row)" :disabled="!_enable(scope.row)" size="mini">收件管理</el-button>
+          <el-button type="primary" @click="handleReceive(scope.row)" :disabled="!_enable(scope.row)" size="mini">收件</el-button>
+          <el-button type="primary" @click="handleManage(scope.row)" :disabled="!_enable(scope.row)" size="mini">收件管理</el-button>
         </template>
       </el-table-column>
       <el-table-column align="center" label="上报操作" width="350">
         <template #default="scope">
-          <el-button @click="handleUpdate(scope.row)" :disabled="!_enable(scope.row)" size="mini">修改</el-button>
-          <el-button @click="handleCommit(scope.row)" :disabled="!_enable(scope.row)" size="mini">上报</el-button>
-          <el-button @click="handleDelete(scope.row)" :disabled="!_enable(scope.row)" size="mini" type="danger">删除</el-button>
-          <el-button @click="handleDetail(scope.row)" size="mini">查看详情</el-button>
+          <el-button type="primary" @click="handleUpdate(scope.row)" :disabled="!_enable(scope.row)" size="mini">修改</el-button>
+          <el-button type="primary" @click="handleCommit(scope.row)" :disabled="!_enable(scope.row)" size="mini">上报</el-button>
+          <el-button  @click="handleDelete(scope.row)" :disabled="!_enable(scope.row)" size="mini" type="danger">删除</el-button>
+          <el-button type="primary" @click="handleDetail(scope.row)" size="mini">查看详情</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -140,9 +140,9 @@
       handleUpdate(item){
         this.readOnly = false
         this.dialogVisible = true;
-        this.dialogTitle = "预售申报 信息修改"
+        this.dialogTitle = "预售申报"
         this.$nextTick(()=>{
-          this.$refs.dialog.setMode(3, item.xkzId, item.logId)
+          this.$refs.dialog.setMode(3, item.xkzId, item.logId, item.xkzYwzh)
         })
       },
       handleUploadPic(){},
@@ -182,9 +182,8 @@
         })
       },
       handleDetail(item){
-        // console.log(item)
         this.dialogVisible = true;
-        this.dialogTitle = "预售申报 信息修改"
+        this.dialogTitle = "预售申报"
         this.readOnly =true
         this.$nextTick(()=>{
           this.$refs.dialog.setMode(3, item.xkzId, item.logId, item.xkzYwzh)

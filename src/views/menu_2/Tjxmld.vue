@@ -12,14 +12,6 @@
             <el-button size="mini" :disabled="projectStatus!==2" @click="addClick" type="primary">添加</el-button></div>
         </div>
       </el-alert>
-      <el-alert
-        type="warning"
-        center
-        :closable="false">
-        <div>
-          <div style="color: red">注意：上报测绘之前请将施工许可证、规划许可证、土地证扫描上传。</div>
-        </div>
-      </el-alert>
     </div>
     <el-table
       :data="tableData"
@@ -73,12 +65,14 @@
         <template slot-scope="scope">
           <el-button
             size="mini"
+            type="primary"
             @click="handleDetail(scope.$index, scope.row)">详情
           </el-button>
 
           <template v-if="scope.row.ldxxShzt===0||scope.row.ldxxShzt===3">
             <el-button
               size="mini"
+              type="primary"
               @click="handleEdit(scope.$index, scope.row)">修改
             </el-button>
             <el-button

@@ -37,15 +37,16 @@ axios.interceptors.response.use(resp => {
 });
 
 // get请求
-let get = function (url, params) {
+let get = function (url, params, config) {
   return axios.get(url, {
-    params
+    params,
+    ...config
   })
 }
 
 // wang dev
-let post = function (url, data) {
-  return axios.post(url, data)
+let post = function (url, data, config) {
+  return axios.post(url, data, config)
 }
 
 

@@ -7,7 +7,8 @@
           <ButtonsArea :row="row" @cancel="setCurrent">
                <el-button
                 size="mini"
-                @click="handlePrint(0, row)">打印通知书
+                type="primary"
+                @click="handlePrint(0, row)">打印开户通知单
               </el-button>
               <el-button
                 size="mini"
@@ -129,9 +130,7 @@
              { id:2,name:"问就是不知道"},
           ]
         },
-        tableData: [
-          {id:1,companyName:"company",bank:"中国工商银行",jgzhName:"监管",jgObject:"object",date:"去年",step:"初审"}
-        ],
+        tableData: [],
         search: "",
         currentRow:"",
         dialogVisible: false,

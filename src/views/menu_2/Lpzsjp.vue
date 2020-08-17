@@ -2,8 +2,9 @@
   <div class="lpzsjp">
     <ContainerTwoType :nav-info="navInfo" @liClick="liClick">
       <TitleTable style="min-height: 500px" v-loading="loading" :title="title">
-        <div>
-          <el-table v-loading="loading" :data="tableData" style="width: 100%">
+        <template #controls>
+          <RoomColor/>
+          <el-table v-loading="loading" size="mini" :data="tableData" style="width: 100%">
             <el-table-column align="center" label="总建筑面积" width="100" prop="ldxxJzmj"></el-table-column>
             <el-table-column align="center" label="总套数" width="100" prop="ldxxZts"></el-table-column>
 
@@ -40,6 +41,8 @@
               </template>
             </div>
           </div>
+        </template>
+        <div>
           <RoomsUnit ref="rooms" enable-loading :delay="1000" enable-choose @roomClick="roomClick">
             <template #default="{room}">
               <div>建面:{{ room.roomJzmj }}</div>
@@ -73,11 +76,12 @@ import LpzsjpDialog from "@/views/menu_2/LpzsjpDialog";
 import CenterButton from "@/components/common/centerButton/CenterButton";
 import Rooms from "@/components/common/rooms/Rooms";
 import RoomsUnit from "@/components/common/rooms/RoomsUnit";
+import RoomColor from "@/components/common/roomColor/RoomColor";
 
 export default {
   name: "Lpzsjp",
   mixins: [mixins.dialogMixin],
-  components: {RoomsUnit, Rooms, CenterButton, LpzsjpDialog, TitleTable, ContainerTwoType},
+  components: {RoomColor, RoomsUnit, Rooms, CenterButton, LpzsjpDialog, TitleTable, ContainerTwoType},
   data() {
     return {
       loading: false,

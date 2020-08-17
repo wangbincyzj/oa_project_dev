@@ -143,7 +143,7 @@
       </el-dialog>
       <div class="buttonGroup" style="margin:0 auto;width:100px;margin-top:20px">
       <el-button-group class="buttons">
-        <el-button type="primary" @click="onSubmit">立即提交</el-button>
+        <el-button type="primary" @click="onSubmit">保存</el-button>
       </el-button-group>
       </div>
       </div>

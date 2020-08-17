@@ -2,7 +2,7 @@
   <div class="layout">
     <div class="title">
       <span>合同条款填写</span>
-      <el-button style="margin-left: 30px" @click="$emit('close')" size="mini" >关闭页面</el-button>
+      <el-button style="margin-left: 30px" @click="$emit('close')" type="primary" size="mini" >关闭页面</el-button>
     </div>
     <div class="hd">
       <div class="nav">

@@ -1,6 +1,6 @@
 <template>
   <div class="myDialog myForm-mb5">
-    <RoomsUnit ref="ref" v-if="mode===1" />
+    <RoomsUnit ref="ref" v-if="mode===1" enable-statistics/>
     <el-form
       v-if="mode===2"
       v-loading="loading"

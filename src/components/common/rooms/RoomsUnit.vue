@@ -1,52 +1,93 @@
 <template>
   <div class="root">
-    <template v-if="floorData.length">
-      <table class="table" style="order: 0">
-        <thead>
-        <tr style="height: 20px">
-          <th class="t-title">楼层</th>
-        </tr>
-        </thead>
-        <tr v-for="floor in floorData">
-          <td class="room">
-            {{ floor.floor }}
-          </td>
-        </tr>
-      </table>
-    </template>
+    <template v-if="enableStatistics">
+      <el-table
+          :data="tableData"
+          size="mini"
+          style="width: 100%">
+        <el-table-column
+            align="center"
+            label="总建筑面积"
+            width="100"
+            prop="ldxxJzmj">
+        </el-table-column>
+        <el-table-column
+            align="center"
+            label="总套数"
+            width="100"
+            prop="ldxxZts">
+        </el-table-column>
 
-    <template v-for="(rooms, unit) in roomData">
-      <table class="table" style="order: 1">
-        <thead>
-        <tr style="height: 20px">
-          <th class="t-title">{{ unit }}单元</th>
-        </tr>
-        </thead>
-        <tr v-for="floor in rooms">
-          <!--          <tr v-for="floor in rooms" :class="{noRoom: !floor.v.length}">-->
-          <!--<td class="title" @click="floorClick(floor)">{{ floor.k }}</td>-->
-          <td class="room"
-              :class="{active: room.active&&enableChoose, [ 'c' + room.roomFwzt]: true}"
-              :rowspan="room.addx + 1"
-              :colspan="room.addy + 1"
-              v-for="room in floor.v" @click="roomClick(room)">
-            <div class="fh">{{ room.roomFh }}</div>
-            <slot :room="room"/>
-          </td>
-        </tr>
-      </table>
+        <el-table-column align="center" label="可售">
+          <el-table-column align="center" prop="ldxxKsmj" label="面积"/>
+          <el-table-column align="center" prop="ksts" label="套数"/>
+        </el-table-column>
+
+        <el-table-column align="center" label="不可售">
+          <el-table-column align="center" prop="bksmj" label="面积"/>
+          <el-table-column align="center" prop="bksts" label="套数"/>
+        </el-table-column>
+        <el-table-column align="center" label="住宅(可售)">
+          <el-table-column prop="zzksmj" align="center" label="面积"/>
+          <el-table-column prop="zzksts" align="center" label="套数"/>
+        </el-table-column>
+        <el-table-column align="center" label="非住宅(可售)">
+          <el-table-column prop="fzzksmj" align="center" label="面积"/>
+          <el-table-column prop="fzzksts" align="center" label="套数"/>
+        </el-table-column>
+      </el-table>
     </template>
+    <div class="lpb">
+      <template v-if="floorData.length">
+        <table class="table" style="order: 0">
+          <thead>
+          <tr style="height: 20px">
+            <th class="t-title">楼层</th>
+          </tr>
+          </thead>
+          <tr v-for="floor in floorData">
+            <td class="room">
+              {{ floor.floor }}
+            </td>
+          </tr>
+        </table>
+      </template>
+      <template v-for="(rooms, unit) in roomData">
+        <table class="table" style="order: 1">
+          <thead>
+          <tr style="height: 20px">
+            <th class="t-title">{{ unit }}单元</th>
+          </tr>
+          </thead>
+          <tr v-for="floor in rooms">
+            <td class="room"
+                :class="{active: room.active&&enableChoose, [ 'c' + room.roomFwzt]: true}"
+                :rowspan="room.addx + 1"
+                :colspan="room.addy + 1"
+                v-for="room in floor.v" @click="roomClick(room)">
+              <div class="fh">{{ room.roomFh }}</div>
+              <slot :room="room"/>
+            </td>
+          </tr>
+        </table>
+      </template>
+    </div>
   </div>
 </template>
 
 <script>
 import {buildingsApi} from "@/api/menu_1/buildings";
+// import {lpglApi} from "@/api/menu_2/lpgl";
 
 export default {
   name: "RoomsUnit",
   props: {
     width: {},
     enableLoading: {
+      type: Boolean,
+      default: false
+    },
+    enableStatistics:{
       type: Boolean,
       default: false
     },
@@ -68,6 +109,7 @@ export default {
       rooms: [],
       roomData: [],
       floorData: [],
+      tableData: [],
     }
   },
   computed: {
@@ -124,6 +166,14 @@ export default {
           this.floorData = []
         }
       })
+      if(this.enableStatistics){
+        this.fetchRoomsInfo(ldId)
+      }
+    },
+    fetchRoomsInfo(ldId) {
+      buildingsApi.getBuildingDetail(ldId).then(ret => {
+        this.tableData = [ret.data];
+      })
     },
     roomClick(room) {
       this.$set(room, "active", !room.active)
@@ -166,8 +216,13 @@ export default {
 }
 
 .root {
+
+}
+.lpb{
   user-select: none;
   display: flex;
+  height: 600px;
+  overflow-y: auto;
 }
 
 .table {

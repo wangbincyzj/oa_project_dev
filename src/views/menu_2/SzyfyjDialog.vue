@@ -6,14 +6,14 @@
       <el-input size="mini" v-model="price" clearable placeholder="请输入要设置的单价"/>
       <el-button  type="default" size="mini" @click="setPrice" :disabled="mode===2">设置单价</el-button>
     </div>
-    <div style="text-align: center; color: red">
+    <div style="text-align: center; color: red; margin-top: 10px">
       <span>提示:点击房间即可选中或者取消房间</span>
     </div>
-    <Rooms ref="rooms" enable-choose v-loading="loading">
+    <RoomsUnit ref="rooms" enable-choose v-loading="loading">
       <template #default="{room}">
         <div>单价:{{room.roomGpdj}}</div>
       </template>
-    </Rooms>
+    </RoomsUnit>
   </div>
 </template>
 
@@ -23,9 +23,10 @@
   import CenterButton from "@/components/common/centerButton/CenterButton";
   import {yfyjApi} from "@/api/menu_2/yfyj";
   import Rooms from "@/components/common/rooms/Rooms";
+  import RoomsUnit from "@/components/common/rooms/RoomsUnit";
   export default {
     name: "SzyfyjDialog",
-    components: {Rooms, CenterButton, RoomStructure},
+    components: {RoomsUnit, Rooms, CenterButton, RoomStructure},
     props:{
       mode:{
         required: true  // 1,楼盘表  2,楼栋详情

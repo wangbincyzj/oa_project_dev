@@ -126,7 +126,7 @@
       </el-tab-pane>-->
     </el-tabs>
 
-    <CenterButton v-if="mode!==2" @btnClick="btnClick" title="提交"/>
+    <CenterButton v-if="mode!==2" @btnClick="btnClick" title="保存"/>
   </div>
 </template>
 

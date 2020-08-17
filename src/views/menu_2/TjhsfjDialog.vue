@@ -24,8 +24,8 @@
         </el-table-column>
       </el-table>
       <div v-if="buildingInfo&&!buildingInfo.ldxxLdjpzt" class="buttons">
-        <el-button size="mini" icon="el-icon-office-building" @click="handleAuto" :type="mode===1?'warning':''">自动生成</el-button>
-        <el-button size="mini" icon="el-icon-thumb" @click="handleInput" :type="mode===2?'warning':''">手动输入</el-button>
+        <el-button size="mini" icon="el-icon-office-building"  @click="handleAuto" :type="mode===1?'warning':'primary'">批量生成</el-button>
+        <el-button size="mini" icon="el-icon-thumb" @click="handleInput" :type="mode===2?'warning':'primary'">单个添加</el-button>
       </div>
       <div v-else style="display: flex; justify-content: center">
         <el-link disabled style="line-height: 3">该楼盘已自审,无法生成房间</el-link>
@@ -118,7 +118,7 @@
               <el-input v-model="form.roomFfbytmj"></el-input>
             </el-form-item>
           </el-form>
-          <CenterButton @btnClick="handleAdd" :loading="buttonLoading" title="自动生成房间"/>
+          <CenterButton @btnClick="handleAdd" :loading="buttonLoading" title="保存"/>
         </div>
         <div class="auto" v-if="mode===2" key="2">
           <el-form
@@ -201,7 +201,7 @@
               </el-select>
             </el-form-item>
           </el-form>
-          <CenterButton @btnClick="handleAdd2" :loading="buttonLoading" title="添加房间"/>
+          <CenterButton @btnClick="handleAdd2" :loading="buttonLoading" title="保存"/>
         </div>
       </transition>
     </div>
