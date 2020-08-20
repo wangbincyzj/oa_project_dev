@@ -31,7 +31,6 @@
           </el-table-column>
         </el-table>
 
-        c
 
           <el-dialog
           :title="dialogTitle"

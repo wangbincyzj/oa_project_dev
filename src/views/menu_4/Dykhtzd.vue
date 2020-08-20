@@ -118,7 +118,7 @@
 
 
   export default {
-    name: "sqjgzh",
+    name: "dykhtzd",
     mixins: [mixins.dialogMixin,mixins.myPagerMixin, mixins.tableMixin],
     components: {DykhtzdDialog, TitleTable, ContainerTwoType,ButtonsArea,Why},
     data() {
@@ -153,6 +153,9 @@
         zjjgzhJgbh:"",
         zjjgzhKhtime:"",
         date:"",
+        zjjgzhWdmc:"",
+        zjjgzhKhrxm:"",
+        zjjgzhWddz:"",
       }
     },
     created() {
@@ -217,7 +220,7 @@
         this.zjjgzhKhrxm = row.zjjgzhKhrxm;
         this.zjjgzhKhtime = row.zjjgzhKhtime;
         this.$nextTick(()=>{
-          this.$refs.dialog.setMode(2, row.zjjgzhId);
+          this.$refs.dialog.setMode(2, row.zjjgzhId,row.zjjgzhYwzh,row.logId);
           this.$refs.dialog.reset();
         })
       },

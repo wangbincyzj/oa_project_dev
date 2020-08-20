@@ -171,58 +171,10 @@
         </el-tab-pane>
 
         <el-tab-pane label="2.收件情况" name="second">
-          <div class="receiveList">
-            <div class="dialogItem">
-              <div class="itemIndex">2</div>
-              <div class="itemTitle">收件列表</div>
-            </div>
-            <div class="item" v-for="(item,index) in businessReceives">
-              <div class="no">
-                <span>{{index+1}}</span>
-              </div>
-              <div class="info">
-                <div class="name">{{item.shoujianTitle}}</div>
-                <div class="attr">
-                  <div>性质:<span>{{item.shoujianSjxz}}</span></div>
-                  <div>份数:<span>{{item.shoujianFenshu}}</span></div>
-                </div>
-              </div>
-
-            </div>
-          </div>
           <ReceiveList ref="ref3"/>
         </el-tab-pane>
         <el-tab-pane label="3.审核意见" name="third">
-          <div>
-            <div class="dialogItem">
-              <div class="itemIndex">3</div>
-              <div class="itemTitle">审核意见</div>
-            </div>
-            <el-table :data="opinionList" size="mini">
-              <el-table-column label="流程" align="center" prop="processName"/>
-              <el-table-column label="时间" align="center" prop="approveTime" width="150">
-                <template #default="{row}">
-                  <div v-if="row.processName==='受理'">
-                    <div>{{row.approveTime}}</div>
-                    <div v-if="row.promiseDate">允诺时间:{{row.promiseDate}}</div>
-                  </div>
-                  <div v-else>
-                    <div>{{row.approveTime}}</div>
-                  </div>
-                </template>
-              </el-table-column>
-              <el-table-column label="审核人" align="center" prop="approvePerson"/>
-              <el-table-column label="结果" align="center" prop="processResult">
-                <template #default="{row}">
-                  <div v-if="row.processResult===1 && row.processName!=='受理'">通过</div>
-                  <div v-if="row.processResult===1 && row.processName==='受理'">受理</div>
-                  <div class="danger" v-if="row.processResult===2 && row.processName!=='受理'">驳回</div>
-                  <div class="danger" v-if="row.processResult===2 && row.processName==='受理'">退件</div>
-                </template>
-              </el-table-column>
-              <el-table-column label="意见" align="center" prop="approveOpinion" width="500"/>
-            </el-table>
-          </div>
+         <OpinionList ref="ref4" />
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -247,11 +199,11 @@
   import ConfirmReceive from "@/components/current/confirmReceive/ConfirmReceive";
   import ManageReceive from "@/components/current/manageReceive/ManageReceive";
   import ReceiveList from "@/components/current/receiveList/ReceiveList";
-
+  import OpinionList from "@/components/current/opinionList/OpinionList";
 
   export default {
     name: "TjjgzhDialog",
-    components: {ReceiveList, ManageReceive, ConfirmReceive, WbTable, ReceiveListPic, UploadCpn, InfoList, CenterButton},
+    components: {ReceiveList, ManageReceive, ConfirmReceive,OpinionList, WbTable, ReceiveListPic, UploadCpn, InfoList, CenterButton},
     props: {
       zjjgzhId: {type: String}, //type: [String, Number]
       zjjgzhYwzh: {type: String},
@@ -607,7 +559,7 @@
         } else if (mode === 2) {
           this.DetailData(id);
           this.logId = args[0]
-          this.fetchOpinion();
+          this.$refs.ref4.fetchData(this.logId);
 
           this.$refs.ref3.fetchData(args[1])
         } else if (mode === 3) {

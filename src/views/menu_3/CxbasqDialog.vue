@@ -1,6 +1,6 @@
 <template>
   <div class="cxbasqDialog">
-    <div v-if="mode===0">   <!--0 申请-->
+    <div v-if="mode===0&&dialogType===0">   <!--0 申请-->
       <el-form ref="form" :model="form" label-width="80px">
         <el-form-item label="申请人" >
           <el-input disabled v-model="form.name"/>
@@ -11,7 +11,7 @@
       </el-form>
       <CenterButton :loading="loading" @btnClick="handleSubmit" title="提交申请"/>
     </div>
-    <div v-if="mode===1">  <!--1 详情-->
+    <div v-if="mode===1&&dialogType===1">  <!--1 详情-->
       <el-tabs value="first" type="card" >
         <el-tab-pane label="基本信息" name="first">
           <InfoListPlus>
@@ -20,21 +20,29 @@
           </InfoListPlus>
         </el-tab-pane>
         <el-tab-pane label="收件图片" name="second">
-          <InfoListPlus>
+           <ReceiveList ref="receiveList"/>
+          <!-- <InfoListPlus>
             <template slot="title">收件图片</template>
-          </InfoListPlus>
+          </InfoListPlus> -->
         </el-tab-pane>
         <el-tab-pane label="审核意见" name="third">
-          <InfoListPlus>
+          <OpinionList ref="opinionList"/>
+          <!-- <InfoListPlus>
             <template slot="title">审核意见</template>
             <template v-for="item in form2.approveProcess">
               <InfoListPlusItem :name="`${item.processName}人`">{{item.approvePerson}}</InfoListPlusItem>
               <InfoListPlusItem :name="`${item.processName}时间`">{{item.approveTime}}</InfoListPlusItem>
               <InfoListPlusItem oneline :name="isReject(item.approveOpinion) ? '驳回原因' :`${item.processName}意见`" :type="isReject(item.approveOpinion) ? 'danger': null">{{item.approveOpinion|opinionFilter}}</InfoListPlusItem>
             </template>
-          </InfoListPlus>
+          </InfoListPlus> -->
         </el-tab-pane>
       </el-tabs>
+    </div>
+    <div v-if="dialogType===4">
+      <ConfirmReceive ref="ref1" :ywzh="ywzh" type="CONTART_REVOKE"/>
+    </div>
+    <div v-if="dialogType===9">
+      <ManageReceive ref="ref2"/>
     </div>
   </div>
 </template>
@@ -44,12 +52,18 @@
   import {yushouContractApi} from "@/api/menu_3/yushowContract";
   import InfoListPlus from "@/components/common/infoListPlus/InfoListPlus";
   import InfoListPlusItem from "@/components/common/infoListPlus/InfoListPlusItem";
+  import ConfirmReceive from "@/components/current/confirmReceive/ConfirmReceive";
+  import ManageReceive from "@/components/current/manageReceive/ManageReceive";
+  import ReceiveList from "@/components/current/receiveList/ReceiveList";
+  import OpinionList from "@/components/current/opinionList/OpinionList";
+
   export default {
     name: "CxbasqDialog",
-    components: {InfoListPlusItem, InfoListPlus, CenterButton},
+    components: {InfoListPlusItem, InfoListPlus, CenterButton,ConfirmReceive,ManageReceive,ReceiveList,OpinionList},
     props:{
       htId: {},
-      visible: {}
+      visible: {},
+      dialogType:{},
     },
     data() {
       return {
@@ -111,6 +125,17 @@
         this.mode = mode;
         if(mode===1){
           this.fetchDetail(args[0])
+          this.$nextTick(()=>{
+          this.$refs.receiveList.fetchData(args[1])
+          this.$refs.opinionList.fetchData(args[2])
+          })
+          
+        }else if (mode === 4) {
+          this.retId = id;
+          this.ywzh = args[1]
+          this.$refs.ref1.fetchDefault(args[0]);
+        } else if (mode === 9) {
+          this.$refs.ref2.fetchConfirm(args[1])
         }
       },
       fetchDetail(htId) {

@@ -8,9 +8,10 @@
           <SearchBarItem prefix="备案号"/>
         </SearchBar>
         <ButtonsArea :row="row" @cancel="setCurrent">
+          
           <template v-if="(row.htCxzt===0||row.htCxzt)&&row.htCxzt!==1&&row.htCxzt!==2">
-            <el-button type="primary"  size="mini">传图</el-button>
-            <el-button type="primary"  size="mini">管图</el-button>
+            <el-button type="primary"  size="mini"  @click="handleGetFile(row)">确认收件</el-button>
+            <el-button type="primary"  size="mini" @click="handleManageFile(row)">管理收件</el-button>
             <el-button type="primary" @click="handleSubmit(row)" size="mini">上报</el-button>
           </template>
           <el-button type="primary" v-if="row.htCxzt!==null" @click="handleChangeDetail(row)" size="mini">变更详情</el-button>
@@ -63,6 +64,7 @@
         <CxbasqDialog
           ref="dialog"
           :htId="htId"
+          :dialogType="dialogType"
           :visible.sync="dialogVisible"
           @submitSuccess="submitSuccess"/>
       </el-dialog>
@@ -111,8 +113,9 @@
         loading: false,
         active: false,
         htId: null,
-        dialogWidth: "600px",
+        dialogWidth: "800px",
         dialogTitle: "",
+        dialogType:null,
         msr: null,
         zjh: null,
         bah: null,
@@ -143,6 +146,7 @@
       handleChange(item){
         this.dialogVisible = true;
         this.htId = item.htId;
+        this.dialogType=0;
         this.dialogWidth = "600px"
         this.dialogTitle = "变更退房申请"
         this.$nextTick(()=>{
@@ -169,9 +173,26 @@
       handleChangeDetail(item){
         this.dialogVisible = true;
         this.htId = item.htId;
-        this.dialogWidth = "1200px"
+        this.dialogWidth = "1200px";
+        this.dialogType=1;
         this.$nextTick(()=>{
-          this.$refs.dialog.setMode(1, item.htId)
+          this.$refs.dialog.setMode(1, item.htId,item.htBh,item.logId)
+        })
+      },
+      handleGetFile(row) {
+        this.dialogVisible = true;
+        this.dialogTitle = "确认收件";
+        this.dialogType = 4;
+        this.$nextTick(() => {
+          this.$refs.dialog.setMode(4, row.htId, row.htBh);
+        })
+      },
+      handleManageFile(row) {
+        this.dialogVisible = true;
+        this.dialogTitle = "管理收件";
+        this.dialogType = 9;
+        this.$nextTick(() => {
+          this.$refs.dialog.setMode(9, row.htId, row.htBh);
         })
       },
       submitSuccess(){

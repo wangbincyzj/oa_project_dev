@@ -46,7 +46,8 @@ export default {
       group:[
         {title: "申请解除监管", path: "sqjcjg"},
         {title: "管理解除申请", path: "gljcsq"},
-       
+        {title: "申请楼栋退款", path: "sqldtk"},
+        // {title: "管理楼栋退款", path: "glldtk"},
       ]
     },
     {

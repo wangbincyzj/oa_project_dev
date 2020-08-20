@@ -1,5 +1,5 @@
 <template>
-  <div class="tjsysb">
+  <div class="sqldtk">
     <!-- <ContainerTwoType
      
       :nav-info="navInfo"
@@ -56,7 +56,7 @@
                           <el-button
                               size="mini"
                               type="primary"
-                              @click="handleAdd(scope.$index, scope.row)">新增使用
+                              @click="handleAdd(scope.$index, scope.row)">申请退款
                           </el-button>
                         </template>
                       </el-table-column>
@@ -70,22 +70,27 @@
         </el-table-column>
         <el-table-column
             label="楼栋名称"
+            align="center"
             prop="ldxxMc">
         </el-table-column>
         <el-table-column
             label="建筑面积"
+            align="center"
             prop="ldxxJzmj">
         </el-table-column>
         <el-table-column
             label="监管总额"
+            align="center"
             prop="jianguanJe">
         </el-table-column>
         <el-table-column
             label="使用总额"
+            align="center"
             prop="shiyongJe">
         </el-table-column>
         <el-table-column
             label="退款总额"
+            align="center"
             prop="tuikuanJe">
         </el-table-column>
         <el-table-column
@@ -99,7 +104,11 @@
             label="操作"
         >
           <template slot-scope="scope">
-
+            <!-- <el-button
+                size="mini"
+                type="primary"
+                @click="handleAdd(scope.$index, scope.row)">申请退款
+            </el-button> -->
             <el-button
                 size="mini"
                 type="primary"
@@ -126,7 +135,7 @@
           :visible.sync="dialogVisible"
           @close="dialogVisible = false"
       >
-        <TjsysbDialog
+        <SqldtkDialog
             ref="dialog"
             :dialog-type="dialogType"
             :jiaocunYhid="jiaocunYhid"
@@ -146,14 +155,14 @@
 <script>
 import ContainerTwoType from "@/components/current/containerTwoType/ContainerTwoType";
 import TitleTable from "@/components/current/titleTable/TitleTable";
-import TjsysbDialog from "@/views/menu_4/TjsysbDialog";
-import {tjsysbApi} from "@/api/menu_4/tjsysb";
+import SqldtkDialog from "@/views/menu_4/SqldtkDialog";
+import {sqldtkApi} from "@/api/menu_4/sqldtk";
 import {mixins} from "@/utils/mixins";
 
 export default {
-  name: "tjsysb",
+  name: "sqldtk",
   mixins: [mixins.dialogMixin],
-  components: {TjsysbDialog, TitleTable, ContainerTwoType},
+  components: {SqldtkDialog, TitleTable, ContainerTwoType},
   data() {
     return {
       navInfo: {
@@ -197,7 +206,7 @@ export default {
   methods: {
 
     fetchData() {
-      tjsysbApi.getBuildingByXmbh(this.currentPage, this.pageSize, this.$store.state.projectData.xmxxXmbh).then(ret => {
+      sqldtkApi.getBuildingByXmbh(this.currentPage, this.pageSize, this.$store.state.projectData.xmxxXmbh,0).then(ret => {
         this.total = ret.total;
         this.pages = ret.data.pages;
         this.tableData = ret.data.map(item => ({
@@ -210,17 +219,11 @@ export default {
 
     handleAdd(index, row) {
       console.log(row);
-      this.jiaocunYhid = row.jiaocunYhid;
-      this.shiyongSbje = row.shiyongSbje;
-      this.jiaocunKhyh = row.jiaocunKhyh;
-      this.jiaocunJkje = row.jiaocunJkje;
-      this.jiaocunZhmc = row.jiaocunZhmc;
-      this.jiaocunJkzh = row.jiaocunJkzh;
       this.dialogVisible = true;
-      this.dialogTitle = "添加申报使用";
+      this.dialogTitle = "申请楼栋退款";
       this.dialogType = 1;
       this.$nextTick(() => {
-        this.$refs.dialog.setMode(1, row.ldbh)
+        this.$refs.dialog.setMode(1, row.ldbh,row.jiaocunJkzh)
       })
     },
     handleDetail(index, row) {
@@ -228,19 +231,16 @@ export default {
       this.dialogTitle = "详情";
       this.dialogType = 2;
       this.$nextTick(() => {
-        this.$refs.dialog.setMode(2, this.currentRow.ldId);
+        this.$refs.dialog.setMode(2, row.ldId);
       })
     },
     showAccount(row, expandRow) {
       console.log(row.ldxxLdbh);
       this.ldbh = row.ldxxLdbh;
       console.log("taetae");
-      tjsysbApi.getAccountByLd(row.ldxxLdbh).then(ret => {
-        // row.AccountTable = ret.data
-        console.log(ret)
+      sqldtkApi.getAccountByLd(row.ldxxLdbh).then(ret => {
         this.$set(row, "AccountTable", ret.data)
-        console.log(row);
-
+      
       });
 
 

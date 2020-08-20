@@ -1,9 +1,14 @@
 <template>
  <div>
   <div  v-if="dialogType===1">
-    <el-form
+        <el-tabs
+        type="border-card"
+        value="first"
+      >
+      <el-tab-pane label="1.楼栋资金信息详情" name="first">
+          <el-form
         label-position="right"
-        label-width="160px"
+        label-width="150px"
         size="mini"
         inline
         :model="form">
@@ -62,21 +67,21 @@
         <el-form-item  label="重点监管金额">
           <el-input v-model="form.zdzjjgje" disabled></el-input>
         </el-form-item>
+        </el-form>
+        </el-tab-pane>
+        <el-tab-pane label="2.申报使用信息" name="second">
+          <el-form
+        label-position="right"
+        label-width="150px"
+        size="mini"
+        inline
+        :model="form">
+         <p style="color:red;width:400px;margin:0 auto;margin-top:20px;margin-bottom:20px">注意：可使用资金为{{this.surplus}},申请使用的资金不能超过可使用资金</p>
+        
         <el-form-item  label="可使用资金">
           <el-input v-model="form.ksyje" disabled></el-input>
         </el-form-item>
-        <el-form-item  label="监管银行" >
-          <el-input v-model="form.shiyongJgyhmc" disabled></el-input>
-        </el-form-item>       
-        <el-form-item label="楼栋名称" >
-          <el-input v-model="form.shiyongLdmc" disabled></el-input>
-        </el-form-item>
-        <el-form-item  label="监管账户">
-          <el-input v-model="form.shiyongJgzhmc" disabled></el-input>
-        </el-form-item>
-        <el-form-item  label="监管账号">
-          <el-input v-model="form.shiyongJgzh" disabled></el-input>
-        </el-form-item>
+        
          <el-form-item  label="监管资金类型">
           <template>
             <el-radio v-model="form.shiyongBflx" :label=0 @click.native="caculate1">重点监管</el-radio>
@@ -84,8 +89,7 @@
           </template>
         </el-form-item>
         
-        <p style="color:red;width:500px;margin:0 auto;margin-top:20px;margin-bottom:20px">注意：可使用资金为{{this.surplus}},申请使用的资金不能超过可使用资金</p>
-        
+       
         <el-form-item  label="划入账户名称">
           <el-input v-model="form.shiyongHrzhmc" style="width:130px"></el-input>
           <el-button @click="showAccount">选择</el-button>
@@ -125,7 +129,11 @@
         <el-form-item  label="项目进度描述">
           <el-input v-model="form.shiyongJdms" type="textarea" style="width:200px"></el-input>
         </el-form-item>
-      </el-form>
+        </el-form>
+         </el-tab-pane>
+        </el-tabs>
+      
+     
        <el-dialog
         append-to-body
         :title="title"
@@ -141,11 +149,8 @@
           :xmxxXmbh="xmxxXmbh"
         />
       </el-dialog>
-      <div class="buttonGroup" style="margin:0 auto;width:100px;margin-top:20px">
-      <el-button-group class="buttons">
-        <el-button type="primary" @click="onSubmit">保存</el-button>
-      </el-button-group>
-      </div>
+      <CenterButton @btnClick="onSubmit" title="保存"/>
+     
       </div>
    
     <div class="detail myForm-mb5 myDialog" v-if="dialogType===2" >

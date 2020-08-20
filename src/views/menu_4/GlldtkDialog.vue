@@ -28,6 +28,15 @@
         <el-form-item label="可使用资金">
           <el-input v-model="form.ksyje" disabled></el-input>
         </el-form-item>
+        <el-form-item  label="监管银行" >
+          <el-input v-model="form.shiyongJgyhmc" disabled></el-input>
+        </el-form-item> 
+        <el-form-item  label="监管账户">
+          <el-input v-model="form.shiyongJgzhmc" disabled></el-input>
+        </el-form-item>
+        <el-form-item  label="监管账号">
+          <el-input v-model="form.shiyongJgzh" disabled></el-input>
+        </el-form-item>
         <el-form-item label="监管资金类型">
           <template>
             <el-radio v-model="form.shiyongBflx" :label=0 @click.native="caculate1">重点监管</el-radio>
@@ -175,7 +184,36 @@
            <ReceiveList ref="ref3"/>
         </el-tab-pane>
          <el-tab-pane label="3.审核意见" name="third">
-         <OpinionList ref="ref4" />
+        <div>
+          <div class="dialogItem">
+            <div class="itemIndex">3</div>
+            <div class="itemTitle">审核意见</div>
+          </div>
+          <el-table :data="opinionList" size="mini">
+            <el-table-column label="流程" align="center" prop="processName"/>
+            <el-table-column label="时间" align="center" prop="approveTime" width="150">
+              <template #default="{row}">
+                <div v-if="row.processName==='受理'">
+                  <div>{{row.approveTime}}</div>
+                  <div v-if="row.promiseDate">允诺时间:{{row.promiseDate}}</div>
+                </div>
+                <div v-else>
+                  <div>{{row.approveTime}}</div>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column label="审核人" align="center" prop="approvePerson"/>
+            <el-table-column label="结果" align="center" prop="processResult">
+              <template #default="{row}">
+                <div v-if="row.processResult===1 && row.processName!=='受理'">通过</div>
+                <div v-if="row.processResult===1 && row.processName==='受理'">受理</div>
+                <div class="danger" v-if="row.processResult===2 && row.processName!=='受理'">驳回</div>
+                <div class="danger" v-if="row.processResult===2 && row.processName==='受理'">退件</div>
+              </template>
+            </el-table-column>
+            <el-table-column label="意见" align="center" prop="approveOpinion" width="500"/>
+          </el-table>
+        </div>
       </el-tab-pane>
       </el-tabs>
     </div>
@@ -198,10 +236,10 @@
   import ConfirmReceive from "@/components/current/confirmReceive/ConfirmReceive";
   import ManageReceive from "@/components/current/manageReceive/ManageReceive";
   import ReceiveList from "@/components/current/receiveList/ReceiveList";
-  import OpinionList from "@/components/current/opinionList/OpinionList";
+
   export default {
     name: "GlsysbDialog",
-    components: {CenterButton, InfoList, AccountDialog,ConfirmReceive,ManageReceive,ReceiveList,OpinionList},
+    components: {CenterButton, InfoList, AccountDialog,ConfirmReceive,ManageReceive,ReceiveList},
     props: {
       dialogType: {
         default: 1, // 添加
@@ -325,7 +363,7 @@
             this.form.shiyongKfs = ret.data.building.shiyongKfs;
             this.form.ksyje = ret.data.building.ksyje;
           });
-          this.$refs.ref4.fetchData(logId);
+          this.fetchOpinion(logId);
         
         }else if(mode===2){
            this.shiyongId = id;
@@ -336,7 +374,7 @@
             this.form1.shiyongKfs = ret.data.building.shiyongKfs;
             this.form1.ksyje = ret.data.building.ksyje;
           });
-          this.$refs.ref4.fetchData(logId);
+          this.fetchOpinion(logId);
           this.$refs.ref3.fetchData(ywzh);
         }else if (mode === 4) {
           this.retId = id;

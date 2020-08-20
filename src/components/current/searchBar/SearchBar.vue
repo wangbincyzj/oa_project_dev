@@ -17,6 +17,8 @@
     <div class="searchControls">
       <el-button icon="el-icon-search" v-if="mode==='comb'" size="mini" :type="searchBtnType" @click="combSearch">查找</el-button>
       <el-button icon="el-icon-refresh-right" size="mini" :type="clearBtnType" @click="combClear">重置</el-button>
+      <el-button size="mini" :type="searchBtnType" @click="print"  v-if="isPrint==1" @mouseover.native = "getDate">{{name}}</el-button>
+      <span style="color:red;font-size:12px;line-height:30px" v-if="tips==1">(建议横向打印)</span>
     </div>
   </div>
 </template>
@@ -28,6 +30,18 @@ export default {
     mode: {
       type: String,
       default: "comb"  // 'each'
+    },
+    name:{
+      type: String,
+      default: ""
+    },
+    isPrint:{
+       type: String,
+       default:"0" 
+    },
+    tips:{
+       type: String,
+       default: "0"  
     },
     searchBtnType: {
       type: String,
@@ -52,7 +66,8 @@ export default {
     padding: {
       type: String,
       default: "5px"
-    }
+    },
+    date:"",
   },
   computed: {
     items() {
@@ -61,13 +76,18 @@ export default {
   },
   methods: {
     combSearch() {
-      console.log(this.items)
       this.$emit("combSearch", this.items.map(item => item.value || null))
     },
     combClear() {
       this.items.forEach(item => item.value = "")
       this.$emit("combClear")
-    }
+    },
+     getDate(){
+      this.$emit("getDate")
+     },
+    print() {
+      this.$emit("print")
+    },
   }
 }
 </script>
