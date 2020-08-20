@@ -70,6 +70,7 @@
       </ul>
     </section>
 
+    <div style="page-break-after: always;"></div>
     <!--说明-->
     <section class="s3">
       <h2>说明</h2>
@@ -85,6 +86,7 @@
       </ul>
     </section>
 
+    <div style="page-break-after: always;"></div>
     <!--专业术语解释-->
     <section class="s4">
       <h2>专业术语解释</h2>
@@ -103,6 +105,7 @@
         <li><p>12.售后包租：是指房地产开发企业以在一定期限内承租或者代为出租买受人所购该企业商品房的方式销售商品房的行为。</p></li>
       </ul>
     </section>
+    <div style="page-break-after: always;"></div>
 
     <!--正文 商 品 房 买 卖 合 同(预 售)-->
     <section class="s5">

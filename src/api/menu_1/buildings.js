@@ -5,9 +5,15 @@ let getRooms = function (ldId) {
   return requests.get("data_center/room/selectList", {ldId})
 }
 
-let getRoomsUnit = function (ldId){
-  return requests.get("data_center/room/selectList2", {ldId})
+/**
+ * 以单元号分开显示的楼盘变
+ * @param ldId
+ * @param type 1:已到账和未到账信息
+ */
+let getRoomsUnit = function (ldId, type=null){
+  return requests.get("data_center/room/selectList2", {ldId, type})
 }
+
 
 /**
  * 根据楼栋ID获取楼顶详情

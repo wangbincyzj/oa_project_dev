@@ -30,11 +30,15 @@ html{
     background-color: #4e75a2!important;
   }
   .el-menu-item{
-    background-color: #022955!important;
+    background-color: #06407b !important;
     font-size: 13px!important;
+    padding-left: 45px!important;
   }
   .el-menu-item:hover{
     background-color: #4e6989!important;
+  }
+  .el-submenu__icon-arrow{
+    color: #fff!important;
   }
 }
 
@@ -154,21 +158,40 @@ html{
     padding: 0 20px;
     > div.el-form-item{
       margin-right: 0!important;
+      margin-bottom: 7px!important;
       width: 50%;
+      > .el-form-item__content{
+        width: 224px!important;
+        .el-select--mini{
+          width: 100%;
+        }
+        .el-date-editor{
+          width: 100%;
+        }
+      }
     }
   }
 }
 
 
 /*-----表格选中颜色-----*/
-.el-table__body tr.current-row>td, {
-  background:rgba(226,245,253,1)!important;
-  color: $brand!important;
+.el-table{
+  th.is-left:first-child, td.is-left:first-child{
+    padding-left: 20px!important;
+  }
+  .el-table__body {
+    tr.current-row>td {
+      background: #0085EB !important;
+      color: white!important;
+    }
+  }
 }
 
-.el-table--enable-row-hover .el-table__body tr:hover>td{
-  background-color: #E2F5FD!important;
-}
+
+
+
+
+
 
 
 

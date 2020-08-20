@@ -20,7 +20,7 @@
         @current-change="handleCurrentChange"
         :data="tableData">
         <el-table-column label="合同备案号" align="center" prop="htBah" width="70"/>
-        <el-table-column label="买受人" #default="{row}" align="left" prop="htMc" width="80">
+        <el-table-column label="买受人" #default="{row}" align="center" prop="htMc" width="80">
           <ul>
             <li v-for="item in row.houseOwners">{{item.fwsyqrSyqr}}</li>
           </ul>
@@ -61,18 +61,6 @@
         <el-table-column label="流程" align="center" #default="{row}">
           {{row.htBazt|shztFilter}}
         </el-table-column>
-        <!--
-        <el-table-column label="操作" align="center" width="300px">
-          <template #default="{row}">
-            <template v-if="row.htBazt===0||row.htBazt===3">
-              <el-button size="mini" @click="handleContract(row)">完善合同</el-button>
-              <el-button size="mini" @click="handleSubmit(row)">上报</el-button>
-            </template>
-            <el-button @click="handlePrint(row)" size="mini">打印草拟合同</el-button>
-            <el-button @click="handlePrint2(row)" size="mini">打印备案申请表</el-button>
-            <el-button size="mini" @click="handleDetail(row)">详情</el-button>
-          </template>
-        </el-table-column>-->
       </el-table>
       <el-pagination
           background
@@ -90,7 +78,7 @@
         <WsyshtLayout ref="ref1" :htId="htId" @close="close" :read-only="readOnly"/>
       </div>
     </transition>
-    <el-dialog @opened="_drag" :visible.sync="dialogVisible" width="1200px" title="合同上报确认" center>
+    <el-dialog :visible.sync="dialogVisible" width="1200px" title="合同上报确认" center>
       <WsyshtDialog :htId="htId" @submitSuccess="submitSuccess" ref="dialog"/>
     </el-dialog>
   </div>

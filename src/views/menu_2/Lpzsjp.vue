@@ -124,7 +124,6 @@ export default {
   },
   methods: {
     handleMerge() {
-      console.log(111)
       let selectedRooms = this.$refs.rooms.selectedRooms;
       console.log(selectedRooms)
       if (selectedRooms.length !== 2) {

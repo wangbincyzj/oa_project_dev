@@ -71,8 +71,9 @@
     </div>
     <div class="dialog-title">合同提交确认</div>
     <div class="dialog-input myClass">
-      <span>合同确认密码</span><input v-model="pwd" style="width: 224px; height: 30px" type="text">
+      <span>合同确认密码</span><input @focus="handleFocus" @blur="handleBlur" v-model="pwd" style="width: 224px; height: 30px" type="text">
     </div>
+    <audio ref="audio"  ></audio>
     <ConfirmBtn @click="handleClick"/>
   </div>
 </template>
@@ -92,7 +93,10 @@ export default {
       active: 0,
       baseData: {},
       loading: false,
-      pwd: ""
+      pwd: "",
+      audio: null,
+      error: "http://122.226.161.16/amobile.music.tc.qq.com/C400004Fimy419PpsA.m4a?guid=2796982635&vkey=22790868699630B964941FD64F3D87E531A3226605BF49E11CC422F79534A7701515729A11903F675D6BC34F342A82878CC6569030722021&uin=0&fromtag=66",
+      custom: "http://122.226.161.16/amobile.music.tc.qq.com/C400001PLl3C4gPSCI.m4a?guid=2796982635&vkey=40F0B42BF6CEF28FFA9236C3334E5A530655FF622DC6FB182BD3CFB32715ED31F2E683A5AB01E676FA058511A911A6FB7F5A56E6B979937B&uin=0&fromtag=66",
     }
   },
   props: {
@@ -178,14 +182,25 @@ export default {
         this.$message.error("请填写合同密码")
       }else{
         yushouContractApi.submitContract(this.htId, 1, this.pwd).then(ret=>{
+          console.log(ret)
           if(ret.code===200){
             this.$message.success("上报成功")
             this.$emit("submitSuccess")
           }else{
-            this.$message.error(ret.message||"上报失败")
+            this.$refs.audio.src = this.error;
+            this.$refs.audio.currentTime = 109
+            this.$refs.audio.play()
           }
         })
       }
+    },
+    handleFocus() {
+      this.$refs.audio.src = this.custom
+      this.$refs.audio.currentTime = 90
+      this.$refs.audio.play()
+    },
+    handleBlur() {
+      this.$refs.audio.pause()
     }
   }
 }

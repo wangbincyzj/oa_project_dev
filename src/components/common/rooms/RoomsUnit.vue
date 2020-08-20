@@ -64,6 +64,7 @@
                 :class="{active: room.active&&enableChoose, [ 'c' + room.roomFwzt]: true}"
                 :rowspan="room.addx + 1"
                 :colspan="room.addy + 1"
+                :key="room.roomId"
                 v-for="room in floor.v" @click="roomClick(room)">
               <div class="fh">{{ room.roomFh }}</div>
               <slot :room="room"/>
@@ -126,7 +127,7 @@ export default {
     }
   },
   methods: {
-    fetchRooms(ldId) {
+    fetchRooms(ldId, type=null) {
       if (this.enableLoading) {
         this.loading = this.$loading({
           lock: true,
@@ -135,7 +136,7 @@ export default {
           background: 'rgba(0, 0, 0, 0.7)'
         });
       }
-      buildingsApi.getRoomsUnit(ldId).then(ret => {
+      buildingsApi.getRoomsUnit(ldId, type).then(ret => {
         if(this.loading)
           this.loading.close()
         this.roomData = ret.data // {"1":{}, "2":{}}
@@ -221,7 +222,6 @@ export default {
 .lpb{
   user-select: none;
   display: flex;
-  height: 600px;
   overflow-y: auto;
 }
 

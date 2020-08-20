@@ -124,7 +124,7 @@ export default {
   .logo {
     text-align: center;
     width: 200px;
-    background-color: #0085EB;
+    background-color: #339EEF;
     flex-shrink: 0;
 
     i {
@@ -140,7 +140,7 @@ export default {
     position: relative;
     flex: 1;
     display: flex;
-    background-color: #065AAF;
+    background-color: #0085EB;
     vertical-align: center;
 
     .rightArea {

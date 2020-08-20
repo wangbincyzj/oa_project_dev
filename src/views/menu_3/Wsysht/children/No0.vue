@@ -2,7 +2,7 @@
   <div class="wsysht-item">
     <div class="hd">第一章 合 同 当 事 人</div>
     <div class="bd" >
-      <InfoListPlus>
+      <InfoListPlus count="2">
         <div slot="title"><span style="font-weight: 600">合 同 当 事 人</span></div>
         <template>
           <InfoListPlusItem name="出卖人">{{e.rwqyxxTitle}}</InfoListPlusItem>
@@ -41,7 +41,7 @@
         <el-table-column align="center" label="家庭地址" prop="fwsyqrJtdz" width="300"/>
         <el-table-column align="center" label="买受人照片" prop="xsqrdZxyy" />
       </el-table>
-      <InfoListPlus>
+      <InfoListPlus count="2" height="30px">
         <div slot="title"><span style="font-weight: 600; color: red">注意：购买人务必一个一个的添加，同时合同密码为购买人中第一个购买人的身份证后6位</span>
         </div>
         <template>

@@ -11,6 +11,9 @@ export default {
     rowCount:{
       type: Number,
       default: 4
+    },
+    data:{
+      type: Object,
     }
   }
 }

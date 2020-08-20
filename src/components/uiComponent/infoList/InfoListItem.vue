@@ -1,7 +1,12 @@
 <template>
   <div class="item" :style="{width:itemWidth}">
     <div class="title" >{{title}}:</div>
-    <div class="content" :title="$slots.default ? $slots.default[0].text: ''"><slot>--</slot></div>
+    <div class="content" :title="$slots.default ? $slots.default[0].text: ''">
+      <template v-if="prop && $parent.data">{{$parent.data[prop]}}</template>
+      <template v-else>
+        <slot>--</slot>
+      </template>
+    </div>
   </div>
 </template>
 
@@ -12,6 +17,9 @@ export default {
     title: {
       type: String,
       required: true
+    },
+    prop:{
+      type: String
     }
   },
   computed:{

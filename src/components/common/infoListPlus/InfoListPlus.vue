@@ -5,7 +5,7 @@
 -->
 <template>
   <div class="infoList">
-    <div class="title">
+    <div class="title ">
       <slot name="title"/>
     </div>
     <slot/>
@@ -13,32 +13,46 @@
 </template>
 
 <script>
-  export default {
-    name: "InfoListPlus",
-    props:{
-      count: {
-        default: 2,
-        type: Number
-      },
-      height:{
-        default: "35px"
-      }
+export default {
+  name: "InfoListPlus",
+  props:{
+    count: {
+      default: 4,
+      type: Number
     },
+    height:{
+      default: "16px"
+    },
+    nameBgc:{
+      type: String,
+    },
+    contentBgc:{
+      type: String
+    },
+    nameColor:{
+      type: String
+    },
+    contentColor:{
+      type: String
+    }
+  },
+  created() {
+    console.log(this.count)
   }
+}
 </script>
 
 <style scoped lang="scss">
-  .infoList{
-    display: flex;
-    flex-flow: row wrap;
-    border: 5px solid rgb(228, 237, 249);
-    .title{
-      width: 100%;
-      background-color: #E4EDF9;
-      font-size: 14px;
-      line-height: 30px;
-      font-weight: 600!important;
-      text-align: center;
-    }
+.infoList{
+  display: flex;
+  flex-flow: row wrap;
+  //border: 5px solid rgb(228, 237, 249);
+  .title{
+    width: 100%;
+    font-size: 14px;
+    line-height: 30px;
+    font-weight: 600!important;
+    text-align: center;
   }
+}
 </style>

@@ -132,7 +132,7 @@ const tableMixin = {
         this.$refs.singleTable.setCurrentRow(row);
     },
     handleCurrentChange(row) {
-      this.row = row
+      this.row = row || {}
     },
   }
 }

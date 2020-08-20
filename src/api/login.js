@@ -24,7 +24,7 @@ _.interceptors.response.use(resp => {
   }else{
     if(config.errMsg && resp.data.code===400){
       Vue.prototype.$message.error(resp.data.message||"访问出错,请尝试刷新页面或者联系软件客服")
-      return
+      return resp.data
     }
     return resp.data
   }
@@ -50,7 +50,12 @@ let login = function (userName, passWord) {
   return post("login/login/doLogin", {userName, passWord})
 }
 
+let logout = function (){
+  return post("login/login/logout")
+}
+
 
 export const loginApi = {
-  login
+  login,
+  logout
 }
