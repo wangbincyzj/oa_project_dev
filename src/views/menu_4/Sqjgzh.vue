@@ -151,10 +151,8 @@
 import ContainerTwoType from "@/components/current/containerTwoType/ContainerTwoType";
 import TitleTable from "@/components/current/titleTable/TitleTable";
 import TjjgzhDialog from "@/views/menu_4/TjjgzhDialog";
-
 import {sqjgzhApi} from "@/api/menu_4/sqjgzh";
 import {mixins} from "@/utils/mixins";
-
 import ButtonsArea from "@/components/common/buttonsArea/ButtonsArea";
 import Why from "@/components/common/why/Why";
 

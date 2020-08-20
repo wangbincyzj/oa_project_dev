@@ -50,12 +50,12 @@
         </el-table-column>
         <el-table-column
             label="变更时间"
-            prop="htBgsj">
+            prop="htCxsj">
         </el-table-column>
         <el-table-column
             align="center"
             label="变更原因"
-            prop="htBgyy">
+            prop="htCxyy">
         </el-table-column>
         <el-table-column
             align="center"
@@ -146,9 +146,9 @@ export default {
       dialogVisible: false,
       dialogTitle: "",
       dialogType: 0,
-      person: "",
-      certificate: "",
-      code: "",
+      name:null,
+      IDcode:null,
+      htbah:null,
       jiaocunHtbh: "",
       jiaocunHtbah: "",
       jiaocunMsrxm: "",
@@ -169,7 +169,7 @@ export default {
   },
   methods: {
     fetchData() {
-      httksqApi.getAllContract(this.currentPage, this.pageSize, this.$store.state.rwbh).then(ret => {
+      httksqApi.getAllContract(this.currentPage, this.pageSize, this.$store.state.rwbh,this.name,this.IDcode,this.htbah).then(ret => {
 
         this.tableData = ret.data;
         this.total = ret.total;
@@ -177,11 +177,17 @@ export default {
       });
     },
 
-    search() {
-
+    search(args) {
+      this.name=args[0];
+      this.IDcode=args[1];
+      this.htbah=args[2];
+      this.fetchData();
     },
     searchReset() {
-
+      this.name=null;
+      this.IDcode=null;
+      this.htbah=null;
+      this.fetchData();
     },
     handleWithdraw() {
       this.dialogVisible = true;

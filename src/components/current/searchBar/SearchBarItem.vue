@@ -18,6 +18,9 @@
           <el-option :value="item.value" v-for="item in selectData" :label="item.key"></el-option>
         </el-select>
       </template>
+      <template v-if="mode==='date'">
+       <el-date-picker v-model="value"  type="date" :placeholder="placeholder" size="mini"></el-date-picker>
+      </template>
     </div>
     <el-button
       v-if="$parent.mode==='each'"

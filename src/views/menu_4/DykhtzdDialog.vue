@@ -76,51 +76,22 @@
        </el-tab-pane>
 
       <el-tab-pane label="2.收件情况" name="second"> 
-        <div class="receiveList">
+        
           <div class="dialogItem">
             <div class="itemIndex">2</div>
             <div class="itemTitle">收件列表</div>
           </div>
-          <div class="item" v-for="(item,index) in businessReceives">
-            <div class="no">
-              <span>{{index+1}}</span>
-            </div>
-            <div class="info">
-              <div class="name">{{item.shoujianTitle}}</div>
-              <div class="attr">
-                <div>性质:<span>{{item.shoujianSjxz}}</span></div>
-                <div>份数:<span>{{item.shoujianFenshu}}</span></div>
-              </div>
-            </div>
-            <div class="pics">
-              <el-image
-                style="width: 60px; height: 60px"
-                src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
-                :preview-src-list="srcList">
-              </el-image>
-              <div class="selectImg">
-                <i class="el-icon-plus"/>
-                <div>选择图片上传</div>
-              </div>
-            </div>
-          </div>
-        </div>
+          
+      <ReceiveList ref="receiveList"/>
        
       </el-tab-pane>
       <el-tab-pane label="3.审核意见" name="third"> 
-        <div>
+       
           <div class="dialogItem">
             <div class="itemIndex">3</div>
             <div class="itemTitle">审核意见</div>
           </div>
-          <InfoList
-            v-for="(item, index) in opinionList"
-            :info="[
-              {key:'审批人', value: item.approvePerson},
-              {key: '审核时间', value: item.approveTime},
-              {key: '审批意见', value: item.approveOpinion}]"
-          />
-        </div>
+          <OpinionList ref="opinionList"/>
       </el-tab-pane>
     </el-tabs>
    
@@ -129,11 +100,13 @@
 
 <script>
   import CenterButton from "@/components/common/centerButton/CenterButton";
-import InfoList from "@/components/common/infoList/InfoList";
+  import InfoList from "@/components/common/infoList/InfoList";
   import {sqjgzhApi} from "@/api/menu_4/sqjgzh";
+  import ReceiveList from "@/components/current/receiveList/ReceiveList";
+  import OpinionList from "@/components/current/opinionList/OpinionList";
   export default {
     name: "DykhtzdDialog",
-    components: {CenterButton,InfoList},
+    components: {CenterButton,InfoList,ReceiveList,OpinionList},
     props:{
      dialog:{
         default: 1 //模式,0详情 1,修改
@@ -187,11 +160,17 @@ import InfoList from "@/components/common/infoList/InfoList";
           }))
         })
       },
-     setMode(mode, id) {
+     setMode(mode, id,ywzh,logId) {
      if (mode === 2) {
        this.fetchDetail(id);
-       this.fetchOpinion(this.zjjgzhYwzh);
-       this.fetchShouJianByYwzh(this.zjjgzhYwzh);
+       console.log(this.$refs);       
+       console.log("ywzh"+ywzh);
+       console.log("logId"+logId);
+       this.$nextTick(()=>{
+        this.$refs.ReceiveList.fetchData(ywzh);
+        this.$refs.OpinionList.fetchData(logId)
+       })
+    
       }
     }
     }

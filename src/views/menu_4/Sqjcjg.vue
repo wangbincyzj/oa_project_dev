@@ -45,7 +45,7 @@
                 label="使用金额"
                 prop="shiyongSbje">                  
                 </el-table-column>
-                 <el-table-column
+                  <!--<el-table-column
                   align="center"
                   label="操作"
                 >
@@ -56,7 +56,7 @@
                 @click="handleApply(scope.$index, scope.row)">申请解除监管
               </el-button>
             </template>
-          </el-table-column>
+          </el-table-column> -->
               </el-table>
               </td>
               </tr>
@@ -94,9 +94,14 @@
           <el-table-column
             align="center"
             label="操作"
+            width="200px"
           >
             <template slot-scope="scope">
-             
+             <el-button
+                size="mini"
+                 type="primary"
+                @click="handleApply(scope.$index, scope.row)">申请解除监管
+              </el-button>
               <el-button
                 size="mini"
                 @click="handleDetail(scope.$index, scope.row)">详情
@@ -118,7 +123,6 @@
           :title="dialogTitle"
           center
           width="800px"
-          :before-close="closeConfirm"
           slot="dialog"
           :visible.sync="dialogVisible"
           @close="dialogVisible = false"
@@ -219,9 +223,7 @@
           console.log(expandRow);
           this.ldxxMc=row.ldxxMc;
           this.ldxxId=row.ldId;
-          this.jianguanJe=row.jianguanJe;
-          this.shiyongJe=row.shiyongJe;
-          this.shengyuJe=row.shengyuJe;
+          
           this.jczjjgDjzmh=row.jczjjgDjzmh;
           this.jczjjgDjrq=row.jczjjgDjrq;
           this.ldbh=row.ldxxLdbh;
@@ -235,11 +237,14 @@
 
       handleApply(index,row) {
         console.log(row);
-        this.jiaocunJkje=row.jiaocunJkje;
-        this.jiaocunJkzh=row.jiaocunJkzh;
-        this.jiaocunKhyh=row.jiaocunKhyh;
-        this.jiaocunYhid=row.jiaocunYhid;
-        this.jiaocunZhmc=row.jiaocunZhmc;
+        this.jianguanJe=row.jianguanJe;
+        this.shiyongJe=row.shiyongJe;
+        this.shengyuJe=row.shengyuJe;
+        // this.jiaocunJkje=row.jiaocunJkje;
+        // this.jiaocunJkzh=row.jiaocunJkzh;
+        // this.jiaocunKhyh=row.jiaocunKhyh;
+        // this.jiaocunYhid=row.jiaocunYhid;
+        // this.jiaocunZhmc=row.jiaocunZhmc;
         this.dialogVisible = true;
         this.dialogTitle = "申请解除监管";
         this.dialogType = 1;

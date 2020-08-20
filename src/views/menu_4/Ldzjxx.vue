@@ -9,7 +9,24 @@
       <TitleTable
         title="对应的缴款列表"
         style="height:50%;overflow-y:scroll;">
-         <el-alert
+         <template #controls>
+         <SearchBar
+          mode="comb"
+          isPrint=1
+          name="打印明细"
+          each-btn-type="danger"
+          prefix-color="green"
+          @combSearch="search1"
+          @combClear="reset1"
+          @print="handlePrint1"
+          @getDate="getDate"
+          >
+          <SearchBarItem placeholder="根据买受人搜索" prefix="买受人"/>
+          <SearchBarItem placeholder="选择开始时间" prefix="开始时间" mode="date"/>
+          <SearchBarItem placeholder="选择结束时间" prefix="结束时间" mode="date"/>
+        </SearchBar>
+        </template>
+         <!-- <el-alert
             type="warning"
             center
             :closable="false">
@@ -20,7 +37,7 @@
         <el-button size="mini" type="success" @click="search1">查找</el-button>
         <el-button size="mini" type="success" @click="handlePrint1" @mouseover.native = "getDate">打印明细</el-button>
        </div>
-       </el-alert>
+       </el-alert> -->
         <el-table
           :data="tableData"
           style="width: 100%"
@@ -101,7 +118,23 @@
        <TitleTable
         title="对应的使用信息"
         style="height:50%;overflow-y:scroll;">
-         <el-alert
+        <template #controls>
+         <SearchBar
+          mode="comb"
+          isPrint=1
+          name="打印明细"
+          each-btn-type="danger"
+          prefix-color="green"
+          @combSearch="search2"
+          @combClear="reset2"
+          @print="handlePrint2"
+          @getDate="getDate"
+          >
+          <SearchBarItem placeholder="选择开始时间" prefix="开始时间" mode="date"/>
+          <SearchBarItem placeholder="选择结束时间" prefix="结束时间" mode="date"/>
+        </SearchBar>
+        </template>
+         <!-- <el-alert
             type="warning"
             center
             :closable="false">
@@ -111,7 +144,7 @@
         <el-button size="mini" type="success" @click="search2">查找</el-button>
         <el-button size="mini" type="success" @click="handlePrint2" @mouseover.native = "getDate">打印明细</el-button>
        </div>
-       </el-alert>
+       </el-alert> -->
         <el-table
           :data="tableData1"
           style="width: 100%"
@@ -226,13 +259,15 @@
 <script>
   import ContainerTwoType from "@/components/current/containerTwoType/ContainerTwoType";
   import TitleTable from "@/components/current/titleTable/TitleTable";
- import {ldzjxxApi} from "@/api/menu_4/ldzjxx";
+  import {ldzjxxApi} from "@/api/menu_4/ldzjxx";
   import {mixins} from "@/utils/mixins";
+  import SearchBar from "@/components/current/searchBar/SearchBar";
+  import SearchBarItem from "@/components/current/searchBar/SearchBarItem";
 
   export default {
     name: "ldzjxx",
     mixins: [mixins.dialogMixin],
-    components: {TitleTable, ContainerTwoType},
+    components: {TitleTable, ContainerTwoType,SearchBar,SearchBarItem},
     data() {
       return{
         navInfo:{
@@ -309,19 +344,22 @@
           
         })
      },
-     reset(){
+     reset1(){
         this.endTime1="";
-        this.endTime2="";
         this.startTime1="";
-        this.startTime2="";
         this.person="";
+     },
+     reset2(){
+        this.endTime2="";
+        this.startTime2="";
      },
      getDate(){
        let myDate = new Date();
       this.date=myDate.toLocaleDateString();
      },
       liClick(index) {
-        this.reset();
+        this.reset1();
+        this.reset2();
         this.selectedIndex = index;
         console.log("index:"+index);
         console.log(this.$store.state.projectData.xmxxXmbh);
@@ -330,7 +368,10 @@
          this.ldxxMc=this.navInfo.list[index].name;
          this.fetchData(this.ldxxLdbh);        
       },
-      search1(){
+      search1(args){
+        this.endTime1=args[2];
+        this.startTime1=args[1];
+        this.person=args[0];
         ldzjxxApi.getJcInfo(this.ldxxLdbh,this.person,this.startTime1,this.endTime1).then(ret => {
          console.log(ret);
          console.log("where is my ...");
@@ -339,6 +380,8 @@
       },
 
       search2(){
+         this.endTime2=args[1];
+        this.startTime2=args[0];
         ldzjxxApi.getSyInfo(this.ldxxLdbh,this.startTime2,this.endTime2).then(ret => {
          console.log(ret);
          console.log("where is my ...");

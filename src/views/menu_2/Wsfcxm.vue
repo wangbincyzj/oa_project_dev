@@ -32,6 +32,25 @@
         </el-table-column>
         <el-table-column
           align="center"
+          label="收件操作"
+          width="200px"
+        >
+          <template slot-scope="scope">
+             <el-button
+                size="mini"
+                type="primary"
+                @click="handleGetFile(scope.row)">确认收件
+              </el-button>
+              <el-button
+                size="mini"
+                type="primary"
+                @click="handleManageFile(scope.row)">管理收件
+              </el-button>
+           
+          </template>
+        </el-table-column>
+        <el-table-column
+          align="center"
           label="操作"
           width="300px"
         >
@@ -66,6 +85,7 @@
         <WsfcxmDialog
           @submitSuccess="submitSuccess"
           ref="dialog"
+          :dialogType="dialogType"
           :edit-mode="editMode"
         />
       </el-dialog>
@@ -91,6 +111,8 @@
         dialogTitle: "",
         editMode: 1,
         loading: false,
+        xmxxYwzh:"",
+        dialogType:0,
       }
     },
     created() {
@@ -122,6 +144,7 @@
       handleEdit(index, item) {
         this.title = "房产项目详情";
         this.dialogVisible = true;
+        this.dialogType=1;
         this.editMode = 1;
         this.$nextTick(()=>{
           this.$refs.dialog.fetchDetail(item.xmxxId)
@@ -129,7 +152,8 @@
       },
       handleDetail(index, item){
         this.title = "房产项目详情";
-        this.dialogVisible = true;
+        this.dialogVisible = true;        
+        this.dialogType=1;
         this.editMode = 0;
         this.$nextTick(()=>{
           this.$refs.dialog.fetchDetail(item.xmxxId)
@@ -152,6 +176,24 @@
         }).catch(() => {  // 点击取消的操作
           //
         });
+      },
+        handleGetFile(row){
+         this.dialogVisible = true;
+        this.title = "确认收件";
+        this.xmxxYwzh=row.xmxxYwzh;
+        this.dialogType = 4;
+        this.$nextTick(()=>{
+          this.$refs.dialog.setMode(4, row.xmxxId,row.xmxxYwzh);
+        })
+      },
+      handleManageFile(row) {
+        this.dialogVisible = true;
+        this.title = "管理收件";
+         this.xmxxYwzh=row.xmxxYwzh;
+        this.dialogType = 9;
+        this.$nextTick(() => {
+          this.$refs.dialog.setMode(9, row.xmxxId,row.xmxxYwzh);
+        })
       },
       submitSuccess() {
         this.dialogVisible = false;

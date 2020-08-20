@@ -13,10 +13,10 @@ import { requests8083 } from "../jianguan";
   * @param {*} kfsRwbh  开发商入网编号
   * @param {*} jiaocunMsrxm   买受人姓名
   * @param {*} jiaocunMsrzjhm   证件号
-  * @param {*} jiaocunHtbh   合同备案
+  * @param {*} jiaocunHtbah   合同备案
   */
-let getlist = function(kfsRwbh){
-  return requests8083.get("data-presale-funds/jiaocun/selectPage", {kfsRwbh})
+let getlist = function(kfsRwbh,jiaocunMsrxm,jiaocunMsrzjhm,jiaocunHtbah){
+  return requests8083.get("data-presale-funds/jiaocun/selectPage", {kfsRwbh,jiaocunMsrxm,jiaocunMsrzjhm,jiaocunHtbah})
 }
 
 /**

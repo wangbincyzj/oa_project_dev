@@ -16,9 +16,9 @@ let gethbAccountByXmbh = function(page, size = 20,xmxxXmbh,hbzhRkzt=1,hbzhZhmc=n
  * 分页查询合同列表
  * 
  */
-let getAllContract = function(page, size = 20,kfsRwbh){
+let getAllContract = function(page, size = 20,kfsRwbh,jiaocunMsrxm,jiaocunMsrzjhm,jiaocunHtbah){
     return requests8083.get("data-presale-funds/shiyong/getReturnHtList", { 
-        current: page, size,kfsRwbh})
+        current: page, size,kfsRwbh,jiaocunMsrxm,jiaocunMsrzjhm,jiaocunHtbah})
   }
 
 /**

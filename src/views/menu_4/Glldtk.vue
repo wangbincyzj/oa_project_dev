@@ -2,7 +2,7 @@
   <div class="gljgzj">
    
       <TitleTable
-        title="资金申报管理">
+        title="楼栋退款申请管理">
         <template #controls>
           <ButtonsArea :row="row" @cancel="setCurrent">
             <el-button
@@ -59,32 +59,26 @@
           @cell-mouse-enter="cellMouseEnter">
           <el-table-column
             label="项目名称"
-            align="center"
             prop="shiyongXmmc">
           </el-table-column>
           <el-table-column
             label="楼栋名称"
-            align="center"
             prop="shiyongLdmc">
           </el-table-column>
           <el-table-column
             label="申请金额"
-            align="center"
             prop="shiyongSbje">
           </el-table-column>
           <el-table-column
             label="申请类型"
-            align="center"
             prop="shiyongSqsyfs">
           </el-table-column>
           <el-table-column
             label="申报日期"
-            align="center"
             prop="shiyongAddtime">
           </el-table-column>
           <el-table-column
             label="划拨用户"
-            align="center"
             prop="shiyongJgzhmc">
           </el-table-column>
           <el-table-column
@@ -247,11 +241,9 @@
            this.pages=ret.data.pages;
            this.tableData.forEach(function (val) {
               if (val.shiyongSqsyfs == 0) {
-                val.shiyongSqsyfs = '正常使用' 
+                val.shiyongSqsyfs = '正常使用'
               } else if (val.shiyongSqsyfs == 1) {
                 val.shiyongSqsyfs = '撤销合同退款'
-              } else if (val.shiyongSqsyfs == 2) {
-                val.shiyongSqsyfs = '解除监管退款'
               } 
               if(val.shiyongShzt===0){
                 val.shiyongShztN="新建"

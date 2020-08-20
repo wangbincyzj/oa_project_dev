@@ -13,13 +13,26 @@
           <SearchBarItem placeholder="根据备案号搜索" prefix="备案号"/>
         </SearchBar>
         </template>
-     
+        <ButtonsArea  :row="row" @cancel="setCurrent">
+          <el-button
+              @click="open(row)"
+              type="text"
+              size="small"
+            >查看记录</el-button>
+            <el-button
+              size="mini"
+              type="primary"
+              @click="handleAdd(0, row)">新增缴存</el-button>
+        </ButtonsArea>
 
       <el-table
         :data="tableData"
         style="width: 100%"
         @expand-change="openExpand"
-        ref="refTable"
+        highlight-current-row
+        ref="table"
+        size="mini"
+        @current-change="handleCurrentChange"
       >
       <el-table-column type="expand">
         <template slot-scope="props">
@@ -75,7 +88,7 @@
 
         <el-table-column
           label="备案号"
-          prop="jiaocunHtbh"
+          prop="jiaocunHtbah"
           align="center"
         ></el-table-column>
         <el-table-column
@@ -137,19 +150,19 @@
           align="center"
           label="未纳入监管资金"
           prop="wjgje"
-          width="120px"
+         
         ></el-table-column>
         <el-table-column
           align="center"
           label="合同状态"
-          prop="htBazt">
+          prop="htBaztN">
         </el-table-column>
         <el-table-column
           align="center"
           label="备案时间"
           prop="htAddtime"
         ></el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           label="操作"
           prop="desc"
           width="200px"
@@ -166,7 +179,7 @@
               type="primary"
               @click="handleAdd(scope.$index, scope.row)">新增缴存</el-button>
           </template>
-        </el-table-column>
+        </el-table-column> -->
       </el-table>
 
       <!-- <el-pagination
@@ -206,12 +219,13 @@
   import { tjjgzjApi } from "@/api/menu_4/tjjgzj";
   import SearchBar from "@/components/current/searchBar/SearchBar";
   import SearchBarItem from "@/components/current/searchBar/SearchBarItem";
+  import ButtonsArea from "@/components/common/buttonsArea/ButtonsArea";
 
   export default {
     name: "tjjgzj",
-    mixins: [mixins.dialogMixin],
+    mixins: [mixins.dialogMixin,mixins.myPagerMixin, mixins.tableMixin],
     components: {
-      TitleTable,ContainerTwoType,TjjgzjDialog,SearchBar,SearchBarItem},
+      TitleTable,ContainerTwoType,TjjgzjDialog,SearchBar,SearchBarItem,ButtonsArea},
     data() {
       return {
         tableData: [],
@@ -230,11 +244,9 @@
         htbh:"",
         mergeSpanArr: [], // 空数组，记录每一行的合并数
         mergeSpanArrIndex: "", // mergeSpanArr的索引
-        listQuery: {
-          jiaocunMsrxm: null,
-          Msrzjhm: null,
-          Htbh: null
-        },
+        name:null,
+        IDcode:null,
+        htbah:null,
         htZdjgzjbl:null,
         htZjjgfs:null,
       };
@@ -271,11 +283,21 @@
       //列表信息
       getlist() {
         // console.log(this.rwbh)
-        tjjgzjApi.getlist(this.$store.state.rwbh).then(ret => {
+        tjjgzjApi.getlist(this.$store.state.rwbh,this.name,this.IDcode,this.htbah).then(ret => {
           this.tableData = ret.data.map(item => ({
             ...item,
             recordTable:[],
           }))
+          this.tableData.forEach(function(val){
+            if(val.htBazt===0){
+              val.htBaztN="未备案"
+            }else if(val.htBazt===1){
+               val.htBaztN="待备案"
+            }else if(val.htBazt===2){
+               val.htBaztN="备案"
+            }
+
+          })
         });
       },
       //打印合同
@@ -299,15 +321,24 @@
           this.$refs.dialog.setMode(1, row.jiaocunHtbh);
         });
       },
-      handleSearchList() {
+      handleSearchList(args) {
         //搜索功能
+        this.name=args[0];
+        this.IDcode=args[1];
+        this.htbah=args[2];
+        this.getlist();
+      },
+      searchReset(){
+        this.name=null;
+        this.IDcode=null;
+        this.htbah=null;
         this.getlist();
       },
       currentChange(num) {
         this.currentPage = num;
       },
       open(row) {
-        this.$refs.refTable.toggleRowExpansion(row);
+        this.$refs.table.toggleRowExpansion(row);
       },
       openExpand(row) {
         //下拉列表信息

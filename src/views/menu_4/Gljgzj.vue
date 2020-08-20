@@ -26,6 +26,7 @@
         <el-table-column align="center" label="监管银行" prop="jiaocunKhyh"></el-table-column>
         <el-table-column align="center" label="监管账号" prop="jiaocunJkzh"></el-table-column>
         <el-table-column align="center" label="缴款说明" prop="jiaocunJksy"></el-table-column>
+        <el-table-column align="center" label="缴款状态" prop="jiaocunJkztN"></el-table-column>
         <!--<el-table-column align="center" label="操作" width="250px">
             <template slot-scope="scope">
            <el-button size="mini" @click="handlePrint(scope.$index, scope.row)">打印合同</el-button> -->
@@ -122,6 +123,15 @@ export default {
           this.total = res.data.total;
           this.pages = res.data.pages;
           this.tableData = res.data.records;
+          this.tableData.forEach(function(val){
+            if(val.jiaocunJkzt===0){
+              val.jiaocunJkztN="新建"
+            }else if(val.jiaocunJkzt===1){
+              val.jiaocunJkztN="上报"
+            }else if(val.jiaocunJkzt===2){
+              val.jiaocunJkztN="入账"
+            }
+          })
         });
     },
     handleDel(){
