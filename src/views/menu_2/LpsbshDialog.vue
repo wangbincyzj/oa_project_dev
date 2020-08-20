@@ -2,7 +2,7 @@
   <div class="myDialog myForm-mb5">
     <RoomsUnit ref="ref" v-if="mode===1" enable-statistics/>
     <el-form
-      v-if="mode===2"
+      v-if="mode===2&&dialogType===1"
       v-loading="loading"
       label-position="right"
       label-width="150px"
@@ -130,6 +130,12 @@
         <el-input v-model="form.ldxxZdjgzjbl"></el-input>
       </el-form-item>
     </el-form>
+     <div v-if="dialogType===4">
+      <ConfirmReceive ref="ref1" :ywzh="ldxxYwzh" type="LOUPAN_LDXX"/>
+    </div>
+    <div v-if="dialogType===9">
+      <ManageReceive ref="ref2"/>
+    </div>
   </div>
 </template>
 
@@ -137,18 +143,24 @@
   import RoomStructure from "@/views/menu_2/RoomStructure";
   import {tjldxmApi} from "@/api/menu_2/tjldxm";
   import RoomsUnit from "@/components/common/rooms/RoomsUnit";
+  import ConfirmReceive from "@/components/current/confirmReceive/ConfirmReceive";
+  import ManageReceive from "@/components/current/manageReceive/ManageReceive";
+  import ReceiveList from "@/components/current/receiveList/ReceiveList";
+  import OpinionList from "@/components/current/opinionList/OpinionList";
   export default {
     name: "LpsbshDialog",
-    components: {RoomsUnit, RoomStructure},
+    components: {RoomsUnit, RoomStructure,ConfirmReceive,ManageReceive,ReceiveList,OpinionList},
     props:{
       mode:{
         required: true  // 1,楼盘表  2,楼栋详情
       },
       projectId:{},
+      dialogType:{},
     },
     data() {
       return {
         loading: false,
+        ldxxYwzh:"",
         form: {},
 
         fwxz: ["商品房", "存量房", "自建房", "限价商品房", "享受政策优惠房", "经济适用房",
@@ -172,6 +184,22 @@
           this.form = ret.data[0]
         })
       },
+      setMode(mode,id,ywzh){
+          this.ldxxYwzh=ywzh;
+          console.log(ywzh);
+          
+        if (mode === 4) {
+         
+          console.log(this.dialogType);
+          
+          this.$nextTick(()=>{
+            this.$refs.ref1.fetchDefault(id);
+          })
+          
+        } else if (mode === 9) {
+          this.$refs.ref2.fetchConfirm(ywzh)
+        }
+        },
     }
   }
 </script>

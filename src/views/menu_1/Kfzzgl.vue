@@ -1,14 +1,65 @@
 <template>
   <div class="root">
-    <div class="add">
-      <span>开发资质申请记录管理</span> <el-button size="mini" type="primary" @click="addClick">添加开发资质申请</el-button>
-    </div>
-    <div class="tableWrapper">
+   
+     <TitleTable
+        title="开发资质申请记录管理">
+      <template #addButton>       
+        <el-button @click="addClick" icon="el-icon-plus" size="mini" type="primary">添加开发资质申请</el-button>
+      </template>
+      <template #controls>
+          <ButtonsArea :row="row" @cancel="setCurrent">
+            <el-button
+                size="mini"
+                type="primary"
+                @click="handleGetFile(row)">确认收件
+              </el-button>
+              <el-button
+                size="mini"
+                type="primary"
+                @click="handleManageFile(row)">管理收件
+              </el-button>
+               <el-button
+                size="mini"
+                type="primary"
+                @click="handleUpdate(row)"
+                :disabled="row.zizhiShzt!==0&&row.zizhiShzt!==3">编辑
+              </el-button>
+             
+              <el-button
+                size="mini"
+                type="primary"
+                @click="handleDelete(row)"
+                :disabled="row.zizhiShzt!==0&&row.zizhiShzt!==3">删除
+              </el-button>
+               <el-button
+                size="mini"
+                type="primary"
+                @click="handleInform(row)"
+                :disabled="row.zizhiShzt!==0&&row.zizhiShzt!==3">上报
+              </el-button>
+
+              <el-button
+                size="mini"
+                type="primary"
+                @click="handleDetail(row)">详情
+              </el-button>
+
+              <!-- <el-button
+                size="mini"
+                type="primary"
+                @click="handlePrint(0, row)" @mouseover.native="fetchPrintData(row)">打印申请单
+              </el-button> -->
+          </ButtonsArea>
+        </template>
+   
       <el-table
         @cell-mouse-enter="cellMouseEnter"
         :data="tableData"
         :stripe="true"
-        border
+        size="mini"
+        ref="table"
+        highlight-current-row
+        @current-change="handleCurrentChange"
       >
         <!-- <el-table-column
           align="center"
@@ -43,9 +94,9 @@
         <el-table-column
          align="center"
           label="审核流程"
-          prop="cqxzRkztN">          
+          prop="zizhiLiucheng">          
         </el-table-column>
-         <el-table-column
+         <!-- <el-table-column
           align="center" label="操作"
            width="250">
           
@@ -94,14 +145,10 @@
               size="mini"
               @click="handleDetail(scope.$index, scope.row)"
               >详情
-            </el-button>
-            <!-- <el-button
-              size="mini"
-              @click="handleDetail(scope.$index, scope.row)"
-              v-if="scope.row.cqxzRkzt==1">详情
-            </el-button> -->
+            </el-button> 
+            
           </template>
-        </el-table-column>
+        </el-table-column>-->
       </el-table>
       <el-pagination
           background
@@ -116,8 +163,7 @@
       <el-dialog
         :title="title"
         center
-        width="800px"
-        
+        width="1200px"
         slot="dialog"
         :visible.sync="dialogVisible"
         @close="dialogVisible = false"
@@ -128,17 +174,19 @@
           @submitSuccess="submitSuccess"
         />
       </el-dialog>
-    </div>
+  </TitleTable>
   </div>
 </template>
 <script>
 import KfzzglDialog from "@/views/menu_1/KfzzglDialog";
 import {mixins} from "@/utils/mixins";
 import {kfzzglApi} from "@/api/menu_1/kfzzgl";
+import TitleTable from "@/components/current/titleTable/TitleTable";
+import ButtonsArea from "@/components/common/buttonsArea/ButtonsArea";
  export default {
      name:"Kfzzgl",
-     components:{KfzzglDialog},
-     mixins: [mixins.dialogMixin],
+     components:{KfzzglDialog,ButtonsArea,TitleTable},
+     mixins: [mixins.dialogMixin,mixins.myPagerMixin, mixins.tableMixin],
      data(){
          return{
              title:"",
@@ -149,6 +197,7 @@ import {kfzzglApi} from "@/api/menu_1/kfzzgl";
              pages:1,
              dialogType:1,
              currentRow: null,
+             zizhiYwzh:"",
              tableData:[
                 
              ],
@@ -181,23 +230,23 @@ import {kfzzglApi} from "@/api/menu_1/kfzzgl";
                 this.$refs.dialog.setMode(1,)
             });
         },
-        handleEdit(){
+        handleUpdate(row){
             this.title="修改开发资质申请"
             this.dialogVisible=true;
             this.dialogType=2;
             this.$nextTick(()=>{
-                this.$refs.dialog.setMode(2,this.currentRow.zizhiId)
+                this.$refs.dialog.setMode(2,row.zizhiId)
             });
             
         },
         
          
-         handleInform(){
+         handleInform(row){
         this.$confirm('确定要上报该开发资质申请吗?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
         }).then(()=>{
-          kfzzglApi.confirmQualication(this.currentRow.zizhiId).then(ret=>{
+          kfzzglApi.confirmQualication(row.zizhiId).then(ret=>{
             if(ret.code===200){
               this.$message.success("操作成功");
                 this.fetchData();
@@ -213,12 +262,12 @@ import {kfzzglApi} from "@/api/menu_1/kfzzgl";
         });
       },
         
-      handleDelete(){
+      handleDelete(row){
         this.$confirm('确定要删除该开发资质申请吗?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
         }).then(()=>{
-           kfzzglApi.deleteQualication(this.currentRow.zizhiId).then(ret=>{
+           kfzzglApi.deleteQualication(row.zizhiId).then(ret=>{
             if(ret.code===200){
               this.$message.success("操作成功");
                 this.fetchData();
@@ -233,15 +282,32 @@ import {kfzzglApi} from "@/api/menu_1/kfzzgl";
           });
         });
       },
-       handleGetFile(){
-
-       },
-        handleManageFile(){
-
-       },
-        handleDeleteFile(){
-
-       },
+       handleGetFile(row){
+         this.dialogVisible = true;
+        this.title = "确认收件";
+        this.zizhiYwzh=row.zizhiYwzh;
+        this.dialogType = 4;
+        this.$nextTick(()=>{
+          this.$refs.dialog.setMode(4, row.zizhiId,0,row.zizhiYwzh);
+        })
+      },
+      handleManageFile(row) {
+        this.dialogVisible = true;
+        this.title = "管理收件";
+         this.zizhiYwzh=row.zizhiYwzh;
+        this.dialogType = 9;
+        this.$nextTick(() => {
+          this.$refs.dialog.setMode(9, row.zizhiId,0,row.zizhiYwzh);
+        })
+      },
+    handleDetail(row){
+        this.title="开发资质详情";
+        this.dialogType=3;
+        this.dialogVisible=true;
+        this.$nextTick(()=>{
+          this.$refs.dialog.setMode(3,row.zizhiId,row.logId,row.zizhiYwzh)
+        })
+      },
         submitSuccess(){
             this.$nextTick(()=>{
                 this.$refs.dialog.reset();

@@ -1,6 +1,6 @@
 <template>
   <div class="myDialog myForm-mb5" v-loading="loading">
-    <el-tabs value="first">
+    <el-tabs value="first" v-if="dialogType===1">
       <el-tab-pane label="一.项目信息" name="first">
         <el-form
           label-position="right"
@@ -174,18 +174,19 @@
           </el-form-item>
         </el-form>
       </el-tab-pane>
-      <!--<el-tab-pane label="三.图片附件" name="third">
-        <UploadCpn
-          :enable-upload="editMode===1"
-          :url="url"
-          :file-list="fileList"
-          :data="{logId: form.logId}"
-          @delFile="delFile"
-          @addFile="addFile"/>
-      </el-tab-pane>-->
+      <el-tab-pane label="三.图片附件" name="third">
+        <ReceiveList ref="receiveList"/>
+      </el-tab-pane>
     </el-tabs>
-    <CenterButton v-if="editMode===1" @btnClick="handleUpdate" title="保存"/>
+    <CenterButton v-if="editMode===1&&dialogType===1" @btnClick="handleUpdate" title="保存"/>
+     <div v-if="dialogType===4">
+      <ConfirmReceive ref="ref1" :ywzh="xmxxYwzh" type="LOUPAN_XMXX"/>
+    </div>
+    <div v-if="dialogType===9">
+      <ManageReceive ref="ref2"/>
+    </div>
   </div>
+ 
 </template>
 
 <script>
@@ -194,14 +195,19 @@
   import {filesApi} from "@/api/files";
   import UploadCpn from "@/components/current/uploadCpn/UploadCpn";
   import {config} from "@/api/baseConfig";
+  import ConfirmReceive from "@/components/current/confirmReceive/ConfirmReceive";
+import ManageReceive from "@/components/current/manageReceive/ManageReceive";
+import ReceiveList from "@/components/current/receiveList/ReceiveList";
+import OpinionList from "@/components/current/opinionList/OpinionList";
 
   export default {
     name: "WsfcxmDialog",
-    components: {UploadCpn, CenterButton},
+    components: {UploadCpn, CenterButton,ConfirmReceive,ManageReceive,ReceiveList,OpinionList},
     props: {
       editMode: {
         default: 1 //模式,0详情 1,修改
-      }
+      },
+      dialogType:{},
     },
     computed: {
       url() {
@@ -212,7 +218,8 @@
       return {
         form: {},
         loading: false,
-        fileList: []
+        fileList: [],
+        xmxxYwzh:"",
       }
     },
     methods: {
@@ -224,7 +231,8 @@
         wsfcxmApi.getProjectDetailById(id).then(ret => {
           this.loading = false;
           this.form = ret.data;
-          this.fetchFileList()
+         // this.fetchFileList()
+          this.$refs.receiveList.fetchData(this.xmxxYwzh);
         })
       },
       handleUpdate() {
@@ -237,6 +245,22 @@
           }
         })
       },
+      setMode(mode,id,ywzh){
+          this.xmxxYwzh=ywzh;
+          console.log(ywzh);
+          
+        if (mode === 4) {
+          this.retId = id;
+          console.log(this.dialogType);
+          
+          this.$nextTick(()=>{
+            this.$refs.ref1.fetchDefault(id);
+          })
+          
+        } else if (mode === 9) {
+          this.$refs.ref2.fetchConfirm(ywzh)
+        }
+        },
       addFile(file) {
         if (file.response.code === 200) {
           this.$message.success("上传成功")

@@ -1,8 +1,39 @@
 <template>
   <TitleTable title="审核上报">
+     <template #controls>
+          <ButtonsArea :row="row" @cancel="setCurrent">
+            <el-button
+                size="mini"
+                type="primary"
+                @click="handleGetFile(row)">确认收件
+              </el-button>
+              <el-button
+                size="mini"
+                type="primary"
+                @click="handleManageFile(row)">管理收件
+              </el-button>
+            <el-button
+            size="mini"
+            @click="handleDetail(0,row)">楼盘表
+          </el-button>
+          <el-button
+            size="mini"
+            @click="handleBuildingDetail(0,row)">详情
+          </el-button>
+          <el-button
+            size="mini"
+            :disabled="!row.ldxxLdjpzt"
+            v-if="row.ldxxShzt===0||row.ldxxShzt===3"
+            @click="handleCheck(0, row)">上报审核
+          </el-button>
+          </ButtonsArea>
+        </template>
     <el-table
       class="myTable-p0"
       size="mini"
+      ref="table"
+      highlight-current-row
+      @current-change="handleCurrentChange"
       v-loading="loading"
       :data="tableData">
       <el-table-column
@@ -131,7 +162,7 @@
           </template>
         </el-table-column>
       </el-table-column>
-      <el-table-column
+      <!-- <el-table-column
         label="操作"
         width="250"
         align="center">
@@ -151,7 +182,7 @@
             @click="handleCheck(scope.$index, scope.row)">上报审核
           </el-button>
         </template>
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
     <el-dialog
       :title="dialogTitle"
@@ -164,6 +195,7 @@
       <LpsbshDialog
         :mode="mode"
         ref="dialog"
+        :dialogType="dialogType"
         :projectId="projectId"
       />
     </el-dialog>
@@ -177,10 +209,12 @@
   import {mixins} from "@/utils/mixins";
   import LpsbshDialog from "@/views/menu_2/LpsbshDialog";
   import {lpInfoApi} from "@/api/menu_2/lpInfo";
+  import ButtonsArea from "@/components/common/buttonsArea/ButtonsArea";
 
   export default {
     name: "Lpsbsh",
-    mixins: [mixins.dialogMixin],
+    components:{ButtonsArea,TitleTable,LpsbshDialog},
+    mixins: [mixins.dialogMixin,mixins.myPagerMixin, mixins.tableMixin],
     data() {
       return {
         tableData: [],
@@ -189,10 +223,11 @@
         projectStatus: null,
         dialogTitle: "",
         mode: 1,
+        dialogType:0,
         loading: false
       }
     },
-    components: {LpsbshDialog, TitleTable},
+   
     created() {
       this.fetchData()
     },
@@ -244,6 +279,7 @@
       handleDetail(index, item) {
         this.dialogVisible = true;
         this.dialogTitle = "楼盘图例";
+        this.dialogType = 1;
         this.mode = 1;
         this.$nextTick(()=>{
           this.$refs.dialog.initRoomStructure(item.ldxxId);
@@ -253,6 +289,7 @@
         this.dialogVisible = true;
         this.dialogTitle = "楼栋详情";
         this.mode = 2;
+        this.dialogType = 1;
         this.$nextTick(()=>{
           this.$refs.dialog.fetchData(item.ldxxId);
         })
@@ -273,7 +310,25 @@
             }
           })
         })
-      }
+      },
+      handleGetFile(row){
+         this.dialogVisible = true;
+        this.title = "确认收件";
+        this.ldxxYwzh=row.ldxxYwzh;
+        this.dialogType = 4;
+        this.$nextTick(()=>{
+          this.$refs.dialog.setMode(4, row.ldxxId,row.ldxxYwzh);
+        })
+      },
+      handleManageFile(row) {
+        this.dialogVisible = true;
+        this.title = "管理收件";
+         this.ldxxYwzh=row.ldxxYwzh;
+        this.dialogType = 9;
+        this.$nextTick(() => {
+          this.$refs.dialog.setMode(9, row.xmxxId,row.ldxxYwzh);
+        })
+      },
     }
   }
 </script>

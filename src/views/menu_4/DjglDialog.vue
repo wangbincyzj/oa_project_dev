@@ -22,14 +22,14 @@
         </el-table-column>
       </el-table>
 
-      <el-pagination
+      <!-- <el-pagination
         background
         layout="prev, pager, next, total"
         @current-change="currentChange"
         :current-page="currentPage"
         :page-size="pageSize"
         :total="total"
-      ></el-pagination>
+      ></el-pagination> -->
       
    
   </div>
