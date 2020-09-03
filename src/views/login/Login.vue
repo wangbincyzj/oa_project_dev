@@ -34,6 +34,7 @@
 <script>
   import CenterButton from "@/components/common/centerButton/CenterButton";
   import {loginApi} from "@/api/login";
+  import {webClient} from "@/utils/webClient"
   import storage from "good-storage"
   export default {
     name: "Login",
@@ -44,19 +45,53 @@
         username: "",
         password: "",
         loading: false,
+        udxh:"" // u盾序号
       }
     },
     mounted() {
       this.flag = true;
+      this.onPageLoad();
     },
     methods: {
+      onPageLoad(){
+        var browser = webClient.DetectBrowser();
+        if(browser == "Unknown")
+        {
+          this.$message.error("不支持该浏览器， 如果您在使用傲游或类似浏览器，请切换到IE模式");
+            return false;
+        }
+        //createElementIAWeb() 对本页面加入IAWeb插件
+        webClient.createElementIAWeb();
+        //DetectActiveX() 判断IAWebClinet是否安装
+        var create = webClient.DetectIAWebPlugin();
+        if(create == false)
+        {
+          this.$message.error("IAWeb插件未安装!")
+              return false;
+        }
+
+        var rtn = webClient.IAWeb_Find();
+        if(rtn!=0)
+          {
+            this.$message.error("没有找到加密锁")
+            return false;
+          }
+        this.udxh = webClient.IAWeb_GetGUID();
+        console.log(this.udxh);
+        return true
+      },
+     
       login() {
+        var flag = this.onPageLoad();
+        if(!flag){
+          return;
+        }
         if (!this.username.trim() || !this.password.trim()) {
           this.$message.info("请输入正确的信息");
           return
         }
         this.loading = true
-        loginApi.login(this.username, this.password).then(ret => {
+        loginApi.login(this.username, this.password,this.udxh).then(ret => {
           this.loading = false;
           if (ret.code === 200) {
             console.log(ret.data)
