@@ -3,22 +3,44 @@
     <div class="logo">
       <i v-if="!fold" class="el-icon-s-fold" @click="$emit('update:fold', true)"/>
       <i v-else class="el-icon-s-unfold" @click='$emit("update:fold", false)'/>
-      开发申报系统
+      房产综合管理系统
     </div>
     <div class="topBar">
-      <div class="home"><i class="iconfont icon-home"/> 首页</div>
+      <div class="home">
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#iconshouye"></use>
+        </svg>
+        首页
+      </div>
       <el-popover
           placement="top-start"
           width="420"
           trigger="hover">
         <HeaderMenu :data="$store.state.navList"/>
-        <span slot="reference"><i class="iconfont icon-icon-"/> 菜单</span>
+        <span slot="reference">
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#iconcaidan"></use>
+          </svg>
+          菜单</span>
       </el-popover>
       <div class="rightArea">
         <div class="controls">
-          <i class="iconfont iconlujing129" title="答疑" @click="handleQuestion"/>
-          <i class="iconfont iconlujing126" title="售后客服" @click="handleService"/>
-          <i class="iconfont iconlujing125" title="消息" @click="handleMessage"/>
+          <i title="答疑" @click="handleQuestion">
+            <svg class="icon" aria-hidden="true" >
+              <use xlink:href="#icondayi"></use>
+            </svg>
+          </i>
+          <i title="售后客服" @click="handleService">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#iconkefu"></use>
+            </svg>
+          </i>
+          <i title="消息" @click="handleMessage">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#iconxiaoxi"></use>
+            </svg>
+          </i>
+
         </div>
         <div class="line"></div>
         <div class="userInfo">
@@ -48,8 +70,14 @@
       <ChangePwd @success="success"/>
     </WbDialog>
     <el-drawer
+        size="50%"
+        :with-header="false"
         :visible.sync="drawerVisible">
-      <div class="title" style="font-weight: 600; color: slateblue;text-align: center">{{testText}}</div>
+      <div class="content">
+        <template v-if="type===0">
+          <HeaderQuestion />
+        </template>
+      </div>
     </el-drawer>
   </div>
 </template>
@@ -58,17 +86,19 @@
 import HeaderMenu from "@/views/layout/components/HeaderMenu";
 import WbDialog from "@/components/common/wb-dialog/WbDialog";
 import ChangePwd from "@/components/common/wb-dialog/components/ChangePwd";
-
+import HeaderQuestion from "@/views/layout/components/HeaderQuestion";
+import Vue from "vue"
 export default {
   name: "Header",
-  components: {ChangePwd, WbDialog, HeaderMenu},
+  components: {HeaderQuestion, ChangePwd, WbDialog, HeaderMenu},
   props: ["fold"],
   data() {
     return {
       visible: false,
       dialogTitle: "",
       drawerVisible: false,
-      testText: ""
+      testText: "",
+      type: 0
     }
   },
   computed: {
@@ -81,6 +111,9 @@ export default {
     title() {
       return this.$store.state.loginInfo.title || "职称获取中..."
     }
+  },
+  mounted() {
+    Vue.prototype.$openQuestions = this.handleQuestion;
   },
   methods: {
     logout() {
@@ -96,16 +129,21 @@ export default {
     },
     handleQuestion() {
       this.drawerVisible = true
+      this.type = 0
       this.testText = "答疑"
     },
     handleService() {
       this.drawerVisible = true
+      this.type = 1
       this.testText = "售后服务"
 
     },
     handleMessage() {
       this.drawerVisible = true
+      this.type = 2
       this.testText = "消息"
+    },
+    handleQuestionSuccess() {
 
     }
   }
@@ -124,10 +162,10 @@ export default {
   .logo {
     text-align: center;
     width: 200px;
-    background-color: #339EEF;
+    background-color: #FF9A00;
     flex-shrink: 0;
 
-    i {
+    svg {
       cursor: pointer;
 
       &:hover {
@@ -140,8 +178,10 @@ export default {
     position: relative;
     flex: 1;
     display: flex;
-    background-color: #0085EB;
+    background-color: white;
     vertical-align: center;
+    color: #606266;
+    border-bottom: 1px $border-1 solid;
 
     .rightArea {
       cursor: auto;
@@ -181,7 +221,7 @@ export default {
       }
 
       .controls {
-        i {
+        svg {
           font-size: 20px;
           margin-left: 30px;
 
@@ -202,5 +242,9 @@ export default {
       font-size: 18px;
     }
   }
+}
+
+.content{
+  height: 100%;
 }
 </style>

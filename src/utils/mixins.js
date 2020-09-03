@@ -93,7 +93,7 @@ const myPagerMixin = {
 const dragMixin = {
   methods: {
     _drag() {
-      function handleChange(e) {
+      /*function handleChange(e) {
         let deltaX = e.x - this.x0;
         let deltaY = e.y - this.y0;
         this.style.left = this.offsetLeft + deltaX + "px"
@@ -112,7 +112,7 @@ const dragMixin = {
             this.removeEventListener("mousemove", handleChange)
           })
         })
-      })
+      })*/
     }
   }
 }

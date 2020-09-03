@@ -1,15 +1,19 @@
 <template>
   <div class="myTable-p0">
     <TitleTable title="已完成备案合同">
+      <SearchBar @combSearch="combSearch" @combClear="combClear">
+        <SearchBarItem prefix="买受人" placeholder="根据买受人姓名搜索"/>
+      </SearchBar>
       <ButtonsArea :row="row" @cancel="setCurrent">
         <el-button type="primary" @click="handlePrint(row)" size="mini">打印合同</el-button>
-        <el-button type="primary" size="mini">打印备案表</el-button>
+        <el-button type="primary" size="mini" @click="handlePrint2(row)">打印备案表</el-button>
         <el-button type="primary" size="mini" @click="handleDetail(row)">详情</el-button>
       </ButtonsArea>
       <el-table
         v-loading="loading"
         ref="table"
         style="width: 100%"
+        size="mini"
         highlight-current-row
         @current-change="handleCurrentChange"
         :data="tableData">
@@ -38,16 +42,6 @@
         </el-table-column>
         <el-table-column label="备案时间" align="center" prop="htBasj" width="150"/>
       </el-table>
-      <el-pagination
-          background
-          layout="prev, pager, next, total, sizes"
-          @current-change="mixinCurrentChange"
-          @size-change="mixinSizeChange"
-          :page-sizes="[10, 20, 30, 40]"
-          :current-page="currentPage"
-          :page-size="pageSize"
-          :total="total">
-      </el-pagination>
       <el-dialog
         title="合同详细"
         center
@@ -57,8 +51,19 @@
         :visible.sync="dialogVisible"
         @close="dialogVisible = false"
       >
-
       </el-dialog>
+      <template #pager>
+        <el-pagination
+            background
+            layout="prev, pager, next, total, sizes"
+            @current-change="mixinCurrentChange"
+            @size-change="mixinSizeChange"
+            :page-sizes="[10, 20, 30, 40]"
+            :current-page="currentPage"
+            :page-size="pageSize"
+            :total="total">
+        </el-pagination>
+      </template>
     </TitleTable>
     <transition name="bd">
       <div class="main-bd" v-if="active">
@@ -74,18 +79,21 @@
   import WsyshtLayout from "@/views/menu_3/Wsysht/WsyshtLayout";
   import {yushouContractApi} from "@/api/menu_3/yushowContract";
   import ButtonsArea from "@/components/common/buttonsArea/ButtonsArea";
+  import SearchBar from "@/components/current/searchBar/SearchBar";
+  import SearchBarItem from "@/components/current/searchBar/SearchBarItem";
 
   export default {
     name: "Ckbaht",
     mixins: [mixins.dialogMixin, mixins.myPagerMixin, mixins.tableMixin],
-    components: {ButtonsArea, WsyshtLayout, TitleTable},
+    components: {SearchBarItem, SearchBar, ButtonsArea, WsyshtLayout, TitleTable},
     data() {
       return {
         loading: false,
-        tableData: [{}],
+        tableData: [],
         active: false,
         htId: null,
-        readOnly: false
+        readOnly: false,
+        msr: null
       }
     },
     created() {
@@ -111,9 +119,17 @@
       close() {
         this.active = false
       },
+      combSearch([msr]) {
+        this.msr = msr;
+        this.fetchTableData()
+      },
+      combClear() {
+        this.msr = null;
+        this.fetchTableData()
+      },
       fetchTableData() {
         this.loading = true;
-        yushouContractApi.getContractList({kfsRwbh: this.$store.state.rwbh, htBazt:2, current:this.currentPage, size: this.pageSize}).then(ret => {
+        yushouContractApi.getAllContract({htMsrxm: this.msr,kfsRwbh: this.$store.state.rwbh, htBazt:2, htCxzt:-1},this.currentPage, this.pageSize, 0).then(ret => {
           this.loading = false;
           this.tableData = ret.data.records;
         })
@@ -130,6 +146,9 @@
       },
       handlePrint(item){
         window.open(`#/printView/ysht?id=${item.htId}`)
+      },
+      handlePrint2(item){
+        window.open(`#/printView/bab2?id=${item.htId}`)
       },
     }
   }

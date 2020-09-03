@@ -3,8 +3,9 @@ import MainContent from "@/views/layout/MainContent";
 export default {
   title: "预售资金",
   path: "/menu_4",
-  class: "icon-house",
+  class: "iconlujing228",
   redirect: "/menu_4/sqjgzh",
+  bgc:"#36A88D",
   routes:[
     {
       title: "监管账户管理",

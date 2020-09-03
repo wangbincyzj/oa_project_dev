@@ -34,6 +34,10 @@ export default {
     },
     contentColor:{
       type: String
+    },
+    labelWidth:{
+      type: String,
+      default: null
     }
   },
   created() {

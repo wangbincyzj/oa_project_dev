@@ -12,7 +12,6 @@
         type="index"
         width="50"/>
       <el-table-column align="left" label="收件名称" prop="shoujianTitle">
-        <!--v-model="scope.row.shoujianTitle"-->
         <template #default="scope">
           <div v-if="scope.row.add" style="display: flex">
             <div style="flex: 3; padding-right: 20px;">
@@ -148,8 +147,7 @@
       handleShouJian() {
         console.log(this.ywzh)
 
-
-        let respList = this.list.map(item => ({
+        /*let respList = this.list.map(item => ({
           zhengjianId: item.zhengjianId,
           ywsjTitle: item.shoujianTitle,
           ywsjFenshu: item.shoujianFenshu,
@@ -160,14 +158,13 @@
           if (ret.code === 200) {
             this.$message.success("确认收件成功,传图或者打印收件请前往管理收件")
             this.$emit("complete")
-          } else {
-            this.$message.error(ret.message || "未知错误,请联系管理员")
           }
         })
 
-        return;
+        return;*/
         if (this.list.some(item => {
-          if (!item.shoujianFenshu || !item.shoujianSjxz || !item.shoujianTitle)
+          console.log(item)
+          if (!item.shoujianFenshu || item.shoujianSjxz==="" || !item.shoujianTitle)
             return true
         })) {
           this.$message.error("不允许空值")
@@ -183,8 +180,6 @@
             if (ret.code === 200) {
               this.$message.success("确认收件成功,传图或者打印收件请前往管理收件")
               this.$emit("complete")
-            } else {
-              this.$message.error(ret.message || "未知错误,请联系管理员")
             }
           })
         }

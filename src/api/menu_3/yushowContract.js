@@ -12,7 +12,7 @@ let getContractBuildingTree = function ({ldxxFwlx, rwbh}) {
 
 /**
  * 合同管理分页查询
- * htXslx 类型 0预售 1现售
+ * @param htXslx 类型 0预售 1现售
  */
 let getContractList = function ({kfsRwbh, htBazt, HtCxzt, HtBgzt, current = 1, size = 20, htXslx = 0}) {
   return requests.get("data-presale-license/contract/selectPage", {
@@ -33,10 +33,9 @@ let contractComplete = function (type, _form) {
 
 /**
  * 新建合同
- * 0预售 1现售
  */
 let addContract = function ({roomId, htId}) {
-  return requests.post("data-presale-license/contract/save", {roomId, htId, htXslx:0})
+  return requests.post("data-presale-license/contract/save", {roomId, htId})
 }
 
 
@@ -78,8 +77,8 @@ let submitContractTemplate = function (htId) {
  * @param htXslx 合同模板类型：0 预售 1现售
  * @param kfsRwbh 入网编号 根据此id查询不同开发商的项目合同模板
  */
-let getContractTemplate = function ({htXslx, kfsRwbh, htShzt}) {
-  return requests.get("data-presale-license/contractTemplate/selectPage", {htXslx, kfsRwbh, htShzt})
+let getContractTemplate = function ({htXslx, kfsRwbh, htShzt}, current, size) {
+  return requests.get("data-presale-license/contractTemplate/selectPage", {htXslx, kfsRwbh, htShzt, current, size})
 }
 
 /**
@@ -147,8 +146,8 @@ let saveSalesConfirmation = function ({xsqrdXmmc, xsqrdLdmc, xsqrdFh, xsqrdFwbh,
  * 分页查询
  * @param kfsRwbh
  */
-let getSalesConfirmationByKfsRwbh = function (kfsRwbh, current ,size) {
-  return requests.get("data-presale-license/salesConfirmation/selectPage", {kfsRwbh, current, size})
+let getSalesConfirmationByKfsRwbh = function (kfsRwbh) {
+  return requests.get("data-presale-license/salesConfirmation/selectPage", {kfsRwbh})
 }
 
 
@@ -251,9 +250,10 @@ let rejectContract = function (htId, htBachyj) {
 /**
  * 合同列表查询
  * htBazt 0新建 1上报 2通过 3撤回
+ * htCxzt -1 操作  null 未撤销 0待撤销 1上报 2已撤销 3驳回
  */
-let getAllContract = function ({htMsrxm, htBazt, htCxlc, kfsRwbh, htMsrzjhm, htBah}, current = 1, size = 20, htXslx = 0) {
-  return requests.get("data-presale-license/contract/selectPage", {htMsrxm, htCxlc, htBazt, current, size, htXslx, kfsRwbh, htMsrzjhm, htBah})
+let getAllContract = function ({kfsRwbh, htMsrxm, htBazt,htCxzt,  htCxlc,htBgliucheng}, current = 1, size = 20, htXslx = 0) {
+  return requests.get("data-presale-license/contract/selectPage", {kfsRwbh, htMsrxm, htCxlc, htBazt,htBgliucheng, htCxzt,current, size, htXslx})
 }
 
 /**
@@ -273,14 +273,17 @@ let revokeContractDetail = function (htId) {
 /**
  * 记录审核信息
  */
-let auditContract = function ({businessId, processName, processId, approveOpinion, status, lczt}) {
+let auditContract = function ({businessId, processName, processId, approveOpinion, status, lczt,processResult, promiseDay,liucheng}) {
   return requests.post("data-presale-license/contract/audit", {
     businessId,
     processName,
     processId,
     approveOpinion,
     status,
-    lczt
+    lczt,
+    processResult,
+    promiseDay,
+    liucheng,
   })
 }
 
@@ -317,8 +320,8 @@ let contractChangeContent = function (htId, remark, content) {
  * @param status 0 1 2 3
  * @param changeType 1 内容 2 人员
  */
-let contractChangeList = function ({status, changeType, processStatus}) {
-  return requests.get("data-presale-license/contractChange/selectPage", {status, changeType, processStatus})
+let contractChangeList = function ({status, changeType, processStatus,htbgLiucheng}) {
+  return requests.get("data-presale-license/contractChange/selectPage", {status, changeType, processStatus,htbgLiucheng})
 }
 
 /**
@@ -360,14 +363,17 @@ let submitContractChange = function (id) {
  * @param lczt
  * @returns {Promise<AxiosResponse<any>>}
  */
-let auditChange = function ({businessId, processName, processId, approveOpinion, status, lczt}) {
+let auditChange = function ({businessId, processName, processId, approveOpinion, status, lczt, processResult, promiseDay,liucheng,}) {
   return requests.post("data-presale-license/contractChange/audit", {
     businessId,
     processName,
     processId,
     approveOpinion,
     status,
-    lczt
+    lczt,
+    processResult,
+    promiseDay,
+    liucheng,
   })
 }
 
@@ -413,15 +419,15 @@ let unLimitRooms = function (ids, fwxzJcxzbz) {
 /**
  * 根据楼栋id查询限制单
  */
-let getLimitByLdid = function (ldxxId, fwxzYxzt = 1, current = 1, size = 10) {
-  return requests.get("data-presale-license/homeSalesRestrictions/selectPage", {ldxxId, fwxzYxzt, current, size})
+let getLimitByLdid = function ({ldxxId, roomFh, roomSzdy, roomSzc}, fwxzYxzt = 1, current = 1, size = 10) {
+  return requests.get("data-presale-license/homeSalesRestrictions/selectPage", {ldxxId, roomFh, roomSzdy, roomSzc, fwxzYxzt, current, size})
 }
 
 /**
  * 读取房间查封列表
  */
-let getHouseClosedList = function ({ldId, roomSzdy, roomFh,}, current, size) {
-  return requests.get("data-presale-license/houseClosed/roomPage", {ldId, roomSzdy, roomFh, current, size})
+let getHouseClosedList = function ({ldId, roomSzdy, roomFh, roomSzc}, current, size) {
+  return requests.get("data-presale-license/houseClosed/roomPage", {ldId, roomSzdy, roomFh, roomSzc, current, size})
 }
 
 /**
@@ -494,6 +500,10 @@ let getHousingRecordDetail = function (roomId) {
   return requests.get("data-presale-license/housingRecord/room", {roomId})
 }
 
+/*合同备案通过*/
+let audit = function (htId) {
+  return requests.get("data-presale-license/contract/record", {htId})
+}
 
 export const yushouContractApi = {
   getContractBuildingTree,
@@ -562,5 +572,7 @@ export const yushouContractApi = {
   housingRecordRooms,
   getHousingRecordDetail,
   printContractForm,
-  getPrintData
+  getPrintData,
+  //////////////合同备案通过
+  audit
 }

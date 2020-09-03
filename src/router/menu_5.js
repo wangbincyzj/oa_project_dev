@@ -3,7 +3,8 @@ import MainContent from "@/views/layout/MainContent";
 export default {
   title: "预告确认",
   path: "/menu_5",
-  class: "icon-quanxian",
+  class: "iconyugaoqueren",
+  bgc:"#DF6B6B",
   routes:[
     {
       title: "系统综合设置",

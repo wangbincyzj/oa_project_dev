@@ -6,7 +6,7 @@
           <InfoListContainer v-if="g">
             <InfoListItem title="项目名称">{{ g.ht01008 }}</InfoListItem>
             <InfoListItem title="楼栋名称">{{ g.ht03004 }}</InfoListItem>
-            <InfoListItem title="所在单元">{{ g.ht03004 }}</InfoListItem>
+            <InfoListItem title="所在单元">{{ g.ht03005 }}</InfoListItem>
             <InfoListItem title="房号">{{ g.ht03007 }}</InfoListItem>
             <InfoListItem title="建筑面积">{{ g.ht03009 }}</InfoListItem>
             <InfoListItem title="套内面积">{{ g.ht03010 }}</InfoListItem>

@@ -3,8 +3,9 @@ import MainContent from "@/views/layout/MainContent";
 export default {
   title: "用户中心",
   path: "/menu_1",
-  class: "icon-liuliangyunpingtaitubiao06",
+  class: "iconlujing229",
   redirect: "/menu_1/home",
+  bgc: "#3474CC",
   routes:[
     {
       title: "系统权限设置",

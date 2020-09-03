@@ -165,7 +165,7 @@
           </li>
           <li>【委托代理人】【法定代理人】: <span class="line">{{d.htMfdlrxm}}</span></li>
           <li>【国籍:】【户籍所在地】: <span class="line">{{d.htMfdldz}}</span></li>
-          <li>证件类型：【居民身份证】【护照】【营业执照】【<span class="line">{{d.htMfdlrzjlx}}</span>】,证号: <span class="line">{{d.htMfdlrzjhm}}</span>
+          <li>证件类型：【居民身份证】【护照】【营业执照】【<span :class="{inline:d.htMfdlrzjlx}" class="w100">{{d.htMfdlrzjlx}}</span>】,证号: <span :class="{inline:d.htMfdlrzjhm}" class="w100">{{d.htMfdlrzjhm}}</span>
           </li>
           <li>出生日期:<span class="line">{{d.htMfdlrxcsn}}</span>年<span class="line">{{d.htMfdlrxcsy}}</span>月<span
             class="line">{{d.htMfdlrxcsr}}</span>日,性别:<span
@@ -1317,6 +1317,7 @@
 
         li {
           display: flex;
+          flex-wrap: wrap;
 
           span.line {
             flex: 1;

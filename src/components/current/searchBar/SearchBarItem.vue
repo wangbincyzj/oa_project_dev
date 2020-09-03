@@ -7,7 +7,7 @@
     search(value)
 -->
 <template>
-  <div class="searchItem">
+  <div class="searchItem" @keypress.enter="handleEnter">
     <div class="prefix" v-if="prefix">{{ prefix }}</div>
     <div class="button">
       <template v-if="mode==='input'">
@@ -19,14 +19,14 @@
         </el-select>
       </template>
       <template v-if="mode==='date'">
-       <el-date-picker v-model="value"  type="date" :placeholder="placeholder" size="mini"></el-date-picker>
+        <el-date-picker v-model="value"  type="date" :placeholder="placeholder" size="mini"></el-date-picker>
       </template>
     </div>
     <el-button
-      v-if="$parent.mode==='each'"
-      size="mini"
-      :type="$parent.eachBtnType"
-      @click="$emit('search', value)">{{ suffix }}
+        v-if="$parent.mode==='each'"
+        size="mini"
+        :type="$parent.eachBtnType"
+        @click="$emit('search', value)">{{ suffix }}
     </el-button>
   </div>
 </template>
@@ -71,7 +71,11 @@ export default {
       }
     }
   },
-  methods: {}
+  methods: {
+    handleEnter() {
+      this.$parent.combSearch()
+    }
+  }
 }
 </script>
 

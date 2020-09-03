@@ -62,16 +62,18 @@
           {{row.htBazt|shztFilter}}
         </el-table-column>
       </el-table>
-      <el-pagination
-          background
-          layout="prev, pager, next, total, sizes"
-          @current-change="mixinCurrentChange"
-          @size-change="mixinSizeChange"
-          :page-sizes="[10, 20, 30, 40]"
-          :current-page="currentPage"
-          :page-size="pageSize"
-          :total="total">
-      </el-pagination>
+      <template #pager>
+        <el-pagination
+            background
+            layout="prev, pager, next, total, sizes"
+            @current-change="mixinCurrentChange"
+            @size-change="mixinSizeChange"
+            :page-sizes="[10, 20, 30, 40]"
+            :current-page="currentPage"
+            :page-size="pageSize"
+            :total="total">
+        </el-pagination>
+      </template>
     </TitleTable>
     <transition name="bd">
       <div class="main-bd" v-if="active">

@@ -3,7 +3,9 @@ import MainContent from "@/views/layout/MainContent";
 export default {
   title: "所有权确权",
   path: "/menu_6",
-  class: "icon-22",
+  class: "iconzu312",
+  bgc:"#D65B94",
+
   routes:[
     {
       title: "系统综合设置",

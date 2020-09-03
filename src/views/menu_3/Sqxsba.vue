@@ -37,13 +37,13 @@
     <el-dialog
       :title="dialogTitle"
       center
-      width="1200px"
+      width="800px"
       :before-close="closeConfirm"
       slot="dialog"
       :visible.sync="dialogVisible"
       @close="dialogVisible = false"
     >
-      <SqysxkDialog ref="dialog"/>
+      <SqxsbaDialog ref="dialog"/>
     </el-dialog>
   </TitleTable>
 </template>
@@ -53,11 +53,14 @@
   import {mixins} from "@/utils/mixins";
   import SqysxkDialog from "@/views/menu_3/SqysxkDialog";
   import {mapState} from "vuex"
+  import InfoListPlus from "@/components/common/infoListPlus/InfoListPlus";
+  import InfoListPlusItem from "@/components/common/infoListPlus/InfoListPlusItem";
+  import SqxsbaDialog from "@/views/menu_3/SqxsbaDialog";
 
   export default {
     name: "Sqysxk",
     mixins: [mixins.dialogMixin],
-    components: {SqysxkDialog, TitleTable},
+    components: {SqxsbaDialog, InfoListPlusItem, InfoListPlus, SqysxkDialog, TitleTable},
     data() {
       return {
         tableData:[{test:"123456"}],

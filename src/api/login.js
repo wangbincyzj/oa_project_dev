@@ -47,7 +47,7 @@ let post = function (url, data) {
 }
 
 let login = function (userName, passWord) {
-  return post("login/login/doLogin", {userName, passWord})
+  return post("login/login/doLogin", {userName, passWord, type:2})
 }
 
 let logout = function (){

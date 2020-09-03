@@ -155,8 +155,6 @@
               item.add = false
               this.$message.success("新增收件成功")
               this.fetchConfirm(this.ywzh)
-            }else{
-              this.$message.error(ret.message)
             }
           })
         }
@@ -173,8 +171,6 @@
             if(ret.code===200){
               this.$message.success("删除成功")
               this.receiveList.splice(index, 1)
-            }else{
-              this.$message.error(ret.message||"删除失败")
             }
           }).finally(()=>{
             this.loading = false

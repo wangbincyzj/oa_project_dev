@@ -1,17 +1,30 @@
 <template>
   <div>
     <TitleTable title="销售承诺书管理">
-      <SearchBar>
+      <template #pager>
+        <el-pagination
+            background
+            layout="prev, pager, next, total, sizes"
+            @current-change="mixinCurrentChange"
+            @size-change="mixinSizeChange"
+            :page-sizes="[10, 20, 30, 40]"
+            :current-page="currentPage"
+            :page-size="pageSize"
+            :total="total">
+        </el-pagination>
+      </template>
+      <SearchBar @combSearch="combSearch" @combClear="combClear">
         <SearchBarItem prefix="房号"/>
         <SearchBarItem prefix="楼栋名称"/>
       </SearchBar>
       <el-table
+          size="mini"
         :data="tableData"
       >
         <el-table-column align="center" label="项目名称" prop="xsqrdXmmc"/>
         <el-table-column align="center" label="楼栋名称" prop="xsqrdLdmc" />
         <el-table-column align="center" label="房号" prop="xsqrdFh" />
-        <el-table-column align="center" label="签订时间" prop="createTime" />
+        <el-table-column align="center" label="签订时间" prop="createTime" width="150px"/>
         <el-table-column align="center" label="注销状态" prop="logoutStatus" />
         <el-table-column align="center" label="注销时间" prop="xsqrdZxtime" />
         <el-table-column align="center" label="注销原因" prop="xsqrdZxyy" />
@@ -34,16 +47,6 @@
 
         </el-table-column>
       </el-table>
-      <el-pagination
-        background
-        layout="prev, pager, next, total, sizes"
-        @current-change="mixinCurrentChange"
-        @size-change="mixinSizeChange"
-        :page-sizes="[10, 20, 30, 40]"
-        :current-page="currentPage"
-        :page-size="pageSize"
-        :total="total">
-      </el-pagination>
       <el-dialog
         :title="dialogTitle"
         center
@@ -80,7 +83,9 @@
         tableData: [],
         id: null,
         dialogWidth: "500px",
-        dialogTitle: ""
+        dialogTitle: "",
+        xsqrdLdmc: null,
+        xsqrdFh: null
       }
     },
     created() {
@@ -88,7 +93,7 @@
     },
     methods: {
       fetchTableData() {
-        yushouContractApi.getSalesConfirmationByKfsRwbh(this.$store.state.rwbh, this.currentPage, this.pageSize).then(ret => {
+        yushouContractApi.getSalesConfirmationByKfsRwbh(this.$store.state.rwbh, this.currentPage, this.pageSize, this.xsqrdFh, this.xsqrdLdmc).then(ret => {
           this.total = ret.data.total
           this.tableData = ret.data.records.map(item => ({
             ...item,
@@ -119,8 +124,16 @@
             }
           })
         })
-
-
+      },
+      combSearch([fh, ld]) {
+        this.xsqrdFh = fh;
+        this.xsqrdLdmc = ld;
+        this.fetchTableData()
+      },
+      combClear() {
+        this.xsqrdFh = null;
+        this.xsqrdLdmc = null;
+        this.fetchTableData()
       },
       handlePrint(item) {
         window.open(`/#/printView/xscns?id=${item.xsqrdId}`)

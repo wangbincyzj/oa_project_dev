@@ -19,7 +19,7 @@
         </el-form-item>
         <br>
         <el-form-item label="开盘日期">
-          <el-date-picker style="width: 178px" v-model="form1.ysxkKprq" placeholder="选择开盘日期"/>
+          <el-date-picker  value-format="yyyy-MM-dd" style="width: 178px" v-model="form1.ysxkKprq" placeholder="选择开盘日期"/>
         </el-form-item>
         <el-form-item label="预售名称">
           <el-input v-model="form1.xkzLdmc"/>
@@ -75,68 +75,77 @@
     </div>
     <!--mode3修改-->
     <div v-if="mode===3">
-      <el-tabs value="first">
-        <el-tab-pane label="基本信息" name="first">
-          <el-form
-            ref="form"
-            label-position="right"
-            label-width="150px"
-            size="mini"
-            inline
-            :model="form1">
-            <el-form-item label="选择楼栋" v-if="false">
-              <el-checkbox-group v-model="form1.ldxxIds" @change="_handleChange">
-                <el-checkbox :label="item.ldxxId" v-for="item in lds">{{item.ldxxMc}}</el-checkbox>
-              </el-checkbox-group>
-            </el-form-item>
-            <br>
-            <el-form-item label="开盘日期">
-              <el-date-picker style="width: 178px" v-model="form1.ysxkKprq" placeholder="选择开盘日期"/>
-            </el-form-item>
-            <el-form-item label="预售名称">
-              <el-input v-model="form1.xkzLdmc"/>
-            </el-form-item>
-            <el-form-item label="业务类别">
-              <el-input disabled value="新增预售许可"/>
-            </el-form-item>
-            <br/>
-            <el-form-item label="住宅面积">
-              <el-input disabled v-model="form1.xkzZzmj"/>
-            </el-form-item>
-            <el-form-item label="住宅套数">
-              <el-input disabled v-model="form1.xkzZzts"/>
-            </el-form-item>
-            <el-form-item label="非住宅面积">
-              <el-input disabled v-model="form1.xkzFzzmj"/>
-            </el-form-item>
-            <el-form-item label="非住宅套数">
-              <el-input disabled v-model="form1.xkzFzzts"/>
-            </el-form-item>
-            <el-form-item label="预售总面积">
-              <el-input disabled v-model="form1.xkzZjzmj"/>
-            </el-form-item>
-            <el-form-item label="预售总套数">
-              <el-input disabled v-model="form1.xkzZts"/>
-            </el-form-item>
-            <el-divider/>
-            <el-form-item label="监管账户名称">
-              <el-input v-model="form1.xkzJgzhmc" style="width: 180px" type="textarea"/>
-            </el-form-item>
-            <el-form-item label="监管账户">
-              <el-input v-model="form1.xkzJgzh" style="width: 180px" type="textarea"/>
-            </el-form-item>
-            <el-form-item label="监管银行">
-              <el-input v-model="form1.xkzJgyh" style="width: 180px" type="textarea"/>
-            </el-form-item>
-          </el-form>
-        </el-tab-pane>
-        <el-tab-pane label="收件信息" name="second">
-          <ReceiveList ref="rList"/>
-        </el-tab-pane>
-        <el-tab-pane label="审核流程" name="third">
-          <OpinionList ref="opinionList"/>
-        </el-tab-pane>
-      </el-tabs>
+      <div class="formContainer">
+        <el-tabs value="first">
+          <el-tab-pane label="基本信息" name="first">
+            <el-form
+                ref="form"
+                label-position="right"
+                label-width="150px"
+                size="mini"
+                inline
+                :model="form1">
+              <el-form-item label="选择楼栋" v-if="false">
+                <el-checkbox-group v-model="form1.ldxxIds" @change="_handleChange">
+                  <el-checkbox :label="item.ldxxId" v-for="item in lds">{{item.ldxxMc}}</el-checkbox>
+                </el-checkbox-group>
+              </el-form-item>
+              <br>
+              <el-form-item label="开盘日期">
+                <el-date-picker style="width: 178px" value-format="yyyy-MM-dd" v-model="form1.ysxkKprq" placeholder="选择开盘日期"/>
+              </el-form-item>
+              <el-form-item label="预售名称">
+                <el-input v-model="form1.xkzLdmc"/>
+              </el-form-item>
+              <el-form-item label="业务类别">
+                <el-input disabled value="新增预售许可"/>
+              </el-form-item>
+              <br/>
+              <el-form-item label="住宅面积">
+                <el-input disabled v-model="form1.xkzZzmj"/>
+              </el-form-item>
+              <el-form-item label="住宅套数">
+                <el-input disabled v-model="form1.xkzZzts"/>
+              </el-form-item>
+              <el-form-item label="非住宅面积">
+                <el-input disabled v-model="form1.xkzFzzmj"/>
+              </el-form-item>
+              <el-form-item label="非住宅套数">
+                <el-input disabled v-model="form1.xkzFzzts"/>
+              </el-form-item>
+              <el-form-item label="预售总面积">
+                <el-input disabled v-model="form1.xkzZjzmj"/>
+              </el-form-item>
+              <el-form-item label="预售总套数">
+                <el-input disabled v-model="form1.xkzZts"/>
+              </el-form-item>
+              <!--            <el-divider/>-->
+              <template v-if="false">
+                <el-form-item label="监管账户名称">
+                  <el-input v-model="form1.xkzJgzhmc" style="width: 180px" type="textarea"/>
+                </el-form-item>
+                <el-form-item label="监管账户">
+                  <el-input v-model="form1.xkzJgzh" style="width: 180px" type="textarea"/>
+                </el-form-item>
+                <el-form-item label="监管银行">
+                  <el-input v-model="form1.xkzJgyh" style="width: 180px" type="textarea"/>
+                </el-form-item>
+              </template>
+
+            </el-form>
+          </el-tab-pane>
+          <el-tab-pane label="收件信息" name="second">
+            <ReceiveList ref="rList"/>
+          </el-tab-pane>
+          <el-tab-pane label="审核流程" name="third">
+            <OpinionList ref="opinionList"/>
+          </el-tab-pane>
+        </el-tabs>
+        <CenterButton style="margin-bottom: 10px" v-if="!readOnly"  @btnClick="handleAdd"
+                      :title="mode===1?'新增':'修改' "/>
+      </div>
+
+
     </div>
 
     <!--收件管图-->
@@ -351,6 +360,8 @@
       handleAdd() {
         this.form1.xmxxId = this.$store.state.projectData.xmxxId;
         let ywxlId = 8001001;
+        console.log(this.mode)
+        console.log(this.form1.ysxkKprq)
         if (this.mode === 1) {
           yushowApi.save({...this.form1, ldxxIds: this.form1.ldxxIds.join(","), ywxlBh: ywxlId}).then(ret => {
             if (ret.code === 200) {
@@ -362,6 +373,7 @@
           })
         } else if (this.mode === 3) {
           yushowApi.update({...this.form1, ywxlBh: ywxlId}).then(ret => {
+            console.log(this.form1.ysxkKprq)
             if (ret.code === 200) {
               this.$message.success("修改成功")
               this.$emit("submitSuccess")

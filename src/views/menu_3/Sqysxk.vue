@@ -20,7 +20,7 @@
       <el-table-column align="center" label="当前流程" prop="xkzLiucheng"  />
       <el-table-column align="center" label="收件操作" width="250">
         <template #default="scope">
-          <el-button type="primary" @click="handleReceive(scope.row)" :disabled="!_enable(scope.row)" size="mini">收件</el-button>
+          <el-button type="primary" @click="handleReceive(scope.row)" :disabled="!_enable(scope.row)" size="mini">确认收件</el-button>
           <el-button type="primary" @click="handleManage(scope.row)" :disabled="!_enable(scope.row)" size="mini">收件管理</el-button>
         </template>
       </el-table-column>

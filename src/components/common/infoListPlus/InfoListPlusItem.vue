@@ -37,22 +37,14 @@ export default {
         width = (100 / this.$parent.count).toFixed(2) + "%";
       }
       let height = this.$parent.height;
+
       return {
         width, height, lineHeight: height
       }
     },
     nameStyle() {
-      if(this.type==='normal'){
-        return{
-          backgroundColor: this.$parent.nameBgc,
-          color: this.$parent.nameColor
-        }
-      }
-      if(this.type==='danger'){
-        return{
-          backgroundColor: "red",
-          color: "#fff"
-        }
+      if(this.$parent.labelWidth){
+        return {width: this.$parent.labelWidth, textAlign: "right"}
       }
     },
     contentStyle() {

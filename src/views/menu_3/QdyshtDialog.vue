@@ -43,9 +43,9 @@
       </el-form-item>
 
       <!--自定层明-->
-      <el-form-item label="自定层名">
+      <!--<el-form-item label="自定层名">
         <el-input v-model="form.roomZdcm"></el-input>
-      </el-form-item>
+      </el-form-item>-->
 
       <el-form-item label="建筑面积">
         <el-input v-model="form.roomJzmj"></el-input>
@@ -106,7 +106,7 @@
       </el-form-item>
     </el-form>
     <div style="display: flex; justify-content: center; margin-top: 10px">
-      <el-button @click="handleSave" size="mini" type="primary">签订合同</el-button>
+      <el-button v-if="templateList.length" @click="handleSave" size="mini" type="primary">签订合同</el-button>
     </div>
   </div>
 </template>
@@ -184,8 +184,6 @@
           if(ret.code===200){
             this.$message.success("签订成功");
             this.$emit("submitSuccess")
-          }else{
-            this.$message.error(ret.message||"未知错误")
           }
         })
       },
@@ -195,6 +193,9 @@
         yushouContractApi.getContractTemplate({htXslx:0,kfsRwbh:this.$store.state.rwbh, htShzt:2}).then(ret=>{
           this.loading = false
           this.templateList = ret.data.records;
+          if(!this.templateList.length){
+            this.$message.warning("没有合同模板")
+          }
         })
       }
     }

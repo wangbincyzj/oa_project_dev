@@ -1,7 +1,6 @@
 <template>
   <div>
     <TitleTable title="项目管理">
-
       <el-table
         v-loading="loading"
         :data="tableData"

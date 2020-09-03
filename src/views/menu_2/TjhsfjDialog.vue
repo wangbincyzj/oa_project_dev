@@ -159,9 +159,9 @@
             </el-form-item>
 
 
-            <el-form-item label="自定层名">
+            <!--<el-form-item label="自定层名">
               <el-input v-model="form.roomZdcm"></el-input>
-            </el-form-item>
+            </el-form-item>-->
 
             <el-form-item label="建筑面积">
               <el-input v-model="form.roomJzmj"></el-input>
@@ -316,6 +316,7 @@
         this.dialogVisible = true;
         this.$nextTick(() => {
           this.$refs.dialog.fetchRoomDetail(room.ldId, room.roomId);
+          this.$refs.dialog.fetchBuildingDetail(room.ldId);
         });
       },
       reset() {
@@ -338,6 +339,7 @@
         this.loading = true;
         this.buttonLoading = true;
         tjldxmApi.getBuildingLimit(id).then(ret => {
+          console.log(ret)
           this.loading = false;
           this.buttonLoading = false;
           this.limit = ret.data

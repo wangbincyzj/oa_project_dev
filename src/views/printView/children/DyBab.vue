@@ -58,7 +58,7 @@
         <td width="126" height="70" align="center"><strong>付款方式</strong></td>
         <td height="50" align="left">&nbsp;{{d.roomFkfs}}</td>
         <td height="50" align="center"><strong>签订时间</strong></td>
-        <td height="50" align="left">&nbsp;{{d.htQdsj}}</td>
+        <td height="50" align="left">&nbsp;{{d.htQdsj ? new Date(d.htQdsj).toLocaleString():""}}</td>
       </tr>
       <tr>
         <td height="70" align="center"><strong>成交单价</strong></td>
@@ -188,5 +188,8 @@
     strong {
       font-weight: 600 !important;
     }
+  }
+  td:not([align='center']){
+    padding-left: 10px;
   }
 </style>

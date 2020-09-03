@@ -15,6 +15,7 @@
     </div>
     <el-table
       :data="tableData"
+      size="mini"
       style="width: 100%">
       <el-table-column
         align="center"
@@ -100,6 +101,18 @@
         @submitSuccess="submitSuccess"
       />
     </el-dialog>
+    <template #pager>
+      <el-pagination
+          background
+          layout="prev, pager, next, total, sizes"
+          @current-change="mixinCurrentChange"
+          @size-change="mixinSizeChange"
+          :page-sizes="[10, 20, 30, 40]"
+          :current-page="currentPage"
+          :page-size="pageSize"
+          :total="total">
+      </el-pagination>
+    </template>
   </TitleTable>
 </template>
 
@@ -112,7 +125,7 @@
 
   export default {
     name: "Tjxmld",
-    mixins: [mixins.dialogMixin],
+    mixins: [mixins.dialogMixin, mixins.myPagerMixin],
     components: {TjxmldDialog, TitleTable},
     data() {
       return {
@@ -126,7 +139,7 @@
       }
     },
     created() {
-      this.fetchData()
+      this.fetchTableData()
     },
     methods:{
       _mapStatusNumToString(_num){
@@ -138,7 +151,7 @@
           default: return "状态未知,请联系管理员"
         }
       },
-      fetchData() {
+      fetchTableData() {
         this.loading = true;
         // 1.通过入网编号查用户的项目信息
         wsfcxmApi.getOwnProjectByRwId(this.$store.state.rwbh).then(ret=>{
@@ -146,10 +159,10 @@
           this.projectId = this.projectData.xmxxId;
           this.projectStatus = this.projectData.xmxxShzt;
           // 2.通过项目信息的项目id获取楼栋信息
-          tjldxmApi.getBuildingInfo(this.projectId).then(ret=>{
+          tjldxmApi.getBuildingInfo2(this.projectId, null, this.currentPage, this.pageSize).then(ret=>{
             this.loading = true;
-            console.log(ret);
-            this.tableData = ret.data.map(item=>({...item,
+            this.total = ret.data.total;
+            this.tableData = ret.data.records.map(item=>({...item,
               fwlx: item.ldxxFwlx === 0 ? "预售商品房" : "现房",
               dyh: item.ldxxDyhzt ? "是" : "否"
             }));
@@ -176,7 +189,7 @@
         this.dialogVisible = true;
         this.dialogTitle = `查看楼栋详情`;
         this.$nextTick(()=>{
-          this.$refs.dialog.fetchData(item.ldxxId)
+          this.$refs.dialog.fetchTableData(item.ldxxId)
         })
       },
       handleUpdate(index, item) {
@@ -184,7 +197,7 @@
       },
       submitSuccess() {
         this.dialogVisible = false;
-        this.fetchData();
+        this.fetchTableData();
       },
       handleDelete(index, item) {
         this.$confirm('确定要删除此楼栋?', '提示', {
@@ -196,7 +209,7 @@
           tjldxmApi.delBuilding(item.ldxxId).then(ret=>{
             if(ret.code===200){
               this.$message.success("删除成功");
-              this.fetchData();
+              this.fetchTableData();
             }else{
               this.$message.error(ret.message)
             }

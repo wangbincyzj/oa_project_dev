@@ -347,8 +347,6 @@
           if (ret.code === 200) {
             this.$message.success("删除成功");
             this.businessReceives2.splice(index, 1)
-          } else {
-            this.$message.error(ret.message || "未知错误")
           }
         })
       },
@@ -432,9 +430,7 @@
           ywxlBh: 8002001
         })
           .then(ret => {
-            if (ret.code !== 200) {
-              this.$message.error(ret.message);
-            } else {
+            if (ret.code === 200) {
               this.$message.success("添加成功");
               this.$emit("submitSuccess");
             }
@@ -450,9 +446,7 @@
           ywxlBh:8002001
         })
           .then(ret => {
-            if (ret.code !== 200) {
-              this.$message.error(ret.message);
-            } else {
+            if (ret.code === 200) {
               this.$message.success("修改成功");
               this.$emit("submitSuccess");
             }
@@ -502,8 +496,6 @@
           if (ret.code === 200) {
             this.$message.success("收件成功")
             this.$emit("submitSuccess")
-          } else {
-            this.$message.error(ret.message)
           }
         })
       },
@@ -593,8 +585,6 @@
         sqjgzhApi.delFile(id).then(ret => {
           if (ret.code === 200) {
             this.$message.info("删除成功")
-          } else {
-            this.$message.error(ret.message || "未知错误")
           }
         })
       },

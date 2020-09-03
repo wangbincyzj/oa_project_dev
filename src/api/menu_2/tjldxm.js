@@ -10,6 +10,10 @@ let getBuildingInfo = function(xmxxId,ldxxShzt){
   return requests.get("data_center/building/selectList", {xmxxId,ldxxShzt})
 }
 
+let getBuildingInfo2 = function(xmxxId,ldxxShzt, current=1, size=10){
+  return requests.get("data_center/building/selectPage", {xmxxId,ldxxShzt, current, size})
+}
+
 
 /**
  * 根据项目ID新增楼栋
@@ -67,5 +71,6 @@ export const tjldxmApi = {
   updateBuilding,
   getBuildingDetail,
   selfInspection,
-  getBuildingLimit
+  getBuildingLimit,
+  getBuildingInfo2
 }

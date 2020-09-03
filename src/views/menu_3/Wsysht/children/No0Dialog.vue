@@ -1,44 +1,22 @@
 <template>
   <div>
     <div v-if="mode===0">
-      <InfoListPlus>
+      <InfoListPlus height="30px" :count="2" label-width="70px">
         <template>
-          <InfoListPlusItem name="购买人"><input v-model="form.fwsyqrSyqr" type="text"></InfoListPlusItem>
-          <InfoListPlusItem name="联系电话"><input v-model="form.fwsyqrLxdh" type="text"></InfoListPlusItem>
-          <InfoListPlusItem name="家庭地址"><input v-model="form.fwsyqrJtdz" type="text"></InfoListPlusItem>
-
-          <InfoListPlusItem name=""></InfoListPlusItem>
+          <InfoListPlusItem name="购买人"><el-input size="mini" v-model="form.fwsyqrSyqr" type="text"/></InfoListPlusItem>
+          <InfoListPlusItem name="联系电话"><el-input size="mini" v-model="form.fwsyqrLxdh" type="text"/></InfoListPlusItem>
+          <InfoListPlusItem name="家庭地址"><el-input size="mini" v-model="form.fwsyqrJtdz" type="text"/></InfoListPlusItem>
           <InfoListPlusItem name="共有方式">
             <div class="radio">
               <input type="radio" v-model="form.fwsyqrGyfs" :value="1">比例
               <input type="radio" v-model="form.fwsyqrGyfs" :value="2">面积
             </div>
           </InfoListPlusItem>
-          <InfoListPlusItem name="共有份额"><input v-model="form.fwsyqrGybl" type="text"></InfoListPlusItem>
+          <InfoListPlusItem name="共有份额"><el-input size="mini" v-model="form.fwsyqrGybl" type="text"/></InfoListPlusItem>
           <InfoListPlusItem name="证件号码">
-            <input v-model="form.fwsyqrZjhm" type="text">
-            <!--            <div>-->
-            <!--              <el-button size="mini" type="primary">读取身份证</el-button>-->
-            <!--              <input v-model="form.fwsyqrZjhm" style="outline: none; border-bottom: 1px #909399 solid" type="text">-->
-            <!--            </div>-->
+            <el-input size="mini" v-model="form.fwsyqrZjhm" type="text"/>
           </InfoListPlusItem>
-          <!--<InfoListPlusItem2 name="人员相片">
-            <el-upload
-              action="http://192.168.1.153:8094/data-presale-license/contract/upload"
-              name="files"
-              :headers="{token:$store.state.loginInfo.token}"
-              :file-list="fileList"
-              list-type="picture-card"
-              :on-preview="handlePictureCardPreview"
-              :on-progress="handleUpload"
-              :on-success="handleSuccess"
-              :on-remove="handleRemove">
-              <i class="el-icon-plus"></i>
-            </el-upload>
-            <el-dialog :visible.sync="dialogVisible" append-to-body>
-              <img width="100%" :src="dialogImageUrl" alt="">
-            </el-dialog>
-          </InfoListPlusItem2>-->
+
         </template>
       </InfoListPlus>
       <CenterButton @btnClick="handleAdd" style="margin-top: 30px" title="添加"/>

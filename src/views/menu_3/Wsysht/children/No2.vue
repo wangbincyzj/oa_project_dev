@@ -133,8 +133,7 @@
               </li>
             </ul>
           </li>
-          <li class="priceArea">（三）出售该商品房的全部房价款应当存入预售资金监管账户，用于本工程建设。该商品房的预售资金监管机构为
-
+          <li class="priceArea" v-if="oriData.contractBothParties.htZjjgzt">（三）出售该商品房的全部房价款应当存入预售资金监管账户，用于本工程建设。该商品房的预售资金监管机构为
             <input v-model="ht07.ht07033" type="text" class="w300">
             ，预售资金监管银行为
             <select v-model="account">
@@ -145,6 +144,9 @@
             ，监管账号为
             <input v-model="ht07.ht07035" type="text" class="w200">
             。</li>
+          <li class="priceArea" v-else>
+
+          </li>
           <li class="priceArea">该商品房价款的计价方式、总价款、付款方式及期限的具体约定见附件四。</li>
         </ul>
       </div>

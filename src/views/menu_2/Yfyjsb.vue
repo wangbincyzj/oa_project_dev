@@ -6,6 +6,7 @@
       </el-alert>
     </div>
     <el-table
+        size="mini"
         v-loading="loading"
         style="width: 100%"
         :data="tableData">
@@ -96,6 +97,18 @@
           :projectId="projectId"
       />
     </el-dialog>
+    <template #pager>
+      <el-pagination
+          background
+          layout="prev, pager, next, total, sizes"
+          @current-change="mixinCurrentChange"
+          @size-change="mixinSizeChange"
+          :page-sizes="[10, 20, 30, 40]"
+          :current-page="currentPage"
+          :page-size="pageSize"
+          :total="total">
+      </el-pagination>
+    </template>
   </TitleTable>
 </template>
 
@@ -109,7 +122,7 @@ import {yfyjApi} from "@/api/menu_2/yfyj";
 
 export default {
   name: "Yfyjsb",
-  mixins: [mixins.dialogMixin],
+  mixins: [mixins.dialogMixin, mixins.myPagerMixin],
   data() {
     return {
       tableData: [],
@@ -128,7 +141,7 @@ export default {
   },
   components: {LpsbshDialog: YfyjsbDialog, TitleTable},
   created() {
-    this.fetchData()
+    this.fetchTableData()
   },
   methods: {
     _mapStatusNumToString(_num) {
@@ -155,7 +168,7 @@ export default {
           return "Error"
       }
     },
-    fetchData() {
+    fetchTableData() {
       this.loading = true;
       // 1.通过入网编号查用户的项目信息
       wsfcxmApi.getOwnProjectByRwId(this.$store.state.rwbh).then(ret => {
@@ -164,8 +177,9 @@ export default {
         this.projectId = this.projectData.xmxxId;
         this.projectStatus = this.projectData.xmxxShzt;
         // 2.通过项目信息的项目id获取楼栋信息
-        tjldxmApi.getBuildingInfo(this.projectId).then(ret => {
-          this.tableData = ret.data.map(item => ({
+        tjldxmApi.getBuildingInfo2(this.projectId, null, this.currentPage, this.pageSize).then(ret => {
+          this.total = ret.data.total
+          this.tableData = ret.data.records.map(item => ({
             ...item,
             zszt: this._mapStatusNumToString2(item.ldxxLdjpzt),
             lpzt: this._mapStatusNumToString(item.ldxxShzt),
@@ -188,7 +202,7 @@ export default {
       yfyjApi.housePriceSubmit(item.ldxxId).then(ret => {
         if (ret.code === 200) {
           this.$message.success(ret.message)
-          this.fetchData()
+          this.fetchTableData()
         } else {
           this.$message.error(ret.message)
         }

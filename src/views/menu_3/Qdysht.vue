@@ -91,7 +91,8 @@ export default {
     },
     submitSuccess() {
       this.dialogVisible = false;
-      this.$refs.rooms.fetchRooms(this.navInfo.list[index].id)
+      // this.$refs.rooms.fetchRooms(this.navInfo.list[index].id)
+      this.liClick(this.selectedIndex)
     },
   }
 }

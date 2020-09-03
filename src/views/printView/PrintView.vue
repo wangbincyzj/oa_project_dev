@@ -5,7 +5,8 @@
     <Dyjkmds v-if="args==='Dyjkmds'"/>  <!---->
     <Dymx v-if="args==='Dymx'"/>  <!---->
     <DyXscns v-if="args==='xscns'"/>  <!--销售承诺书-->
-    <DyBab v-if="args==='bab'"/>  <!--完善预售合同-打印备案表-->
+    <DyBab v-if="args==='bab'"/>  <!--完善预售合同-打印备案申请表-->
+    <DyBab2 v-if="args==='bab2'"/>  <!--完善预售合同-打印备案结果单-->
     <DyReceiveList v-if="args==='receiveList'"/> <!--打印收件清单-->
     <Dytkbfd v-if="args==='dytkbfd'"/> <!--打印退款拨付单-->
 
@@ -20,9 +21,10 @@
   import DyBab from "@/views/printView/children/DyBab";
   import DyReceiveList from "@/views/printView/children/DyReceiveList";
   import Dytkbfd from "@/views/printView/children/Dytkbfd";
+  import DyBab2 from "@/views/printView/children/DyBab2";
   export default {
     name: "PrintView",
-    components: {DyReceiveList, DyBab, DyXscns, Dyyshtmb,Dyjkmds,Dymx,Dytkbfd},
+    components: {DyBab2, DyReceiveList, DyBab, DyXscns, Dyyshtmb,Dyjkmds,Dymx,Dytkbfd},
     computed:{
       args() {
         return this.$route.params.args

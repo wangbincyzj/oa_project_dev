@@ -1,5 +1,17 @@
 <template>
   <TitleTable title="生成楼栋房间">
+    <template #pager>
+      <el-pagination
+          background
+          layout="prev, pager, next, total, sizes"
+          @current-change="mixinCurrentChange"
+          @size-change="mixinSizeChange"
+          :page-sizes="[10, 20, 30, 40]"
+          :current-page="currentPage"
+          :page-size="pageSize"
+          :total="total">
+      </el-pagination>
+    </template>
     <el-alert
         slot="controls"
         type="warning"
@@ -9,6 +21,7 @@
     </el-alert>
     <el-table
         :data="tableData"
+        size="mini"
         style="width: 100%">
       <el-table-column
           label="楼栋名称"
@@ -96,7 +109,7 @@ import TjhsfjDialog from "@/views/menu_2/TjhsfjDialog";
 
 export default {
   name: "Tjhsfj",
-  mixins: [mixins.dialogMixin],
+  mixins: [mixins.dialogMixin, mixins.myPagerMixin],
   components: {TjhsfjDialog, TitleTable},
   data() {
     return {
@@ -110,10 +123,10 @@ export default {
     }
   },
   created() {
-    this.fetchData();
+    this.fetchTableData();
   },
   methods: {
-    fetchData() {
+    fetchTableData() {
       this.loading = true;
       // 1.通过入网编号查用户的项目信息
       wsfcxmApi.getOwnProjectByRwId(this.$store.state.rwbh).then(ret => {
@@ -121,9 +134,10 @@ export default {
         this.projectId = this.projectData.xmxxId;
         this.projectStatus = this.projectData.xmxxShzt;
         // 2.通过项目信息的项目id获取楼栋信息
-        tjldxmApi.getBuildingInfo(this.projectId).then(ret => {
+        tjldxmApi.getBuildingInfo2(this.projectId, null, this.currentPage, this.pageSize).then(ret => {
           this.loading = true;
-          this.tableData = ret.data.map(item => ({
+          this.total = ret.data.total;
+          this.tableData = ret.data.records.map(item => ({
             ...item,
             fwlx: item.ldxxFwlx === 0 ? "预售商品房" : "现房",
             status: this._mapStatusNumToString(item.ldxxShzt)
@@ -176,7 +190,7 @@ export default {
     },
     submitSuccess() {
       this.dialogVisible = false;
-      this.fetchData()
+      this.fetchTableData()
     }
   }
 }

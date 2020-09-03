@@ -3,7 +3,9 @@ import MainContent from "@/views/layout/MainContent";
 export default {
   title: "抵押确权",
   path: "/menu_7",
-  class: "icon-zijinliushui",
+  class: "icondiyaquequan",
+  bgc:"#3BA8B9",
+
   routes:[
     {
       title: "系统综合设置",

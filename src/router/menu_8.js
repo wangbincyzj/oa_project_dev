@@ -3,7 +3,9 @@ import MainContent from "@/views/layout/MainContent";
 export default {
   title: "专项资金",
   path: "/menu_8",
-  class: "icon-zijin",
+  class: "iconlujing237",
+  bgc:"#C6C12C",
+
   routes:[
     {
       title: "系统综合设置",

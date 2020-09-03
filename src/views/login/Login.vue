@@ -77,8 +77,6 @@
               rwdqrq: ret.data.user.rwdqrq,
               rwdqrqzt: ret.data.user.rwdqrqzt
             })
-          } else {
-            this.$message.error(ret.message || "登录失败");
           }
         })
       },

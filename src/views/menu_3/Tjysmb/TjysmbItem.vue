@@ -146,7 +146,7 @@
     </div>
 
     <!--第十一条-->
-    <div class="item">
+    <div ref="item11" class="item">
       <h4 class="title">第十一条 交付时间和手续</h4>
       <ul>
         <li>（一）出卖人应当在 <input v-model="ht11.ht11001" type="text" class="w50">年 <input v-model="ht11.ht11002" type="text" class="w50">月 <input v-model="ht11.ht11003" type="text" class="w50">日前向买受人交付该商品房。
@@ -1065,6 +1065,12 @@
       }
     },
     methods:{
+      calcPosition() {
+        return Array.from(this.$el.children).map(item=>item.offsetTop)
+      },
+      getPosition(index) {
+        return this.$el.children[index].offsetTop
+      },
       setData(_form){
         Object.entries(_form).forEach(([k,v])=>{
           this[k] = v;

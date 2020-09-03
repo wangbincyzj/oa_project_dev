@@ -1,5 +1,5 @@
 <template>
-  <div class="myDialog myForm-mb5" v-loading="loading">
+  <div class=" myForm-mb5" v-loading="loading">
     <el-tabs value="first" v-if="dialogType===1">
       <el-tab-pane label="一.项目信息" name="first">
         <el-form

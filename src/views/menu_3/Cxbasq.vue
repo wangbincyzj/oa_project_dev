@@ -50,7 +50,7 @@
           {{row.htCfzt === 1 ? "是" : "否"}}
         </el-table-column>
         <el-table-column label="撤销状态" align="center" #default="{row}"  width="80">
-          {{row.htCxzt === 1 ? "是" : "否"}}
+          {{row.htCxzt === 2 ? "是" : "否"}}
         </el-table-column>
       </el-table>
       <el-dialog

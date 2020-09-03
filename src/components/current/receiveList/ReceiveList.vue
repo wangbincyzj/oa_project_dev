@@ -46,7 +46,6 @@ export default {
     },
     fetchData(ywsjYwzh) {
       filesApi.queryConfirm(ywsjYwzh).then(ret => {
-        console.log(ret)
         this.businessReceives = ret.data.businessAttachments.map(item => ({
           ...item,
           shoujianTitle: item.ywsjTitle,

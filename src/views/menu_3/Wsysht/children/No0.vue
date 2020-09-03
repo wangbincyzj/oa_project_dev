@@ -2,7 +2,7 @@
   <div class="wsysht-item">
     <div class="hd">第一章 合 同 当 事 人</div>
     <div class="bd" >
-      <InfoListPlus count="2">
+      <InfoListPlus :count="4" height="30px" label-width="100px">
         <div slot="title"><span style="font-weight: 600">合 同 当 事 人</span></div>
         <template>
           <InfoListPlusItem name="出卖人">{{e.rwqyxxTitle}}</InfoListPlusItem>
@@ -13,15 +13,15 @@
           <InfoListPlusItem name="企业资质等级">{{e.rwqyxxZzdj}}</InfoListPlusItem>
           <InfoListPlusItem name="邮政编码">{{e.rwqyxxYzbm}}</InfoListPlusItem>
           <InfoListPlusItem name="联系电话">{{e.rwqyxxLxdh}}</InfoListPlusItem>
-          <InfoListPlusItem name="委托代理人"><input v-model="form.htMfwtdlr" type="text"></InfoListPlusItem>
-          <InfoListPlusItem name="通讯地址"><input v-model="form.htMfwtdldz" type="text"></InfoListPlusItem>
-          <InfoListPlusItem name="联系电话"><input v-model="form.htMfdllxdh" type="text"></InfoListPlusItem>
-          <InfoListPlusItem name="邮政编码"><input v-model="form.htMfdlyzbm" type="text"></InfoListPlusItem>
-          <InfoListPlusItem name="委托销售经纪机构"><input v-model="form.htMfwtdljg" type="text"></InfoListPlusItem>
-          <InfoListPlusItem name="营业执照注册号"><input v-model="form.htMfwtdljgzch" type="text"></InfoListPlusItem>
-          <InfoListPlusItem name="法定代表人"><input v-model="form.htMfdljgfr" type="text"></InfoListPlusItem>
-          <InfoListPlusItem name="联系电话"><input v-model="form.htMfdljgddh" type="text"></InfoListPlusItem>
-          <InfoListPlusItem name="合同密码" v-if="false"><input v-model="form.htPass" type="text"></InfoListPlusItem>
+          <InfoListPlusItem name="委托代理人"><el-input size="mini" v-model="form.htMfwtdlr" type="text"/></InfoListPlusItem>
+          <InfoListPlusItem name="通讯地址"><el-input size="mini" v-model="form.htMfwtdldz" type="text"/></InfoListPlusItem>
+          <InfoListPlusItem name="联系电话"><el-input size="mini" v-model="form.htMfdllxdh" type="text"/></InfoListPlusItem>
+          <InfoListPlusItem name="邮政编码"><el-input size="mini" v-model="form.htMfdlyzbm" type="text"/></InfoListPlusItem>
+          <InfoListPlusItem name="委托销售经纪机构"><el-input size="mini" v-model="form.htMfwtdljg" type="text"/></InfoListPlusItem>
+          <InfoListPlusItem name="营业执照注册号"><el-input size="mini" v-model="form.htMfwtdljgzch" type="text"/></InfoListPlusItem>
+          <InfoListPlusItem name="法定代表人"><el-input size="mini" v-model="form.htMfdljgfr" type="text"/></InfoListPlusItem>
+          <InfoListPlusItem name="联系电话"><el-input size="mini" v-model="form.htMfdljgddh" type="text"/></InfoListPlusItem>
+          <InfoListPlusItem name="合同密码" v-if="false"><el-input size="mini" v-model="form.htPass" type="text"/></InfoListPlusItem>
         </template>
       </InfoListPlus>
       <el-table
@@ -41,7 +41,7 @@
         <el-table-column align="center" label="家庭地址" prop="fwsyqrJtdz" width="300"/>
         <el-table-column align="center" label="买受人照片" prop="xsqrdZxyy" />
       </el-table>
-      <InfoListPlus count="2" height="30px">
+      <InfoListPlus :count="2" height="30px">
         <div slot="title"><span style="font-weight: 600; color: red">注意：购买人务必一个一个的添加，同时合同密码为购买人中第一个购买人的身份证后6位</span>
         </div>
         <template>
@@ -54,7 +54,6 @@
             </InfoListPlusItem>
             <InfoListPlusItem name=""></InfoListPlusItem>
           </template>
-
           <InfoListPlusItem name="【委托代理人】【法定代理人】"><input v-model="form.htMfdlrxm" type="text"></InfoListPlusItem>
           <InfoListPlusItem name="【国籍】:【户籍所在地】"><input v-model="form.htMfdldz" type="text"></InfoListPlusItem>
           <InfoListPlusItem name="证件类型：【居民身份证】【护照】【营业执照】"><input v-model="form.htMfdlrzjlx" type="text"></InfoListPlusItem>
@@ -70,7 +69,7 @@
     <el-dialog
       :title="dialogTitle"
       center
-      width="1200px"
+      width="800px"
       slot="dialog"
       append-to-body
       :visible.sync="dialogVisible"

@@ -3,8 +3,9 @@ import MainContent from "@/views/layout/MainContent";
 export default {
   title: "项目管理",
   path: "/menu_2",
-  class: "icon-dc-icon-beiangaoqishuliang",
+  class: "iconxiangmuguanli",
   redirect: "/menu_2/wsfcxm",
+  bgc:"#6A59E0",
   routes:[
     {
       title: "项目信息管理",

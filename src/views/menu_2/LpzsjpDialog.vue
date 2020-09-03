@@ -34,10 +34,10 @@
         </el-select>
       </el-form-item>
 
-      <!--自定层明-->
+      <!--自定层明
       <el-form-item label="自定层名">
         <el-input v-model="form.roomZdcm"></el-input>
-      </el-form-item>
+      </el-form-item>-->
 
       <el-form-item label="建筑面积">
         <el-input v-model="form.roomJzmj"></el-input>

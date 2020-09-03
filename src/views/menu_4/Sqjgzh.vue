@@ -247,8 +247,6 @@ export default {
           if (ret.code === 200) {
             this.$message.success("操作成功");
             this.fetchData();
-          } else {
-            this.$message.error(ret.message || "操作失败")
           }
         })
       }).catch(() => {
@@ -267,8 +265,6 @@ export default {
           if (ret.code === 200) {
             this.$message.success("操作成功");
             this.fetchData();
-          } else {
-            this.$message.error(ret.message || "操作失败")
           }
         })
       }).catch(() => {
@@ -287,8 +283,6 @@ export default {
           if (ret.code === 200) {
             this.$message.success("操作成功");
             this.fetchData();
-          } else {
-            this.$message.error(ret.message || "操作失败")
           }
         })
       }).catch(() => {
@@ -339,8 +333,6 @@ export default {
     },
     cellMouseEnter(row) {
       row = row;
-      // this.zjjgzhYwzh=row.zjjgzhYwzh;
-      // this.fetchPrintData(this.zjjgzhYwzh);
     },
     currentChange(num) {
       this.currentPage = num;
