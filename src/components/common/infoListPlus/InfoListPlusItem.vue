@@ -73,7 +73,7 @@ export default {
   padding-left: 30px;
   height: 16px;
   line-height: 16px;
-  margin: 8px 0;
+  margin: 8px 0!important;
   display: flex;
   .name {
     flex-shrink: 0;

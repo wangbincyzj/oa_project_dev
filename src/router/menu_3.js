@@ -38,7 +38,7 @@ export default {
         {title: "查看备案合同", path: "ckbaht"},
       ]
     },
-    {
+    /*{
       title: "现售合同模板",
       path: "/yshtmb",
       group:[
@@ -56,7 +56,7 @@ export default {
         {title: "完善现售合同", path: "wsysht2"},
         {title: "查看备案合同", path: "ckbaht2"},
       ]
-    },
+    },*/
     {
       title: "备案合同管理",
       path: "/bahtgl",
@@ -70,7 +70,8 @@ export default {
       title: "旧版合同管理",
       path: "/lshtgl",
       group: [
-        {title: "完善合同", path: "wsht"},
+        {title: "完善合同", path: "wshtold"},
+        {title: "管理合同", path: "glhtold"},
       ]
     }
   ]

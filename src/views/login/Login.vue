@@ -82,10 +82,10 @@
       },
      
       login() {
-        var flag = this.onPageLoad();
+        /*var flag = this.onPageLoad();
         if(!flag){
           return;
-        }
+        }*/
         if (!this.username.trim() || !this.password.trim()) {
           this.$message.info("请输入正确的信息");
           return

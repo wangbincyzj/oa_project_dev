@@ -1,5 +1,5 @@
 <template>
-  <div class="wsysht-item">
+  <div class="wsysht-item tjysmbItems">
     <div class="hd">第一章 合 同 当 事 人</div>
     <div class="bd" >
       <InfoListPlus :count="4" height="30px" label-width="100px">
@@ -19,6 +19,8 @@
           <InfoListPlusItem name="邮政编码"><el-input size="mini" v-model="form.htMfdlyzbm" type="text"/></InfoListPlusItem>
           <InfoListPlusItem name="委托销售经纪机构"><el-input size="mini" v-model="form.htMfwtdljg" type="text"/></InfoListPlusItem>
           <InfoListPlusItem name="营业执照注册号"><el-input size="mini" v-model="form.htMfwtdljgzch" type="text"/></InfoListPlusItem>
+<!--          <InfoListPlusItem name="注册地址"><el-input size="mini" v-model="form.htMfdljgdz" type="text"/></InfoListPlusItem>-->
+<!--          <InfoListPlusItem name="邮政编码"><el-input size="mini" v-model="form.htMfdljgyzbm" type="text"/></InfoListPlusItem>-->
           <InfoListPlusItem name="法定代表人"><el-input size="mini" v-model="form.htMfdljgfr" type="text"/></InfoListPlusItem>
           <InfoListPlusItem name="联系电话"><el-input size="mini" v-model="form.htMfdljgddh" type="text"/></InfoListPlusItem>
           <InfoListPlusItem name="合同密码" v-if="false"><el-input size="mini" v-model="form.htPass" type="text"/></InfoListPlusItem>

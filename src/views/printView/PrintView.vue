@@ -2,6 +2,7 @@
   <div class="printView">
     <Dyyshtmb v-if="args==='yshtmb'" args="yshtmb"/>  <!--预售合同模板-->
     <Dyyshtmb v-if="args==='ysht'" args="ysht" :ba="true"/> <!--预售合同-->
+    <DyHtOld v-if="args==='htold'"/> <!--遂川老合同打印-->
     <Dyjkmds v-if="args==='Dyjkmds'"/>  <!---->
     <Dymx v-if="args==='Dymx'"/>  <!---->
     <DyXscns v-if="args==='xscns'"/>  <!--销售承诺书-->
@@ -22,9 +23,10 @@
   import DyReceiveList from "@/views/printView/children/DyReceiveList";
   import Dytkbfd from "@/views/printView/children/Dytkbfd";
   import DyBab2 from "@/views/printView/children/DyBab2";
+  import DyHtOld from "@/views/printView/children/DyHtOld";
   export default {
     name: "PrintView",
-    components: {DyBab2, DyReceiveList, DyBab, DyXscns, Dyyshtmb,Dyjkmds,Dymx,Dytkbfd},
+    components: {DyHtOld, DyBab2, DyReceiveList, DyBab, DyXscns, Dyyshtmb,Dyjkmds,Dymx,Dytkbfd},
     computed:{
       args() {
         return this.$route.params.args
